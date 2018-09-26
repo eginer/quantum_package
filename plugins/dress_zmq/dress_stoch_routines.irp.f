@@ -233,7 +233,6 @@ END_PROVIDER
 
 subroutine ZMQ_dress(E, dress, delta_out, delta_s2_out, relative_error)
   use f77_zmq
-  use selection_types
   
   implicit none
   
@@ -544,6 +543,7 @@ subroutine dress_collector(zmq_socket_pull, E, relative_error, delta, delta_s2, 
         error =1.d0
       endif
       m += 1
+! /!\ avg == 0.d0 needs to be handled here
       if(dabs(error / avg) <= relative_error) then
         integer, external :: zmq_put_dvector
         integer, external :: zmq_put_int
