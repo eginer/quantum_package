@@ -627,6 +627,7 @@ subroutine i_H_j(key_i,key_j,Nint,hij)
   ASSERT (sum(popcnt(key_j(:,1))) == elec_alpha_num)
   ASSERT (sum(popcnt(key_j(:,2))) == elec_beta_num)
   
+
   hij = 0.d0
   !DIR$ FORCEINLINE
   call get_excitation_degree(key_i,key_j,degree,Nint)
