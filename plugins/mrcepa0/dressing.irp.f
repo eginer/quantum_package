@@ -483,6 +483,7 @@ END_PROVIDER
   threshold_selectors = 1.d0
   threshold_generators = 1d0 
   target_error = thresh_dressed_ci * 5.d-2
+target_error = 0.d0
   call ZMQ_mrcc(E_CI_before, mrcc, delta_ij_mrcc_zmq, delta_ij_s2_mrcc_zmq, abs(target_error))
 
   mrcc_previous_E(:) = mrcc_E0_denominator(:)

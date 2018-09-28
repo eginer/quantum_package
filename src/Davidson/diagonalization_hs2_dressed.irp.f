@@ -7,7 +7,7 @@ BEGIN_PROVIDER [ integer, dressed_column_idx, (N_states) ]
  double precision :: tmp
  integer, external :: idamax 
  do i=1,N_states
-   dressed_column_idx(i) = idamax(size(psi_coef,1), psi_coef(1,i), 1)
+   dressed_column_idx(i) = idamax(N_det, psi_coef(1,i), 1)
  enddo
 END_PROVIDER
 

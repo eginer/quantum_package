@@ -1,4 +1,3 @@
-
  BEGIN_PROVIDER [ double precision, dressing_column_h, (N_det,N_states) ]
 &BEGIN_PROVIDER [ double precision, dressing_column_s, (N_det,N_states) ]
  implicit none
@@ -21,4 +20,6 @@
    enddo
  enddo
 END_PROVIDER
+
+
 
