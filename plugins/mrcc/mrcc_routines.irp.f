@@ -8,12 +8,12 @@ subroutine generator_start(i_gen, iproc, interesting)
   logical, external :: deteq
   PROVIDE dij
   interesting = .true.
-  do i=1,N_det_ref
-    if(deteq(psi_det_generators(1,1,i_gen), psi_ref(1,1,i), N_int)) then
-      interesting = .false.
-      exit
-    end if
-  end do
+!  do i=1,N_det_ref
+!    if(deteq(psi_det_generators(1,1,i_gen), psi_ref(1,1,i), N_int)) then
+!      interesting = .false.
+!      exit
+!    end if
+!  end do
 end subroutine
 
  BEGIN_PROVIDER [ double precision, hij_cache_, (N_det,Nproc) ]
@@ -65,6 +65,11 @@ subroutine dress_with_alpha_buffer(Nstates, Ndet,Nint,delta_ij_loc, i_gen, minil
   double precision               :: phase, phase2
   integer                        :: degree, exc(0:2,2,2)
   integer(8), save :: diamond = 0
+
+!  call dress_with_alpha_buffer_old(Nstates, Ndet,Nint,delta_ij_loc, i_gen, minilist, det_minilist, n_minilist, alpha, iproc)
+!  return
+
+
   if(n_minilist == 1) return
   !check if not linked to reference
   do i=1,n_minilist
@@ -200,7 +205,7 @@ subroutine dress_with_alpha_buffer_neu(Nstates,Ndet,Nint,delta_ij_loc, i_gen, mi
       end do
       !diamond found
       diamond += 1
-      if(mod(diamond,10000) == 1) print *, "diam", diamond
+!      if(mod(diamond,10000) == 1) print *, "diam", diamond
 
       call get_excitation(psi_ref(1,1,i_I),det_minilist(1,1,j),exc,degree,phase,Nint)
       call get_excitation(alpha,det_minilist(1,1,i),exc,degree,phase2,Nint)
@@ -361,13 +366,11 @@ subroutine dress_with_alpha_buffer_old(Nstates,Ndet,Nint,delta_ij_loc, i_gen, mi
       
            
       if (perturbative_triples.and. (degree2 == 1) ) then
-          if(sum(popcnt(tmp_det(:,1))) /= elec_alpha_num) stop "STOP 1"
-  if(sum(popcnt(tmp_det(:,2))) /= elec_beta_num) stop "STOP 2"
-  if(sum(popcnt(tmp_det(:,1))) /= elec_alpha_num) stop "STOP 3"
-  if(sum(popcnt(tmp_det(:,2))) /= elec_beta_num) stop "STOP 4"
-  
-
-          call i_h_j(psi_ref(1,1,i_I),tmp_det,Nint,hka)
+          if (ok) then
+            call i_h_j(psi_ref(1,1,i_I),tmp_det,Nint,hka)
+          else
+            hka = 0.d0
+          endif
           hka = hij_cache_(k_sd,iproc) - hka
           if (dabs(hka) > 1.d-12) then
             call get_delta_e_dyall_general_mp(psi_ref(1,1,i_I),alpha,Delta_E_inv)

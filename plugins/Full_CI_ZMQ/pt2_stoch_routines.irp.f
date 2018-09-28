@@ -275,6 +275,8 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error)
   
   integer, allocatable :: f(:)
   logical, allocatable :: d(:) 
+  logical :: do_exit
+
 
   zmq_to_qp_run_socket = new_zmq_to_qp_run_socket()
   allocate(task_id(pt2_n_tasks_max), index(pt2_n_tasks_max), f(N_det_generators))
@@ -296,6 +298,7 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error)
   more = 1
   time0 = omp_get_wtime()
 
+  do_exit = .false.
   do while (n <= N_det_generators)
     if(f(pt2_J(n)) == 0) then
       d(pt2_J(n)) = .true.
@@ -328,6 +331,9 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error)
           S2(p) += x**2
         end do
         avg = E0 + S(t) / dble(c)
+        if ((avg /= 0.d0) .or. (n == N_det_generators) ) then 
+          do_exit = .true.
+        endif
         pt2(pt2_stoch_istate) = avg
         ! 1/(N-1.5) : see  Brugger, The American Statistician (23) 4 p. 32 (1969)
         if(c > 2) then
@@ -336,7 +342,7 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error)
           error(pt2_stoch_istate) = eqt
           if(mod(c,10)==0 .or. n==N_det_generators) then
             print '(G10.3, 2X, F16.10, 2X, G16.3, 2X, F16.4, A20)', c, avg+E, eqt, time-time0, ''
-            if( dabs(error(pt2_stoch_istate) / pt2(pt2_stoch_istate)) < relative_error) then
+            if(do_exit .and. (dabs(error(pt2_stoch_istate)) / (1.d-20 + dabs(pt2(pt2_stoch_istate)) ) <= relative_error)) then 
               if (zmq_abort(zmq_to_qp_run_socket) == -1) then
                 call sleep(10)
                 if (zmq_abort(zmq_to_qp_run_socket) == -1) then

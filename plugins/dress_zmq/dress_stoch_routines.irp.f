@@ -25,7 +25,7 @@ END_PROVIDER
   enddo
 
   
-  if(N_det_generators < 1024) then
+  if(N_det_generators < 128) then
     pt2_minDetInFirstTeeth = 1
     pt2_N_teeth = 1
   else
@@ -485,13 +485,13 @@ subroutine dress_collector(zmq_socket_pull, E, relative_error, delta, delta_s2, 
   double precision, external :: omp_get_wtime
   integer, allocatable :: dot_f(:)
   integer, external :: zmq_delete_tasks, dress_find_sample
-  logical :: found
+  logical :: do_exit
   integer :: worker_id
   worker_id=1
   zmq_to_qp_run_socket = new_zmq_to_qp_run_socket()
 
   
-  found = .false.
+  do_exit = .false.
   delta = 0d0
   delta_s2 = 0d0
   allocate(task_id(pt2_n_tasks_max))
@@ -513,7 +513,7 @@ subroutine dress_collector(zmq_socket_pull, E, relative_error, delta, delta_s2, 
   time0 = -1d0 ! omp_get_wtime()
   more = 1
 
-  do while (.not. found)
+  do 
     if(dot_f(m) == 0) then
       E0 = 0
       do i=dress_dot_n_0(m),1,-1
@@ -532,6 +532,9 @@ subroutine dress_collector(zmq_socket_pull, E, relative_error, delta, delta_s2, 
       end do
       t = dress_dot_t(m)
       avg = E0 + S(t) / dble(c)
+      if ((avg /= 0.d0) .or. (m == dress_N_cp) ) then
+        do_exit = .true.
+      endif
       if (c > 2) then
         eqt = dabs((S2(t) / c) - (S(t)/c)**2)
         error = sqrt(eqt / (dble(c)-1.5d0))
@@ -543,12 +546,11 @@ subroutine dress_collector(zmq_socket_pull, E, relative_error, delta, delta_s2, 
         error =1.d0
       endif
       m += 1
-! /!\ avg == 0.d0 needs to be handled here
-      if(dabs(error / avg) <= relative_error) then
+      if(do_exit .and. (dabs(error) / (1.d-20 + dabs(avg) ) <= relative_error)) then 
         integer, external :: zmq_put_dvector
         integer, external :: zmq_put_int
         i= zmq_put_int(zmq_to_qp_run_socket, worker_id, 'ending', (m-1))
-        found = .true.
+        exit
       end if
     else
       do

@@ -1228,7 +1228,11 @@ subroutine get_cc_coef(tq,c_alpha)
       endif
       
       if (perturbative_triples.and. (degree2 == 1) ) then
-        call i_h_j(psi_ref(1,1,i_I),tmp_det,N_int,hka)
+        if (ok) then
+          call i_h_j(psi_ref(1,1,i_I),tmp_det,N_int,hka)
+        else
+          hka = 0.d0
+        endif
         call i_h_j(tq,psi_non_ref(1,1,k_sd),N_int,hla)
         hka = hla - hka
         if (dabs(hka) > 1.d-12) then
