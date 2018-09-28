@@ -176,29 +176,27 @@ BEGIN_PROVIDER [ double precision, h_matrix_dressed, (N_det,N_det) ]
 
   h_matrix_dressed(1:N_det,1:N_det) = h_matrix_all_dets(1:N_det,1:N_det)
 
-!  do k=1,N_states
-!    do j=1,N_det
-!      do i=1,N_det
-!        h_matrix_dressed(i,j) = h_matrix_dressed(i,j) +       &
-!            0.5d0 * (dressing_column_h(i,k) * psi_coef(j,k) + &
-!                     dressing_column_h(j,k) * psi_coef(i,k))
-!      enddo
-!    enddo
-!  enddo
-
-  integer :: l,jj
-  double precision :: f
-  do k=1,N_states
-    l = dressed_column_idx(k)
-    f = 1.d0/psi_coef(l,k)
+  if (N_states == 1) then
+    integer                        :: l,jj
+    double precision               :: f
+    l = dressed_column_idx(1)
+    f = 0.5d0/psi_coef(l,1)
     do i=1,N_det
-       if (i==l) cycle
-       h_matrix_dressed(i,l) = h_matrix_dressed(i,l) + dressing_column_h(i,k) *f
-       h_matrix_dressed(l,i) = h_matrix_dressed(l,i) + dressing_column_h(i,k) *f
-       h_matrix_dressed(l,l) = h_matrix_dressed(l,l) - psi_coef(i,k) * dressing_column_h(i,k) *f*f
+      h_matrix_dressed(i,l) = h_matrix_dressed(i,l) + dressing_column_h(i,1) *f
+      h_matrix_dressed(l,i) = h_matrix_dressed(l,i) + dressing_column_h(i,1) *f
     enddo
+  else
+    do k=1,N_states
+      do j=1,N_det
+        do i=1,N_det
+          h_matrix_dressed(i,j) = h_matrix_dressed(i,j) +            &
+              0.5d0 *(dressing_column_h(i,k) * psi_coef(j,k) +       &
+              dressing_column_h(j,k) * psi_coef(i,k))
+        enddo
+      enddo
+    enddo
+  endif
 
-  enddo
 
 END_PROVIDER
 

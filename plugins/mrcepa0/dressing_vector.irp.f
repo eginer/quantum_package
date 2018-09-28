@@ -16,12 +16,15 @@
 
  do k=1,N_states
   integer :: jj
+  l = dressed_column_idx(k)
    do jj=1,N_det_non_ref
      j = idx_non_ref(jj)
-     dressing_column_h(j,k) = delta_ij   (k,jj) 
-     dressing_column_s(j,k) = delta_ij_s2(k,jj)
+     dressing_column_h(j,k) = 2.d0 * delta_ij   (k,jj) 
+     dressing_column_s(j,k) = 2.d0 * delta_ij_s2(k,jj)
+     dressing_column_h(l,k) -= psi_coef(j,k) * delta_ij(k,jj) /psi_coef(l,k)
   enddo
  enddo
+
 END_PROVIDER
 
 
