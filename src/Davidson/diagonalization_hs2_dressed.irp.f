@@ -285,7 +285,7 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
 
           l = dressed_column_idx(1)
           double precision :: f
-          f = 0.5d0/psi_coef(l,1)
+          f = 1.0d0/psi_coef(l,1)
           do istate=1,N_st_diag
             do i=1,sze
               W(i,shift+istate) += dressing_column_h(i,1) *f * U(l,shift+istate)
@@ -302,11 +302,11 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
             psi_coef, size(psi_coef,1), &
             U(1,shift+1), size(U,1), 0.d0, s_tmp, size(s_tmp,1))
 
-          call dgemm('N','N', sze, N_st_diag, N_st, 0.5d0, &
+          call dgemm('N','N', sze, N_st_diag, N_st, 1.0d0, &
             dressing_column_h, size(dressing_column_h,1), s_tmp, size(s_tmp,1), &
             1.d0, W(1,shift+1), size(W,1))
 
-          call dgemm('N','N', sze, N_st_diag, N_st, 0.5d0, &
+          call dgemm('N','N', sze, N_st_diag, N_st, 1.0d0, &
             dressing_column_s, size(dressing_column_s,1), s_tmp, size(s_tmp,1), &
             1.d0, S(1,shift+1), size(S,1))
 
@@ -315,7 +315,7 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
             dressing_column_h, size(dressing_column_h,1), &
             U(1,shift+1), size(U,1), 0.d0, s_tmp, size(s_tmp,1))
 
-          call dgemm('N','N', sze, N_st_diag, N_st, 0.5d0, &
+          call dgemm('N','N', sze, N_st_diag, N_st, 1.0d0, &
             psi_coef, size(psi_coef,1), s_tmp, size(s_tmp,1), &
             1.d0, W(1,shift+1), size(W,1))
 
@@ -323,7 +323,7 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
             dressing_column_s, size(dressing_column_s,1), &
             U(1,shift+1), size(U,1), 0.d0, s_tmp, size(s_tmp,1))
 
-          call dgemm('N','N', sze, N_st_diag, N_st, 0.5d0, &
+          call dgemm('N','N', sze, N_st_diag, N_st, 1.0d0, &
             psi_coef, size(psi_coef,1), s_tmp, size(s_tmp,1), &
             1.d0, S(1,shift+1), size(S,1))
 
