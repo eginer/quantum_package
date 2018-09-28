@@ -94,7 +94,7 @@ subroutine davidson_slave_work(zmq_to_qp_run_socket, zmq_socket_push, N_st, sze,
     nj = 1
   else
     ni = 8388608
-    nj = size(u_t,kind=8)/8388608_8 + 1
+    nj = int(size(u_t,kind=8)/8388608_8,4) + 1
   endif
   if (zmq_get_dmatrix(zmq_to_qp_run_socket, worker_id, 'u_t', u_t, ni, nj, size(u_t,kind=8)) == -1) then
     print *,  irp_here, ': Unable to get u_t'
