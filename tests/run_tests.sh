@@ -5,7 +5,7 @@ convert.bats
 hf.bats
 fci.bats
 cassd.bats
-mrcepa0.bats
+mrcc.bats
 pseudo.bats
 "
 #foboci.bats
