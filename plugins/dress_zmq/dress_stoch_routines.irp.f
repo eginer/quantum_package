@@ -540,10 +540,12 @@ subroutine dress_collector(zmq_socket_pull, E, relative_error, delta, delta_s2, 
         error = sqrt(eqt / (dble(c)-1.5d0))
         time = omp_get_wtime()
         print '(G10.3, 2X, F16.10, 2X, G16.3, 2X, F16.4, A20)', c, avg+E(istate), error, time-time0, ''
-      else if ( m==dress_N_cp ) then
-        error = 0.d0
       else
         error =1.d0
+      endif
+      if ( m>=dress_N_cp ) then
+        m = dress_N_cp
+        error = 0.d0
       endif
       m += 1
       if(do_exit .and. (dabs(error) / (1.d-20 + dabs(avg) ) <= relative_error)) then 
