@@ -222,16 +222,24 @@ subroutine run_dress_slave(thread,iproce,energy)
       will_send = ending
       breve_delta_m = 0d0
       
+      double precision :: fu
+      fu = 1.d0/dble(dress_M_m(will_send))
       do l=will_send, 1,-1
-        breve_delta_m(:,:,1) += cp(:,:,l,1)
-        breve_delta_m(:,:,2) += cp(:,:,l,2)
+        do j=1,N_det
+          do i=1,N_states
+            breve_delta_m(i,j,1) = breve_delta_m(i,j,1) + cp(i,j,l,1)*fu
+            breve_delta_m(i,j,2) = breve_delta_m(i,j,2) + cp(i,j,l,2)*fu
+          end do
+        end do
       end do
 
-      breve_delta_m(:,:,:) = breve_delta_m(:,:,:) / dress_M_m(will_send)
-      
       do t=dress_dot_t(will_send)-1,0,-1
-        breve_delta_m(:,:,1) = breve_delta_m(:,:,1) + delta_det(:,:,t,1)
-        breve_delta_m(:,:,2) = breve_delta_m(:,:,2) + delta_det(:,:,t,2)
+        do j=1,N_det
+          do i=1,N_states
+            breve_delta_m(i,j,1) = breve_delta_m(i,j,1) + delta_det(i,j,t,1)
+            breve_delta_m(i,j,2) = breve_delta_m(i,j,2) + delta_det(i,j,t,2)
+          end do
+        end do
       end do
       
       sum_f = 0
