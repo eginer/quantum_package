@@ -94,6 +94,15 @@ subroutine ZMQ_selection(N_in, pt2)
     nproc_target = min(nproc_target,nproc)
   endif
 
+  if (.not.do_pt2) then
+  double precision :: f(N_states), u_dot_u
+    do k=1,N_states
+     f(k) = 1.d0 / u_dot_u(psi_selectors_coef(1,k), N_det_selectors)
+    enddo
+  else
+    f(:) = 1.d0
+  endif
+
   !$OMP PARALLEL DEFAULT(shared)  SHARED(b, pt2)  PRIVATE(i) NUM_THREADS(nproc_target+1)
   i = omp_get_thread_num()
   if (i==0) then
@@ -115,6 +124,9 @@ subroutine ZMQ_selection(N_in, pt2)
     call save_wavefunction
   endif
   call delete_selection_buffer(b)
+  do k=1,N_states
+    pt2(k) = pt2(k) * f(k)
+  enddo
 
 end subroutine
 

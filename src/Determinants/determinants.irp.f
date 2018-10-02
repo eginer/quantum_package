@@ -277,7 +277,7 @@ END_PROVIDER
 &BEGIN_PROVIDER [ integer, psi_det_sorted_order, (psi_det_size) ]
    implicit none
    BEGIN_DOC
-! Wave function sorted by determinants contribution to the norm (state-averaged)
+   ! Wave function sorted by determinants contribution to the norm (state-averaged)
    !
    ! psi_det_sorted_order(i) -> k : index in psi_det
    END_DOC
