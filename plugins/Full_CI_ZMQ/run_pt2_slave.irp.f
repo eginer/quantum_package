@@ -46,8 +46,8 @@ subroutine run_pt2_slave(thread,iproc,energy)
   n_tasks = 1
   do while (.not.done)
 
-!    n_tasks = max(1,n_tasks)
-!    n_tasks = min(pt2_n_tasks_max,n_tasks)
+    n_tasks = max(1,n_tasks)
+    n_tasks = min(pt2_n_tasks_max,n_tasks)
 
     integer, external :: get_tasks_from_taskserver
     if (get_tasks_from_taskserver(zmq_to_qp_run_socket,worker_id, task_id, task, n_tasks) == -1) then
@@ -62,7 +62,7 @@ subroutine run_pt2_slave(thread,iproc,energy)
     enddo
 
     double precision :: time0, time1
-!    call wall_time(time0)
+    call wall_time(time0)
     do k=1,n_tasks
         pt2(:,k) = 0.d0
         buf%cur = 0
@@ -72,7 +72,8 @@ subroutine run_pt2_slave(thread,iproc,energy)
 !call wall_time(time1)
 !print *,  i_generator(1), time1-time2, n_tasks, pt2_F(i_generator(1))
     enddo
-!    call wall_time(time1)
+    call wall_time(time1)
+!print *,  i_generator(1), time1-time0, n_tasks
 
     integer, external :: tasks_done_to_taskserver
     if (tasks_done_to_taskserver(zmq_to_qp_run_socket,worker_id,task_id,n_tasks) == -1) then
@@ -80,8 +81,8 @@ subroutine run_pt2_slave(thread,iproc,energy)
     endif
     call push_pt2_results(zmq_socket_push, i_generator, pt2, task_id, n_tasks)
 
-    ! Try to adjust n_tasks around nproc seconds per job
-!    n_tasks = min(2*n_tasks,int( dble(n_tasks * nproc) / (time1 - time0 + 1.d0)))
+    ! Try to adjust n_tasks around nproc/8 seconds per job
+    n_tasks = min(2*n_tasks,int( dble(n_tasks * nproc/8) / (time1 - time0 + 1.d0)))
   end do
 
   integer, external :: disconnect_from_taskserver

@@ -17,11 +17,7 @@ END_PROVIDER
   e = elec_num - n_core_orb * 2
   pt2_n_tasks_max = 1+min((e*(e-1))/2, int(dsqrt(dble(N_det_selectors)))/10)
   do i=1,N_det_generators
-    if (maxval(dabs(psi_coef_sorted_gen(i,1:N_states))) > 0.01d0) then
-      pt2_F(i) = pt2_n_tasks_max
-    else
-      pt2_F(i) = 1
-    endif
+    pt2_F(i) = 1 + dble(pt2_n_tasks_max)*maxval(dsqrt(dabs(psi_coef_sorted_gen(i,1:N_states))))
   enddo
   
   if(N_det_generators < 1024) then
