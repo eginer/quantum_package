@@ -37,7 +37,7 @@ subroutine run_dress_slave(thread,iproce,energy)
 !  integer(kind=OMP_LOCK_KIND) :: lck_sto(dress_N_cp)
   double precision :: fac
   integer :: ending, ending_tmp
-  integer, external :: zmq_get_dvector, zmq_get_int
+  integer, external :: zmq_get_dvector, zmq_get_int_nompi
 ! double precision, external :: omp_get_wtime
   double precision :: time, time0
   integer :: ntask_tbd, task_tbd(Nproc), i_gen_tbd(Nproc), subset_tbd(Nproc)
@@ -80,6 +80,7 @@ subroutine run_dress_slave(thread,iproce,energy)
   zmq_to_qp_run_socket = new_zmq_to_qp_run_socket()
   zmq_socket_push      = new_zmq_push_socket(thread)
   integer, external :: connect_to_taskserver
+  !$OMP CRITICAL
   if (connect_to_taskserver(zmq_to_qp_run_socket,worker_id,thread) == -1) then
     print *,  irp_here, ': Unable to connect to task server'
     stop -1
@@ -97,9 +98,23 @@ subroutine run_dress_slave(thread,iproce,energy)
   if(iproc==1) then
     call push_dress_results(zmq_socket_push, 0, 0, edI_task, edI_index, breve_delta_m, task_buf, ntask_buf)
   end if
+  !$OMP END CRITICAL
 
   m=0
+  !$OMP MASTER
+  IRP_IF MPI_DEBUG
+    print *,  irp_here, mpi_rank
+    call MPI_BARRIER(MPI_COMM_WORLD, ierr)
+  IRP_ENDIF
+  IRP_IF MPI
+    integer :: ierr
+    include 'mpif.h'
+    call MPI_BARRIER(MPI_COMM_WORLD,ierr)
+  IRP_ENDIF
+  !$OMP END MASTER
+
   !$OMP BARRIER
+
   do while( (cp_done > cp_sent) .or. (m /= dress_N_cp+1) )
     !$OMP CRITICAL (send)
     if(ntask_tbd == 0) then
@@ -119,9 +134,10 @@ subroutine run_dress_slave(thread,iproce,energy)
       ntask_tbd -= 1
     else
       m = dress_N_cp + 1
-      if (zmq_get_int(zmq_to_qp_run_socket, worker_id, "ending", ending_tmp) /= -1) then
-        ending = ending_tmp
-      endif
+      do while (zmq_get_int_nompi(zmq_to_qp_run_socket, worker_id, "ending", ending) == -1)
+        print *,  'unable to get ending. Retrying....'
+        call sleep(1)
+      enddo
     end if
     will_send = 0
     
@@ -207,17 +223,19 @@ subroutine run_dress_slave(thread,iproce,energy)
     end if
   end do
 
-  !$OMP BARRIER
    if(ntask_buf /= 0) then
      call push_dress_results(zmq_socket_push, 0, 0, edI_task, edI_index, breve_delta_m, task_buf, ntask_buf)
      ntask_buf = 0
    end if
+   !$OMP BARRIER
 
-   !$OMP SINGLE
+   !$OMP MASTER
    if(purge_task_id /= 0) then
-      do while (zmq_get_int(zmq_to_qp_run_socket, worker_id, "ending", ending) == -1)
+      ending = -1
+      do while (ending == -1) 
+        i = zmq_get_int_nompi(zmq_to_qp_run_socket, worker_id, "ending", ending) 
         call sleep(1)
-      end do
+      enddo
 
       will_send = ending
       breve_delta_m = 0d0
@@ -248,10 +266,22 @@ subroutine run_dress_slave(thread,iproce,energy)
       end do
       task_buf(1) = purge_task_id
       call push_dress_results(zmq_socket_push, -will_send, sum_f, edI_task, edI_index, breve_delta_m, task_buf, 1)
-    end if
+   end if
    
-  !$OMP END SINGLE
+  !$OMP END MASTER
+  !$OMP BARRIER
 
+  !$OMP MASTER
+  IRP_IF MPI_DEBUG
+    print *,  irp_here, mpi_rank
+    call MPI_BARRIER(MPI_COMM_WORLD, ierr)
+  IRP_ENDIF
+  IRP_IF MPI
+    call MPI_BARRIER(MPI_COMM_WORLD,ierr)
+  IRP_ENDIF
+  !$OMP END MASTER
+
+  !$OMP CRITICAL
   integer, external :: disconnect_from_taskserver
   if (disconnect_from_taskserver(zmq_to_qp_run_socket,worker_id) == -1) then
     print *,  irp_here, ': Unable to disconnect from task server'
@@ -259,6 +289,8 @@ subroutine run_dress_slave(thread,iproce,energy)
   endif
   call end_zmq_to_qp_run_socket(zmq_to_qp_run_socket)
   call end_zmq_push_socket(zmq_socket_push,thread)
+  !$OMP END CRITICAL
+
   !$OMP END PARALLEL
 !  do i=0,dress_N_cp+1
 !    call omp_destroy_lock(lck_sto(i))

@@ -298,6 +298,10 @@ subroutine ZMQ_dress(E, dress, delta_out, delta_s2_out, relative_error)
         stop 'Unable to put threshold_generators on ZMQ server'
       endif
 
+      if (zmq_put_int(zmq_to_qp_run_socket, 1, 'ending', (-1)) == -1) then
+        stop 'Unable to put initial ending'
+      endif
+
 
 
       call write_int(6,pt2_n_tasks_max,'Max number of task fragments')
@@ -551,7 +555,10 @@ subroutine dress_collector(zmq_socket_pull, E, relative_error, delta, delta_s2, 
       if(do_exit .and. (dabs(error) / (1.d-20 + dabs(avg) ) <= relative_error)) then 
         integer, external :: zmq_put_dvector
         integer, external :: zmq_put_int
-        i= zmq_put_int(zmq_to_qp_run_socket, worker_id, 'ending', (m-1))
+        do while (zmq_put_int(zmq_to_qp_run_socket, worker_id, 'ending', (m-1)) == -1) 
+          print *,  'Unable to put ending. Retrying...'
+          call sleep(1)
+        enddo
         exit
       end if
     else
