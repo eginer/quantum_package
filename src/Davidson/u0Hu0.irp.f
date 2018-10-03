@@ -175,7 +175,7 @@ subroutine H_S2_u_0_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart,iend,
   ASSERT (istart > 0)
   ASSERT (istep  > 0)
 
-  !$OMP DO SCHEDULE(dynamic,64)
+  !$OMP DO SCHEDULE(guided,64)
   do k_a=istart+ishift,iend,istep
 
     krow = psi_bilinear_matrix_rows(k_a)
@@ -206,7 +206,7 @@ subroutine H_S2_u_0_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart,iend,
       l_a = psi_bilinear_matrix_columns_loc(lcol)
       ASSERT (l_a <= N_det)
 
-      do j=1,psi_bilinear_matrix_columns_loc(lcol+1) - l_a
+      do j=1,psi_bilinear_matrix_columns_loc(lcol+1) - psi_bilinear_matrix_columns_loc(lcol)
         lrow = psi_bilinear_matrix_rows(l_a)
         ASSERT (lrow <= N_det_alpha_unique)
 
@@ -246,7 +246,7 @@ subroutine H_S2_u_0_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart,iend,
   enddo
   !$OMP END DO 
 
-  !$OMP DO SCHEDULE(dynamic,64)
+  !$OMP DO SCHEDULE(guided,64)
   do k_a=istart+ishift,iend,istep
 
 
