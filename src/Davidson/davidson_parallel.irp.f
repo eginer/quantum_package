@@ -304,6 +304,9 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
   if (zmq_put_psi(zmq_to_qp_run_socket,1) == -1) then
     stop 'Unable to put psi on ZMQ server'
   endif
+  if (zmq_put_psi_bilinear(zmq_to_qp_run_socket,1) == -1) then
+    stop 'Unable to put psi on ZMQ server'
+  endif
   if (zmq_put_N_states_diag(zmq_to_qp_run_socket, 1) == -1) then
     stop 'Unable to put N_states_diag on ZMQ server'
   endif
@@ -381,7 +384,7 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
   integer*8 :: rc8
   double precision :: energy(N_st)
 
-  integer, external :: zmq_put_dvector, zmq_put_psi, zmq_put_N_states_diag
+  integer, external :: zmq_put_dvector, zmq_put_psi, zmq_put_N_states_diag, zmq_put_psi_bilinear
   integer, external :: zmq_put_dmatrix
 
   if (size(u_t) < 8388608) then
