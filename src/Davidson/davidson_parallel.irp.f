@@ -129,8 +129,11 @@ subroutine davidson_slave_work(zmq_to_qp_run_socket, zmq_socket_push, N_st, sze,
     endif
     if(task_id == 0) exit
     read (msg,*) imin, imax, ishift, istep
-    v_t = 0.d0
-    s_t = 0.d0
+    integer :: k
+    do k=imin,imax
+      v_t(:,k) = 0.d0
+      s_t(:,k) = 0.d0
+    enddo
     call H_S2_u_0_nstates_openmp_work(v_t,s_t,u_t,N_st,N_det,imin,imax,ishift,istep)
     if (task_done_to_taskserver(zmq_to_qp_run_socket,worker_id,task_id) == -1) then
         print *,  irp_here, 'Unable to send task_done'
@@ -362,7 +365,7 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
   ishift=0
   imin=1
   N_det_inv = 1.d0/dble(N_det)
-  max_workload = 50000.d0
+  max_workload = 10000.d0
   do imax=1,N_det
     w = w + 1.d0
     if (w > max_workload) then
