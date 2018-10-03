@@ -140,6 +140,16 @@ subroutine run_wf
         call write_double(6,(t1-t0),'Broadcast time')
       endif
 
+      call wall_time(t0)
+      if (.True.) then
+        PROVIDE psi_bilinear_matrix_columns_loc psi_det_alpha_unique psi_det_beta_unique
+        PROVIDE psi_bilinear_matrix_rows psi_det_sorted_order psi_bilinear_matrix_order
+        PROVIDE psi_bilinear_matrix_transp_rows_loc psi_bilinear_matrix_transp_columns
+        PROVIDE psi_bilinear_matrix_transp_order
+      endif
+      call wall_time(t1)
+      call write_double(6,(t1-t0),'Sort time')
+
       call omp_set_nested(.True.)
       call davidson_slave_tcp(0)
       call omp_set_nested(.False.)

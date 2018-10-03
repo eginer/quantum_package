@@ -84,6 +84,11 @@ subroutine davidson_slave_work(zmq_to_qp_run_socket, zmq_socket_push, N_st, sze,
   integer, external :: zmq_get_dvector
   integer, external :: zmq_get_dmatrix
 
+  PROVIDE psi_det_beta_unique psi_bilinear_matrix_order_transp_reverse psi_det_alpha_unique 
+  PROVIDE psi_bilinear_matrix_transp_values psi_bilinear_matrix_values psi_bilinear_matrix_columns_loc
+  PROVIDE ref_bitmask_energy nproc
+  PROVIDE mpi_initialized
+
   allocate(u_t(N_st,N_det))
   allocate (energy(N_st))
 
@@ -96,11 +101,11 @@ subroutine davidson_slave_work(zmq_to_qp_run_socket, zmq_socket_push, N_st, sze,
     ni = 8388608
     nj = int(size(u_t,kind=8)/8388608_8,4) + 1
   endif
-  if (zmq_get_dmatrix(zmq_to_qp_run_socket, worker_id, 'u_t', u_t, ni, nj, size(u_t,kind=8)) == -1) then
-    print *,  irp_here, ': Unable to get u_t'
-    deallocate(u_t,energy)
-    return
-  endif
+
+  do while (zmq_get_dmatrix(zmq_to_qp_run_socket, worker_id, 'u_t', u_t, ni, nj, size(u_t,kind=8)) == -1) 
+    call sleep(1)
+    print *,  irp_here, ': waiting for u_t...'
+  enddo
 
   if (zmq_get_dvector(zmq_to_qp_run_socket, worker_id, 'energy', energy, size(energy)) == -1) then
     print *,  irp_here, ': Unable to get energy'
@@ -293,66 +298,19 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
   integer                        :: ithread
   double precision, allocatable  :: u_t(:,:)
   !DIR$ ATTRIBUTES ALIGN : $IRP_ALIGN :: u_t
-  
-  PROVIDE psi_det_beta_unique psi_bilinear_matrix_order_transp_reverse psi_det_alpha_unique 
-  PROVIDE psi_bilinear_matrix_transp_values psi_bilinear_matrix_values psi_bilinear_matrix_columns_loc
-  PROVIDE ref_bitmask_energy nproc
-  PROVIDE mpi_initialized
-
-
-  allocate(u_t(N_st,N_det))
-  do k=1,N_st
-    call dset_order(u_0(1,k),psi_bilinear_matrix_order,N_det)
-  enddo
-  call dtranspose(                                                   &
-      u_0,                                                           &
-      size(u_0, 1),                                                  &
-      u_t,                                                           &
-      size(u_t, 1),                                                  &
-      N_det, N_st)
-
-
   integer(ZMQ_PTR) :: zmq_to_qp_run_socket, zmq_socket_pull
-  
-  ASSERT (N_st == N_states_diag)
-  ASSERT (sze >= N_det) 
-
   call new_parallel_job(zmq_to_qp_run_socket,zmq_socket_pull,'davidson')
   
-  character*(512) :: task
-  integer :: rc, ni, nj
-  integer*8 :: rc8
-  double precision :: energy(N_st)
-
-  integer, external :: zmq_put_dvector, zmq_put_psi, zmq_put_N_states_diag
-  integer, external :: zmq_put_dmatrix
-
-  energy = 0.d0
-
-  if (zmq_put_N_states_diag(zmq_to_qp_run_socket, 1) == -1) then
-    stop 'Unable to put N_states_diag on ZMQ server'
-  endif
   if (zmq_put_psi(zmq_to_qp_run_socket,1) == -1) then
     stop 'Unable to put psi on ZMQ server'
   endif
+  if (zmq_put_N_states_diag(zmq_to_qp_run_socket, 1) == -1) then
+    stop 'Unable to put N_states_diag on ZMQ server'
+  endif
+  energy = 0.d0
   if (zmq_put_dvector(zmq_to_qp_run_socket,1,'energy',energy,size(energy)) == -1) then
     stop 'Unable to put energy on ZMQ server'
   endif
-  if (size(u_t) < 8388608) then
-    ni = size(u_t)
-    nj = 1
-  else
-    ni = 8388608
-    nj = size(u_t)/8388608 + 1
-  endif
-  ! Warning : dimensions are modified for efficiency, It is OK since we get the
-  ! full matrix
-  if (zmq_put_dmatrix(zmq_to_qp_run_socket, 1, 'u_t', u_t, ni, nj, size(u_t,kind=8)) == -1) then
-    stop 'Unable to put u_t on ZMQ server'
-  endif
-
-  deallocate(u_t)
-
 
   ! Create tasks
   ! ============
@@ -390,13 +348,60 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
   endif
     
 
-  v_0 = 0.d0
-  s_0 = 0.d0
-
   integer, external :: zmq_set_running
   if (zmq_set_running(zmq_to_qp_run_socket) == -1) then
     print *,  irp_here, ': Failed in zmq_set_running'
   endif
+
+  if (.True.) then
+    PROVIDE psi_det_beta_unique psi_bilinear_matrix_order_transp_reverse psi_det_alpha_unique 
+    PROVIDE psi_bilinear_matrix_transp_values psi_bilinear_matrix_values psi_bilinear_matrix_columns_loc
+    PROVIDE ref_bitmask_energy nproc
+    PROVIDE mpi_initialized
+  endif
+
+  allocate(u_t(N_st,N_det))
+  do k=1,N_st
+    call dset_order(u_0(1,k),psi_bilinear_matrix_order,N_det)
+  enddo
+
+  call dtranspose(                                                   &
+      u_0,                                                           &
+      size(u_0, 1),                                                  &
+      u_t,                                                           &
+      size(u_t, 1),                                                  &
+      N_det, N_st)
+
+  
+  ASSERT (N_st == N_states_diag)
+  ASSERT (sze >= N_det) 
+
+  character*(512) :: task
+  integer :: rc, ni, nj
+  integer*8 :: rc8
+  double precision :: energy(N_st)
+
+  integer, external :: zmq_put_dvector, zmq_put_psi, zmq_put_N_states_diag
+  integer, external :: zmq_put_dmatrix
+
+  if (size(u_t) < 8388608) then
+    ni = size(u_t)
+    nj = 1
+  else
+    ni = 8388608
+    nj = size(u_t)/8388608 + 1
+  endif
+  ! Warning : dimensions are modified for efficiency, It is OK since we get the
+  ! full matrix
+  if (zmq_put_dmatrix(zmq_to_qp_run_socket, 1, 'u_t', u_t, ni, nj, size(u_t,kind=8)) == -1) then
+    stop 'Unable to put u_t on ZMQ server'
+  endif
+
+  deallocate(u_t)
+
+
+  v_0 = 0.d0
+  s_0 = 0.d0
 
   call omp_set_nested(.True.)
   !$OMP PARALLEL NUM_THREADS(2) PRIVATE(ithread)

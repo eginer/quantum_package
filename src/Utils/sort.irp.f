@@ -456,16 +456,16 @@ BEGIN_TEMPLATE
         iorder(i) = iorder1(1_$int_type+i1-i)
       enddo
     endif
-    deallocate(x1,iorder1,stat=err)
-    if (err /= 0) then
-      print *,  irp_here, ': Unable to deallocate arrays x1, iorder1'
-      stop
-    endif
     
     if (i2>1_$int_type) then
       call $Xradix_sort$big(x(i1+1_$int_type),iorder(i1+1_$int_type),i2,-2)
     endif
     
+    deallocate(x1,iorder1,stat=err)
+    if (err /= 0) then
+      print *,  irp_here, ': Unable to deallocate arrays x1, iorder1'
+      stop
+    endif
     return
 
   else if (iradix == -2) then ! Positive
@@ -526,13 +526,23 @@ BEGIN_TEMPLATE
     endif
     
     
+    !$OMP PARALLEL DEFAULT(SHARED) if (isize > 1000000)
+    !$OMP SINGLE
     if (i3>1_$int_type) then
+      !$OMP TASK FIRSTPRIVATE(iradix_new,i3) SHARED(x,iorder) if(i3 > 1000000)
       call $Xradix_sort$big(x,iorder,i3,iradix_new-1)
+      !$OMP END TASK
     endif
     
     if (isize-i3>1_$int_type) then
+      !$OMP TASK FIRSTPRIVATE(iradix_new,i3) SHARED(x,iorder) if(isize-i3 > 1000000)
       call $Xradix_sort$big(x(i3+1_$int_type),iorder(i3+1_$int_type),isize-i3,iradix_new-1)
+      !$OMP END TASK
     endif
+
+    !$OMP TASKWAIT
+    !$OMP END SINGLE
+    !$OMP END PARALLEL
     
     return
   endif
@@ -588,11 +598,16 @@ BEGIN_TEMPLATE
   
   
   if (i1>1_$int_type) then
+    !$OMP TASK FIRSTPRIVATE(i0,iradix,i1) SHARED(x,iorder) if(i1 >1000000)
     call $Xradix_sort$big(x(i0+1_$int_type),iorder(i0+1_$int_type),i1,iradix-1)
+    !$OMP END TASK
   endif
   if (i0>1) then
+    !$OMP TASK FIRSTPRIVATE(i0,iradix) SHARED(x,iorder) if(i0 >1000000)
     call $Xradix_sort$big(x,iorder,i0,iradix-1)
+    !$OMP END TASK
   endif
+  !$OMP TASKWAIT
   
  end
 

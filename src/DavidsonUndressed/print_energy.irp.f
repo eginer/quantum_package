@@ -2,7 +2,7 @@ program print_energy
  implicit none
  read_wf = .true.
  touch read_wf
- provide mo_bielec_integrals_in_map
+ provide mo_bielec_integrals_in_map psi_coef psi_det psi_bilinear_matrix_transp_values
  double precision :: time1, time0
  call wall_time(time0)
  call routine
