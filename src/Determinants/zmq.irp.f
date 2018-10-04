@@ -120,25 +120,59 @@ integer function zmq_put_psi_bilinear(zmq_to_qp_run_socket,worker_id)
   integer, intent(in)            :: worker_id
   character*(256)                :: msg
 
-  integer*8, external            :: zmq_put_psi_bilinear_matrix_values
-  integer*8, external            :: zmq_put_psi_bilinear_matrix_rows
-  integer*8, external            :: zmq_put_psi_bilinear_matrix_columns
-  integer*8, external            :: zmq_put_psi_bilinear_matrix_order
 
   zmq_put_psi_bilinear = 0
+
+  integer, external            :: zmq_put_psi
+  if (zmq_put_psi(zmq_to_qp_run_socket, worker_id) == -1) then
+    zmq_put_psi_bilinear = -1
+    return
+  endif
+
+  integer*8, external            :: zmq_put_psi_bilinear_matrix_columns
   if (zmq_put_psi_bilinear_matrix_rows(zmq_to_qp_run_socket, worker_id) == -1) then
     zmq_put_psi_bilinear = -1
     return
   endif
+
+  integer*8, external            :: zmq_put_psi_bilinear_matrix_rows
   if (zmq_put_psi_bilinear_matrix_columns(zmq_to_qp_run_socket, worker_id) == -1) then
     zmq_put_psi_bilinear = -1
     return
   endif
+
+  integer*8, external            :: zmq_put_psi_bilinear_matrix_order
   if (zmq_put_psi_bilinear_matrix_order(zmq_to_qp_run_socket, worker_id) == -1) then
     zmq_put_psi_bilinear = -1
     return
   endif
+
+  integer*8, external            :: zmq_put_psi_bilinear_matrix_values
   if (zmq_put_psi_bilinear_matrix_values(zmq_to_qp_run_socket, worker_id) == -1) then
+    zmq_put_psi_bilinear = -1
+    return
+  endif
+
+  integer*8, external            :: zmq_put_N_det_alpha_unique
+  if (zmq_put_N_det_alpha_unique(zmq_to_qp_run_socket,worker_id) == -1) then
+    zmq_put_psi_bilinear = -1
+    return
+  endif
+
+  integer*8, external            :: zmq_put_N_det_beta_unique
+  if (zmq_put_N_det_beta_unique(zmq_to_qp_run_socket,worker_id) == -1) then
+    zmq_put_psi_bilinear = -1
+    return
+  endif
+
+  integer*8, external            :: zmq_put_psi_det_alpha_unique
+  if (zmq_put_psi_det_alpha_unique(zmq_to_qp_run_socket,worker_id) == -1) then
+    zmq_put_psi_bilinear = -1
+    return
+  endif
+
+  integer*8, external            :: zmq_put_psi_det_beta_unique
+  if (zmq_put_psi_det_beta_unique(zmq_to_qp_run_socket,worker_id) == -1) then
     zmq_put_psi_bilinear = -1
     return
   endif
@@ -155,10 +189,11 @@ integer function zmq_get_psi_bilinear(zmq_to_qp_run_socket, worker_id)
   integer(ZMQ_PTR), intent(in)   :: zmq_to_qp_run_socket
   integer, intent(in)            :: worker_id
 
-  integer*8, external            :: zmq_get_psi_bilinear_matrix_values
-  integer*8, external            :: zmq_get_psi_bilinear_matrix_rows
-  integer*8, external            :: zmq_get_psi_bilinear_matrix_columns
-  integer*8, external            :: zmq_get_psi_bilinear_matrix_order
+  integer, external            :: zmq_get_psi_notouch
+  if (zmq_get_psi_notouch(zmq_to_qp_run_socket,1) == -1) then
+    zmq_get_psi_bilinear = -1
+    return
+  endif
 
   zmq_get_psi_bilinear= 0
 
@@ -182,23 +217,56 @@ integer function zmq_get_psi_bilinear(zmq_to_qp_run_socket, worker_id)
     allocate(psi_bilinear_matrix_order(N_det))
   endif
 
+  integer*8, external            :: zmq_get_psi_bilinear_matrix_values
   if (zmq_get_psi_bilinear_matrix_values(zmq_to_qp_run_socket, worker_id) == -1_8) then
     zmq_get_psi_bilinear = -1
     return
   endif
+
+  integer*8, external            :: zmq_get_psi_bilinear_matrix_rows
   if (zmq_get_psi_bilinear_matrix_rows(zmq_to_qp_run_socket, worker_id) == -1_8) then
     zmq_get_psi_bilinear = -1
     return
   endif
+
+  integer*8, external            :: zmq_get_psi_bilinear_matrix_columns
   if (zmq_get_psi_bilinear_matrix_columns(zmq_to_qp_run_socket, worker_id) == -1_8) then
     zmq_get_psi_bilinear = -1
     return
   endif
+
+  integer*8, external            :: zmq_get_psi_bilinear_matrix_order
   if (zmq_get_psi_bilinear_matrix_order(zmq_to_qp_run_socket, worker_id) == -1_8) then
     zmq_get_psi_bilinear = -1
     return
   endif
-  SOFT_TOUCH psi_bilinear_matrix_values psi_bilinear_matrix_rows psi_bilinear_matrix_columns psi_bilinear_matrix_order
+
+
+  integer*8, external            :: zmq_get_N_det_alpha_unique
+  if (zmq_get_N_det_alpha_unique(zmq_to_qp_run_socket,worker_id) == -1) then
+    zmq_get_psi_bilinear = -1
+    return
+  endif
+
+  integer*8, external            :: zmq_get_N_det_beta_unique
+  if (zmq_get_N_det_beta_unique(zmq_to_qp_run_socket,worker_id) == -1) then
+    zmq_get_psi_bilinear = -1
+    return
+  endif
+
+  integer*8, external            :: zmq_get_psi_det_alpha_unique
+  if (zmq_get_psi_det_alpha_unique(zmq_to_qp_run_socket,worker_id) == -1) then
+    zmq_get_psi_bilinear = -1
+    return
+  endif
+
+  integer*8, external            :: zmq_get_psi_det_beta_unique
+  if (zmq_get_psi_det_beta_unique(zmq_to_qp_run_socket,worker_id) == -1) then
+    zmq_get_psi_bilinear = -1
+    return
+  endif
+
+  SOFT_TOUCH psi_bilinear_matrix_values psi_bilinear_matrix_rows psi_bilinear_matrix_columns psi_bilinear_matrix_order psi_det psi_coef psi_det_size N_det N_states psi_det_beta_unique psi_det_alpha_unique N_det_beta_unique N_det_alpha_unique
 
 end
 
@@ -304,6 +372,8 @@ SUBST [ X ]
 
 N_states ;;
 N_det ;;
+N_det_alpha_unique ;;
+N_det_beta_unique ;;
 psi_det_size ;;
 
 END_TEMPLATE
@@ -364,6 +434,8 @@ end
 SUBST [ X ]
 
 psi_det ;;
+psi_det_alpha_unique ;;
+psi_det_beta_unique ;;
 
 END_TEMPLATE
 

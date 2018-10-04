@@ -299,69 +299,64 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
   double precision, allocatable  :: u_t(:,:)
   !DIR$ ATTRIBUTES ALIGN : $IRP_ALIGN :: u_t
   integer(ZMQ_PTR) :: zmq_to_qp_run_socket, zmq_socket_pull
+  PROVIDE psi_det_beta_unique psi_bilinear_matrix_order_transp_reverse psi_det_alpha_unique 
+  PROVIDE psi_bilinear_matrix_transp_values psi_bilinear_matrix_values psi_bilinear_matrix_columns_loc
+  PROVIDE ref_bitmask_energy nproc
+  PROVIDE mpi_initialized
+
   call new_parallel_job(zmq_to_qp_run_socket,zmq_socket_pull,'davidson')
   
-  if (zmq_put_psi(zmq_to_qp_run_socket,1) == -1) then
-    stop 'Unable to put psi on ZMQ server'
+  if (zmq_put_N_states_diag(zmq_to_qp_run_socket, 1) == -1) then
+    stop 'Unable to put N_states_diag on ZMQ server'
   endif
   if (zmq_put_psi_bilinear(zmq_to_qp_run_socket,1) == -1) then
     stop 'Unable to put psi on ZMQ server'
-  endif
-  if (zmq_put_N_states_diag(zmq_to_qp_run_socket, 1) == -1) then
-    stop 'Unable to put N_states_diag on ZMQ server'
   endif
   energy = 0.d0
   if (zmq_put_dvector(zmq_to_qp_run_socket,1,'energy',energy,size(energy)) == -1) then
     stop 'Unable to put energy on ZMQ server'
   endif
 
+
   ! Create tasks
   ! ============
 
-  integer :: istep, imin, imax, ishift
-  double precision :: w, max_workload, N_det_inv
+  integer :: istep, imin, imax, ishift, ipos
   integer, external :: add_task_to_taskserver
-  w = 0.d0
+  integer, parameter :: tasksize=10000
+  character*(100000) :: task
   istep=1
   ishift=0
   imin=1
-  N_det_inv = 1.d0/dble(N_det)
-  max_workload = 10000.d0
-  do imax=1,N_det
-    w = w + 1.d0
-    if (w > max_workload) then
-      do ishift=0,istep-1
-        write(task,'(4(I9,1X),1A)') imin, imax, ishift, istep, '|'
-        if (add_task_to_taskserver(zmq_to_qp_run_socket,trim(task)) == -1) then
+
+
+  ipos=1
+  do imin=1,N_det,10000
+    imax = min(N_det,imin-1+tasksize)
+    do ishift=0,istep-1
+      write(task(ipos:ipos+50),'(4(I11,1X),1X,1A)') imin, imax, ishift, istep, '|'
+      ipos = ipos+50
+      if (ipos > 100000-50) then
+        if (add_task_to_taskserver(zmq_to_qp_run_socket,trim(task(1:ipos))) == -1) then
           stop 'Unable to add task'
         endif
-      enddo
-      imin = imax+1
-      w = 0.d0
-    endif
-  enddo
-  if (w > 0.d0) then
-    imax = N_det
-    do ishift=0,istep-1
-      write(task,'(4(I9,1X),1A)') imin, imax, ishift, istep, '|'
-      if (add_task_to_taskserver(zmq_to_qp_run_socket,trim(task)) == -1) then
-        stop 'Unable to add task'
+        ipos=1
       endif
     enddo
+  enddo
+
+  if (ipos > 1) then
+    if (add_task_to_taskserver(zmq_to_qp_run_socket,trim(task(1:ipos))) == -1) then
+      stop 'Unable to add task'
+    endif
+    ipos=1
   endif
     
-
   integer, external :: zmq_set_running
   if (zmq_set_running(zmq_to_qp_run_socket) == -1) then
     print *,  irp_here, ': Failed in zmq_set_running'
   endif
 
-  if (.True.) then
-    PROVIDE psi_det_beta_unique psi_bilinear_matrix_order_transp_reverse psi_det_alpha_unique 
-    PROVIDE psi_bilinear_matrix_transp_values psi_bilinear_matrix_values psi_bilinear_matrix_columns_loc
-    PROVIDE ref_bitmask_energy nproc
-    PROVIDE mpi_initialized
-  endif
 
   allocate(u_t(N_st,N_det))
   do k=1,N_st
@@ -379,7 +374,6 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
   ASSERT (N_st == N_states_diag)
   ASSERT (sze >= N_det) 
 
-  character*(512) :: task
   integer :: rc, ni, nj
   integer*8 :: rc8
   double precision :: energy(N_st)

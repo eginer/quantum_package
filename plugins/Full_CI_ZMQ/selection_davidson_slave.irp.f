@@ -132,11 +132,9 @@ subroutine run_wf
       ! --------
 
       call wall_time(t0)
-      if (zmq_get_psi_notouch(zmq_to_qp_run_socket,1) == -1) cycle
       if (zmq_get_N_states_diag(zmq_to_qp_run_socket,1) == -1) cycle
-      if (zmq_get_dvector(zmq_to_qp_run_socket,1,'energy',energy,N_states_diag) == -1) cycle
       if (zmq_get_psi_bilinear(zmq_to_qp_run_socket,1) == -1) cycle
-      SOFT_TOUCH psi_det psi_coef psi_det_size N_det N_states psi_bilinear_matrix_values psi_bilinear_matrix_rows psi_bilinear_matrix_columns psi_bilinear_matrix_order
+      if (zmq_get_dvector(zmq_to_qp_run_socket,1,'energy',energy,N_states_diag) == -1) cycle
 
       call wall_time(t1)
       if (mpi_master) then
