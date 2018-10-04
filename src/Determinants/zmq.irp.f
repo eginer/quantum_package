@@ -153,13 +153,13 @@ integer function zmq_put_psi_bilinear(zmq_to_qp_run_socket,worker_id)
     return
   endif
 
-  integer*8, external            :: zmq_put_N_det_alpha_unique
+  integer, external            :: zmq_put_N_det_alpha_unique
   if (zmq_put_N_det_alpha_unique(zmq_to_qp_run_socket,worker_id) == -1) then
     zmq_put_psi_bilinear = -1
     return
   endif
 
-  integer*8, external            :: zmq_put_N_det_beta_unique
+  integer, external            :: zmq_put_N_det_beta_unique
   if (zmq_put_N_det_beta_unique(zmq_to_qp_run_socket,worker_id) == -1) then
     zmq_put_psi_bilinear = -1
     return
@@ -242,13 +242,13 @@ integer function zmq_get_psi_bilinear(zmq_to_qp_run_socket, worker_id)
   endif
 
 
-  integer*8, external            :: zmq_get_N_det_alpha_unique
+  integer, external            :: zmq_get_N_det_alpha_unique
   if (zmq_get_N_det_alpha_unique(zmq_to_qp_run_socket,worker_id) == -1) then
     zmq_get_psi_bilinear = -1
     return
   endif
 
-  integer*8, external            :: zmq_get_N_det_beta_unique
+  integer, external            :: zmq_get_N_det_beta_unique
   if (zmq_get_N_det_beta_unique(zmq_to_qp_run_socket,worker_id) == -1) then
     zmq_get_psi_bilinear = -1
     return
