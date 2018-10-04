@@ -519,7 +519,7 @@ BEGIN_PROVIDER  [ double precision, psi_bilinear_matrix_transp_values, (N_det,N_
     do k=1,N_det
       psi_bilinear_matrix_transp_values (k,l) = psi_bilinear_matrix_values (k,l)
     enddo
-    !$OMP ENDDO
+    !$OMP ENDDO NOWAIT
   enddo
   !$OMP DO 
   do k=1,N_det

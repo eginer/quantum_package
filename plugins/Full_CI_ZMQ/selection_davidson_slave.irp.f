@@ -38,7 +38,8 @@ subroutine run_wf
   integer, external              :: zmq_get_dvector, zmq_get_N_det_generators 
   integer, external              :: zmq_get8_dvector
   integer, external              :: zmq_get_ivector
-  integer, external              :: zmq_get_psi, zmq_get_N_det_selectors
+  integer, external              :: zmq_get_psi, zmq_get_N_det_selectors, zmq_get_psi_bilinear
+  integer, external              :: zmq_get_psi_notouch
   integer, external              :: zmq_get_N_states_diag
 
   zmq_context = f77_zmq_ctx_new ()
@@ -131,8 +132,8 @@ subroutine run_wf
       ! --------
 
       call wall_time(t0)
-      if (zmq_get_psi(zmq_to_qp_run_socket,1) == -1) cycle
       if (zmq_get_N_states_diag(zmq_to_qp_run_socket,1) == -1) cycle
+      if (zmq_get_psi_bilinear(zmq_to_qp_run_socket,1) == -1) cycle
       if (zmq_get_dvector(zmq_to_qp_run_socket,1,'energy',energy,N_states_diag) == -1) cycle
 
       call wall_time(t1)
