@@ -336,8 +336,10 @@ end subroutine
    ! function.
    END_DOC
    
+print *,  '==>  ', irp_here
    call sort_dets_by_det_search_key(N_det, psi_det, psi_coef,        &
        psi_det_sorted_bit, psi_coef_sorted_bit, N_states)
+print *,  ' <== ', irp_here
 END_PROVIDER
  
 subroutine sort_dets_by_det_search_key(Ndet, det_in, coef_in, det_out, coef_out, N_st)

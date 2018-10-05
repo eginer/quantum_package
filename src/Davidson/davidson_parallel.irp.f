@@ -323,7 +323,7 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
 
   integer :: istep, imin, imax, ishift, ipos
   integer, external :: add_task_to_taskserver
-  integer, parameter :: tasksize=10000
+  integer, parameter :: tasksize=20000
   character*(100000) :: task
   istep=1
   ishift=0
@@ -331,7 +331,7 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
 
 
   ipos=1
-  do imin=1,N_det,10000
+  do imin=1,N_det,tasksize
     imax = min(N_det,imin-1+tasksize)
     do ishift=0,istep-1
       write(task(ipos:ipos+50),'(4(I11,1X),1X,1A)') imin, imax, ishift, istep, '|'
@@ -352,12 +352,6 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
     ipos=1
   endif
     
-  integer, external :: zmq_set_running
-  if (zmq_set_running(zmq_to_qp_run_socket) == -1) then
-    print *,  irp_here, ': Failed in zmq_set_running'
-  endif
-
-
   allocate(u_t(N_st,N_det))
   do k=1,N_st
     call dset_order(u_0(1,k),psi_bilinear_matrix_order,N_det)
@@ -396,6 +390,10 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
 
   deallocate(u_t)
 
+  integer, external :: zmq_set_running
+  if (zmq_set_running(zmq_to_qp_run_socket) == -1) then
+    print *,  irp_here, ': Failed in zmq_set_running'
+  endif
 
   v_0 = 0.d0
   s_0 = 0.d0
