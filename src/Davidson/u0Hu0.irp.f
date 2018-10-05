@@ -185,9 +185,9 @@ subroutine H_S2_u_0_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart,iend,
     ASSERT (kcol <= N_det_beta_unique)
 
     tmp_det(1:$N_int,1) = psi_det_alpha_unique(1:$N_int, krow)
-    tmp_det(1:$N_int,2) = psi_det_beta_unique (1:$N_int, kcol)
 
     if (kcol /= kcol_prev) then
+      tmp_det(1:$N_int,2) = psi_det_beta_unique (1:$N_int, kcol)
       call get_all_spin_singles_$N_int(                              &
           psi_det_beta_unique, idx0,                                 &
           tmp_det(1,2), N_det_beta_unique,                           &
@@ -206,11 +206,11 @@ subroutine H_S2_u_0_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart,iend,
       l_a = psi_bilinear_matrix_columns_loc(lcol)
       ASSERT (l_a <= N_det)
 
-      do j=1,psi_bilinear_matrix_columns_loc(lcol+1) - l_a
+      do j=1,psi_bilinear_matrix_columns_loc(lcol+1) - psi_bilinear_matrix_columns_loc(lcol)
         lrow = psi_bilinear_matrix_rows(l_a)
         ASSERT (lrow <= N_det_alpha_unique)
 
-        buffer(1:$N_int,j) = psi_det_alpha_unique(1:$N_int, lrow)
+        buffer(1:$N_int,j) = psi_det_alpha_unique(1:$N_int, lrow)  ! hot spot
 
         ASSERT (l_a <= N_det)
         idx(j) = l_a
@@ -284,7 +284,7 @@ subroutine H_S2_u_0_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart,iend,
       lrow = psi_bilinear_matrix_rows(l_a)
       ASSERT (lrow <= N_det_alpha_unique)
 
-      buffer(1:$N_int,i) = psi_det_alpha_unique(1:$N_int, lrow)
+      buffer(1:$N_int,i) = psi_det_alpha_unique(1:$N_int, lrow) ! Hot spot
       idx(i) = l_a
       l_a = l_a+1
     enddo
