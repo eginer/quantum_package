@@ -133,7 +133,7 @@ subroutine run_wf
 
       call wall_time(t0)
       if (zmq_get_N_states_diag(zmq_to_qp_run_socket,1) == -1) cycle
-      if (zmq_get_psi_bilinear(zmq_to_qp_run_socket,1) == -1) cycle
+      if (zmq_get_psi(zmq_to_qp_run_socket,1) == -1) cycle
       if (zmq_get_dvector(zmq_to_qp_run_socket,1,'energy',energy,N_states_diag) == -1) cycle
 
       call wall_time(t1)

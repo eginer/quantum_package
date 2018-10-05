@@ -309,7 +309,7 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
   if (zmq_put_N_states_diag(zmq_to_qp_run_socket, 1) == -1) then
     stop 'Unable to put N_states_diag on ZMQ server'
   endif
-  if (zmq_put_psi_bilinear(zmq_to_qp_run_socket,1) == -1) then
+  if (zmq_put_psi(zmq_to_qp_run_socket,1) == -1) then
     stop 'Unable to put psi on ZMQ server'
   endif
   energy = 0.d0
@@ -323,7 +323,7 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
 
   integer :: istep, imin, imax, ishift, ipos
   integer, external :: add_task_to_taskserver
-  integer, parameter :: tasksize=20000
+  integer, parameter :: tasksize=40000
   character*(100000) :: task
   istep=1
   ishift=0
@@ -372,7 +372,7 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
   integer*8 :: rc8
   double precision :: energy(N_st)
 
-  integer, external :: zmq_put_dvector, zmq_put_psi, zmq_put_N_states_diag, zmq_put_psi_bilinear
+  integer, external :: zmq_put_dvector, zmq_put_psi, zmq_put_N_states_diag
   integer, external :: zmq_put_dmatrix
 
   if (size(u_t) < 8388608) then
@@ -409,11 +409,22 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
   !$OMP END PARALLEL
   call end_parallel_job(zmq_to_qp_run_socket, zmq_socket_pull, 'davidson')
 
+  !$OMP PARALLEL
+  !$OMP SINGLE
   do k=1,N_st
+    !$OMP TASK DEFAULT(SHARED) FIRSTPRIVATE(k,N_det)
     call dset_order(v_0(1,k),psi_bilinear_matrix_order_reverse,N_det)
+    !$OMP END TASK
+    !$OMP TASK DEFAULT(SHARED) FIRSTPRIVATE(k,N_det)
     call dset_order(s_0(1,k),psi_bilinear_matrix_order_reverse,N_det)
+    !$OMP END TASK
+    !$OMP TASK DEFAULT(SHARED) FIRSTPRIVATE(k,N_det)
     call dset_order(u_0(1,k),psi_bilinear_matrix_order_reverse,N_det)
+    !$OMP END TASK
   enddo
+  !$OMP END SINGLE
+  !$OMP TASKWAIT
+  !$OMP END PARALLEL
 end
 
 

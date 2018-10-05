@@ -80,11 +80,7 @@ BEGIN_TEMPLATE
  !$OMP END PARALLEL DO
 
 
-double precision :: w0,w1
-call wall_time(w0)
  call i8sort(bit_tmp,iorder,N_det)
-call wall_time(w1)
-print *,  '==>  ', irp_here, w1-w0
 
  N_det_$alpha_unique = 0
  last_key = 0_8
