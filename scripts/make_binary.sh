@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 # 
 # Creates a self-contained binary distribution in the form of a tar.gz file
 # 
@@ -22,7 +22,7 @@ if [[ -f quantum_package.rc \
    && -d ocaml \
    && -d scripts ]]
 then
-  head -1 README.md | grep "Quantum package" > /dev/null
+  head -1 README.md | grep "IMPORTANT" > /dev/null
   if [[ $? -ne 0 ]]
   then
     echo "This doesn't look like a quantum_package directory  (README.md)"
@@ -35,14 +35,11 @@ fi
 
 
 # Build all sources
-for dir in ${QP_ROOT}/{src,ocaml}
-do
-  make -C ${dir}
-  if [[ $? -ne 0 ]]
-  then
-    echo "Error building ${dir}"
-  fi
-done
+#ninja
+#if [[ $? -ne 0 ]]
+#then
+#  echo "Error building ${dir}"
+#fi
 
 
 # Copy the files in the static directory
@@ -68,10 +65,10 @@ echo "Creating root of static directory"
 #     ---------------------------------
 
 rm -rf -- ${QPACKAGE_STATIC}
-mkdir -p -- ${QPACKAGE_STATIC}/{bin,lib,extra_lib,data}
+mkdir -p -- ${QPACKAGE_STATIC}/{bin,lib,extra_lib,data,install}
 if [[ $? -ne 0 ]] ;
 then
-  echo "Error creating ${QPACKAGE_STATIC}/{bin,lib,extra_lib,data}"
+  echo "Error creating ${QPACKAGE_STATIC}/{bin,lib,extra_lib,data,install}"
   exit 1
 fi
 
@@ -97,7 +94,7 @@ fi
 cp -- ${FORTRAN_EXEC} ${OCAML_EXEC} ${QPACKAGE_STATIC}/bin
 if [[ $? -ne 0 ]] ;
 then
-  echo 'cp -- ${FORTRAN_EXEC} ${OCAML_EXEC} ${QPACKAGE_STATIC}/bin'
+  cp -- ${FORTRAN_EXEC} ${OCAML_EXEC} ${QPACKAGE_STATIC}/bin
   exit 1
 fi
 
@@ -143,10 +140,10 @@ cp -- ${QPACKAGE_STATIC}/extra_lib/lib{[gi]omp*,mkl*,lapack*,blas*,z*} ${QPACKAG
 echo "Copying EMSL_Basis directory"
 #     ---------------------------- 
 
-cp -r -- ${QP_ROOT}/EMSL_Basis ${QPACKAGE_STATIC}/
+cp -r -- ${QP_ROOT}/install/emsl ${QPACKAGE_STATIC}/install
 if [[ $? -ne 0 ]] ;
 then
-  echo 'cp -r -- ${QP_ROOT}/EMSL_Basis ${QPACKAGE_STATIC}/'
+  echo 'cp -r -- ${QP_ROOT}/install/emsl ${QPACKAGE_STATIC}/'
   exit 1
 fi
 
@@ -169,12 +166,27 @@ echo "Creating quantum_package.rc"
 
 cat << EOF > ${QPACKAGE_STATIC}/quantum_package.rc
 export QP_ROOT=\$( cd \$(dirname "\${BASH_SOURCE}")  ; pwd -P )
-export LD_LIBRARY_PATH="\${QP_ROOT}"/lib:\${LD_LIBRARY_PATH}
-export LIBRARY_PATH="\${QP_ROOT}"/lib:\${LIBRARY_PATH}
-export PYTHONPATH="\${QP_ROOT}"/scripts:\${PYTHONPATH}
-export PATH="\${QP_ROOT}"/scripts:\${PATH}
-export PATH="\${QP_ROOT}"/bin:\${PATH}
-export PATH="\${QP_ROOT}"/ocaml:\${PATH}
+
+export QP_EZFIO=\${QP_ROOT}/install/EZFIO
+export QP_PYTHON=\${QP_ROOT}/scripts:\${QP_ROOT}/scripts/ezfio_interface:\${QP_ROOT}/scripts/utility:\${QP_ROOT}/scripts/module:\${QP_ROOT}/scripts/pseudo:\${QP_ROOT}/scripts/compilation:\${QP_ROOT}/install/bats:\${QP_ROOT}/install/Downloads:\${QP_ROOT}/install/eigen:\${QP_ROOT}/install/p_graphviz:\${QP_ROOT}/install/gmp:\${QP_ROOT}/install/resultsFile:\${QP_ROOT}/install/_build:\${QP_ROOT}/install/emsl:\${QP_ROOT}/install/scripts:\${QP_ROOT}/install/docopt:\${QP_ROOT}/install/irpf90:\${QP_ROOT}/install/zlib:\${QP_ROOT}/install/EZFIO
+
+export IRPF90=\${QP_ROOT}/bin/irpf90
+export NINJA=\${QP_ROOT}/bin/ninja
+function qp_prepend_export () {
+eval "value_1="\\\${\$1}""
+if [[ -z \$value_1 ]] ; then
+    echo "\${2}:"
+else
+    echo "\${2}:\${value_1}"
+fi
+}
+export PYTHONPATH=\$(qp_prepend_export "PYTHONPATH" "\${QP_EZFIO}/Python":"\${QP_PYTHON}")
+export PATH=\$(qp_prepend_export "PATH" "\${QP_PYTHON}":"\${QP_ROOT}"/bin:"\${QP_ROOT}"/ocaml)
+export LD_LIBRARY_PATH=\$(qp_prepend_export "LD_LIBRARY_PATH" "\${QP_ROOT}"/lib:"\${QP_ROOT}"/extra_lib:"\${QP_ROOT}"/lib64)
+export LIBRARY_PATH=\$(qp_prepend_export "LIBRARY_PATH" "\${QP_ROOT}"/lib:"\${QP_ROOT}"/extra_lib:"\${QP_ROOT}"/lib64)
+export C_INCLUDE_PATH=\$(qp_prepend_export "C_INCLUDE_PATH" "\${QP_ROOT}"/include)
+
+# export QP_NIC=ib0
 EOF
 
 #exit 0

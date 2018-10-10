@@ -8,6 +8,7 @@ program shifted_bk
   PROVIDE psi_bilinear_matrix_rows psi_det_sorted_gen_order psi_bilinear_matrix_order
   PROVIDE psi_bilinear_matrix_transp_rows_loc psi_bilinear_matrix_transp_columns
   PROVIDE psi_bilinear_matrix_transp_order
+  PROVIDE psi_energy
 
 
   !call diagonalize_CI()

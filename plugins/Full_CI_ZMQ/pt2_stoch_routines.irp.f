@@ -204,7 +204,7 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error)
         nproc_target = min(nproc_target,nproc)
       endif
 
-      call omp_set_nested(.true.)
+      call omp_set_nested(.false.)
 
       !$OMP PARALLEL DEFAULT(shared) NUM_THREADS(nproc_target+1)            &
           !$OMP  PRIVATE(i)

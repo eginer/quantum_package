@@ -4,6 +4,7 @@ program selection_slave
 ! Helper program to compute the PT2 in distributed mode.
   END_DOC
 
+  call omp_set_nested(.false.)
   read_wf = .False.
   distributed_davidson = .False.
   SOFT_TOUCH read_wf distributed_davidson

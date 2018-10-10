@@ -151,10 +151,8 @@ subroutine run_w
       IRP_ENDIF
 
       if (.true.) then
-        !$OMP PARALLEL PRIVATE(i)
-        i = omp_get_thread_num()
+        call omp_set_nested(.True.)
         call run_dress_slave(0,i,dress_e0_denominator)
-        !$OMP END PARALLEL
       endif
       print *,  'PT2 done'
       FREE state_average_weight
