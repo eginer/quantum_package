@@ -374,22 +374,20 @@ subroutine alpha_callback_mask(delta_ij_loc, i_gen, sp, mask, bannedOrb, banned,
   logical, intent(in) :: bannedOrb(mo_tot_num,2), banned(mo_tot_num, mo_tot_num)
   integer(bit_kind), intent(in) :: mask(N_int, 2)
   integer(bit_kind) :: alpha(N_int, 2)
-  integer, allocatable :: labuf(:), abuf(:)
+  integer, allocatable :: labuf(:), abuf(:), iorder(:)
   logical :: ok
-  integer :: i,j,k,s,st1,st2,st3,st4
+  integer :: i,j,k,s,st1,st2,st3,st4,t2
   integer :: lindex(mo_tot_num,2), lindex_end(mo_tot_num, 2)
   integer :: s1, s2, stamo
-  logical,allocatable :: putten(:)
   integer(bit_kind), allocatable :: det_minilist(:,:,:)
 
 
-  allocate(abuf(siz), labuf(N_det), putten(N_det), det_minilist(N_int, 2, N_det))
+  allocate(abuf(siz), labuf(N_det), iorder(siz), det_minilist(N_int, 2, N_det))
   
   do i=1,siz
     abuf(i) = psi_from_sorted_gen(rabuf(i))
   end do
 
-  putten = .false.
 
   st1 = indexes_end(0,0)-1 !!
   if(st1 > 0) then
@@ -420,12 +418,20 @@ subroutine alpha_callback_mask(delta_ij_loc, i_gen, sp, mask, bannedOrb, banned,
   end if
 
   do i=1,mo_tot_num
+  do j=1,2
+    if(lindex(i,j) > 0 .and. lindex_end(i,j) > lindex(i,j)) then
+      call isort(abuf(lindex(i,j)), iorder, lindex_end(i,j)-lindex(i,j)+1)
+    end if
+  end do
+  end do
+
+ 
+  do i=1,mo_tot_num
     if(bannedOrb(i,s1)) cycle
     if(lindex(i,s1) /= 0) then
       st2 = st1 + 1 + lindex_end(i,s1)-lindex(i,s1)
       labuf(st1:st2-1) = abuf(lindex(i,s1):lindex_end(i,s1))
       do j=st1,st2-1
-        putten(labuf(j)) = .true.
         det_minilist(:,:,j) = psi_det(:,:,labuf(j))
       end do
     else
@@ -441,12 +447,25 @@ subroutine alpha_callback_mask(delta_ij_loc, i_gen, sp, mask, bannedOrb, banned,
     do j=stamo,mo_tot_num
       if(bannedOrb(j,s2) .or. banned(i,j)) cycle
       if(lindex(j,s2) /= 0) then
+        k = lindex(j,s2)
         st3 = st2
-        do k=lindex(j,s2), lindex_end(j,s2)
-          if(.not. putten(abuf(k))) then
+        t2 = st1
+        do while(k <= lindex_end(j,s2))
+          if(t2 >= st2) then
             labuf(st3) = abuf(k)
             det_minilist(:,:,st3) = psi_det(:,:,abuf(k))
             st3 += 1
+            k += 1
+          else if(abuf(k) > labuf(t2)) then
+            t2 += 1
+          else if(abuf(k) < labuf(t2)) then
+            labuf(st3) = abuf(k)
+            det_minilist(:,:,st3) = psi_det(:,:,abuf(k)) 
+            st3 += 1
+            k += 1
+          else
+            k += 1
+            t2 += 1
           end if
         end do
       else
@@ -468,13 +487,6 @@ subroutine alpha_callback_mask(delta_ij_loc, i_gen, sp, mask, bannedOrb, banned,
         call dress_with_alpha_buffer(N_states, N_det, N_int, delta_ij_loc, i_gen, labuf, det_minilist, st4-1, alpha, iproc)
       end if
     end do
-    
-    if(lindex(i,s1) /= 0) then
-      do j=st1,st2-1
-        putten(labuf(j)) = .false.
-      end do
-    end if
-
   end do
 end subroutine
 
