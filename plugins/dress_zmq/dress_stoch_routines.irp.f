@@ -142,7 +142,7 @@ END_PROVIDER
   N_j = pt2_n_0(1)
   d(:) = .false.
   
-  ! Set here the positions of the checkpoints
+! Set here the positions of the checkpoints
 !  U = N_det_generators/((dress_N_cp_max**2+dress_N_cp_max)/2)+1
 !  do i=1, dress_N_cp_max-1
 !    dress_M_m(i) = U * (((i*i)+i)/2) + 10
