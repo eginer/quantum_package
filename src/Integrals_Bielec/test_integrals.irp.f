@@ -61,6 +61,20 @@ program bench_maps
   cpu = (cpu1 - cpu0)/count_rate
   print *, 'loop ijkl : ', cpu/dble(ii)
 
+  call system_clock(cpu0, count_rate, count_max)
+  do ii=1,100000_8
+    call random_number(r)
+    i = int(r*mo_tot_num)+1
+    call random_number(r)
+    j = int(r*mo_tot_num)+1
+    call random_number(r)
+    k = int(r*mo_tot_num)+1
+    call random_number(r)
+    l = int(r*mo_tot_num)+1
+    call get_mo_bielec_integral(i,j,k,l,mo_integrals_map)
+  enddo
+  call system_clock(cpu1, count_rate, count_max)
+
   ii=0
   call system_clock(cpu0, count_rate, count_max)
   do jj=1,10
@@ -79,6 +93,20 @@ program bench_maps
   cpu = (cpu1 - cpu0)/count_rate
   print *, 'loop ikjl : ', cpu/dble(ii)
 
+  call system_clock(cpu0, count_rate, count_max)
+  do ii=1,100000_8
+    call random_number(r)
+    i = int(r*mo_tot_num)+1
+    call random_number(r)
+    j = int(r*mo_tot_num)+1
+    call random_number(r)
+    k = int(r*mo_tot_num)+1
+    call random_number(r)
+    l = int(r*mo_tot_num)+1
+    call get_mo_bielec_integral(i,j,k,l,mo_integrals_map)
+  enddo
+  call system_clock(cpu1, count_rate, count_max)
+
   ii=0
   call system_clock(cpu0, count_rate, count_max)
   do jj=1,10
@@ -96,6 +124,20 @@ program bench_maps
   call system_clock(cpu1, count_rate, count_max)
   cpu = (cpu1 - cpu0)/count_rate
   print *, 'loop ijlk : ', cpu/dble(ii)
+
+  call system_clock(cpu0, count_rate, count_max)
+  do ii=1,100000_8
+    call random_number(r)
+    i = int(r*mo_tot_num)+1
+    call random_number(r)
+    j = int(r*mo_tot_num)+1
+    call random_number(r)
+    k = int(r*mo_tot_num)+1
+    call random_number(r)
+    l = int(r*mo_tot_num)+1
+    call get_mo_bielec_integral(i,j,k,l,mo_integrals_map)
+  enddo
+  call system_clock(cpu1, count_rate, count_max)
 
   ii=0
   call system_clock(cpu0, count_rate, count_max)

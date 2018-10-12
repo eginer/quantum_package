@@ -166,11 +166,14 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error)
           ipos += 1
         endif
       enddo
+      call write_int(6,sum(pt2_F),'Number of tasks')
       call write_int(6,ipos,'Number of fragmented tasks')
 
+      ! Initiate tasks
+      pt2_n_tasks = pt2_n_tasks_init
+      TOUCH pt2_n_tasks
       ipos=1
-
-      do i= 1, N_det_generators
+      do i= 1, pt2_n_tasks_init
         do j=1,pt2_F(pt2_J(i))
           write(task(ipos:ipos+20),'(I9,1X,I9,''|'')') j, pt2_J(i)
           ipos += 20
@@ -193,6 +196,29 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error)
         print *,  irp_here, ': Failed in zmq_set_running'
       endif
 
+
+      ! Run remaining tasks
+      pt2_n_tasks = N_det_generators
+      TOUCH pt2_n_tasks
+      ipos=1
+      do i= pt2_n_tasks_init+1, N_det_generators
+        do j=1,pt2_F(pt2_J(i))
+          write(task(ipos:ipos+20),'(I9,1X,I9,''|'')') j, pt2_J(i)
+          ipos += 20
+          if (ipos > 100000-20) then
+            if (add_task_to_taskserver(zmq_to_qp_run_socket,trim(task(1:ipos))) == -1) then
+              stop 'Unable to add task to task server'
+            endif
+            ipos=1
+          endif
+        end do
+      enddo
+      if (ipos > 1) then
+        if (add_task_to_taskserver(zmq_to_qp_run_socket,trim(task(1:ipos))) == -1) then
+          stop 'Unable to add task to task server'
+        endif
+      endif
+      
       
       integer :: nproc_target
       nproc_target = nproc
@@ -394,6 +420,22 @@ integer function pt2_find_sample(v, w)
 end function
 
 
+BEGIN_PROVIDER [ integer, pt2_n_tasks_init ]
+ implicit none
+ BEGIN_DOC
+ ! Number of parallel tasks to initiate the parallel run
+ END_DOC
+ pt2_n_tasks_init = min(5000,N_det_generators)
+END_PROVIDER
+
+BEGIN_PROVIDER [ integer, pt2_n_tasks ]
+ implicit none
+ BEGIN_DOC
+ ! Current number of parallel tasks
+ END_DOC
+ pt2_n_tasks = pt2_n_tasks_init
+END_PROVIDER
+
  BEGIN_PROVIDER[ integer, pt2_J, (N_det_generators)]
 &BEGIN_PROVIDER[ double precision, pt2_u, (N_det_generators)]
 &BEGIN_PROVIDER[ integer, pt2_R, (N_det_generators)]
@@ -429,7 +471,7 @@ end function
   
   U = 0
   
-  do while(N_j < N_det_generators)
+  do while(N_j < pt2_n_tasks)
     !ADD_COMB
     N_c += 1
     do t=0, pt2_N_teeth-1
