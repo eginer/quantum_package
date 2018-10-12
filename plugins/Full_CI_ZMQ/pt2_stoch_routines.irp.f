@@ -170,10 +170,8 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error)
       call write_int(6,ipos,'Number of fragmented tasks')
 
       ! Initiate tasks
-      pt2_n_tasks = pt2_n_tasks_init
-      TOUCH pt2_n_tasks
       ipos=1
-      do i= 1, pt2_n_tasks_init
+      do i= 1, pt2_n_tasks_batch
         do j=1,pt2_F(pt2_J(i))
           write(task(ipos:ipos+20),'(I9,1X,I9,''|'')') j, pt2_J(i)
           ipos += 20
@@ -196,29 +194,6 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error)
         print *,  irp_here, ': Failed in zmq_set_running'
       endif
 
-
-      ! Run remaining tasks
-      pt2_n_tasks = N_det_generators
-      TOUCH pt2_n_tasks
-      ipos=1
-      do i= pt2_n_tasks_init+1, N_det_generators
-        do j=1,pt2_F(pt2_J(i))
-          write(task(ipos:ipos+20),'(I9,1X,I9,''|'')') j, pt2_J(i)
-          ipos += 20
-          if (ipos > 100000-20) then
-            if (add_task_to_taskserver(zmq_to_qp_run_socket,trim(task(1:ipos))) == -1) then
-              stop 'Unable to add task to task server'
-            endif
-            ipos=1
-          endif
-        end do
-      enddo
-      if (ipos > 1) then
-        if (add_task_to_taskserver(zmq_to_qp_run_socket,trim(task(1:ipos))) == -1) then
-          stop 'Unable to add task to task server'
-        endif
-      endif
-      
       
       integer :: nproc_target
       nproc_target = nproc
@@ -236,8 +211,41 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error)
           !$OMP  PRIVATE(i)
       i = omp_get_thread_num()
       if (i==0) then
+
         call pt2_collector(zmq_socket_pull, E(pt2_stoch_istate),relative_error, w, error)
         pt2(pt2_stoch_istate) = w(pt2_stoch_istate)
+print *,  'Exit collector'
+
+      else if (i==1) then
+
+      ! Run remaining tasks
+        integer :: imax
+        imax = pt2_n_tasks_batch
+        ipos=1
+        do i= pt2_n_tasks_batch+1, N_det_generators
+          if (i>imax) then
+            imax = imax + pt2_n_tasks_batch
+            imax = min(imax,N_det_generators)
+            call update_pt2_J_pt2_R(pt2_Nc,pt2_Nj,pt2_R,pt2_J,pt2_d,imax)
+          endif
+          do j=1,pt2_F(pt2_J(i))
+            write(task(ipos:ipos+20),'(I9,1X,I9,''|'')') j, pt2_J(i)
+            ipos += 20
+            if (ipos > 100000-20) then
+              if (add_task_to_taskserver(zmq_to_qp_run_socket,trim(task(1:ipos))) == -1) then
+                stop 'Unable to add task to task server'
+              endif
+              ipos=1
+            endif
+          end do
+        enddo
+        if (ipos > 1) then
+          if (add_task_to_taskserver(zmq_to_qp_run_socket,trim(task(1:ipos))) == -1) then
+            stop 'Unable to add task to task server'
+          endif
+        endif
+        call pt2_slave_inproc(1)
+
       else
         call pt2_slave_inproc(i)
       endif
@@ -285,7 +293,7 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error)
   integer(ZMQ_PTR)               :: zmq_to_qp_run_socket
   integer, external :: zmq_delete_tasks
   integer, external :: zmq_abort
-  integer, external :: pt2_find_sample
+  integer, external :: pt2_find_sample_lr
 
   integer :: more, n, i, p, c, t, n_tasks, U
   integer, allocatable :: task_id(:)
@@ -347,10 +355,10 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error)
         x = 0d0
         do p=pt2_N_teeth, 1, -1
           v = pt2_u_0 + pt2_W_T * (pt2_u(c) + dble(p-1))
-          i = pt2_find_sample(v, pt2_cW)
+          i = pt2_find_sample_lr(v, pt2_cW,pt2_n_0(p),pt2_n_0(p+1))
           x += eI(pt2_stoch_istate, i) * pt2_W_T / pt2_w(i)
           S(p) += x
-          S2(p) += x**2
+          S2(p) += x*x
         end do
         avg = E0 + S(t) / dble(c)
         if ((avg /= 0.d0) .or. (n == N_det_generators) ) then 
@@ -397,13 +405,23 @@ end subroutine
 integer function pt2_find_sample(v, w)
   implicit none
   double precision, intent(in) :: v, w(0:N_det_generators)
+  integer, external :: pt2_find_sample_lr
+
+  pt2_find_sample = pt2_find_sample_lr(v, w, 0, N_det_generators)
+end function
+
+
+integer function pt2_find_sample_lr(v, w, l_in, r_in)
+  implicit none
+  double precision, intent(in) :: v, w(0:N_det_generators)
+  integer, intent(in) :: l_in,r_in
   integer :: i,l,r
 
-  l = 0
-  r = N_det_generators
+  l=l_in
+  r=r_in
 
   do while(r-l > 1)
-    i = (r+l) / 2
+    i = ishft(r+l,-1)
     if(w(i) < v) then
       l = i
     else
@@ -416,49 +434,23 @@ integer function pt2_find_sample(v, w)
       exit
     endif
   enddo
-  pt2_find_sample = r-1
+  pt2_find_sample_lr = r-1
 end function
 
 
-BEGIN_PROVIDER [ integer, pt2_n_tasks_init ]
+BEGIN_PROVIDER [ integer, pt2_n_tasks_batch ]
  implicit none
  BEGIN_DOC
  ! Number of parallel tasks to initiate the parallel run
  END_DOC
- pt2_n_tasks_init = min(5000,N_det_generators)
+ pt2_n_tasks_batch = 200000
+ pt2_n_tasks_batch = min(pt2_n_tasks_batch,N_det_generators)
 END_PROVIDER
 
-BEGIN_PROVIDER [ integer, pt2_n_tasks ]
- implicit none
- BEGIN_DOC
- ! Current number of parallel tasks
- END_DOC
- pt2_n_tasks = pt2_n_tasks_init
-END_PROVIDER
-
- BEGIN_PROVIDER[ integer, pt2_J, (N_det_generators)]
-&BEGIN_PROVIDER[ double precision, pt2_u, (N_det_generators)]
-&BEGIN_PROVIDER[ integer, pt2_R, (N_det_generators)]
+BEGIN_PROVIDER[ double precision, pt2_u, (N_det_generators)]
   implicit none
-  integer :: N_c, N_j, U, t, i
-  double precision :: v
-  logical, allocatable :: d(:)
-  integer, external :: pt2_find_sample
-  
-  allocate(d(N_det_generators))
-  
-  pt2_R(:) = 0
-  N_c = 0
-  N_j = pt2_n_0(1)
-  d(:) = .false.
-
-  do i=1,N_j
-      d(i) = .true.
-      pt2_J(i) = i
-  end do
-
-  integer :: m
   integer, allocatable :: seed(:)
+  integer :: m,i
   call random_seed(size=m)
   allocate(seed(m))
   do i=1,m
@@ -468,40 +460,73 @@ END_PROVIDER
   deallocate(seed)
 
   call RANDOM_NUMBER(pt2_u)
+ END_PROVIDER
+
+ BEGIN_PROVIDER[ integer, pt2_J, (N_det_generators)]
+&BEGIN_PROVIDER[ integer, pt2_R, (N_det_generators)]
+&BEGIN_PROVIDER[ integer, pt2_Nc ]
+&BEGIN_PROVIDER[ integer, pt2_Nj ]
+&BEGIN_PROVIDER[ logical, pt2_d, (N_det_generators)]
+ pt2_R(:) = 0
+ pt2_d(:) = .false.
+ pt2_Nc = 0
+ pt2_Nj = pt2_n_0(1)
+ do i=1,pt2_Nj
+     pt2_d(i) = .true.
+     pt2_J(i) = i
+ end do
+ call update_pt2_J_pt2_R(pt2_Nc,pt2_Nj,pt2_R,pt2_J,pt2_d,pt2_n_tasks_batch)
+END_PROVIDER
+
+subroutine update_pt2_J_pt2_R(N_c,N_j,pt2_R_,pt2_J_,pt2_d_,iend)
+  implicit none
+  integer, intent(inout) :: N_c, N_j
+  integer, intent(inout) :: pt2_R_ (N_det_generators)
+  integer, intent(inout) :: pt2_J_ (N_det_generators)
+  logical, intent(inout) :: pt2_d_ (N_det_generators)
+  integer, intent(in) :: iend
+  integer :: U, t, i
+  double precision :: v
+  integer, external :: pt2_find_sample_lr
   
+  integer :: m,l,r
+  double precision :: dt
+
   U = 0
   
-  do while(N_j < pt2_n_tasks)
+  do while(N_j < iend)
     !ADD_COMB
-    N_c += 1
+    N_c = N_c+1
+    dt = pt2_u_0 
     do t=0, pt2_N_teeth-1
-      v = pt2_u_0 + pt2_W_T * (dble(t) + pt2_u(N_c))
-      i = pt2_find_sample(v, pt2_cW)
-      if(.not. d(i)) then
+      v = dt + pt2_W_T *pt2_u(N_c)
+      dt = dt + pt2_W_T 
+      i = pt2_find_sample_lr(v, pt2_cW,pt2_n_0(t+1),pt2_n_0(t+2))
+      if(.not. pt2_d_(i)) then
         N_j += 1
-        pt2_J(N_j) = i
-        d(i) = .true.
+        pt2_J_(N_j) = i
+        pt2_d_(i) = .true.
       end if
     end do
     
-    pt2_R(N_j) = N_c
+    pt2_R_(N_j) = N_c
     
     !FILL_TOOTH
     do while(U < N_det_generators)
       U += 1
-      if(.not. d(U)) then
+      if(.not. pt2_d_(U)) then
         N_j += 1
-        pt2_J(N_j) = U
-        d(U) = .true.
-        exit;
+        pt2_J_(N_j) = U
+        pt2_d_(U) = .true.
+        exit
       end if
     end do
   enddo
   if(N_det_generators > 1) then
-    pt2_R(N_det_generators-1) = 0
-    pt2_R(N_det_generators) = N_c
+    pt2_R_(N_det_generators-1) = 0
+    pt2_R_(N_det_generators) = N_c
   end if
-END_PROVIDER
+end
 
 
  BEGIN_PROVIDER [ double precision,     pt2_w, (N_det_generators) ] 
