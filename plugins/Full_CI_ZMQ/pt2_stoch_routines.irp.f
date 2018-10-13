@@ -156,9 +156,10 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error)
 
 
       integer, external :: add_task_to_taskserver
-      character(100000) :: task
+      character(400000) :: task
 
-      integer :: j,k,ipos
+      integer :: j,k,ipos,ifirst
+      ifirst=0
 
       ipos=0
       do i=1,N_det_generators
@@ -169,17 +170,21 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error)
       call write_int(6,sum(pt2_F),'Number of tasks')
       call write_int(6,ipos,'Number of fragmented tasks')
 
-      ! Initiate tasks
       ipos=1
-      do i= 1, pt2_n_tasks_batch
+      do i= 1, N_det_generators
         do j=1,pt2_F(pt2_J(i))
           write(task(ipos:ipos+20),'(I9,1X,I9,''|'')') j, pt2_J(i)
           ipos += 20
-          if (ipos > 100000-20) then
+          if (ipos > 400000-20) then
             if (add_task_to_taskserver(zmq_to_qp_run_socket,trim(task(1:ipos))) == -1) then
               stop 'Unable to add task to task server'
             endif
             ipos=1
+            if (ifirst == 0) then
+              if (zmq_set_running(zmq_to_qp_run_socket) == -1) then
+                print *,  irp_here, ': Failed in zmq_set_running'
+              endif
+            endif
           endif
         end do
       enddo
@@ -214,37 +219,6 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error)
 
         call pt2_collector(zmq_socket_pull, E(pt2_stoch_istate),relative_error, w, error)
         pt2(pt2_stoch_istate) = w(pt2_stoch_istate)
-print *,  'Exit collector'
-
-      else if (i==1) then
-
-      ! Run remaining tasks
-        integer :: imax
-        imax = pt2_n_tasks_batch
-        ipos=1
-        do i= pt2_n_tasks_batch+1, N_det_generators
-          if (i>imax) then
-            imax = imax + pt2_n_tasks_batch
-            imax = min(imax,N_det_generators)
-            call update_pt2_J_pt2_R(pt2_Nc,pt2_Nj,pt2_R,pt2_J,pt2_d,imax)
-          endif
-          do j=1,pt2_F(pt2_J(i))
-            write(task(ipos:ipos+20),'(I9,1X,I9,''|'')') j, pt2_J(i)
-            ipos += 20
-            if (ipos > 100000-20) then
-              if (add_task_to_taskserver(zmq_to_qp_run_socket,trim(task(1:ipos))) == -1) then
-                stop 'Unable to add task to task server'
-              endif
-              ipos=1
-            endif
-          end do
-        enddo
-        if (ipos > 1) then
-          if (add_task_to_taskserver(zmq_to_qp_run_socket,trim(task(1:ipos))) == -1) then
-            stop 'Unable to add task to task server'
-          endif
-        endif
-        call pt2_slave_inproc(1)
 
       else
         call pt2_slave_inproc(i)
@@ -438,13 +412,12 @@ integer function pt2_find_sample_lr(v, w, l_in, r_in)
 end function
 
 
-BEGIN_PROVIDER [ integer, pt2_n_tasks_batch ]
+BEGIN_PROVIDER [ integer, pt2_n_tasks ]
  implicit none
  BEGIN_DOC
- ! Number of parallel tasks to initiate the parallel run
+ ! Number of parallel tasks for the Monte Carlo
  END_DOC
- pt2_n_tasks_batch = 200000
- pt2_n_tasks_batch = min(pt2_n_tasks_batch,N_det_generators)
+ pt2_n_tasks = N_det_generators
 END_PROVIDER
 
 BEGIN_PROVIDER[ double precision, pt2_u, (N_det_generators)]
@@ -464,69 +437,80 @@ BEGIN_PROVIDER[ double precision, pt2_u, (N_det_generators)]
 
  BEGIN_PROVIDER[ integer, pt2_J, (N_det_generators)]
 &BEGIN_PROVIDER[ integer, pt2_R, (N_det_generators)]
-&BEGIN_PROVIDER[ integer, pt2_Nc ]
-&BEGIN_PROVIDER[ integer, pt2_Nj ]
-&BEGIN_PROVIDER[ logical, pt2_d, (N_det_generators)]
- pt2_R(:) = 0
- pt2_d(:) = .false.
- pt2_Nc = 0
- pt2_Nj = pt2_n_0(1)
- do i=1,pt2_Nj
-     pt2_d(i) = .true.
-     pt2_J(i) = i
- end do
- call update_pt2_J_pt2_R(pt2_Nc,pt2_Nj,pt2_R,pt2_J,pt2_d,pt2_n_tasks_batch)
-END_PROVIDER
-
-subroutine update_pt2_J_pt2_R(N_c,N_j,pt2_R_,pt2_J_,pt2_d_,iend)
   implicit none
-  integer, intent(inout) :: N_c, N_j
-  integer, intent(inout) :: pt2_R_ (N_det_generators)
-  integer, intent(inout) :: pt2_J_ (N_det_generators)
-  logical, intent(inout) :: pt2_d_ (N_det_generators)
-  integer, intent(in) :: iend
-  integer :: U, t, i
-  double precision :: v
-  integer, external :: pt2_find_sample_lr
+  integer                :: N_c, N_j
+  integer                :: U, t, i
+  double precision       :: v
+  integer, external      :: pt2_find_sample_lr
   
-  integer :: m,l,r
+  logical, allocatable :: pt2_d(:)
+  integer :: m,l,r,k
+  integer, parameter :: ncache=10000
+  integer, allocatable :: ii(:,:)
   double precision :: dt
 
+  allocate(ii(pt2_N_teeth,ncache),pt2_d(N_det_generators))
+
+  pt2_R(:) = 0
+  pt2_d(:) = .false.
+  N_c = 0
+  N_j = pt2_n_0(1)
+  do i=1,N_j
+      pt2_d(i) = .true.
+      pt2_J(i) = i
+  end do
+
   U = 0
-  
-  do while(N_j < iend)
-    !ADD_COMB
-    N_c = N_c+1
-    dt = pt2_u_0 
-    do t=0, pt2_N_teeth-1
-      v = dt + pt2_W_T *pt2_u(N_c)
-      dt = dt + pt2_W_T 
-      i = pt2_find_sample_lr(v, pt2_cW,pt2_n_0(t+1),pt2_n_0(t+2))
-      if(.not. pt2_d_(i)) then
-        N_j += 1
-        pt2_J_(N_j) = i
-        pt2_d_(i) = .true.
-      end if
-    end do
-    
-    pt2_R_(N_j) = N_c
-    
-    !FILL_TOOTH
-    do while(U < N_det_generators)
-      U += 1
-      if(.not. pt2_d_(U)) then
-        N_j += 1
-        pt2_J_(N_j) = U
-        pt2_d_(U) = .true.
-        exit
-      end if
+  do while(N_j < pt2_n_tasks)
+
+    !$OMP PARALLEL DO DEFAULT(SHARED) PRIVATE(dt,v,t,k)
+    do k=1, ncache
+      dt = pt2_u_0 
+      do t=1, pt2_N_teeth
+        v = dt + pt2_W_T *pt2_u(N_c+k)
+        dt = dt + pt2_W_T 
+        ii(t,k) = pt2_find_sample_lr(v, pt2_cW,pt2_n_0(t),pt2_n_0(t+1))
+      end do
+    enddo
+    !$OMP END PARALLEL DO
+
+    do k=1,ncache
+      !ADD_COMB
+      N_c = N_c+1
+      do t=1, pt2_N_teeth
+        i = ii(t,k)
+        if(.not. pt2_d(i)) then
+          N_j += 1
+          pt2_J(N_j) = i
+          pt2_d(i) = .true.
+        end if
+      end do
+      
+      pt2_R(N_j) = N_c
+      
+      !FILL_TOOTH
+      do while(U < N_det_generators)
+        U += 1
+        if(.not. pt2_d(U)) then
+          N_j += 1
+          pt2_J(N_j) = U
+          pt2_d(U) = .true.
+          exit
+        end if
+      end do
+      if (N_j >= pt2_n_tasks) exit
     end do
   enddo
+
   if(N_det_generators > 1) then
-    pt2_R_(N_det_generators-1) = 0
-    pt2_R_(N_det_generators) = N_c
+    pt2_R(N_det_generators-1) = 0
+    pt2_R(N_det_generators) = N_c
   end if
-end
+
+  deallocate(ii,pt2_d)
+
+END_PROVIDER
+
 
 
  BEGIN_PROVIDER [ double precision,     pt2_w, (N_det_generators) ] 
