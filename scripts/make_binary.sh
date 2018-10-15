@@ -35,7 +35,18 @@ fi
 
 
 # Build all sources
-for dir in ${QP_ROOT}/{src,ocaml}
+for dir in ${QP_ROOT}/{src}
+do
+  pushd $dir
+  ninja
+  if [[ $? -ne 0 ]]
+  then
+    echo "Error building ${dir}"
+  fi
+  popd
+done
+
+for dir in ${QP_ROOT}/{ocaml}
 do
   make -C ${dir}
   if [[ $? -ne 0 ]]
