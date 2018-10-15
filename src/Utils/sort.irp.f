@@ -37,7 +37,10 @@ BEGIN_TEMPLATE
   integer,intent(in)             :: isize
   $type,intent(inout)            :: x(isize)
   integer,intent(inout)          :: iorder(isize)
-  !$OMP PARALLEL
+  integer :: tn
+  integer, external  :: omp_get_thread_num
+  tn = omp_get_thread_num()
+  !$OMP PARALLEL if (tn == 0)
   !$OMP SINGLE
   call rec_$X_quicksort(x,iorder,isize,1,isize)
   !$OMP END SINGLE
