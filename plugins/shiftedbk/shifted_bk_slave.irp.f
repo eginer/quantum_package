@@ -50,7 +50,7 @@ subroutine run_w
 
   PROVIDE psi_det psi_coef threshold_generators threshold_selectors state_average_weight mpi_master
   PROVIDE zmq_state N_det_selectors dress_stoch_istate N_det dress_e0_denominator
-  PROVIDE N_det_generators N_states N_states_diag
+  PROVIDE N_det_generators N_states N_states_diag psi_energy
   IRP_IF MPI
     call MPI_BARRIER(MPI_COMM_WORLD, ierr)
   IRP_ENDIF
@@ -89,8 +89,8 @@ subroutine run_w
       ! --------
 
       call wall_time(t0)
-      if (zmq_get_psi(zmq_to_qp_run_socket,1) == -1) cycle
       if (zmq_get_N_states_diag(zmq_to_qp_run_socket,1) == -1) cycle
+      if (zmq_get_psi(zmq_to_qp_run_socket,1) == -1) cycle
       if (zmq_get_dvector(zmq_to_qp_run_socket,1,'energy',energy,N_states_diag) == -1) cycle
 
       call wall_time(t1)
@@ -115,23 +115,21 @@ subroutine run_w
       ! Dress
       ! ---
 
+      IRP_IF MPI
+        call MPI_BARRIER(MPI_COMM_WORLD, ierr)
+        if (ierr /= MPI_SUCCESS) then
+          print *,  irp_here, 'error in barrier'
+        endif
+      IRP_ENDIF
       call wall_time(t0)
       if (zmq_get_psi(zmq_to_qp_run_socket,1) == -1) cycle
-
       if (zmq_get_N_det_generators (zmq_to_qp_run_socket, 1) == -1) cycle
-
       if (zmq_get_N_det_selectors(zmq_to_qp_run_socket, 1) == -1) cycle
-
       if (zmq_get_dvector(zmq_to_qp_run_socket,1,'threshold_generators',threshold_generators,1) == -1) cycle
-
       if (zmq_get_dvector(zmq_to_qp_run_socket,1,'threshold_selectors',threshold_selectors,1) == -1) cycle
-
       if (zmq_get_dvector(zmq_to_qp_run_socket,1,'energy',energy,N_states) == -1) cycle
-
       if (zmq_get_int(zmq_to_qp_run_socket,1,'dress_stoch_istate',dress_stoch_istate) == -1) cycle
-
       if (zmq_get_dvector(zmq_to_qp_run_socket,1,'state_average_weight',state_average_weight,N_states) == -1) cycle
-
       psi_energy(1:N_states) = energy(1:N_states)
       TOUCH psi_energy state_average_weight dress_stoch_istate threshold_selectors threshold_generators
       if (mpi_master) then
@@ -145,9 +143,19 @@ subroutine run_w
 
       call wall_time(t1)
       call write_double(6,(t1-t0),'Broadcast time')
+      IRP_IF MPI
+        call MPI_BARRIER(MPI_COMM_WORLD, ierr)
+        if (ierr /= MPI_SUCCESS) then
+          print *,  irp_here, 'error in barrier'
+        endif
+      IRP_ENDIF
 
-      call dress_slave_tcp(0, energy)
-
+      if (.true.) then
+        call omp_set_nested(.True.)
+        call run_dress_slave(0,i,dress_e0_denominator)
+      endif
+      print *,  'PT2 done'
+      FREE state_average_weight
 
       IRP_IF MPI
         call MPI_BARRIER(MPI_COMM_WORLD, ierr)

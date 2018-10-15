@@ -246,7 +246,7 @@ IRP_ENDIF
 !    stop 'Unable to set ZMQ_RCVBUF on pull socket'
 !  endif
   
-  rc = f77_zmq_setsockopt(new_zmq_pull_socket,ZMQ_RCVHWM,2,4)
+  rc = f77_zmq_setsockopt(new_zmq_pull_socket,ZMQ_RCVHWM,10,4)
   if (rc /= 0) then
     stop 'Unable to set ZMQ_RCVHWM on pull socket'
   endif
@@ -323,7 +323,7 @@ IRP_ENDIF
     stop 'Unable to set ZMQ_LINGER on push socket'
   endif
   
-  rc = f77_zmq_setsockopt(new_zmq_push_socket,ZMQ_SNDHWM,2,4)
+  rc = f77_zmq_setsockopt(new_zmq_push_socket,ZMQ_SNDHWM,10,4)
   if (rc /= 0) then
     stop 'Unable to set ZMQ_SNDHWM on push socket'
   endif
@@ -783,21 +783,31 @@ integer function zmq_abort(zmq_to_qp_run_socket)
   ! Aborts a running parallel computation
   END_DOC
   integer(ZMQ_PTR), intent(in)   :: zmq_to_qp_run_socket
-  integer                        :: rc, sze
+  integer                        :: rc, sze, i
+  integer, parameter             :: count_max=60
   character*(512)                :: message
   zmq_abort = 0
 
   write(message,*) 'abort '
   
+
   sze = len(trim(message))
-  rc = f77_zmq_send(zmq_to_qp_run_socket, trim(message), sze, 0)
+  do i=1,count_max
+    rc = f77_zmq_send(zmq_to_qp_run_socket, trim(message), sze, 0)
+    if (rc == sze) exit
+    call sleep(1)
+  enddo
   if (rc /= sze) then
     print *,  'zmq_abort: rc /= sze', rc, sze
     zmq_abort = -1
     return
   endif
   
-  rc = f77_zmq_recv(zmq_to_qp_run_socket, message, 510, 0)
+  do i=1,count_max
+    rc = f77_zmq_recv(zmq_to_qp_run_socket, message, 510, 0)
+    if (trim(message(1:rc)) == 'ok') exit
+    call sleep(1)
+  enddo
   if (trim(message(1:rc)) /= 'ok') then
     print *,  'zmq_abort: ', rc, ':', trim(message(1:rc))
     zmq_abort = -1

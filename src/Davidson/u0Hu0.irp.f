@@ -491,6 +491,7 @@ subroutine u_0_H_u_0(e_0,u_0,n,keys_tmp,Nint,N_st,sze)
     deallocate(u_1)
   endif
   double precision :: norm
+  !$OMP PARALLEL DO PRIVATE(i,norm) DEFAULT(SHARED)
   do i=1,N_st
     norm = u_dot_u(u_0(1,i),n)
     if (norm /= 0.d0) then
@@ -499,6 +500,7 @@ subroutine u_0_H_u_0(e_0,u_0,n,keys_tmp,Nint,N_st,sze)
       e_0(i) = 0.d0
     endif
   enddo
+  !$OMP END PARALLEL DO
   deallocate (s_0, v_0)
 end
 

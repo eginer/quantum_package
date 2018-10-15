@@ -16,7 +16,8 @@ END_PROVIDER
   integer :: e
   e = elec_num - n_core_orb * 2
   pt2_n_tasks_max = 1 + min((e*(e-1))/2, int(dsqrt(dble(N_det_generators)))/10)
-  do i=1,N_det_generators
+  pt2_F(:) = 1
+  do i=1,min(10000,N_det_generators)
     pt2_F(i) = 1 + dble(pt2_n_tasks_max)*maxval(dsqrt(dabs(psi_coef_sorted_gen(i,1:N_states))))
   enddo
 
@@ -25,7 +26,7 @@ END_PROVIDER
     pt2_N_teeth = 1
   else
     pt2_minDetInFirstTeeth = min(5, N_det_generators)
-    do pt2_N_teeth=100,2,-1
+    do pt2_N_teeth=50,2,-1
       if(testTeethBuilding(pt2_minDetInFirstTeeth, pt2_N_teeth)) exit
     end do
   end if
@@ -127,7 +128,7 @@ END_PROVIDER
 &BEGIN_PROVIDER [ integer, dress_N_cp ]
   implicit none
   integer :: N_c, N_j, U, t, i, m
-  double precision :: v
+  double precision :: v, dt
   double precision, allocatable :: tilde_M(:)
   logical, allocatable :: d(:)
   integer, external :: dress_find_sample
@@ -141,7 +142,7 @@ END_PROVIDER
   N_j = pt2_n_0(1)
   d(:) = .false.
   
-  ! Set here the positions of the checkpoints
+! Set here the positions of the checkpoints
 !  U = N_det_generators/((dress_N_cp_max**2+dress_N_cp_max)/2)+1
 !  do i=1, dress_N_cp_max-1
 !    dress_M_m(i) = U * (((i*i)+i)/2) + 10
@@ -172,11 +173,13 @@ END_PROVIDER
   U = 0
   
   m = 1
+  ! TODO Slow loop : to optimize
   do while(N_j < N_det_generators)
     !ADD_COMB
     N_c += 1
+    dt = 0.d0
     do t=0, pt2_N_teeth-1
-      v = pt2_u_0 + pt2_W_T * (dble(t) + pt2_u(N_c))
+      v = pt2_u_0 + pt2_W_T * (dt + pt2_u(N_c))
       i = dress_find_sample(v, pt2_cW)
       tilde_M(i) += 1d0
       if(.not. d(i)) then
@@ -184,6 +187,7 @@ END_PROVIDER
         pt2_J_(N_j) = i
         d(i) = .true.
       end if
+      dt = dt + 1.d0
     end do
    
     !FILL_TOOTH
@@ -193,7 +197,7 @@ END_PROVIDER
         N_j += 1
         pt2_J_(N_j) = U
         d(U) = .true.
-        exit;
+        exit
       end if
     end do
     
@@ -254,7 +258,7 @@ subroutine ZMQ_dress(E, dress, delta_out, delta_s2_out, relative_error)
     state_average_weight(dress_stoch_istate) = 1.d0
     TOUCH state_average_weight dress_stoch_istate
     
-    provide nproc mo_bielec_integrals_in_map mo_mono_elec_integral psi_selectors pt2_F
+    provide nproc mo_bielec_integrals_in_map mo_mono_elec_integral psi_selectors pt2_F pt2_N_teeth dress_M_m
     
     print *, '========== ================= ================= ================='
     print *, ' Samples        Energy         Stat. Error         Seconds      '
@@ -350,8 +354,6 @@ subroutine ZMQ_dress(E, dress, delta_out, delta_s2_out, relative_error)
       nproc_target = min(nproc_target,nproc)
     endif
 
-    call omp_set_nested(.true.)
-
     !$OMP PARALLEL DEFAULT(shared) NUM_THREADS(2)              &
         !$OMP  PRIVATE(i)
     i = omp_get_thread_num()
@@ -372,7 +374,6 @@ subroutine ZMQ_dress(E, dress, delta_out, delta_s2_out, relative_error)
   enddo
   FREE dress_stoch_istate
   state_average_weight(:) = state_average_weight_save(:)
-!    call omp_set_nested(.false.)
   TOUCH state_average_weight
   deallocate(delta,delta_s2)
   
@@ -631,7 +632,7 @@ integer function dress_find_sample(v, w)
   r = N_det_generators
 
   do while(r-l > 1)
-    i = (r+l) / 2
+    i = ishft(r+l,-1)
     if(w(i) < v) then
       l = i
     else

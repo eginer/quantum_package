@@ -37,7 +37,11 @@ BEGIN_TEMPLATE
   integer,intent(in)             :: isize
   $type,intent(inout)            :: x(isize)
   integer,intent(inout)          :: iorder(isize)
+  !$OMP PARALLEL
+  !$OMP SINGLE
   call rec_$X_quicksort(x,iorder,isize,1,isize)
+  !$OMP END SINGLE
+  !$OMP END PARALLEL
  end
 
  recursive subroutine rec_$X_quicksort(x, iorder, isize, first, last)
@@ -70,11 +74,16 @@ BEGIN_TEMPLATE
     j=j-1
   enddo
   if (first < i-1) then
+    !$OMP TASK DEFAULT(SHARED) FIRSTPRIVATE(isize,first,i) if (i-first > 100000)
     call rec_$X_quicksort(x, iorder, isize, first, i-1)
+    !$OMP END TASK
   endif
   if (j+1 < last) then
+    !$OMP TASK DEFAULT(SHARED) FIRSTPRIVATE(isize,last,j) if (last-j > 100000)
     call rec_$X_quicksort(x, iorder, isize, j+1, last)
+    !$OMP END TASK
   endif
+  !$OMP TASKWAIT
  end
 
  subroutine heap_$Xsort(x,iorder,isize)
@@ -281,7 +290,8 @@ BEGIN_TEMPLATE
   $type,intent(inout)            :: x(isize)
   integer,intent(inout)          :: iorder(isize)
   integer                        :: n
-  call $Xradix_sort(x,iorder,isize,-1)
+!  call $Xradix_sort(x,iorder,isize,-1)
+  call quick_$Xsort(x,iorder,isize)
  end subroutine $Xsort
 
 SUBST [ X, type ]
