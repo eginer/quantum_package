@@ -382,6 +382,8 @@ subroutine alpha_callback_mask(delta_ij_loc, i_gen, sp, mask, bannedOrb, banned,
   integer(bit_kind), allocatable :: det_minilist(:,:,:)
 
 
+  lindex = 0
+  lindex_end = 0
   allocate(abuf(siz), labuf(N_det), iorder(siz), det_minilist(N_int, 2, N_det))
   
   do i=1,siz
