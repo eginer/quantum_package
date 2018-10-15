@@ -37,19 +37,21 @@ BEGIN_TEMPLATE
   integer,intent(in)             :: isize
   $type,intent(inout)            :: x(isize)
   integer,intent(inout)          :: iorder(isize)
-  integer :: tn
-  integer, external  :: omp_get_thread_num
-  tn = omp_get_thread_num()
-  !$OMP PARALLEL if (tn == 0)
-  !$OMP SINGLE
-  call rec_$X_quicksort(x,iorder,isize,1,isize)
-  !$OMP END SINGLE
-  !$OMP END PARALLEL
+  integer, external              :: omp_get_num_threads
+  if (omp_get_num_threads() == 1) then
+    !$OMP PARALLEL DEFAULT(SHARED) 
+    !$OMP SINGLE
+    call rec_$X_quicksort(x,iorder,isize,1,isize,nproc)
+    !$OMP END SINGLE
+    !$OMP END PARALLEL
+  else
+    call rec_$X_quicksort(x,iorder,isize,1,isize,nproc)
+  endif
  end
 
- recursive subroutine rec_$X_quicksort(x, iorder, isize, first, last)
+ recursive subroutine rec_$X_quicksort(x, iorder, isize, first, last, level)
   implicit none
-  integer, intent(in)            :: isize, first, last
+  integer, intent(in)            :: isize, first, last, level
   integer,intent(inout)          :: iorder(isize)
   $type, intent(inout)           :: x(isize)
   $type                          :: c, tmp
@@ -76,17 +78,26 @@ BEGIN_TEMPLATE
     i=i+1
     j=j-1
   enddo
-  if (first < i-1) then
-    !$OMP TASK DEFAULT(SHARED) FIRSTPRIVATE(isize,first,i) if (i-first > 100000)
-    call rec_$X_quicksort(x, iorder, isize, first, i-1)
-    !$OMP END TASK
+  if ( ((i-first <= 10000).and.(last-j <= 10000)).or.(level<=0) ) then
+    if (first < i-1) then
+      call rec_$X_quicksort(x, iorder, isize, first, i-1,level/2)
+    endif
+    if (j+1 < last) then
+      call rec_$X_quicksort(x, iorder, isize, j+1, last,level/2)
+    endif
+  else
+    if (first < i-1) then
+      !$OMP TASK DEFAULT(SHARED) FIRSTPRIVATE(isize,first,i,level) 
+      call rec_$X_quicksort(x, iorder, isize, first, i-1,level/2)
+      !$OMP END TASK
+    endif
+    if (j+1 < last) then
+      !$OMP TASK DEFAULT(SHARED) FIRSTPRIVATE(isize,last,j,level) 
+      call rec_$X_quicksort(x, iorder, isize, j+1, last,level/2)
+      !$OMP END TASK
+    endif
+    !$OMP TASKWAIT
   endif
-  if (j+1 < last) then
-    !$OMP TASK DEFAULT(SHARED) FIRSTPRIVATE(isize,last,j) if (last-j > 100000)
-    call rec_$X_quicksort(x, iorder, isize, j+1, last)
-    !$OMP END TASK
-  endif
-  !$OMP TASKWAIT
  end
 
  subroutine heap_$Xsort(x,iorder,isize)
