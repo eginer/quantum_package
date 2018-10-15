@@ -181,6 +181,7 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error)
             endif
             ipos=1
             if (ifirst == 0) then
+              ifirst=1
               if (zmq_set_running(zmq_to_qp_run_socket) == -1) then
                 print *,  irp_here, ': Failed in zmq_set_running'
               endif
@@ -445,10 +446,11 @@ BEGIN_PROVIDER[ double precision, pt2_u, (N_det_generators)]
   
   logical, allocatable :: pt2_d(:)
   integer :: m,l,r,k
-  integer, parameter :: ncache=10000
+  integer :: ncache
   integer, allocatable :: ii(:,:)
   double precision :: dt
 
+  ncache = min(N_det_generators,10000)
   allocate(ii(pt2_N_teeth,ncache),pt2_d(N_det_generators))
 
   pt2_R(:) = 0
