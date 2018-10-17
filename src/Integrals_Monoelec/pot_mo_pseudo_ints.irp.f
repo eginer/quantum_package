@@ -5,8 +5,7 @@ BEGIN_PROVIDER [double precision, mo_pseudo_integral, (mo_tot_num,mo_tot_num)]
   END_DOC
   
   if (read_mo_one_integrals) then
-    call read_one_e_integrals('mo_pseudo_integral', mo_pseudo_integral,&
-        size(mo_pseudo_integral,1), size(mo_pseudo_integral,2))
+    call ezfio_get_mo_basis_integral_pseudo(mo_pseudo_integral)
     print *,  'MO pseudopotential integrals read from disk'
   else
     call ao_to_mo(                                                   &
@@ -17,8 +16,7 @@ BEGIN_PROVIDER [double precision, mo_pseudo_integral, (mo_tot_num,mo_tot_num)]
         )
   endif
   if (write_mo_one_integrals) then
-    call write_one_e_integrals('mo_pseudo_integral', mo_pseudo_integral,&
-        size(mo_pseudo_integral,1), size(mo_pseudo_integral,2))
+    call ezfio_set_mo_basis_integral_pseudo(mo_pseudo_integral)
     print *,  'MO pseudopotential integrals written to disk'
   endif
 
