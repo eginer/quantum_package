@@ -568,8 +568,8 @@ subroutine dress_collector(zmq_socket_pull, E, relative_error, delta, delta_s2, 
             stop 'Unable to delete tasks'
           endif
         else
-          !if(task_id(1) /= 0) stop "TASKID"
-          !i= zmq_delete_tasks(zmq_to_qp_run_socket,zmq_socket_pull,task_id,1,more)
+!          if(task_id(1) /= 0) stop "TASKID"
+!          i= zmq_delete_tasks(zmq_to_qp_run_socket,zmq_socket_pull,task_id,1,more)
           exit
         end if
       end do
@@ -591,6 +591,7 @@ subroutine dress_collector(zmq_socket_pull, E, relative_error, delta, delta_s2, 
   ff = dress_dot_F(m-1)
   delta= 0d0
   delta_s2 = 0d0
+
   do while(more /= 0)
     call  pull_dress_results(zmq_socket_pull, m_task, f, edI_task, edI_index, breve_delta_m, task_id, n_tasks)
     
@@ -619,6 +620,7 @@ subroutine dress_collector(zmq_socket_pull, E, relative_error, delta, delta_s2, 
   !end do
   !print *, "SUM", E(1)+sum(edi(:))
   !print *, "DOT", E(1)+tmp
+
   call end_zmq_to_qp_run_socket(zmq_to_qp_run_socket)
 end subroutine
 
