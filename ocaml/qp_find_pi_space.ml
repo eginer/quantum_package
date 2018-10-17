@@ -99,8 +99,12 @@ let run ?(sym="None") ?(apply="no") fc ezfio_filename =
                 let ic =
                   Unix.open_process_in ("qp_set_frozen_core.py -q "^ezfio_filename)
                 in
-                let result = int_of_string @@ input_line ic in
-                close_in ic; result
+                let result = int_of_string @@
+                match In_channel.input_line ic with 
+                | Some line -> line
+                | None -> failwith "Failed in qp_set_frozen_core"
+                in
+                In_channel.close ic; result
               else 0
             in
             let command = 

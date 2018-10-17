@@ -54,7 +54,7 @@ let () =
       Hashtbl.fold (fun k c (accu,norm,norm') ->
         let (c',c) =
           try  (Hashtbl.find wf' k, c)
-          with Not_found -> (0.,0.)
+          with Caml.Not_found -> (0.,0.)
         in
         (accu +. c *. c' , 
         norm +. c *. c  , 

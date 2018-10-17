@@ -5,7 +5,7 @@ QP_ROOT=$PWD
 cd -
 
 # Normal installation
-PACKAGES="core.v0.10.0 cryptokit ocamlfind sexplib.v0.10.0 zmq ppx_sexp_conv ppx_deriving"
+PACKAGES="core cryptokit ocamlfind sexplib zmq ppx_sexp_conv ppx_deriving"
 
 # Needed for ZeroMQ
 export C_INCLUDE_PATH="${QP_ROOT}"/include:"${C_INCLUDE_PATH}"
@@ -65,7 +65,7 @@ fi
 cd Downloads || exit 1
 chmod +x  ocaml.sh || exit 1
 
-echo N | ./ocaml.sh ${QP_ROOT}/bin/ 4.06.0 || exit 1
+echo N | ./ocaml.sh ${QP_ROOT}/bin/ 4.07.1 || exit 1
 
 ${QP_ROOT}/bin/opam config setup -a -q || exit 1
 

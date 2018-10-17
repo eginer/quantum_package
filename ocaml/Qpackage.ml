@@ -63,7 +63,7 @@ let executables = lazy (
      )
   in
   In_channel.with_file filename ~f:func
-  |> List.sort ~cmp:(fun (x,_) (y,_) -> 
+  |> List.sort ~compare:(fun (x,_) (y,_) -> 
       if x < y then -1
       else if x > y then 1
       else 0) 
@@ -80,14 +80,14 @@ let get_ezfio_default_in_file ~directory ~data ~filename =
           rest
         else
           find_dir rest
-    | [] -> raise Not_found
+    | [] -> raise Caml.Not_found
   in 
   let rec find_data = function
     | line :: rest ->
         if (line = "") then
-          raise Not_found
+          raise Caml.Not_found
         else if (line.[0] <> ' ') then
-          raise Not_found
+          raise Caml.Not_found
         else 
           begin
             match (String.lsplit2 ~on:' ' (String.strip line)) with
@@ -96,9 +96,9 @@ let get_ezfio_default_in_file ~directory ~data ~filename =
                   String.strip r
                 else
                   find_data rest
-              | None -> raise Not_found
+              | None -> raise Caml.Not_found
           end
-    | [] -> raise Not_found
+    | [] -> raise Caml.Not_found
   in
   find_dir lines
     |> find_data ;
@@ -111,7 +111,7 @@ let get_ezfio_default directory data =
   | []           -> 
       begin
         Printf.printf "%s/%s not found\n%!" directory data;
-        raise Not_found
+        raise Caml.Not_found
       end
   | filename :: tail ->
     let filename = 
@@ -120,7 +120,7 @@ let get_ezfio_default directory data =
     try
       get_ezfio_default_in_file ~directory ~data ~filename
     with
-    | Not_found -> aux tail
+    | Caml.Not_found -> aux tail
   in
   Sys.readdir dirname
   |> Array.to_list

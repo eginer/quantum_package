@@ -79,14 +79,14 @@ let read_until_found f tries =
         begin 
           try
             Some (read_mos x f)
-          with Not_found ->
+          with Caml.Not_found ->
             None
         end
         ) None tries 
   in
   match result with
   | Some mos -> mos
-  | None -> raise Not_found
+  | None -> raise Caml.Not_found
 
 let read_natural_mos f =
   let tries = [
@@ -430,7 +430,7 @@ let create_cas_input ?(vecfile="") ~guess ~nstate s n_e n_a =
           in
           try
             string_of_guess (Natural (norb, vecfile))
-          with Not_found ->
+          with Caml.Not_found ->
             string_of_guess (Canonical (norb, vecfile))
     end
   ;

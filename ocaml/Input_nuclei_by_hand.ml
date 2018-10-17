@@ -196,7 +196,7 @@ Nuclear coordinates in xyz format (Angstroms) ::
     in
     (* Find lines containing the xyz data *)
     let rec extract_begin = function
-    | [] -> raise Not_found
+    | [] -> raise Caml.Not_found
     | line::tail ->
       let line = String.strip line in
       if (String.length line > 3) &&

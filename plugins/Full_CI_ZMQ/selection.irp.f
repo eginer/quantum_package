@@ -86,10 +86,10 @@ double precision function get_phase_bi(phasemask, s1, s2, h1, p1, h2, p2, Nint)
 
 
   ! Put the phasemask bits at position 0, and add them all
-  h1_bit = ishft(phasemask(h1_int,s1),-h1_bit)
-  p1_bit = ishft(phasemask(p1_int,s1),-p1_bit)
-  h2_bit = ishft(phasemask(h2_int,s2),-h2_bit)
-  p2_bit = ishft(phasemask(p2_int,s2),-p2_bit)
+  h1_bit = int(ishft(phasemask(h1_int,s1),-h1_bit))
+  p1_bit = int(ishft(phasemask(p1_int,s1),-p1_bit))
+  h2_bit = int(ishft(phasemask(h2_int,s2),-h2_bit))
+  p2_bit = int(ishft(phasemask(p2_int,s2),-p2_bit))
 
   np = h1_bit + p1_bit + h2_bit + p2_bit
 

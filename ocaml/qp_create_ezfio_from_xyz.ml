@@ -89,7 +89,7 @@ let list_basis () =
        | _ :: a :: _ -> String.strip a
       )
   in 
-  List.sort basis_list ~cmp:String.ascending
+  List.sort basis_list ~compare:String.ascending
   |> String.concat ~sep:"\n" 
 
 
@@ -131,7 +131,7 @@ let run ?o b au c d m p cart xyz_file =
     match Hashtbl.find basis_table key with
     | Some in_channel -> 
         in_channel
-    | None -> raise Not_found
+    | None -> raise Caml.Not_found
   in
   
   let temp_filename =
@@ -563,13 +563,13 @@ let run ?o b au c d m p cart xyz_file =
             in
             try
               Basis.read_element (basis_channel key) i e
-            with Not_found ->
+            with Caml.Not_found ->
               let key =
                 Element x.Atom.element
               in
               try
                 Basis.read_element (basis_channel key) i e
-              with Not_found ->
+              with Caml.Not_found ->
                 failwith (Printf.sprintf "Basis not found for atom %d (%s)" (Nucl_number.to_int i)
                  (Element.to_string x.Atom.element) )
           with
