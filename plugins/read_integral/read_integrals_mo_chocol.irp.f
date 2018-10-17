@@ -11,7 +11,7 @@ program read_integrals
   integer :: i,j,n
 
   PROVIDE ezfio_filename
-  call ezfio_set_integrals_monoelec_disk_access_mo_one_integrals("None")
+  call ezfio_set_mo_one_e_integrals_disk_access_mo_one_integrals("None")
 
   logical :: has
   call ezfio_has_mo_basis_mo_tot_num(has)
@@ -66,7 +66,7 @@ subroutine run
   enddo
   10 continue
   close(iunit)
-  call write_one_e_integrals('mo_kinetic_integral', A, size(A,1), size(A,2))
+  call ezfio_set_mo_one_e_integrals_integral_kinetic(mo_kinetic_integral)
 
 
   iunit = getunitandopen('nuclear_mo','r')
@@ -76,11 +76,8 @@ subroutine run
   enddo
   12 continue
   close(iunit)
-  call write_one_e_integrals('mo_ne_integral', A, size(A,1), size(A,2))
+  call ezfio_set_mo_one_e_integrals_integral_nuclear(A)
+  call ezfio_set_mo_one_e_integrals_integral_pseudo(mo_pseudo_integral)
 
-  call write_one_e_integrals('mo_pseudo_integral', mo_pseudo_integral,&
-        size(mo_pseudo_integral,1), size(mo_pseudo_integral,2))
-
-
-  call ezfio_set_integrals_monoelec_disk_access_mo_one_integrals("Read")
+  call ezfio_set_mo_one_e_integrals_disk_access_mo_one_integrals("Read")
 end

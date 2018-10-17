@@ -5,7 +5,7 @@ BEGIN_PROVIDER [double precision, mo_nucl_elec_integral, (mo_tot_num,mo_tot_num)
  END_DOC
 
   if (read_mo_one_integrals) then
-     call ezfio_get_mo_basis_integral_nuclear(mo_nucl_elec_integral)
+     call ezfio_get_mo_one_e_integrals_integral_nuclear(mo_nucl_elec_integral)
     print *,  'MO N-e integrals read from disk'
   else
     call ao_to_mo(                                                   &
@@ -16,7 +16,7 @@ BEGIN_PROVIDER [double precision, mo_nucl_elec_integral, (mo_tot_num,mo_tot_num)
         )
   endif
   if (write_mo_one_integrals) then
-     call ezfio_set_mo_basis_integral_nuclear(mo_nucl_elec_integral)
+     call ezfio_set_mo_one_e_integrals_integral_nuclear(mo_nucl_elec_integral)
     print *,  'MO N-e integrals written to disk'
   endif
 

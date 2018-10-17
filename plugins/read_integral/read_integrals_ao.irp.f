@@ -1,7 +1,7 @@
 program read_integrals
 
   PROVIDE ezfio_filename
-  call ezfio_set_integrals_monoelec_disk_access_ao_one_integrals("None")
+  call ezfio_set_ao_one_e_integrals_disk_access_ao_one_integrals("None")
   call run
 end
 
@@ -22,41 +22,54 @@ subroutine run
   integer(key_kind)  :: key
    
   allocate (A(ao_num,ao_num))
+
   A = 0.d0
-  
   iunit = getunitandopen('kinetic_ao','r')
-  do 
+  do
     read (iunit,*,end=10) i,j, integral
     A(i,j) = integral
-    A(j,i) = integral
   enddo
   10 continue
   close(iunit)
-  call write_one_e_integrals('ao_kinetic_integral', A, size(A,1), size(A,2))
+  call ezfio_set_ao_one_e_integrals_integral_kinetic(A(1:ao_num, 1:ao_num))
 
+  A = 0.d0
+  iunit = getunitandopen('overlap_ao','r')
+  do
+    read (iunit,*,end=11) i,j, integral
+    A(i,j) = integral
+  enddo
+  11 continue
+  close(iunit)
+  call ezfio_set_ao_one_e_integrals_integral_overlap(A(1:ao_num, 1:ao_num))
+
+  A = 0.d0
+  iunit = getunitandopen('pseudo_ao','r')
+  do
+    read (iunit,*,end=14) i,j, integral
+    A(i,j) = integral
+  enddo
+  14 continue
+  close(iunit)
+  call ezfio_set_ao_one_e_integrals_integral_pseudo(A(1:ao_num,1:ao_num))
 
   A = 0.d0
   iunit = getunitandopen('nuclear_ao','r')
-  do 
+  do
     read (iunit,*,end=12) i,j, integral
     A(i,j) = integral
-    A(j,i) = integral
   enddo
   12 continue
   close(iunit)
-  call write_one_e_integrals('ao_ne_integral', A, size(A,1), size(A,2))
+  call ezfio_set_ao_one_e_integrals_integral_nuclear(A(1:ao_num, 1:ao_num))
 
-  call write_one_e_integrals('ao_pseudo_integral', ao_pseudo_integral,&
-        size(ao_pseudo_integral,1), size(ao_pseudo_integral,2))
-
-
-  call ezfio_set_integrals_monoelec_disk_access_ao_one_integrals("Read")
+  call ezfio_set_ao_one_e_integrals_disk_access_ao_one_integrals("Read")
 
   allocate(buffer_i(ao_num**4), buffer_values(ao_num**4))
-   
   iunit = getunitandopen('bielec_ao','r')
   n_integrals=0
-  do 
+  buffer_values = 0.d0
+  do
     read (iunit,*,end=13) i,j,k,l, integral
     n_integrals += 1
     call bielec_integrals_index(i, j, k, l, buffer_i(n_integrals) )
@@ -64,7 +77,8 @@ subroutine run
   enddo
   13 continue
   close(iunit)
-  
+
+
   call insert_into_ao_integrals_map(n_integrals,buffer_i,buffer_values)
 
   call map_sort(ao_integrals_map)

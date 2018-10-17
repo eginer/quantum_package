@@ -5,7 +5,7 @@ QP_ROOT=$PWD
 cd -
 
 # Normal installation
-PACKAGES="core.v0.10.0 cryptokit ocamlfind sexplib.v0.10.0 zmq ppx_sexp_conv ppx_deriving jbuilder.1.0+beta17"
+PACKAGES="core.v0.10.0 cryptokit ocamlfind sexplib.v0.10.0 zmq ppx_sexp_conv ppx_deriving"
 
 # Needed for ZeroMQ
 export C_INCLUDE_PATH="${QP_ROOT}"/include:"${C_INCLUDE_PATH}"
@@ -76,8 +76,8 @@ source ${HOME}/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
 
 
 NCPUs=$(cat /proc/cpuinfo  | grep -i  MHz | wc -l)
-${QP_ROOT}/bin/opam install -j ${NCPUs} stdint.0.4.2 -y -q || exit 1
-${QP_ROOT}/bin/opam install -j ${NCPUs} ${PACKAGES} -y -q || exit 1
+${QP_ROOT}/bin/opam install -j ${NCPUs} stdint.0.4.2 -y  || exit 1
+echo ${PACKAGES} | xargs ${QP_ROOT}/bin/opam install -j ${NCPUs} -y  || exit 1
 
 rm -f ../_build/ocaml.log
 
