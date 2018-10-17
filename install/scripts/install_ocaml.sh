@@ -65,7 +65,7 @@ fi
 cd Downloads || exit 1
 chmod +x  ocaml.sh || exit 1
 
-echo N | ./ocaml.sh ${QP_ROOT}/bin/ 4.07.1 || exit 1
+echo N | ./ocaml.sh ${QP_ROOT}/bin/ 4.07.0 || exit 1
 
 ${QP_ROOT}/bin/opam config setup -a -q || exit 1
 
