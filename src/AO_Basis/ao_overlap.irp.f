@@ -1,4 +1,4 @@
- BEGIN_PROVIDER [ double precision, ao_overlap,(ao_num,ao_num) ]
+ BEGIN_PROVIDER [ double precision, ao_overlap_matrix,(ao_num,ao_num) ]
 &BEGIN_PROVIDER [ double precision, ao_overlap_x,(ao_num,ao_num) ]
 &BEGIN_PROVIDER [ double precision, ao_overlap_y,(ao_num,ao_num) ]
 &BEGIN_PROVIDER [ double precision, ao_overlap_z,(ao_num,ao_num) ]
@@ -14,10 +14,6 @@
   double precision :: alpha, beta, c
   double precision :: A_center(3), B_center(3)
   integer :: power_A(3), power_B(3)
-   if (read_ao_one_integrals) then
-     call ezfio_get_ao_basis_integral_overlap(ao_overlap(1:ao_num, 1:ao_num))
-     print *,  'AO overlap integrals read from disk'
-  else
     dim1=100
     !$OMP PARALLEL DO SCHEDULE(GUIDED) &
     !$OMP DEFAULT(NONE) &
@@ -25,7 +21,7 @@
     !$OMP  overlap_x,overlap_y, overlap_z, overlap, &
     !$OMP  alpha, beta,i,j,c) &
     !$OMP SHARED(nucl_coord,ao_power,ao_prim_num, &
-    !$OMP  ao_overlap_x,ao_overlap_y,ao_overlap_z,ao_overlap,ao_num,ao_coef_normalized_ordered_transp,ao_nucl, &
+    !$OMP  ao_overlap_x,ao_overlap_y,ao_overlap_z,ao_overlap_matrix,ao_num,ao_coef_normalized_ordered_transp,ao_nucl, &
     !$OMP  ao_expo_ordered_transp,dim1)
     do j=1,ao_num
     A_center(1) = nucl_coord( ao_nucl(j), 1 )
@@ -35,7 +31,7 @@
     power_A(2)  = ao_power( j, 2 )
     power_A(3)  = ao_power( j, 3 )
     do i= 1,ao_num
-      ao_overlap(i,j)= 0.d0
+      ao_overlap_matrix(i,j)= 0.d0
       ao_overlap_x(i,j)= 0.d0
       ao_overlap_y(i,j)= 0.d0
       ao_overlap_z(i,j)= 0.d0
@@ -51,7 +47,7 @@
         beta = ao_expo_ordered_transp(l,i)
         call overlap_gaussian_xyz(A_center,B_center,alpha,beta,power_A,power_B,overlap_x,overlap_y,overlap_z,overlap,dim1)
         c = ao_coef_normalized_ordered_transp(n,j) * ao_coef_normalized_ordered_transp(l,i)
-        ao_overlap(i,j) += c * overlap
+        ao_overlap_matrix(i,j) += c * overlap
         ao_overlap_x(i,j) += c * overlap_x
         ao_overlap_y(i,j) += c * overlap_y
         ao_overlap_z(i,j) += c * overlap_z
@@ -60,11 +56,6 @@
     enddo
     enddo
     !$OMP END PARALLEL DO
-  endif
-  if (write_ao_one_integrals) then
-     call ezfio_set_ao_basis_integral_overlap(ao_overlap(1:ao_num, 1:ao_num))
-     print *,  'AO overlap integrals written to disk'
-  endif
 
 END_PROVIDER
 
@@ -128,7 +119,7 @@ BEGIN_PROVIDER [ double precision, S_inv,(ao_num,ao_num) ]
  BEGIN_DOC
 ! S^-1
  END_DOC
- call get_pseudo_inverse(ao_overlap,size(ao_overlap,1),ao_num,ao_num,S_inv,size(S_inv,1))
+ call get_pseudo_inverse(ao_overlap_matrix,size(ao_overlap_matrix,1),ao_num,ao_num,S_inv,size(S_inv,1))
 END_PROVIDER
 
 BEGIN_PROVIDER [ double precision, S_half_inv, (AO_num,AO_num) ]
@@ -145,7 +136,7 @@ BEGIN_PROVIDER [ double precision, S_half_inv, (AO_num,AO_num) ]
   integer                         :: info, i, j, k
   double precision, parameter     :: threshold_overlap_AO_eigenvalues = 1.d-6
  
-  LDA = size(AO_overlap,1)
+  LDA = size(AO_overlap_matrix,1)
   LDC = size(S_half_inv,1)
  
   allocate(         &
@@ -154,7 +145,7 @@ BEGIN_PROVIDER [ double precision, S_half_inv, (AO_num,AO_num) ]
     D(AO_num))
 
   call svd(            &
-       AO_overlap,LDA, &
+       AO_overlap_matrix,LDA, &
        U,LDC,          &
        D,              &
        Vt,LDA,         &
@@ -203,7 +194,7 @@ BEGIN_PROVIDER [ double precision, S_half, (ao_num,ao_num)  ]
   
   allocate(U(ao_num,ao_num),Vt(ao_num,ao_num),D(ao_num))
 
-  call svd(ao_overlap,size(ao_overlap,1),U,size(U,1),D,Vt,size(Vt,1),ao_num,ao_num)
+  call svd(ao_overlap_matrix,size(ao_overlap_matrix,1),U,size(U,1),D,Vt,size(Vt,1),ao_num,ao_num)
 
   do i=1,ao_num
     D(i) = dsqrt(D(i))

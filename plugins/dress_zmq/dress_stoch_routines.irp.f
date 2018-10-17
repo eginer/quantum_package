@@ -18,7 +18,7 @@ END_PROVIDER
   pt2_n_tasks_max = 1 + min((e*(e-1))/2, int(dsqrt(dble(N_det_generators)))/10)
   pt2_F(:) = 1
   do i=1,min(10000,N_det_generators)
-    pt2_F(i) = 1 + dble(pt2_n_tasks_max)*maxval(dsqrt(dabs(psi_coef_sorted_gen(i,1:N_states))))
+    pt2_F(i) = 1 + int(dble(pt2_n_tasks_max)*maxval(dsqrt(dabs(psi_coef_sorted_gen(i,1:N_states)))))
   enddo
 
   if(N_det_generators < 128) then
