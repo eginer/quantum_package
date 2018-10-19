@@ -12,7 +12,6 @@ program fci_zmq
   logical                        :: has
   double precision               :: relative_error
   integer                        :: N_states_p
-  character*(512)                :: fmt
 
   relative_error=PT2_relative_error
 
@@ -86,66 +85,12 @@ program fci_zmq
 
       N_states_p = min(N_det,N_states)
 
-      print *, ''
-      print '(A,I12)',  'Summary at N_det = ', N_det
-      print '(A)',      '-----------------------------------'
-      print *, ''
+      call ezfio_set_fci_energy_pt2(CI_energy+pt2)
       call write_double(6,correlation_energy_ratio, 'Correlation ratio')
-      print *, ''
-
-      write(fmt,*) '(''# ============'',', N_states_p, '(1X,''=============================''))'
-      write(*,fmt)
-      write(fmt,*) '(12X,', N_states_p, '(6X,A7,1X,I6,10X))'
-      write(*,fmt) ('State',k, k=1,N_states_p)
-      write(fmt,*) '(''# ============'',', N_states_p, '(1X,''=============================''))'
-      write(*,fmt)
-      write(fmt,*) '(A12,', N_states_p, '(1X,F14.8,15X))'
-      write(*,fmt) '# E          ', CI_energy(1:N_states_p)
-      if (N_states_p > 1) then
-        write(*,fmt) '# Excit. (au)', CI_energy(1:N_states_p)-CI_energy(1)
-        write(*,fmt) '# Excit. (eV)', (CI_energy(1:N_states_p)-CI_energy(1))*27.211396641308d0
-      endif
-      write(fmt,*) '(A12,', 2*N_states_p, '(1X,F14.8))'
-      write(*,fmt) '# PT2'//pt2_string, (pt2(k), error(k), k=1,N_states_p)
-      write(*,'(A)') '#'
-      write(*,fmt) '# E+PT2      ', (CI_energy(k)+pt2(k),error(k), k=1,N_states_p)
-      if (N_states_p > 1) then
-        write(*,fmt) '# Excit. (au)', ( (CI_energy(k)+pt2(k)-CI_energy(1)-pt2(1)), &
-          dsqrt(error(k)*error(k)+error(1)*error(1)), k=1,N_states_p)
-        write(*,fmt) '# Excit. (eV)', ( (CI_energy(k)+pt2(k)-CI_energy(1)-pt2(1))*27.211396641308d0, &
-          dsqrt(error(k)*error(k)+error(1)*error(1))*27.211396641308d0, k=1,N_states_p)
-      endif
-      write(fmt,*) '(''# ============'',', N_states_p, '(1X,''=============================''))'
-      write(*,fmt)
-      print *,  ''
-
-      print *,  'N_det             = ', N_det
-      print *,  'N_states          = ', N_states
-      print*,   'correlation_ratio = ', correlation_energy_ratio
-
-      do k=1, N_states_p
-        print*,'State ',k
-        print *,  'PT2             = ', pt2(k)
-        print *,  'E               = ', CI_energy(k)
-        print *,  'E+PT2'//pt2_string//'   = ', CI_energy(k)+pt2(k), ' +/- ', error(k)
-      enddo
-
-      print *,  '-----'
-      if(N_states.gt.1)then
-        print *, 'Variational Energy difference (au | eV)'
-        do i=2, N_states_p
-          print*,'Delta E = ', (CI_energy(i) - CI_energy(1)), &
-            (CI_energy(i) - CI_energy(1)) * 27.211396641308d0
-        enddo
-        print *,  '-----'
-        print*, 'Variational + perturbative Energy difference (au | eV)'
-        do i=2, N_states_p
-          print*,'Delta E = ', (CI_energy(i)+ pt2(i) - (CI_energy(1) + pt2(1))), &
-            (CI_energy(i)+ pt2(i) - (CI_energy(1) + pt2(1))) * 27.211396641308d0
-        enddo
-      endif
-      call ezfio_set_full_ci_zmq_energy_pt2(CI_energy(1)+pt2(1))
-      call dump_fci_iterations_value(N_det,CI_energy,pt2) 
+      call print_summary(CI_energy,pt2,error)
+      call save_iterations(CI_energy,pt2,N_det) 
+      call print_extrapolated_energy(CI_energy,pt2)
+      N_iter += 1
 
       n_det_before = N_det
       if (s2_eig) then
@@ -168,7 +113,7 @@ program fci_zmq
       end if
       call diagonalize_CI
       call save_wavefunction
-      call ezfio_set_full_ci_zmq_energy(CI_energy(1))
+      call ezfio_set_fci_energy(CI_energy)
     enddo
   endif
 
@@ -176,8 +121,8 @@ program fci_zmq
       threshold_davidson = threshold_davidson_in
       call diagonalize_CI
       call save_wavefunction
-      call ezfio_set_full_ci_zmq_energy(CI_energy(1))
-      call ezfio_set_full_ci_zmq_energy_pt2(CI_energy(1)+pt2(1))
+      call ezfio_set_fci_energy(CI_energy)
+      call ezfio_set_fci_energy_pt2(CI_energy+pt2)
   endif
 
   if (do_pt2) then
@@ -189,52 +134,16 @@ program fci_zmq
     threshold_selectors = threshold_selectors_save
     threshold_generators = threshold_generators_save
     SOFT_TOUCH threshold_selectors threshold_generators
-    call ezfio_set_full_ci_zmq_energy(CI_energy(1))
-    call ezfio_set_full_ci_zmq_energy_pt2(CI_energy(1)+pt2(1))
+    call ezfio_set_fci_energy(CI_energy)
+    call ezfio_set_fci_energy_pt2(CI_energy+pt2)
   endif
   print *,  'N_det             = ', N_det
   print *,  'N_states          = ', N_states
   print*,   'correlation_ratio = ', correlation_energy_ratio
 
 
-  call dump_fci_iterations_value(N_det,CI_energy,pt2) 
-
-  print *, ''
-  print '(A,I12)',  'Summary at N_det = ', N_det
-  print '(A)',      '-----------------------------------'
-  print *, ''
+  call save_iterations(CI_energy,pt2,N_det) 
   call write_double(6,correlation_energy_ratio, 'Correlation ratio')
-  print *, ''
-
-
-  N_states_p = min(N_det,N_states)
-  print *,  ''
-  write(fmt,*) '(''# ============'',', N_states_p, '(1X,''=============================''))'
-  write(*,fmt)
-  write(fmt,*) '(12X,', N_states_p, '(6X,A7,1X,I6,10X))'
-  write(*,fmt) ('State',k, k=1,N_states_p)
-  write(fmt,*) '(''# ============'',', N_states_p, '(1X,''=============================''))'
-  write(*,fmt)
-  write(fmt,*) '(A12,', N_states_p, '(1X,F14.8,15X))'
-  write(*,fmt) '# E          ', CI_energy(1:N_states_p)
-  if (N_states_p > 1) then
-    write(*,fmt) '# Excit. (au)', CI_energy(1:N_states_p)-CI_energy(1)
-    write(*,fmt) '# Excit. (eV)', (CI_energy(1:N_states_p)-CI_energy(1))*27.211396641308d0
-  endif
-  write(fmt,*) '(A12,', 2*N_states_p, '(1X,F14.8))'
-  write(*,fmt) '# PT2'//pt2_string, (pt2(k), error(k), k=1,N_states_p)
-  write(*,'(A)') '#'
-  write(*,fmt) '# E+PT2      ', (CI_energy(k)+pt2(k),error(k), k=1,N_states_p)
-  if (N_states_p > 1) then
-    write(*,fmt) '# Excit. (au)', ( (CI_energy(k)+pt2(k)-CI_energy(1)-pt2(1)), &
-      dsqrt(error(k)*error(k)+error(1)*error(1)), k=1,N_states_p)
-    write(*,fmt) '# Excit. (eV)', ( (CI_energy(k)+pt2(k)-CI_energy(1)-pt2(1))*27.211396641308d0, &
-      dsqrt(error(k)*error(k)+error(1)*error(1))*27.211396641308d0, k=1,N_states_p)
-  endif
-  write(fmt,*) '(''# ============'',', N_states_p, '(1X,''=============================''))'
-  write(*,fmt)
-  print *,  ''
-
-
+  call print_summary(CI_energy,pt2,error)
 
 end

@@ -81,6 +81,7 @@ def real_join(*args):
 #  _
 # |_ ._           _. ._ o  _. |_  |  _   _
 # |_ | | \/   \/ (_| |  | (_| |_) | (/_ _>
+#
 def ninja_create_env_variable(pwd_config_file):
     """
     Return some ninja variable with the env variable expanded
@@ -335,6 +336,7 @@ def ninja_symlink_build(path_module, l_symlink):
 #    _  o _|_ o  _  ._   _  ._ _
 # o (_| |  |_ | (_| | | (_) | (/_
 #    _|          _|
+#
 def ninja_gitignore_rule():
     """
     Return the command to create the gitignore
@@ -368,6 +370,7 @@ def ninja_gitignore_build(path_module, d_binaries, l_symlink):
 # o ._ ._ _|_ (_| / \   ._ _   _. |   _
 # | |  |_) |    | \_/ o | | | (_| |< (/_
 #      |
+#
 def get_l_file_for_module(path_module):
     '''
     return the list of irp.f in a module
@@ -514,41 +517,6 @@ def ninja_irpf90_make_build(path_module, l_needed_molule, d_irp):
     return l_string
 
 
-def ninja_readme_rule():
-    """
-    Rule for creation the readme.
-    For not dealted the readme when ninja -t clean and the generator option
-    """
-    l_string = ["rule build_readme",
-                "   command = qp_update_readme.py $module_abs --root_module $module_root",
-                "   description = update_README $module_rel",
-                "   generator = 1", ""]
-
-    return l_string
-
-
-def ninja_readme_build(path_module, d_irp, dict_root_path):
-    """
-    Rule for creation the readme
-    """
-    path_readme = join(path_module.abs, "README.rst")
-    root_module = dict_root_path[module]
-
-    tags = join(root_module.abs, "tags")
-    str_depend = " ".join(d_irp[path_module]["l_depend"])
-
-    tree = join(path_module.abs, "tree_dependency.png")
-
-    l_string = ["build {0}: build_readme {1} {2} {3}".format(path_readme,
-                                                             tags,
-                                                             str_depend,
-                                                             tree),
-                "   module_root = {0}".format(root_module.abs),
-                "   module_abs = {0}".format(path_module.abs),
-                "   module_rel = {0}".format(path_module.rel), ""]
-
-    return l_string
-
 
 #  _
 # |_) o ._   _. ._
@@ -685,47 +653,10 @@ def ninja_module_build(path_module, d_binaries):
     l_abs_bin = [binary.abs for binary in d_binaries[path_module]]
 
     path_readme = os.path.join(path_module.abs, "README.rst")
-    path_png = os.path.join(path_module.abs, "tree_dependency.png")
 
-    l_string = ["build module_{0}: phony {1} {2} {3}".format(path_module.rel,
+    l_string = ["build module_{0}: phony {1} {2}".format(path_module.rel,
                                                              " ".join(l_abs_bin),
-                                                             path_readme,
-                                                             path_png), ""]
-
-    return l_string
-
-
-# ___
-#  | ._ _   _     _|  _  ._   _  ._   _|  _  ._   _ o  _   _
-#  | | (/_ (/_   (_| (/_ |_) (/_ | | (_| (/_ | | (_ | (/_ _>
-#                        |
-def ninja_dot_tree_rule():
-    """
-    Rule for creating the binaries
-    """
-    # ~#~#~ #
-    # c m d #
-    # ~#~#~ #
-
-    l_cmd = ["cd $module_abs", "module_handler.py create_png"]
-
-    l_string = [
-        "rule build_dot_tree", "   command = {0}".format(" ; ".join(l_cmd)),
-        "   generator = 1",
-        "   description = Generating Png representation of the Tree Dependencies of $module_rel",
-        ""
-    ]
-
-    return l_string
-
-
-def ninja_dot_tree_build(path_module, l_module):
-
-    path_tree = join(path_module.abs, "tree_dependency.png")
-    l_dep = [join(path.abs, "NEEDED_CHILDREN_MODULES") for path in l_module]
-    l_string = ["build {0}: build_dot_tree {1}".format(path_tree, " ".join(l_dep)),
-                "   module_abs = {0}".format(path_module.abs),
-                "   module_rel = {0}".format(path_module.rel), ""]
+                                                             path_readme), ""]
 
     return l_string
 
@@ -847,15 +778,12 @@ if __name__ == "__main__":
     l_string += ninja_symlink_rule()
 
     l_string += ninja_irpf90_make_rule()
-    l_string += ninja_readme_rule()
     l_string += ninja_gitignore_rule()
 
     l_string += ninja_binaries_rule()
 
     l_string += ninja_ezfio_config_rule()
     l_string += ninja_ezfio_rule()
-
-    l_string += ninja_dot_tree_rule()
 
     #  _
     # |_)     o |  _|    _   _  ._   _  ._ _. |
@@ -892,22 +820,9 @@ if __name__ == "__main__":
     # M o d u l e _ t o _ i r p #
     # ~#~#~#~#~#~#~#~#~#~#~#~#~ #
 
-    if arguments["--production"]:
+    d_binaries = get_dict_binaries(l_all_module, mode="development")
+    l_module = d_binaries.keys()
 
-        d_binaries = get_dict_binaries(l_all_module, mode="production")
-        l_module = d_binaries.keys()
-
-    elif arguments["--development"]:
-
-        d_binaries = get_dict_binaries(l_all_module, mode="development")
-        l_module = d_binaries.keys()
-
-        for module in l_all_module:
-            # ~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~ #
-            # d o t _ t r e e  & r e a d  m e #
-            # ~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~ #
-            l_string += ninja_dot_tree_build(module, l_all_module)
-            l_string += ninja_readme_build(module, d_irp, dict_root_path)
 
     # ~#~#~#~#~#~#~#~#~#~#~#~#~#~#~ #
     # C h e c k _ c o h e r e n c y #
@@ -935,6 +850,9 @@ if __name__ == "__main__":
     # ~#~#~#~#~#~#~#~#~#~#~#~ #
 
     for module_to_compile in l_module:
+    
+        if module_to_compile.rel == "dummy":
+                continue
 
         # ~#~#~#~#~#~#~#~ #
         #  S y m l i n k  #
@@ -953,14 +871,13 @@ if __name__ == "__main__":
         l_string += ninja_binaries_build(module_to_compile, l_children,
                                          d_binaries)
 
-        if arguments["--development"]:
 
-            l_string += ninja_module_build(module_to_compile, d_binaries)
+        l_string += ninja_module_build(module_to_compile, d_binaries)
 
-            l_string += ninja_gitignore_build(module_to_compile, d_binaries,
-                                              l_symlink)
+        l_string += ninja_gitignore_build(module_to_compile, d_binaries,
+                                            l_symlink)
 
-            save_subninja_file(module_to_compile)
+        save_subninja_file(module_to_compile)
 
     # ~#~#~#~#~ #
     # S a v e s #

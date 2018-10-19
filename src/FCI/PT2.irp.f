@@ -35,7 +35,8 @@ subroutine run
     print *,  'E+PT2    = ', E_CI_before(k)+pt2(k), ' +/- ', error(k)
     print *,  '-----'
   enddo
-  call ezfio_set_full_ci_zmq_energy_pt2(E_CI_before(1)+pt2(1))
+  call ezfio_set_fci_energy(E_CI_before)
+  call ezfio_set_fci_energy_pt2(E_CI_before+pt2)
 end
 
 

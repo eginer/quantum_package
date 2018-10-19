@@ -26,6 +26,7 @@ BEGIN_PROVIDER [ %(type)s, %(name)s %(size)s ]
     %(test_null_size)s
     call ezfio_has_%(ezfio_dir)s_%(ezfio_name)s(has)
     if (has) then
+      write(6,'(A)') '.. >>>>> [ IO READ: %(name)s ] <<<<< ..'
       call ezfio_get_%(ezfio_dir)s_%(ezfio_name)s(%(name)s)
     else
       print *, '%(ezfio_dir)s/%(ezfio_name)s not found in EZFIO file'
@@ -89,9 +90,6 @@ END_PROVIDER
         name = self.name
         l_write = ["",
                    "  call write_time(%(output)s)",
-                   "  if (mpi_master) then",
-                   "    write(%(output)s, *) 'Read  %(name)s'",
-                   "  endif", 
                    ""]
 
         self.write = "\n".join(l_write) % locals()

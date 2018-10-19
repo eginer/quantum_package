@@ -20,7 +20,6 @@ try:
     from docopt import docopt
     from module_handler import ModuleHandler, get_dict_child
     from module_handler import get_l_module_descendant
-    from qp_update_readme import D_KEY
     from qp_path import QP_SRC, QP_PLUGINS, QP_ROOT
 except ImportError:
     print "Please check if you have sourced the ${QP_ROOT}/quantum_package.rc"
@@ -40,7 +39,7 @@ def save_new_module(path, l_child):
         print "The module ({0}) already exists...".format(path)
         sys.exit(1)
 
-    with open(os.path.join(path, "NEEDED_CHILDREN_MODULES"), "w") as f:
+    with open(os.path.join(path, "NEED"), "w") as f:
         f.write(" ".join(l_child))
         f.write("\n")
 
@@ -54,49 +53,15 @@ def save_new_module(path, l_child):
 
     with open(os.path.join(path, "README.rst"), "w") as f:
         f.write(header + "\n")
-        f.write(D_KEY["needed_module"])
-        f.write(D_KEY["documentation"])
 
-    with open(os.path.join(path, "%s.main.irp.f"%(module_name) ), "w") as f:
+    with open(os.path.join(path, "%s.irp.f"%(module_name) ), "w") as f:
         f.write("program {0}".format(module_name) )
         f.write("""
   implicit none
   BEGIN_DOC
 ! TODO
   END_DOC
-  print *, '  _/                              '
-  print *, ' -:\_?,     _Jm####La             '
-  print *, 'J"(:" >  _]#AZ#Z#UUZ##,           '
-  print *, '_,::./   %(|i%12XmX1*1XL      _?, '
-  print *, '  \..\ _\(vmWQwodY+ia%lnL  _",/ ( '
-  print *, '   .:< ]J=mQD?WXn<uQWmmvd, -.-:=!\'
-  print *, '   "{Z jC]QW|=3Zv)Bi3BmXv3  =   _7'
-  print *, '    ]h[Z6)WQ;)jZs]C;|$BZv+, : ./  '
-  print *, '    -#sJX%$Wmm#ev]hinW#Xi:` c ;   '
-  print *, '     #X#X23###1}vI$WWmX1>|,)nr"   '
-  print *, '     4XZ#Xov1v}=)vnXAX1nnv;1n"    '
-  print *, '     ]XX#ZXoovvvivnnnlvvo2*i7     '
-  print *, '     "23Z#1S2oo2XXSnnnoSo2>v"     '
-  print *, '      miX#L -~`""!!1}oSoe|i7      '
-  print *, '      4cn#m,        v221=|v[      '
-  print *, '      ]hI3Zma,;..__wXSe=+vo       '
-  print *, '      ]Zov*XSUXXZXZXSe||vo2       '
-  print *, '      ]Z#><iiii|i||||==vn2(       '
-  print *, '      ]Z#i<ii||+|=||=:{no2[       '
-  print *, '      ]ZUsiiiiivi|=||=vo22[       '
-  print *, '      ]XZvlliiIi|i=|+|vooo        '
-  print *, '      =v1llli||||=|||||lii(       '
-  print *, '      ]iillii||||||||=>=|<        '
-  print *, '      -ziiiii||||||+||==+>        '
-  print *, '       -%|+++||=|=+|=|==/         '
-  print *, '        -a>====+|====-:-          '
-  print *, '          "~,- --   /-            '
-  print *, '            -.     )>             '
-  print *, '           .~      +-             '
-  print *, '           . .... : .             '
-  print *, '            -------~              '
-  print *, ''
-end
+  print *, 'Hello world'
 """)
 
 def main(arguments):

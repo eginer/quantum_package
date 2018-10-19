@@ -651,7 +651,7 @@ subroutine integrale_new(I_f,a_x,b_x,c_x,d_x,a_y,b_y,c_y,d_y,a_z,b_z,c_z,d_z,p,q
   include 'Utils/constants.include.F'
   double precision               :: p,q
   integer                        :: a_x,b_x,c_x,d_x,a_y,b_y,c_y,d_y,a_z,b_z,c_z,d_z
-  integer                        :: i, n_iter, n_pt, j
+  integer                        :: i, n_pt, j
   double precision               :: I_f, pq_inv, p10_1, p10_2, p01_1, p01_2,rho,pq_inv_2
   integer :: ix,iy,iz, jx,jy,jz, sx,sy,sz
   

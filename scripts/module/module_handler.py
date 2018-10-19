@@ -10,11 +10,10 @@ Usage:
     module_handler.py create_git_ignore     [<module_name>...]
 
 Options:
-    print_descendant         Print the genealogy of the NEEDED_CHILDREN_MODULES
-                                 aka (children, subchildren, etc)
+    print_descendant        Print the genealogy of the needed modules
     create_png              Create a png of the file
-    NEEDED_CHILDREN_MODULES The path of NEEDED_CHILDREN_MODULES
-                                by default try to open the file in the current path
+    NEED                    The path of NEED file.
+                            by default try to open the file in the current path
 """
 import os
 import sys
@@ -30,13 +29,11 @@ except ImportError:
 
 
 def is_module(path_module_rel):
-    return os.path.isfile(os.path.join(QP_SRC, path_module_rel,
-                                       "NEEDED_CHILDREN_MODULES"))
+    return os.path.isfile(os.path.join(QP_SRC, path_module_rel, "NEED"))
 
 
 def is_plugin(path_module_rel):
-    return os.path.isfile(os.path.join(QP_PLUGINS, path_module_rel,
-                                       "NEEDED_CHILDREN_MODULES"))
+    return os.path.isfile(os.path.join(QP_PLUGINS, path_module_rel, "NEED"))
 
 
 def is_exe(fpath):
@@ -44,7 +41,7 @@ def is_exe(fpath):
 
 
 def get_dict_child(l_root_abs=None):
-    """Loop over MODULE in  QP_ROOT/src, open all the NEEDED_CHILDREN_MODULES
+    """Loop over MODULE in  QP_ROOT/src, open all the NEED
     and create a dict[MODULE] = [sub module needed, ...]
     """
     d_ref = dict()
@@ -57,7 +54,7 @@ def get_dict_child(l_root_abs=None):
 
             module_abs = os.path.join(root_abs, module_rel)
             try:
-                path_file = os.path.join(module_abs, "NEEDED_CHILDREN_MODULES")
+                path_file = os.path.join(module_abs, "NEED")
 
                 with open(path_file, "r") as f:
                     l_children = f.read().split()
@@ -131,7 +128,7 @@ class ModuleHandler():
                 d[module_name] = get_l_module_descendant(d_child,
                                                          d_child[module_name])
             except KeyError:
-                print "Check NEEDED_CHILDREN_MODULES for {0}".format(
+                print "Check NEED for {0}".format(
                     module_name)
                 sys.exit(1)
 
@@ -238,7 +235,7 @@ if __name__ == '__main__':
     for module in l_module:
         if not is_module(module):
             print "{0} is not a valide module. Abort".format(module)
-            print "No NEEDED_CHILDREN_MODULES in it"
+            print "No NEED in it"
             sys.exit(1)
 
     m = ModuleHandler()

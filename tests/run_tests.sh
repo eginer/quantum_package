@@ -4,8 +4,6 @@ LIST="
 convert.bats
 hf.bats
 fci.bats
-cassd.bats
-mrcc.bats
 pseudo.bats
 "
 #foboci.bats
