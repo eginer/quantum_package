@@ -18,7 +18,7 @@ FCIDUMP
 
 .. _Molden: http://cheminf.cmbi.ru.nl/molden/
 .. _GAMESS: https://www.msg.chem.iastate.edu/gamess/
-.. _QMC=Chem: https://github.com/scemama/qmcchem
+.. _QMC=Chem: https://gitlab.com/scemama/qmcchem
 .. _CHAMP: https://www.utwente.nl/en/tnw/ccp/research/CHAMP.html
 .. _NECI: https://github.com/ghb24/NECI_STABLE
 .. _Dice: https://sanshar.github.io/Dice/

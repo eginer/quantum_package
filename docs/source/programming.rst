@@ -1,2 +1,5 @@
-Programming the Quantum Package
-===============================
+Programming in the Quantum Package
+==================================
+
+.. include:: work.rst
+

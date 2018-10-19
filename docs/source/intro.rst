@@ -25,15 +25,16 @@ their own programs.
 
 The |qp| has been designed specifically for sCI, so all the
 algorithms which are programmed are not adapted to run SCF or DFT calculations
-on thousands of atoms. 
+on thousands of atoms. Currently, the systems targeted have less than 500
+molecular orbitals.
 
 The |qp| is *not* a massive production code. For conventional
-methods such as Hartree-Fock CISD or MP2, the users are recommended to use the
+methods such as Hartree-Fock, CISD or MP2, the users are recommended to use the
 existing standard production codes which are designed to make these methods run
 fast. Again, the role of the |qp| is to make life simple for the
 developer. Once a new method is developed and tested, the developer is encouraged
 to consider re-expressing it with an integral-driven formulation, and to 
-implement the new method is open-source production codes, such as `NWChem`_
+implement the new method in open-source production codes, such as `NWChem`_
 or `GAMESS`_.
 
 

@@ -66,7 +66,6 @@ d_dependency = {
     "python": [],
     "ninja": ["g++", "python"],
     "make": [],
-    "p_graphviz": ["python"],
     "bats": [],
     "gmp" : ["make", "g++"]
 }
@@ -152,11 +151,6 @@ f77zmq = Info(
     description=' F77-ZeroMQ',
     default_path=join(QP_ROOT_LIB, "libf77zmq.a") )
 
-p_graphviz = Info(
-    url='https://github.com/xflr6/graphviz/archive/master.tar.gz',
-    description=' Python library for graphviz',
-    default_path=join(QP_ROOT_INSTALL, "p_graphviz"))
-
 bats = Info(
     url='https://github.com/sstephenson/bats/archive/master.tar.gz',
     description=' Bash Automated Testing System',
@@ -165,7 +159,7 @@ bats = Info(
 d_info = dict()
 
 for m in ["ocaml", "m4", "curl", "zlib", "patch", "irpf90", "docopt",
-          "resultsFile", "ninja", "emsl", "ezfio", "p_graphviz",
+          "resultsFile", "ninja", "emsl", "ezfio", 
           "zeromq", "f77zmq", "bats", "gmp"]: 
     exec ("d_info['{0}']={0}".format(m))
 
