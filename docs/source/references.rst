@@ -1,6 +1,9 @@
 References
 ^^^^^^^^^^^
 
-Articles for which the Quantum Package was used
+.. rubric:: References
+
+.. bibliography:: refs.bib
+   :style: unsrt
 
 

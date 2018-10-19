@@ -16,6 +16,7 @@ Quantum Package
    :caption: Contents:
 
    intro
+   applications
    interfaces
    benchmarks
    installation

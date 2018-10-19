@@ -41,6 +41,8 @@ release = '1.0'
 extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.githubpages',
+    'sphinxcontrib.bibtex'
+
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -98,12 +100,18 @@ html_static_path = ['_static']
 # 'searchbox.html']``.
 #
 # html_sidebars = {}
+html_sidebars = {
+  '**': [
+    'globaltoc.html',
+    'searchbox.html',
+  ]
+}
 
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'QuantumPackagedoc'
+htmlhelp_basename = 'QuantumPackage'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -131,7 +139,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'QuantumPackage.tex', 'Quantum Package Documentation',
-     'A. Scemama, E. Giner, T. Applencourt, Y. Garniron', 'manual'),
+     'A. Scemama, E. Giner', 'manual'),
 ]
 
 
@@ -176,3 +184,4 @@ epub_exclude_files = ['search.html']
 
 
 # -- Extension configuration -------------------------------------------------
+
