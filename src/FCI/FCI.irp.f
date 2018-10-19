@@ -72,7 +72,7 @@ program fci_zmq
         threshold_selectors = 1.d0
         threshold_generators = 1.d0 
         SOFT_TOUCH threshold_selectors threshold_generators
-        call ZMQ_pt2(CI_energy, pt2,relative_error,error) ! Stochastic PT2
+        call ZMQ_pt2(CI_energy(1:N_states), pt2,relative_error,error) ! Stochastic PT2
         threshold_selectors = threshold_selectors_save
         threshold_generators = threshold_generators_save
         SOFT_TOUCH threshold_selectors threshold_generators
@@ -85,11 +85,11 @@ program fci_zmq
 
       N_states_p = min(N_det,N_states)
 
-      call ezfio_set_fci_energy_pt2(CI_energy+pt2)
+      call ezfio_set_fci_energy_pt2(CI_energy(1:N_states)+pt2)
       call write_double(6,correlation_energy_ratio, 'Correlation ratio')
-      call print_summary(CI_energy,pt2,error)
-      call save_iterations(CI_energy,pt2,N_det) 
-      call print_extrapolated_energy(CI_energy,pt2)
+      call print_summary(CI_energy(1:N_states),pt2,error)
+      call save_iterations(CI_energy(1:N_states),pt2,N_det) 
+      call print_extrapolated_energy(CI_energy(1:N_states),pt2)
       N_iter += 1
 
       n_det_before = N_det
@@ -113,7 +113,7 @@ program fci_zmq
       end if
       call diagonalize_CI
       call save_wavefunction
-      call ezfio_set_fci_energy(CI_energy)
+      call ezfio_set_fci_energy(CI_energy(1:N_states))
     enddo
   endif
 
@@ -121,8 +121,8 @@ program fci_zmq
       threshold_davidson = threshold_davidson_in
       call diagonalize_CI
       call save_wavefunction
-      call ezfio_set_fci_energy(CI_energy)
-      call ezfio_set_fci_energy_pt2(CI_energy+pt2)
+      call ezfio_set_fci_energy(CI_energy(1:N_states))
+      call ezfio_set_fci_energy_pt2(CI_energy(1:N_states)+pt2)
   endif
 
   if (do_pt2) then
@@ -134,16 +134,16 @@ program fci_zmq
     threshold_selectors = threshold_selectors_save
     threshold_generators = threshold_generators_save
     SOFT_TOUCH threshold_selectors threshold_generators
-    call ezfio_set_fci_energy(CI_energy)
-    call ezfio_set_fci_energy_pt2(CI_energy+pt2)
+    call ezfio_set_fci_energy(CI_energy(1:N_states))
+    call ezfio_set_fci_energy_pt2(CI_energy(1:N_states)+pt2)
   endif
   print *,  'N_det             = ', N_det
   print *,  'N_states          = ', N_states
   print*,   'correlation_ratio = ', correlation_energy_ratio
 
 
-  call save_iterations(CI_energy,pt2,N_det) 
+  call save_iterations(CI_energy(1:N_states),pt2,N_det) 
   call write_double(6,correlation_energy_ratio, 'Correlation ratio')
-  call print_summary(CI_energy,pt2,error)
+  call print_summary(CI_energy(1:N_states),pt2,error)
 
 end

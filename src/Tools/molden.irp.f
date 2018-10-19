@@ -117,10 +117,10 @@ subroutine write_Mo_basis(i_unit_output)
  integer :: i,j,k,l, getUnitAndOpen
  integer :: i_5,i_mod
 
- write(i_unit_output,*),'          ----------------------'
- write(i_unit_output,*),'          MCSCF NATURAL ORBITALS'
- write(i_unit_output,*),'          ----------------------'
- write(i_unit_output,*),'                                '
+ write(i_unit_output,*) '          ----------------------'
+ write(i_unit_output,*) '          MCSCF NATURAL ORBITALS'
+ write(i_unit_output,*) '          ----------------------'
+ write(i_unit_output,*) '                                '
 
  do j = 1, mo_tot_num
   write(i_unit_output,'(18X,I3)')j

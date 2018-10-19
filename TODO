@@ -1,0 +1,45 @@
+* Virer tous les modules qui sont dans plugins
+* Permettre aux utilisateurs de facilement deposer des plugins dans plugins via une commande
+* Permettre de descendre plus bas dans l'arborescence de plugins pour permettre des `git clone` dans le 
+  repertoire plugins
+* Mettre les fichiers de test dans le directory source
+* Separer les integrales bielectroniques en AO et MO
+* Une facon simple de lancer les calculs en parallele
+* Creer une page web pas trop degueu et la mettre ici : http://lcpq.github.io/quantum_package
+* Version binaire en tar.gz
+* Un module pour lire les integrales Moleculaires depuis un FCIDUMP
+* Un module pour lire des integrales Atomiques (voir module de Mimi pour lire les AO Slater)
+* Include la DFT si c'est propre
+
+* Plus de tests:
+
+  * CIS
+  * CISD
+  * Multi-state
+  * >1000 dets
+  * Davidson 
+  * Lapack
+  * Extrapolation
+  * DFT?
+
+
+* User doc:
+
+  * qp_create_ezfio_from_xyz
+  * qp_set_frozen_core 
+  * qp_set_mo_class
+  * qp_edit
+  * qp_convert
+  * Interfaces : molden/fcidump
+  * Natural orbitals
+  * Excited states
+  * Parameters for Hartree-Fock
+  * Parameters for Davidson
+  * Running in parallel
+  * Parameters for selection (Generators/selectors)
+
+* Programmers doc:
+
+  * Pointer to IRPF90 tutorial
+  * Fetch all README.rst files, and IRP documentation via scripts to replace old README.rst
+  * Example : Simple Hartree-Fock program from scratch
