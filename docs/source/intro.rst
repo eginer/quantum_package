@@ -43,14 +43,15 @@ Applications
 
 Multiple programs were developed with the |qp|, such as:
 
-- Selected Full-CI + Epstein-Nesbet PT2 (CIPSI)
-- Hybrid stochastic/deterministic MR-PT2
+- Selected Full-CI + Epstein-Nesbet PT2 (CIPSI) :cite:`Caffarel_2016,Caffarel_2016.2,Loos_2018,Scemama_2018,Dash_2018`
+- Hybrid stochastic/deterministic MR-PT2 :cite:`Garniron_2017.2,Loos_2018`
 - CIS, CISD, MP2
 - Selected CISD
-- Jeziorsky-Monkhorst MR-PT2
+- Jeziorsky-Monkhorst MR-PT2 :cite:`Giner_2017`
 - Selected CAS+SD
 - Selected difference-dedicated CI (DD-CI)
-- Multi-Reference Coupled Cluster (MR-CCSD)
+- Multi-Reference Coupled Cluster (MR-CCSD) :cite:`Giner_2016,Garniron_2017`
+- Shifted-Bk with CIPSI :cite:`Garniron_2018`
 - CIPSI with range-separated DFT
 
 All these programs can generate ground and excited states, and spin pure wave functions

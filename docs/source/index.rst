@@ -16,12 +16,11 @@ Quantum Package
    :caption: Contents:
 
    intro
-   applications
    interfaces
    benchmarks
    installation
    programming
-   references
+   research
    license
 
 
