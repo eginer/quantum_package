@@ -17,8 +17,8 @@ Quantum Package
 
    intro
    interfaces
-   benchmarks
    installation
+   benchmarks
    programming
    research
    license
