@@ -18,6 +18,7 @@ Quantum Package
    intro
    interfaces
    installation
+   users_guide
    benchmarks
    programming
    research
