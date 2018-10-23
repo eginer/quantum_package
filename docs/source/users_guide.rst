@@ -5,10 +5,10 @@ The input data is stored in a `EZFIO`_ database. It is a hierarchical data
 format which uses the hierarchy of the file system to organize the data, stored
 in a directory.
 To access the data in the EZFIO file, you can use the provided API (Fortran,
-Python, OCaml or bash), or tools such as `qp_edit` provided with the Quantum
+Python, OCaml or Bash), or tools such as ``qp_edit`` provided with the Quantum
 Package. The data in the EZFIO directory is stroed as plain text files, so 
 it can be read with a text editor.
-To create an EZFIO directory from scratch, the `qp_create_ezfio_from_xyz` should
+To create an EZFIO directory from scratch, the ``qp_create_ezfio_from_xyz`` should
 be used.
 
 qp_create_ezfio_from_xyz
@@ -28,8 +28,6 @@ Flags ::
    [-m int]       Spin multiplicity (2S+1) of the molecule. Default is 1.
    [-o file]      Name of the created EZFIO file.
    [-p string]    Name of the pseudopotential
-   [-build-info]  print info about this build and exit
-   [-version]     print the version of this build and exit
    [-help]        print this help text and exit
                   (alias: -?)
 
@@ -54,7 +52,7 @@ qp_set_mo_class
 
 Usage ::
 
-  qp_set_mo_class EZFIO_DIRECTORY
+  qp_set_mo_class [FLAGS] EZFIO_DIRECTORY
 
 
 Flags ::
@@ -65,8 +63,6 @@ Flags ::
   [-inact range]  Range of inactive orbitals
   [-q]            Query: print the current masks
   [-virt range]   Range of virtual orbitals
-  [-build-info]   print info about this build and exit
-  [-version]      print the version of this build and exit
   [-help]         print this help text and exit
                   (alias: -?)
 
@@ -89,9 +85,9 @@ Virtual
 
 To avoid errors, all the MOs should be given a class.
 The range of MOs are given like the ranges in SLURM commands. For example,
-`"[36-53,72-107,126-131]"`.
+``"[36-53,72-107,126-131]"``.
 
-To quickly setup a frozen core calculation, the script `qp_set_frozen_core.py`
+To quickly setup a frozen core calculation, the script ``qp_set_frozen_core.py``
 can be used::
 
   qp_set_frozen_core.py EZFIO_DIRECTORY
@@ -108,21 +104,26 @@ Excited states
 --------------
 
 It is possible to run excited states calculations with the quantum package.  To
-do this, set the `n_states` variable in the `Determinants` section to the
+do this, set the ``n_states`` variable in the ``Determinants`` section to the
 number of requested states.  The selection criterion will be the maximum of the
 selection criteria for each state.  If the Davidson diagonalization has
-difficulties to converge, increase the `n_states_diag` variable in the
-`Davidson` section.
+difficulties to converge, increase the ``n_states_diag`` variable in the
+``Davidson`` section.
 
-When computing multiple states, it is good to have the `s2_eig` flag of the
-`Determinants` section set to `true`. This will force the Davidson algorithm to
+When computing multiple states, it is good to have the ``s2_eig`` flag of the
+``Determinants`` section set to ``true``. This will force the Davidson algorithm to
 choose only vectors with a value of S^2 equal to the ``expected_s2``.
 Otherwise, different spin states will come out in the diagonalization.
 
+The Quantum Package doesn't take account of the symmetry. Due to numerical
+noise, excited states of different symmetries may enter in the calculation.
+Note that it is possible to make state-average calculation of states with
+different symmetries and/or different spin multiplicities.
+
 To include excited state of  all possible symmetries, a simple trick is to
 run a preliminary multi-state CIS calculation, and then running the selected
-FCI restarting from the CIS states, setting the `read_wf` flag of the
-`Determinants` section tp `true`.
+FCI restarting from the CIS states, setting the ``read_wf`` flag of the
+``Determinants`` section to ``true``.
 
 Usually, it is good practice to use state-averaged MOs so that all states have
 MOs of comparable quality. For example, when searching for a singly excited
@@ -134,20 +135,11 @@ calculation.
 Natural orbitals
 ----------------
 
-To produce state-average natural orbitals, run
+To produce state-average natural orbitals, run ::
 
-```
-qp_run save_natorb file.ezfio
-```
+    qp_run save_natorb file.ezfio
 
 The MOs will be replaced, so the two-electron integrals and the wave function are invalidated as well.
-
-
-
-The QP doesn't take account of the symmetry. For reasons due to numerical noise,
-excited states of different symmetries may enter in the calculation.
-Note that it is possible to make state-average calculation of states with different
-symmetries and/or different spin multiplicities.
 
 
 .. _EZFIO: http://gitlab.com/scemama/EZFIO
