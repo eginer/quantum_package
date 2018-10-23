@@ -21,19 +21,19 @@ function run_HF() {
 }
 
 
-function run_FCI_ZMQ() {
+function run_FCI() {
   thresh=5.e-5
-  test_exe fci_zmq|| skip
+  test_exe FCI || skip
   qp_edit -c $1
   ezfio set_file $1
   ezfio set perturbation do_pt2 True
   ezfio set determinants n_det_max $2
   ezfio set davidson threshold_davidson 1.e-10
 
-  qp_run fci_zmq $1
-  energy="$(ezfio get full_ci_zmq energy)"
+  qp_run FCI $1
+  energy="$(ezfio get FCI energy | tr '[]' ' ')"
   eq $energy $3 $thresh
-  energy_pt2="$(ezfio get full_ci_zmq energy_pt2)"
+  energy_pt2="$(ezfio get FCI energy_pt2 | tr '[]' ' ')"
   eq $energy_pt2 $4 $thresh
 }
 
@@ -48,6 +48,6 @@ function run_FCI_ZMQ() {
 
 @test "FCI H2O VDZ pseudo" {
   qp_set_mo_class h2o_pseudo.ezfio -core "[1]" -act "[2-12]" -del "[13-23]"
-  run_FCI_ZMQ h2o_pseudo.ezfio 2000    -17.0399584106077 -17.0400170044515
+  run_FCI h2o_pseudo.ezfio 2000    -17.0399584106077 -17.0400170044515
 }
 
