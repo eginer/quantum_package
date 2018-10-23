@@ -32,7 +32,7 @@ python:
 
 script: 
   - ./configure  ./config/travis.cfg
-  - source ./quantum_package.rc ; qp_module.py install Full_CI Full_CI_ZMQ Hartree_Fock CAS_SD_ZMQ mrcc All_singles
+  - source ./quantum_package.rc 
   - source ./quantum_package.rc ; cd ~ ; install_lapack.sh ; cd $QP_ROOT
   - source ./quantum_package.rc ; ninja
   - source ./quantum_package.rc ; cd ocaml ; make ; cd -
