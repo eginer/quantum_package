@@ -65,10 +65,10 @@ echo "Creating root of static directory"
 #     ---------------------------------
 
 rm -rf -- ${QPACKAGE_STATIC}
-mkdir -p -- ${QPACKAGE_STATIC}/{bin,lib,extra_lib,data,install}
+mkdir -p -- ${QPACKAGE_STATIC}/{bin,lib,extra_lib,install}
 if [[ $? -ne 0 ]] ;
 then
-  echo "Error creating ${QPACKAGE_STATIC}/{bin,lib,extra_lib,data,install}"
+  echo "Error creating ${QPACKAGE_STATIC}/{bin,lib,extra_lib,install}"
   exit 1
 fi
 
@@ -105,13 +105,13 @@ cd ${QPACKAGE_STATIC}/bin
   done
 cd -
 
+cp -r ${QP_ROOT}/data ${QPACKAGE_STATIC}/data
 for i in ${FORTRAN_EXEC}
 do
   i=$(basename $i)
   echo $i \$QP_ROOT/bin/$i
 done >> ${QPACKAGE_STATIC}/data/executables
 
-cp ${QP_ROOT}/data/ezfio_defaults ${QPACKAGE_STATIC}/data
 mkdir -p ${QPACKAGE_STATIC}/src/Bitmask
 cp ${QP_ROOT}/src/Bitmask/bitmasks_module.f90 ${QPACKAGE_STATIC}/src/Bitmask
 
