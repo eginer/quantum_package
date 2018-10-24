@@ -127,7 +127,11 @@ then
 fi
 
 ALL_LIBS=$(find_libs ${OCAML_EXEC} ${FORTRAN_EXEC})
-cp -- ${ALL_LIBS} ${MKL_LIBS} ${QPACKAGE_STATIC}/extra_lib
+for i in ${ALL_LIBS} ${MKL_LIBS} 
+do
+  cp -- ${i} ${QPACKAGE_STATIC}/extra_lib
+done
+
 if [[ $? -ne 0 ]] ;
 then
   echo 'cp -- ${ALL_LIBS} ${MKL_LIBS} ${QPACKAGE_STATIC}/extra_lib'
