@@ -212,9 +212,9 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error, variance, norm)
       call omp_set_nested(.false.)
 
       
-      print *, '========== ================= =========== =============== =============== ================='
-      print *, ' Samples        Energy        Stat. Err     Variance          Norm          Seconds      '
-      print *, '========== ================= =========== =============== =============== ================='
+      print '(A)', '========== ================= =========== =============== =============== ================='
+      print '(A)', ' Samples        Energy        Stat. Err     Variance          Norm          Seconds      '
+      print '(A)', '========== ================= =========== =============== =============== ================='
       
       !$OMP PARALLEL DEFAULT(shared) NUM_THREADS(nproc_target+1)            &
           !$OMP  PRIVATE(i)
@@ -233,7 +233,7 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error, variance, norm)
       !$OMP END PARALLEL
       call end_parallel_job(zmq_to_qp_run_socket, zmq_socket_pull, 'pt2')
       
-      print *, '========== ================= ================= ================='
+      print '(A)', '========== ================= =========== =============== =============== ================='
       
     enddo
 !    call omp_set_nested(.false.)
