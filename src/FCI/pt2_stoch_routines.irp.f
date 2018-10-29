@@ -85,7 +85,7 @@ end function
 
 
 
-subroutine ZMQ_pt2(E, pt2,relative_error, error)
+subroutine ZMQ_pt2(E, pt2,relative_error, error, variance, norm)
   use f77_zmq
   use selection_types
   
@@ -95,17 +95,20 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error)
   integer, external              :: omp_get_thread_num
   double precision, intent(in)   :: relative_error, E(N_states)
   double precision, intent(out)  :: pt2(N_states),error(N_states)
+  double precision, intent(out)  :: variance(N_states),norm(N_states)
   
   
   integer                        :: i
   
   double precision, external     :: omp_get_wtime
-  double precision               :: state_average_weight_save(N_states), w(N_states)
+  double precision               :: state_average_weight_save(N_states), w(N_states,4)
   integer(ZMQ_PTR), external     :: new_zmq_to_qp_run_socket
   
   if (N_det < max(10,N_states)) then
     pt2=0.d0
-    call ZMQ_selection(0, pt2)
+    variance=0.d0
+    norm=0.d0
+    call ZMQ_selection(0, pt2, variance, norm)
     error(:) = 0.d0
   else
     
@@ -116,11 +119,6 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error)
       TOUCH state_average_weight pt2_stoch_istate
 
       provide nproc pt2_F mo_bielec_integrals_in_map mo_mono_elec_integral pt2_w psi_selectors 
-      
-      print *, '========== ================= ================= ================='
-      print *, ' Samples        Energy         Stat. Error         Seconds      '
-      print *, '========== ================= ================= ================='
-      
       call new_parallel_job(zmq_to_qp_run_socket, zmq_socket_pull, 'pt2')
 
       integer, external              :: zmq_put_psi
@@ -213,13 +211,21 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error)
 
       call omp_set_nested(.false.)
 
+      
+      print *, '========== ================= =========== =============== =============== ================='
+      print *, ' Samples        Energy        Stat. Err     Variance          Norm          Seconds      '
+      print *, '========== ================= =========== =============== =============== ================='
+      
       !$OMP PARALLEL DEFAULT(shared) NUM_THREADS(nproc_target+1)            &
           !$OMP  PRIVATE(i)
       i = omp_get_thread_num()
       if (i==0) then
 
-        call pt2_collector(zmq_socket_pull, E(pt2_stoch_istate),relative_error, w, error)
-        pt2(pt2_stoch_istate) = w(pt2_stoch_istate)
+        call pt2_collector(zmq_socket_pull, E(pt2_stoch_istate),relative_error, w(1,1), w(1,2), w(1,3), w(1,4))
+        pt2(pt2_stoch_istate) = w(pt2_stoch_istate,1)
+        error(pt2_stoch_istate) = w(pt2_stoch_istate,2)
+        variance(pt2_stoch_istate) = w(pt2_stoch_istate,3)
+        norm(pt2_stoch_istate) = w(pt2_stoch_istate,4)
 
       else
         call pt2_slave_inproc(i)
@@ -251,7 +257,7 @@ subroutine pt2_slave_inproc(i)
 end
 
 
-subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error)
+subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error, variance, norm)
   use f77_zmq
   use selection_types
   use bitmasks
@@ -261,9 +267,12 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error)
   integer(ZMQ_PTR), intent(in)   :: zmq_socket_pull
   double precision, intent(in) :: relative_error, E
   double precision, intent(out)  :: pt2(N_states), error(N_states)
+  double precision, intent(out)  :: variance(N_states), norm(N_states)
 
 
   double precision, allocatable      :: eI(:,:), eI_task(:,:), S(:), S2(:)
+  double precision, allocatable      :: vI(:,:), vI_task(:,:), T2(:)
+  double precision, allocatable      :: nI(:,:), nI_task(:,:), T3(:)
   integer(ZMQ_PTR),external      :: new_zmq_to_qp_run_socket
   integer(ZMQ_PTR)               :: zmq_to_qp_run_socket
   integer, external :: zmq_delete_tasks
@@ -275,7 +284,7 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error)
   integer, allocatable :: index(:)
   
   double precision, external :: omp_get_wtime
-  double precision :: v, x, avg, eqt, E0
+  double precision :: v, x, x2, x3, avg, avg2, avg3, eqt, E0, v0, n0
   double precision :: time, time0
   
   integer, allocatable :: f(:)
@@ -287,19 +296,31 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error)
   allocate(task_id(pt2_n_tasks_max), index(pt2_n_tasks_max), f(N_det_generators))
   allocate(d(N_det_generators+1))
   allocate(eI(N_states, N_det_generators), eI_task(N_states, pt2_n_tasks_max))
+  allocate(vI(N_states, N_det_generators), vI_task(N_states, pt2_n_tasks_max))
+  allocate(nI(N_states, N_det_generators), nI_task(N_states, pt2_n_tasks_max))
   allocate(S(pt2_N_teeth+1), S2(pt2_N_teeth+1))
+  allocate(T2(pt2_N_teeth+1), T3(pt2_N_teeth+1))
    
   pt2(:) = -huge(1.)
+  error(:) = huge(1.)
+  variance(:) = huge(1.)
+  norm(:) = 0.d0
   S(:) = 0d0
   S2(:) = 0d0
+  T2(:) = 0d0
+  T3(:) = 0d0
   n = 1
   t = 0
   U = 0
   eI(:,:) = 0d0
+  vI(:,:) = 0d0
+  nI(:,:) = 0d0
   f(:) = pt2_F(:)
   d(:) = .false.
   n_tasks = 0
   E0 = E
+  v0 = 0.d0
+  n0 = 0.d0
   more = 1
   time0 = omp_get_wtime()
 
@@ -316,8 +337,12 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error)
         if(U >= pt2_n_0(t+1)) then
           t=t+1
           E0 = 0.d0
+          v0 = 0.d0
+          n0 = 0.d0
           do i=pt2_n_0(t),1,-1
             E0 += eI(pt2_stoch_istate, i)
+            v0 += vI(pt2_stoch_istate, i)
+            n0 += nI(pt2_stoch_istate, i)
           end do
         else
           exit
@@ -327,26 +352,36 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error)
       ! Add Stochastic part
       c = pt2_R(n)
       if(c > 0) then
-        x = 0d0
+        x  = 0d0
+        x2 = 0d0
+        x3 = 0d0
         do p=pt2_N_teeth, 1, -1
           v = pt2_u_0 + pt2_W_T * (pt2_u(c) + dble(p-1))
           i = pt2_find_sample_lr(v, pt2_cW,pt2_n_0(p),pt2_n_0(p+1))
-          x += eI(pt2_stoch_istate, i) * pt2_W_T / pt2_w(i)
+          x  += eI(pt2_stoch_istate, i) * pt2_W_T / pt2_w(i)
+          x2 += vI(pt2_stoch_istate, i) * pt2_W_T / pt2_w(i)
+          x3 += nI(pt2_stoch_istate, i) * pt2_W_T / pt2_w(i)
           S(p) += x
           S2(p) += x*x
+          T2(p) += x2
+          T3(p) += x3
         end do
-        avg = E0 + S(t) / dble(c)
+        avg  = E0 + S(t) / dble(c)
+        avg2 = v0 + T2(t) / dble(c)
+        avg3 = n0 + T3(t) / dble(c)
         if ((avg /= 0.d0) .or. (n == N_det_generators) ) then 
           do_exit = .true.
         endif
         pt2(pt2_stoch_istate) = avg
+        variance(pt2_stoch_istate) = avg2 !- avg*avg
+        norm(pt2_stoch_istate) = avg3
         ! 1/(N-1.5) : see  Brugger, The American Statistician (23) 4 p. 32 (1969)
         if(c > 2) then
           eqt = dabs((S2(t) / c) - (S(t)/c)**2) ! dabs for numerical stability
           eqt = sqrt(eqt / (dble(c) - 1.5d0))  
           error(pt2_stoch_istate) = eqt
           if(mod(c,10)==0 .or. n==N_det_generators) then
-            print '(G10.3, 2X, F16.10, 2X, G16.3, 2X, F16.4, A20)', c, avg+E, eqt, time-time0, ''
+            print '(G10.3, 2X, F16.10, 2X, G10.3, 2X, F14.10, 2X, F14.10, 2X, F10.4, A10)', c, avg+E, eqt, avg2, avg3, time-time0, ''
             if(do_exit .and. (dabs(error(pt2_stoch_istate)) / (1.d-20 + dabs(pt2(pt2_stoch_istate)) ) <= relative_error)) then 
               if (zmq_abort(zmq_to_qp_run_socket) == -1) then
                 call sleep(10)
@@ -363,12 +398,14 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error)
     else if(more == 0) then
       exit
     else
-      call pull_pt2_results(zmq_socket_pull, index, eI_task, task_id, n_tasks)
+      call pull_pt2_results(zmq_socket_pull, index, eI_task, vI_task, nI_task, task_id, n_tasks)
       if (zmq_delete_tasks(zmq_to_qp_run_socket,zmq_socket_pull,task_id,n_tasks,more) == -1) then
           stop 'Unable to delete tasks'
       endif
       do i=1,n_tasks
-        eI(:, index(i)) += eI_task(:, i)
+        eI(:, index(i)) += eI_task(:,i)
+        vI(:, index(i)) += vI_task(:,i)
+        nI(:, index(i)) += nI_task(:,i)
         f(index(i)) -= 1
       end do
     end if
@@ -464,6 +501,10 @@ BEGIN_PROVIDER[ double precision, pt2_u, (N_det_generators)]
 
   U = 0
   do while(N_j < pt2_n_tasks)
+
+    if (N_c+ncache > N_det_generators) then
+      ncache = N_det_generators - N_c
+    endif
 
     !$OMP PARALLEL DO DEFAULT(SHARED) PRIVATE(dt,v,t,k)
     do k=1, ncache

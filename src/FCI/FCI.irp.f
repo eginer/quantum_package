@@ -1,12 +1,12 @@
 program fci_zmq
   implicit none
   integer                        :: i,j,k
-  double precision, allocatable  :: pt2(:)
+  double precision, allocatable  :: pt2(:), variance(:), norm(:)
   integer                        :: degree
   integer                        :: n_det_before, to_select
   double precision               :: threshold_davidson_in
   
-  allocate (pt2(N_states))
+  allocate (pt2(N_states), norm(N_states), variance(N_states))
 
   double precision               :: hf_energy_ref
   logical                        :: has
@@ -16,6 +16,8 @@ program fci_zmq
   relative_error=PT2_relative_error
 
   pt2 = -huge(1.e0)
+  norm = 0.d0
+  variance = huge(1.e0)
   threshold_davidson_in = threshold_davidson
   threshold_davidson = threshold_davidson_in * 100.d0
   SOFT_TOUCH threshold_davidson
@@ -69,10 +71,12 @@ program fci_zmq
 
       if (do_pt2) then
         pt2 = 0.d0
+        variance = 0.d0
+        norm = 0.d0
         threshold_selectors = 1.d0
         threshold_generators = 1.d0 
         SOFT_TOUCH threshold_selectors threshold_generators
-        call ZMQ_pt2(CI_energy(1:N_states), pt2,relative_error,error) ! Stochastic PT2
+        call ZMQ_pt2(CI_energy(1:N_states),pt2,relative_error,error, variance, norm) ! Stochastic PT2
         threshold_selectors = threshold_selectors_save
         threshold_generators = threshold_generators_save
         SOFT_TOUCH threshold_selectors threshold_generators
@@ -87,7 +91,7 @@ program fci_zmq
 
       call ezfio_set_fci_energy_pt2(CI_energy(1:N_states)+pt2)
       call write_double(6,correlation_energy_ratio, 'Correlation ratio')
-      call print_summary(CI_energy(1:N_states),pt2,error)
+      call print_summary(CI_energy(1:N_states),pt2,error,variance,norm)
       call save_iterations(CI_energy(1:N_states),pt2,N_det) 
       call print_extrapolated_energy(CI_energy(1:N_states),pt2)
       N_iter += 1
@@ -102,7 +106,7 @@ program fci_zmq
         to_select = max(N_det, to_select)
         to_select = min(to_select, N_det_max-n_det_before)
       endif
-      call ZMQ_selection(to_select, pt2)
+      call ZMQ_selection(to_select, pt2, variance, norm)
       
       PROVIDE  psi_coef
       PROVIDE  psi_det
@@ -130,7 +134,7 @@ program fci_zmq
     threshold_selectors = 1.d0
     threshold_generators = 1d0 
     SOFT_TOUCH threshold_selectors threshold_generators
-    call ZMQ_pt2(CI_energy, pt2,relative_error,error) ! Stochastic PT2
+    call ZMQ_pt2(CI_energy, pt2,relative_error,error,variance,norm) ! Stochastic PT2
     threshold_selectors = threshold_selectors_save
     threshold_generators = threshold_generators_save
     SOFT_TOUCH threshold_selectors threshold_generators
@@ -144,6 +148,6 @@ program fci_zmq
 
   call save_iterations(CI_energy(1:N_states),pt2,N_det) 
   call write_double(6,correlation_energy_ratio, 'Correlation ratio')
-  call print_summary(CI_energy(1:N_states),pt2,error)
+  call print_summary(CI_energy(1:N_states),pt2,error,variance,norm)
 
 end

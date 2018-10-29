@@ -26,13 +26,15 @@ subroutine get_mask_phase(det1, pm, Nint)
 end subroutine
 
 
-subroutine select_connected(i_generator,E0,pt2,b,subset,csubset)
+subroutine select_connected(i_generator,E0,pt2,variance,norm,b,subset,csubset)
   use bitmasks
   use selection_types
   implicit none
   integer, intent(in)            :: i_generator, subset, csubset
   type(selection_buffer), intent(inout) :: b
   double precision, intent(inout)  :: pt2(N_states)
+  double precision, intent(inout)  :: variance(N_states)
+  double precision, intent(inout)  :: norm(N_states)
   integer :: k,l
   double precision, intent(in)   :: E0(N_states)
 
@@ -51,7 +53,7 @@ subroutine select_connected(i_generator,E0,pt2,b,subset,csubset)
       particle_mask(k,1) = iand(generators_bitmask(k,1,s_part,l), not(psi_det_generators(k,1,i_generator)) )
       particle_mask(k,2) = iand(generators_bitmask(k,2,s_part,l), not(psi_det_generators(k,2,i_generator)) )
     enddo
-    call select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_diag_tmp,E0,pt2,b,subset,csubset)
+    call select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_diag_tmp,E0,pt2,variance,norm,b,subset,csubset)
   enddo
   deallocate(fock_diag_tmp)
 end subroutine
@@ -287,7 +289,7 @@ subroutine get_m0(gen, phasemask, bannedOrb, vect, mask, h, p, sp, coefs)
 end 
 
 
-subroutine select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_diag_tmp,E0,pt2,buf,subset,csubset)
+subroutine select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_diag_tmp,E0,pt2,variance,norm,buf,subset,csubset)
   use bitmasks
   use selection_types
   implicit none
@@ -300,6 +302,8 @@ subroutine select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_d
   double precision, intent(in)   :: fock_diag_tmp(mo_tot_num)
   double precision, intent(in)   :: E0(N_states)
   double precision, intent(inout) :: pt2(N_states)
+  double precision, intent(inout)  :: variance(N_states)
+  double precision, intent(inout)  :: norm(N_states)
   type(selection_buffer), intent(inout) :: buf
   
   integer                         :: h1,h2,s1,s2,s3,i1,i2,ib,sp,k,i,j,nt,ii
@@ -622,7 +626,7 @@ subroutine select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_d
           
             call splash_pq(mask, sp, minilist, i_generator, interesting(0), bannedOrb, banned, mat, interesting)
 
-            call fill_buffer_double(i_generator, sp, h1, h2, bannedOrb, banned, fock_diag_tmp, E0, pt2, mat, buf)
+            call fill_buffer_double(i_generator, sp, h1, h2, bannedOrb, banned, fock_diag_tmp, E0, pt2, variance, norm, mat, buf)
           end if
         enddo
         if(s1 /= s2) monoBdo = .false.
@@ -635,7 +639,7 @@ end subroutine
 
 
 
-subroutine fill_buffer_double(i_generator, sp, h1, h2, bannedOrb, banned, fock_diag_tmp, E0, pt2, mat, buf)
+subroutine fill_buffer_double(i_generator, sp, h1, h2, bannedOrb, banned, fock_diag_tmp, E0, pt2, variance, norm, mat, buf)
   use bitmasks
   use selection_types
   implicit none
@@ -646,11 +650,13 @@ subroutine fill_buffer_double(i_generator, sp, h1, h2, bannedOrb, banned, fock_d
   double precision, intent(in)           :: fock_diag_tmp(mo_tot_num)
   double precision, intent(in)    :: E0(N_states)
   double precision, intent(inout) :: pt2(N_states) 
+  double precision, intent(inout) :: variance(N_states) 
+  double precision, intent(inout) :: norm(N_states) 
   type(selection_buffer), intent(inout) :: buf
   logical :: ok
   integer :: s1, s2, p1, p2, ib, j, istate
   integer(bit_kind) :: mask(N_int, 2), det(N_int, 2)
-  double precision :: e_pert, delta_E, val, Hii, sum_e_pert, tmp
+  double precision :: e_pert, delta_E, val, Hii, sum_e_pert, tmp, alpha_h_psi, coef
   double precision, external :: diag_H_mat_elem_fock
   
   logical, external :: detEq
@@ -681,14 +687,21 @@ subroutine fill_buffer_double(i_generator, sp, h1, h2, bannedOrb, banned, fock_d
       
       do istate=1,N_states
         delta_E = E0(istate) - Hii
-        val = mat(istate, p1, p2) + mat(istate, p1, p2) 
+        alpha_h_psi = mat(istate, p1, p2) 
+        val = alpha_h_psi + alpha_h_psi
         tmp = dsqrt(delta_E * delta_E + val * val)
         if (delta_E < 0.d0) then
             tmp = -tmp
         endif
         e_pert = 0.5d0 * (tmp - delta_E)
+        coef = alpha_h_psi / delta_E
         pt2(istate) = pt2(istate) + e_pert
+
         sum_e_pert = sum_e_pert + e_pert * state_average_weight(istate)
+
+        variance(istate) = variance(istate) + alpha_h_psi * alpha_h_psi * state_average_weight(istate)
+        norm(istate) = norm(istate) + coef * coef * state_average_weight(istate)
+
       end do
       
       if(sum_e_pert <= buf%mini) then

@@ -19,6 +19,8 @@ subroutine run_selection_slave(thread,iproc,energy)
   type(selection_buffer) :: buf, buf2
   logical :: done, buffer_ready
   double precision :: pt2(N_states)
+  double precision :: variance(N_states)
+  double precision :: norm(N_states)
 
   PROVIDE psi_bilinear_matrix_columns_loc psi_det_alpha_unique psi_det_beta_unique
   PROVIDE psi_bilinear_matrix_rows psi_det_sorted_order psi_bilinear_matrix_order
@@ -39,6 +41,8 @@ subroutine run_selection_slave(thread,iproc,energy)
   buffer_ready = .False.
   ctask = 1
   pt2(:) = 0d0
+  variance(:) = 0d0
+  norm(:) = 0.d0
 
   do
     integer, external :: get_task_from_taskserver
@@ -59,7 +63,7 @@ subroutine run_selection_slave(thread,iproc,energy)
       else
         ASSERT (N == buf%N)
       end if
-      call select_connected(i_generator,energy,pt2,buf,subset,pt2_F(i_generator))
+      call select_connected(i_generator,energy,pt2,variance,norm,buf,subset,pt2_F(i_generator))
     endif
 
     integer, external :: task_done_to_taskserver
@@ -78,9 +82,11 @@ subroutine run_selection_slave(thread,iproc,energy)
       if(ctask > 0) then
         call sort_selection_buffer(buf)
         call merge_selection_buffers(buf,buf2)
-        call push_selection_results(zmq_socket_push, pt2, buf, task_id(1), ctask)
+        call push_selection_results(zmq_socket_push, pt2, variance, norm, buf, task_id(1), ctask)
         buf%mini = buf2%mini
         pt2(:) = 0d0
+        variance(:) = 0d0
+        norm(:) = 0d0
         buf%cur = 0
       end if
       ctask = 0
@@ -105,13 +111,15 @@ subroutine run_selection_slave(thread,iproc,energy)
 end subroutine
 
 
-subroutine push_selection_results(zmq_socket_push, pt2, b, task_id, ntask)
+subroutine push_selection_results(zmq_socket_push, pt2, variance, norm, b, task_id, ntask)
   use f77_zmq
   use selection_types
   implicit none
 
   integer(ZMQ_PTR), intent(in)   :: zmq_socket_push
   double precision, intent(in)   :: pt2(N_states)
+  double precision, intent(in)   :: variance(N_states)
+  double precision, intent(in)   :: norm(N_states)
   type(selection_buffer), intent(inout) :: b
   integer, intent(in) :: ntask, task_id(*)
   integer :: rc
@@ -126,6 +134,16 @@ subroutine push_selection_results(zmq_socket_push, pt2, b, task_id, ntask)
       rc = f77_zmq_send( zmq_socket_push, pt2, 8*N_states, ZMQ_SNDMORE)
       if(rc /= 8*N_states) then
         print *,  'f77_zmq_send( zmq_socket_push, pt2, 8*N_states, ZMQ_SNDMORE)'
+      endif
+
+      rc = f77_zmq_send( zmq_socket_push, variance, 8*N_states, ZMQ_SNDMORE)
+      if(rc /= 8*N_states) then
+        print *,  'f77_zmq_send( zmq_socket_push, variance, 8*N_states, ZMQ_SNDMORE)'
+      endif
+
+      rc = f77_zmq_send( zmq_socket_push, norm, 8*N_states, ZMQ_SNDMORE)
+      if(rc /= 8*N_states) then
+        print *,  'f77_zmq_send( zmq_socket_push, norm, 8*N_states, ZMQ_SNDMORE)'
       endif
 
       rc = f77_zmq_send( zmq_socket_push, b%val(1), 8*b%cur, ZMQ_SNDMORE)
@@ -164,12 +182,14 @@ IRP_ENDIF
 end subroutine
 
 
-subroutine pull_selection_results(zmq_socket_pull, pt2, val, det, N, task_id, ntask)
+subroutine pull_selection_results(zmq_socket_pull, pt2, variance, norm, val, det, N, task_id, ntask)
   use f77_zmq
   use selection_types
   implicit none
   integer(ZMQ_PTR), intent(in)   :: zmq_socket_pull
   double precision, intent(inout) :: pt2(N_states)
+  double precision, intent(inout) :: variance(N_states)
+  double precision, intent(inout) :: norm(N_states)
   double precision, intent(out) :: val(*)
   integer(bit_kind), intent(out) :: det(N_int, 2, *)
   integer, intent(out) :: N, ntask, task_id(*)
@@ -184,6 +204,16 @@ subroutine pull_selection_results(zmq_socket_pull, pt2, val, det, N, task_id, nt
       rc = f77_zmq_recv( zmq_socket_pull, pt2, N_states*8, 0)
       if(rc /= 8*N_states) then
         print *,  'f77_zmq_recv( zmq_socket_pull, pt2, N_states*8, 0)'
+      endif
+
+      rc = f77_zmq_recv( zmq_socket_pull, variance, N_states*8, 0)
+      if(rc /= 8*N_states) then
+        print *,  'f77_zmq_recv( zmq_socket_pull, variance, N_states*8, 0)'
+      endif
+
+      rc = f77_zmq_recv( zmq_socket_pull, norm, N_states*8, 0)
+      if(rc /= 8*N_states) then
+        print *,  'f77_zmq_recv( zmq_socket_pull, norm, N_states*8, 0)'
       endif
 
       rc = f77_zmq_recv( zmq_socket_pull, val(1), 8*N, 0)

@@ -6,7 +6,7 @@ subroutine run_pt2_slave(thread,iproc,energy)
 
   double precision, intent(in)    :: energy(N_states_diag)
   integer,  intent(in)            :: thread, iproc
-  integer                        :: rc, i
+  integer                         :: rc, i
 
   integer                        :: worker_id, ctask, ltask
   character*(512), allocatable   :: task(:)
@@ -21,12 +21,14 @@ subroutine run_pt2_slave(thread,iproc,energy)
   type(selection_buffer) :: buf
   logical :: done
 
-  double precision,allocatable :: pt2(:,:)
+  double precision,allocatable :: pt2(:,:), variance(:,:), norm(:,:)
   integer :: n_tasks, k
   integer, allocatable :: i_generator(:), subset(:)
 
   allocate(task_id(pt2_n_tasks_max), task(pt2_n_tasks_max))
   allocate(pt2(N_states,pt2_n_tasks_max), i_generator(pt2_n_tasks_max), subset(pt2_n_tasks_max))
+  allocate(variance(N_states,pt2_n_tasks_max))
+  allocate(norm(N_states,pt2_n_tasks_max))
 
   zmq_to_qp_run_socket = new_zmq_to_qp_run_socket()
 
@@ -65,10 +67,12 @@ subroutine run_pt2_slave(thread,iproc,energy)
     call wall_time(time0)
     do k=1,n_tasks
         pt2(:,k) = 0.d0
+        variance(:,k) = 0.d0
+        norm(:,k) = 0.d0
         buf%cur = 0
 !double precision :: time2
 !call wall_time(time2)
-        call select_connected(i_generator(k),energy,pt2(1,k),buf,subset(k),pt2_F(i_generator(k)))
+        call select_connected(i_generator(k),energy,pt2(1,k),variance(1,k),norm(1,k),buf,subset(k),pt2_F(i_generator(k)))
 !call wall_time(time1)
 !print *,  i_generator(1), time1-time2, n_tasks, pt2_F(i_generator(1))
     enddo
@@ -79,7 +83,7 @@ subroutine run_pt2_slave(thread,iproc,energy)
     if (tasks_done_to_taskserver(zmq_to_qp_run_socket,worker_id,task_id,n_tasks) == -1) then
       done = .true.
     endif
-    call push_pt2_results(zmq_socket_push, i_generator, pt2, task_id, n_tasks)
+    call push_pt2_results(zmq_socket_push, i_generator, pt2, variance, norm, task_id, n_tasks)
 
     ! Try to adjust n_tasks around nproc/8 seconds per job
     n_tasks = min(2*n_tasks,int( dble(n_tasks * nproc/8) / (time1 - time0 + 1.d0)))
@@ -98,13 +102,15 @@ subroutine run_pt2_slave(thread,iproc,energy)
 end subroutine
 
 
-subroutine push_pt2_results(zmq_socket_push, index, pt2, task_id, n_tasks)
+subroutine push_pt2_results(zmq_socket_push, index, pt2, variance, norm, task_id, n_tasks)
   use f77_zmq
   use selection_types
   implicit none
 
   integer(ZMQ_PTR), intent(in)   :: zmq_socket_push
   double precision, intent(in)   :: pt2(N_states,n_tasks)
+  double precision, intent(in)   :: variance(N_states,n_tasks)
+  double precision, intent(in)   :: norm(N_states,n_tasks)
   integer, intent(in) :: n_tasks, index(n_tasks), task_id(n_tasks)
   integer :: rc
 
@@ -123,6 +129,18 @@ subroutine push_pt2_results(zmq_socket_push, index, pt2, task_id, n_tasks)
 
 
   rc = f77_zmq_send( zmq_socket_push, pt2, 8*N_states*n_tasks, ZMQ_SNDMORE)
+  if (rc == -1) then
+    return
+  endif
+  if(rc /= 8*N_states*n_tasks) stop 'push'
+
+  rc = f77_zmq_send( zmq_socket_push, variance, 8*N_states*n_tasks, ZMQ_SNDMORE)
+  if (rc == -1) then
+    return
+  endif
+  if(rc /= 8*N_states*n_tasks) stop 'push'
+
+  rc = f77_zmq_send( zmq_socket_push, norm, 8*N_states*n_tasks, ZMQ_SNDMORE)
   if (rc == -1) then
     return
   endif
@@ -151,12 +169,14 @@ IRP_ENDIF
 end subroutine
 
 
-subroutine pull_pt2_results(zmq_socket_pull, index, pt2, task_id, n_tasks)
+subroutine pull_pt2_results(zmq_socket_pull, index, pt2, variance, norm, task_id, n_tasks)
   use f77_zmq
   use selection_types
   implicit none
   integer(ZMQ_PTR), intent(in)   :: zmq_socket_pull
   double precision, intent(inout) :: pt2(N_states,*)
+  double precision, intent(inout) :: variance(N_states,*)
+  double precision, intent(inout) :: norm(N_states,*)
   integer, intent(out) :: index(*)
   integer, intent(out) :: n_tasks, task_id(*)
   integer :: rc, rn, i
@@ -176,6 +196,20 @@ subroutine pull_pt2_results(zmq_socket_pull, index, pt2, task_id, n_tasks)
   if(rc /= 4*n_tasks) stop 'pull'
 
   rc = f77_zmq_recv( zmq_socket_pull, pt2, N_states*8*n_tasks, 0)
+  if (rc == -1) then
+    n_tasks = 1
+    task_id(1) = 0
+  endif
+  if(rc /= 8*N_states*n_tasks) stop 'pull'
+
+  rc = f77_zmq_recv( zmq_socket_pull, variance, N_states*8*n_tasks, 0)
+  if (rc == -1) then
+    n_tasks = 1
+    task_id(1) = 0
+  endif
+  if(rc /= 8*N_states*n_tasks) stop 'pull'
+
+  rc = f77_zmq_recv( zmq_socket_pull, norm, N_states*8*n_tasks, 0)
   if (rc == -1) then
     n_tasks = 1
     task_id(1) = 0
@@ -205,5 +239,3 @@ IRP_ENDIF
 
 end subroutine
  
-
-            

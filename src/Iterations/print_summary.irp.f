@@ -1,10 +1,10 @@
-subroutine print_summary(e_,pt2_,error_)
+subroutine print_summary(e_,pt2_,error_,variance_,norm_)
   implicit none
   BEGIN_DOC
 ! Print the extrapolated energy in the output
   END_DOC
 
-  double precision, intent(in)   :: e_(N_states), pt2_(N_states), error_(N_states)
+  double precision, intent(in)   :: e_(N_states), pt2_(N_states), variance_(N_states), norm_(N_states), error_(N_states)
   integer                        :: i, k
   integer                        :: N_states_p
   character*(8)                  :: pt2_string
@@ -55,6 +55,8 @@ subroutine print_summary(e_,pt2_,error_)
 
   do k=1, N_states_p
     print*,'State ',k
+    print *,  'Variance        = ', variance_(k) 
+    print *,  'PT norm         = ', norm_(k)
     print *,  'PT2             = ', pt2_(k)
     print *,  'E               = ', e_(k)
     print *,  'E+PT2'//pt2_string//'   = ', e_(k)+pt2_(k), ' +/- ', error_(k)
