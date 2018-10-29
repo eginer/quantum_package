@@ -133,7 +133,6 @@ subroutine ZMQ_selection(N_in, pt2, variance, norm)
     variance(k) = variance(k) * f(k)
     norm(k) = norm(k) * f(k)
   enddo
-!  variance = variance - pt2*pt2
 
 end subroutine
 

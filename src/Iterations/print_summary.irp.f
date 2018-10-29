@@ -56,7 +56,7 @@ subroutine print_summary(e_,pt2_,error_,variance_,norm_)
   do k=1, N_states_p
     print*,'State ',k
     print *,  'Variance        = ', variance_(k) 
-    print *,  'PT norm         = ', norm_(k)
+    print *,  'PT norm         = ', dsqrt(norm_(k))
     print *,  'PT2             = ', pt2_(k)
     print *,  'E               = ', e_(k)
     print *,  'E+PT2'//pt2_string//'   = ', e_(k)+pt2_(k), ' +/- ', error_(k)

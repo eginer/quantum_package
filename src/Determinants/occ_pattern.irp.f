@@ -167,17 +167,22 @@ end
  integer*8, external            :: occ_pattern_search_key
  integer(bit_kind), allocatable :: tmp_array(:,:,:)
  logical,allocatable            :: duplicate(:)
+ logical :: dup
 
 
  allocate ( iorder(N_det), duplicate(N_det), bit_tmp(N_det), tmp_array(N_int,2,N_det) )
 
  do i=1,N_det
    iorder(i) = i
-   !$DIR FORCEINLINE
    bit_tmp(i) = occ_pattern_search_key(psi_occ_pattern(1,1,i),N_int)
  enddo
+
  call i8sort(bit_tmp,iorder,N_det)
- !DIR$ IVDEP
+
+
+ !$OMP PARALLEL DEFAULT(shared) PRIVATE(i,j,k,dup)
+
+ !$OMP DO
  do i=1,N_det
   do k=1,N_int
     tmp_array(k,1,i) = psi_occ_pattern(k,1,iorder(i))
@@ -185,8 +190,10 @@ end
   enddo
   duplicate(i) = .False.
  enddo
+ !$OMP END DO
 
  ! Find duplicates
+ !$OMP DO 
  do i=1,N_det-1
   if (duplicate(i)) then
     cycle
@@ -200,20 +207,25 @@ end
       endif
       cycle
     endif
-    duplicate(j) = .True.
+    dup = .True.
     do k=1,N_int
       if ( (tmp_array(k,1,i) /= tmp_array(k,1,j)) &
       .or. (tmp_array(k,2,i) /= tmp_array(k,2,j)) ) then
-         duplicate(j) = .False.
+         dup = .False.
          exit
       endif
     enddo
+    if (dup) then
+      duplicate(j) = .True.
+    endif
     j+=1
     if (j>N_det) then
       exit
     endif
   enddo
  enddo
+ !$OMP END DO
+ !$OMP END PARALLEL
 
  ! Copy filtered result
  N_occ_pattern=0
@@ -229,6 +241,7 @@ end
  enddo
 
 !- Check
+!  print *,  'Checking for duplicates in occ pattern'
 !  do i=1,N_occ_pattern
 !   do j=i+1,N_occ_pattern
 !     duplicate(1) = .True.
@@ -249,6 +262,7 @@ end
 !     endif
 !   enddo
 !  enddo
+!  print *,  'No duplicates'
 !-
  deallocate(iorder,duplicate,bit_tmp,tmp_array)
 
@@ -354,7 +368,7 @@ subroutine make_s2_eigenfunction
   !$OMP END PARALLEL
 
   call copy_H_apply_buffer_to_wf
-  SOFT_TOUCH N_det psi_coef psi_det
+  SOFT_TOUCH N_det psi_coef psi_det psi_occ_pattern N_occ_pattern
   print *,  'Added determinants for S^2'
   call write_time(6)
 

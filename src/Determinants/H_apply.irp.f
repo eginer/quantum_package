@@ -192,8 +192,8 @@ subroutine copy_H_apply_buffer_to_wf
   call normalize(psi_coef,N_det)
   SOFT_TOUCH N_det psi_det psi_coef
   
-!  logical :: found_duplicates
-!  call remove_duplicates_in_psi_det(found_duplicates)
+  logical :: found_duplicates
+  call remove_duplicates_in_psi_det(found_duplicates)
 end
 
 subroutine remove_duplicates_in_psi_det(found_duplicates)
@@ -205,16 +205,24 @@ subroutine remove_duplicates_in_psi_det(found_duplicates)
   integer                        :: i,j,k
   integer(bit_kind), allocatable :: bit_tmp(:)
   logical,allocatable            :: duplicate(:)
+  logical                        :: dup
 
   allocate (duplicate(N_det), bit_tmp(N_det))
 
+  found_duplicates = .False.
+
+  !$OMP PARALLEL DEFAULT(SHARED) PRIVATE(i,j,k,dup)
+
+  !$OMP DO
   do i=1,N_det
     integer, external            :: det_search_key
     !$DIR FORCEINLINE
     bit_tmp(i) = det_search_key(psi_det_sorted_bit(1,1,i),N_int)
     duplicate(i) = .False.
   enddo
+  !$OMP END DO
 
+  !$OMP DO 
   do i=1,N_det-1
     if (duplicate(i)) then
       cycle
@@ -229,28 +237,26 @@ subroutine remove_duplicates_in_psi_det(found_duplicates)
           cycle
         endif
       endif
-      duplicate(j) = .True.
+      dup = .True.
       do k=1,N_int
         if ( (psi_det_sorted_bit(k,1,i) /= psi_det_sorted_bit(k,1,j) ) &
         .or. (psi_det_sorted_bit(k,2,i) /= psi_det_sorted_bit(k,2,j) ) ) then
-          duplicate(j) = .False.
+          dup = .False.
           exit
         endif
       enddo
+      if (dup) then
+        duplicate(j) = .True.
+        found_duplicates = .True.
+      endif
       j += 1
       if (j > N_det) then
         exit
       endif
     enddo
   enddo
-
-  found_duplicates = .False.
-  do i=1,N_det
-    if (duplicate(i)) then
-      found_duplicates = .True.
-      exit
-    endif
-  enddo
+  !$OMP END DO
+  !$OMP END PARALLEL
 
   if (found_duplicates) then
     k=0
@@ -259,14 +265,16 @@ subroutine remove_duplicates_in_psi_det(found_duplicates)
         k += 1
         psi_det(:,:,k) = psi_det_sorted_bit (:,:,i)
         psi_coef(k,:)  = psi_coef_sorted_bit(i,:)
-      else
-        call debug_det(psi_det_sorted_bit(1,1,i),N_int)
-        stop 'duplicates in psi_det'
+!      else
+!        call debug_det(psi_det_sorted_bit(1,1,i),N_int)
+!        stop 'duplicates in psi_det'
       endif
     enddo
     N_det = k
     call write_bool(6,found_duplicates,'Found duplicate determinants')
-    SOFT_TOUCH N_det psi_det psi_coef
+    psi_det_sorted_bit(:,:,1:N_det) = psi_det(:,:,1:N_det)
+    psi_coef_sorted_bit(1:N_det,:) = psi_coef(1:N_det,:)
+    SOFT_TOUCH N_det psi_det psi_coef psi_det_sorted_bit psi_coef_sorted_bit
   endif
   deallocate (duplicate,bit_tmp)
 end

@@ -696,12 +696,10 @@ subroutine fill_buffer_double(i_generator, sp, h1, h2, bannedOrb, banned, fock_d
         e_pert = 0.5d0 * (tmp - delta_E)
         coef = alpha_h_psi / delta_E
         pt2(istate) = pt2(istate) + e_pert
+        variance(istate) = variance(istate) + alpha_h_psi * alpha_h_psi 
+        norm(istate) = norm(istate) + coef * coef 
 
         sum_e_pert = sum_e_pert + e_pert * state_average_weight(istate)
-
-        variance(istate) = variance(istate) + alpha_h_psi * alpha_h_psi * state_average_weight(istate)
-        norm(istate) = norm(istate) + coef * coef * state_average_weight(istate)
-
       end do
       
       if(sum_e_pert <= buf%mini) then
