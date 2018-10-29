@@ -7,7 +7,7 @@ subroutine print_summary(e_,pt2_,error_,variance_,norm_)
   double precision, intent(in)   :: e_(N_states), pt2_(N_states), variance_(N_states), norm_(N_states), error_(N_states)
   integer                        :: i, k
   integer                        :: N_states_p
-  character*(8)                  :: pt2_string
+  character*(9)                  :: pt2_string
   character*(512)                :: fmt
 
 
@@ -36,7 +36,7 @@ subroutine print_summary(e_,pt2_,error_,variance_,norm_)
     write(*,fmt) '# Excit. (au)', e_(1:N_states_p)-e_(1)
     write(*,fmt) '# Excit. (eV)', (e_(1:N_states_p)-e_(1))*27.211396641308d0
   endif
-  write(fmt,*) '(A12,', 2*N_states_p, '(1X,F14.8))'
+  write(fmt,*) '(A13,', 2*N_states_p, '(1X,F14.8))'
   write(*,fmt) '# PT2'//pt2_string, (pt2_(k), error_(k), k=1,N_states_p)
   write(*,'(A)') '#'
   write(*,fmt) '# E+PT2      ', (e_(k)+pt2_(k),error_(k), k=1,N_states_p)
