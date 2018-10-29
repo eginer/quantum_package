@@ -154,10 +154,12 @@ subroutine selection_collector(zmq_socket_pull, b, N, pt2, variance, norm)
   integer(ZMQ_PTR), intent(in)   :: zmq_socket_pull
   type(selection_buffer), intent(inout) :: b
   integer, intent(in) :: N
-  double precision, intent(out)       :: pt2(N_states)
+  double precision, intent(inout)    :: pt2(N_states)
+  double precision, intent(inout)    :: variance(N_states)
+  double precision, intent(inout)    :: norm(N_states)
   double precision                   :: pt2_mwen(N_states)
-  double precision                   :: variance(N_states)
-  double precision                   :: norm(N_states)
+  double precision                   :: variance_mwen(N_states)
+  double precision                   :: norm_mwen(N_states)
   integer(ZMQ_PTR),external      :: new_zmq_to_qp_run_socket
   integer(ZMQ_PTR)               :: zmq_to_qp_run_socket
 
@@ -179,12 +181,14 @@ subroutine selection_collector(zmq_socket_pull, b, N, pt2, variance, norm)
   more = 1
   pt2(:) = 0d0
   pt2_mwen(:) = 0.d0
+  variance_mwen = 0.d0
+  norm_mwen = 0.d0
   do while (more == 1)
-    call pull_selection_results(zmq_socket_pull, pt2_mwen, variance, norm, b2%val(1), b2%det(1,1,1), b2%cur, task_id, ntask)
+    call pull_selection_results(zmq_socket_pull, pt2_mwen, variance_mwen, norm_mwen, b2%val(1), b2%det(1,1,1), b2%cur, task_id, ntask)
 
     pt2(:) += pt2_mwen(:)
-    variance(:) += variance(:)
-    norm(:) += norm(:)
+    variance(:) += variance_mwen(:)
+    norm(:) += norm_mwen(:)
     do i=1, b2%cur
       call add_to_selection_buffer(b, b2%det(1,1,i), b2%val(i))
       if (b2%val(i) > b%mini) exit
