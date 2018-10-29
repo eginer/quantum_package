@@ -17,7 +17,7 @@ program fci_zmq
 
   pt2 = -huge(1.e0)
   norm = 0.d0
-  variance = huge(1.e0)
+  variance = 0.d0
   threshold_davidson_in = threshold_davidson
   threshold_davidson = threshold_davidson_in * 100.d0
   SOFT_TOUCH threshold_davidson
@@ -131,6 +131,8 @@ program fci_zmq
 
   if (do_pt2) then
     pt2 = 0.d0
+    variance = 0.d0
+    norm = 0.d0
     threshold_selectors = 1.d0
     threshold_generators = 1d0 
     SOFT_TOUCH threshold_selectors threshold_generators

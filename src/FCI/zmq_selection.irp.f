@@ -179,10 +179,12 @@ subroutine selection_collector(zmq_socket_pull, b, N, pt2, variance, norm)
   call create_selection_buffer(N, N*2, b2)
   allocate(task_id(N_det_generators))
   more = 1
-  pt2(:) = 0d0
-  pt2_mwen(:) = 0.d0
-  variance_mwen = 0.d0
-  norm_mwen = 0.d0
+  pt2(:)           = 0d0
+  variance(:)      = 0.d0
+  norm(:)          = 0.d0
+  pt2_mwen(:)      = 0.d0
+  variance_mwen(:) = 0.d0
+  norm_mwen(:)     = 0.d0
   do while (more == 1)
     call pull_selection_results(zmq_socket_pull, pt2_mwen, variance_mwen, norm_mwen, b2%val(1), b2%det(1,1,1), b2%cur, task_id, ntask)
 

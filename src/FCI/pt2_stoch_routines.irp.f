@@ -373,7 +373,7 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error, varianc
           do_exit = .true.
         endif
         pt2(pt2_stoch_istate) = avg
-        variance(pt2_stoch_istate) = avg2 !- avg*avg
+        variance(pt2_stoch_istate) = avg2 
         norm(pt2_stoch_istate) = avg3
         ! 1/(N-1.5) : see  Brugger, The American Statistician (23) 4 p. 32 (1969)
         if(c > 2) then
