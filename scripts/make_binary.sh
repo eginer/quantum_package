@@ -162,6 +162,7 @@ then
   echo 'cp -r -- ${QP_ROOT}/scripts ${QPACKAGE_STATIC}/'
   exit 1
 fi
+cp ${QP_ROOT}/install/EZFIO/Python/ezfio.py ${QPACKAGE_STATIC}/scripts/
 
 
 #
