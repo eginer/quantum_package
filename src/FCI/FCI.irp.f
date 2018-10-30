@@ -2,7 +2,6 @@ program fci_zmq
   implicit none
   integer                        :: i,j,k
   double precision, allocatable  :: pt2(:), variance(:), norm(:)
-  integer                        :: degree
   integer                        :: n_det_before, to_select
   double precision               :: threshold_davidson_in
   
@@ -11,7 +10,6 @@ program fci_zmq
   double precision               :: hf_energy_ref
   logical                        :: has
   double precision               :: relative_error
-  integer                        :: N_states_p
 
   relative_error=PT2_relative_error
 
@@ -41,12 +39,10 @@ program fci_zmq
     soft_touch N_det psi_det psi_coef
     call diagonalize_CI
     call save_wavefunction
-    N_states_p = min(N_det,N_states)
   endif
   
   n_det_before = 0
 
-  character*(8) :: pt2_string
   double precision :: correlation_energy_ratio
   double precision :: threshold_selectors_save, threshold_generators_save
   threshold_selectors_save  = threshold_selectors
@@ -54,11 +50,6 @@ program fci_zmq
   double precision :: error(N_states)
 
   correlation_energy_ratio = 0.d0
-  if (do_pt2) then
-    pt2_string = '        '
-  else
-    pt2_string = '(approx)'
-  endif
 
   if (.True.) then ! Avoid pre-calculation of CI_energy
     do while (                                                         &
@@ -86,8 +77,6 @@ program fci_zmq
       correlation_energy_ratio = (CI_energy(1) - hf_energy_ref)  /     &
                       (CI_energy(1) + pt2(1) - hf_energy_ref)
       correlation_energy_ratio = min(1.d0,correlation_energy_ratio)
-
-      N_states_p = min(N_det,N_states)
 
       call ezfio_set_fci_energy_pt2(CI_energy(1:N_states)+pt2)
       call write_double(6,correlation_energy_ratio, 'Correlation ratio')
