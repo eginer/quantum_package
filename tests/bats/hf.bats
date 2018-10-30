@@ -10,7 +10,7 @@ function run_init() {
 
 
 function run_HF() {
-  thresh=1.e-7
+  thresh=1.e-9
   test_exe SCF || skip
   qp_edit -c $1
   ezfio set_file $1
