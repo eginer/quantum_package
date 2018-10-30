@@ -108,7 +108,7 @@ END_DOC
       TOUCH mo_coef level_shift
       Delta_Energy_SCF = HF_energy - energy_SCF_previous
       energy_SCF = HF_energy
-      if (level_shift-level_shift_save > 20.d0) exit
+      if (level_shift-level_shift_save > 200.d0) exit
       dim_DIIS=0
     enddo
     level_shift = level_shift_save
