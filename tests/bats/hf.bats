@@ -10,11 +10,11 @@ function run_init() {
 
 
 function run_HF() {
-  thresh=1.e-7
+  thresh=1.e-8
   test_exe SCF || skip
   qp_edit -c $1
   ezfio set_file $1
-  ezfio set hartree_fock thresh_scf 2.e-8
+  ezfio set hartree_fock thresh_scf 1.e-10
   qp_run SCF $1
   energy="$(ezfio get hartree_fock energy)"
   eq $energy $2 $thresh
