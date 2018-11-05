@@ -8,20 +8,15 @@ BEGIN_PROVIDER [ integer, n_iter  ]
   PROVIDE ezfio_filename
   if (mpi_master) then
 
-    call ezfio_has_iterations_n_iter(has)
-    if (has) then
-      write(6, *) '.. >>>>> [ IO Read ] n_iter <<<<< ..'
-      call ezfio_get_iterations_n_iter(n_iter)
-    else
-      n_iter = 1
       double precision :: zeros(N_states,100)
       integer :: izeros(100)
       zeros = 0.d0
       izeros = 0
+      call ezfio_set_iterations_n_iter(0)
       call ezfio_set_iterations_energy_iterations(zeros)
       call ezfio_set_iterations_pt2_iterations(zeros)
-      call ezfio_set_iterations_n_det_iterations(zeros)
-    endif
+      call ezfio_set_iterations_n_det_iterations(izeros)
+      n_iter = 1
   endif
   IRP_IF MPI_DEBUG
     print *,  irp_here, mpi_rank
