@@ -306,9 +306,14 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
 
   call new_parallel_job(zmq_to_qp_run_socket,zmq_socket_pull,'davidson')
   
+  integer :: N_states_diag_save
+  N_states_diag_save = N_states_diag
+  N_states_diag = N_st
   if (zmq_put_N_states_diag(zmq_to_qp_run_socket, 1) == -1) then
     stop 'Unable to put N_states_diag on ZMQ server'
   endif
+  N_states_diag = N_states_diag_save
+
   if (zmq_put_psi(zmq_to_qp_run_socket,1) == -1) then
     stop 'Unable to put psi on ZMQ server'
   endif

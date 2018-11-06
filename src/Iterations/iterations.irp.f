@@ -28,9 +28,9 @@ subroutine save_iterations(e_, pt2_,n_)
   energy_iterations(1:N_states,N_iter) = e_(1:N_states)
      pt2_iterations(1:N_states,N_iter) = pt2_(1:N_states)
   n_det_iterations(N_iter) = n_
+  call ezfio_set_iterations_N_iter(N_iter)
   call ezfio_set_iterations_energy_iterations(energy_iterations)
   call ezfio_set_iterations_pt2_iterations(pt2_iterations)
   call ezfio_set_iterations_n_det_iterations(n_det_iterations)
-  call ezfio_set_iterations_N_iter(N_iter)
 end
 
