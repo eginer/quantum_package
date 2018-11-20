@@ -33,11 +33,9 @@ BEGIN_PROVIDER [ character*(128), ezfio_filename ]
 
   ! Adjust out-of-memory killer flag such that the current process will be
   ! killed first by the OOM killer, allowing compute nodes to survive 
-  integer, external :: getpid
-  integer :: pid
+  integer :: getpid
   character*(64) :: command, pidc
-  pid = getpid()
-  write(pidc,*) pid
+  write(pidc,*) getpid()
   write(command,*) 'echo 15 > /proc//'//trim(adjustl(pidc))//'/oom_adj'
   print '(A)', command
   call system(command)
