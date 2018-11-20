@@ -22,8 +22,8 @@ This script will create the :file:`quantum_package.rc` bash script, which
 sets all the environment variables required for the normal operation of the
 *Quantum Package*.
 
-Running this script will also tell you which external dependencies need to be
-installed.
+Running this script will also tell you which external dependencies are missing
+and need to be installed.
 
 Then, source the :file:`quantum_package.rc` file in your current shell before
 installing the dependencies.
@@ -50,9 +50,10 @@ Requirements
 - |Ninja| : a parallel build system
 
 
-When all the dependencies have been installed, go into the config directory,
-and copy the configuration file that corresponds to your architecture. Modify
-it if needed, and run :command:`configure` with :option:`configure -c`.
+When all the dependencies have been installed, go into the :file:`config`
+directory, and copy the configuration file that corresponds to your
+architecture. Modify it if needed, and run :command:`configure` with
+:option:`configure -c`.
 
 .. code:: bash
 
