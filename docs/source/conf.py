@@ -35,14 +35,22 @@ release = '1.0'
 #
 # needs_sphinx = '1.0'
 
+with open("_static/links.rst",'r') as f:
+    rst_epilog = f.read()
+
+suppress_warnings = [
+  'ref.citation',
+  'ref.option'
+]
+
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
     'sphinx.ext.mathjax',
+#    'sphinx.ext.imgmath',
     'sphinx.ext.githubpages',
     'sphinxcontrib.bibtex'
-
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -127,12 +135,14 @@ latex_elements = {
 
     # Additional stuff for the LaTeX preamble.
     #
-    # 'preamble': '',
+    # 'preamble': '\usepackage{physics}\n',
 
     # Latex figure (float) alignment
     #
     # 'figure_align': 'htbp',
 }
+
+
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,

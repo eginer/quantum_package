@@ -1,8 +1,10 @@
 #sudo: true
 #before_script:
 #  - sudo apt-get update -q
-#  - sudo apt-get install gfortran liblapack-dev gcc
-#  - sudo apt-get install graphviz
+#  - sudo apt-get remove curl
+#  - sudo apt-get remove zlib1g-dev
+#  - sudo apt-get install autoconf
+#  - sudo rm /usr/local/bin/bats
 
 os: linux
 
@@ -17,23 +19,21 @@ addons:
     packages:
     - gfortran
     - gcc
-#    - liblapack-dev
-#    - libblas-dev
-    - graphviz
+    - liblapack-dev
+    - libblas-dev
+
+env:
+  - OPAMROOT=$HOME/.opam
 
 cache:
   directories:
   - $HOME/.opam/
-  - $HOME/lapack-release
 
 language: python
 python:
-    - "2.6"
+    - "2.7"
 
 script: 
-  - ./configure  ./config/travis.cfg
-  - source ./quantum_package.rc 
-  - source ./quantum_package.rc ; cd ~ ; install_lapack.sh ; cd $QP_ROOT
-  - source ./quantum_package.rc ; ninja
-  - source ./quantum_package.rc ; cd ocaml ; make ; cd -
+  - ./configure --install all --config ./config/travis.cfg 
+  - source ./quantum_package.rc ; ninja -j 1 -v 
   - source ./quantum_package.rc ; cd tests ; ./run_tests.sh -v

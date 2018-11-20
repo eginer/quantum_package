@@ -3,30 +3,61 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-===============
-Quantum Package
-===============
+.. include:: intro/intro.rst
 
-.. image:: _static/qp.png
-   :align: center
-   :alt: Quantum Package
+
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 1
+   :caption: Introduction
+   :hidden:
 
-   intro
-   interfaces
-   installation
-   users_guide
-   benchmarks
-   programming
-   research
-   license
+   intro/selected_ci
+   intro/install
+
+.. toctree::
+   :maxdepth: 1
+   :caption: User's guide
+   :glob:
+   :hidden:
+
+   users_guide/quickstart
+   users_guide/configure
+   users_guide/interfaces
+   users_guide/qp_*
+   users_guide/natural_orbitals
+   users_guide/plugins
+   users_guide/excited_states
+   users_guide/interfaces
 
 
-Indices and tables
-==================
+.. toctree::
+   :maxdepth: 1
+   :caption: Index of Modules
+   :glob:
+   :hidden:
 
-* :ref:`genindex`
-* :ref:`search`
+   modules/*
+
+
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Programmer's guide
+   :hidden:
+
+   programmers_guide/programming
+   programmers_guide/ezfio
+
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Appendix
+   :hidden:
+
+   appendix/benchmarks
+   appendix/research
+   appendix/license
+   appendix/contributors
+
+
