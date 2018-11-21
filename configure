@@ -95,10 +95,10 @@ function find_python_lib() {
 
 function find_lib() {
         echo "int main() { return 0; }" > "${QP_ROOT}"/external/tmp.c
-        gcc $1 "${QP_ROOT}"/external/tmp.c -o "${QP_ROOT}"/external/tmp.exe 2> /dev/null
+        gcc $@ "${QP_ROOT}"/external/tmp.c -o "${QP_ROOT}"/external/tmp.exe 2> /dev/null
         if [[ -x "${QP_ROOT}"/external/tmp.exe ]] ; then
                 rm "${QP_ROOT}"/external/tmp.exe "${QP_ROOT}"/external/tmp.c
-                echo "$1"
+                echo "$lib"
         else
                 rm "${QP_ROOT}"/external/tmp.c
                 echo "not_found"
