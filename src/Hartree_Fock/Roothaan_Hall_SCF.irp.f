@@ -115,7 +115,7 @@ END_DOC
       endif
       dim_DIIS=0
     enddo
-    level_shift = level_shift * 0.5d0
+    level_shift = level_shift * 0.75d0
     SOFT_TOUCH level_shift
     energy_SCF_previous = energy_SCF
 

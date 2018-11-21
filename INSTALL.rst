@@ -99,7 +99,7 @@ to Parameters (IRP) method.
   the downloaded archive in the :file:`${QP_ROOT}/external` directory
 
 * Extract the archive and go into the :file:`irpf90-*` directory to run
-  :command:`make``
+  :command:`make`
 
 * Create scripts to facilitate the access to :command:`irpf90` and
   :command:`irpman` as follows

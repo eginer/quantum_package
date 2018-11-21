@@ -61,13 +61,13 @@ subroutine occ_pattern_to_dets(o,d,sze,n_alpha,Nint)
   integer(bit_kind),intent(in)   :: o(Nint,2)      ! Occ patters
   integer(bit_kind),intent(out)  :: d(Nint,2,sze)  ! Output determinants
   
-  integer                        :: i, k, n, ispin
+  integer                        :: i, k, n, ispin, ispin2
 
   ! Extract list of singly occupied MOs as (int,pos) pairs
   ! ------------------------------------------------------
 
   integer           :: iint(2*n_alpha), ipos(2*n_alpha)
-  integer(bit_kind) :: v, t, tt
+  integer(bit_kind) :: v, t, tt, diff, v_prev
   integer           :: n_alpha_in_single
 
   n=0
@@ -84,26 +84,103 @@ subroutine occ_pattern_to_dets(o,d,sze,n_alpha,Nint)
   enddo
 
   v = shiftl(1,n_alpha_in_single) - 1
-  sze = int(binom_int(n,n_alpha_in_single),4)
-  do i=1,sze
-    ! Initialize with doubly occupied MOs
-    d(:,1,i) = o(:,2)
-    d(:,2,i) = o(:,2)
 
-    do k=1,n
-      if (btest(v,k-1)) then
-        ispin = 1
-      else
-        ispin = 2
-      endif
-      d(iint(k), ispin, i) = ibset( d(iint(k), ispin, i), ipos(k) )
+  sze = int(binom_int(n,n_alpha_in_single),4)
+  if (shiftl(n_alpha_in_single,1) == n) then
+
+    ! Initialize first determinant
+    d(:,1,1) = o(:,2)
+    d(:,2,1) = o(:,2)
+
+    do k=1,n_alpha_in_single
+      d(iint(k),1,1) = ibset( d(iint(k),1,1), ipos(k) )
     enddo
 
-    ! Generate next permutation with Anderson's algorithm
-    t = ior(v,v-1)
-    tt = t+1
-    v = ior(tt, shiftr( and(not(t),tt) - 1, trailz(v)+1) )
-  enddo
+    do k=n_alpha_in_single+1,n
+      d(iint(k),2,1) = ibset( d(iint(k),2,1), ipos(k) )
+    enddo
+
+    ! Time reversal symmetry
+    d(:,1,2) = d(:,2,1)
+    d(:,2,2) = d(:,1,1)
+
+    do i=3,sze,2
+      ! Generate next permutation with Anderson's algorithm
+      v_prev = v
+      t = ior(v,v-1)
+      tt = t+1
+      v = ior(tt, shiftr( and(not(t),tt) - 1, trailz(v)+1) )
+
+      ! Find what has changed between v_prev and v
+      diff = ieor(v,v_prev)
+
+      ! Initialize with previous determinant
+      d(:,1,i) = d(:,1,i-2)
+      d(:,2,i) = d(:,2,i-2)
+
+      ! Swap bits only where they have changed from v_prev to v
+      do while (diff /= 0_bit_kind)
+        k = trailz(diff)+1
+        if (btest(v,k-1)) then
+          d(iint(k),1,i) = ibset( d(iint(k),1,i), ipos(k) )
+          d(iint(k),2,i) = ibclr( d(iint(k),2,i), ipos(k) )
+        else
+          d(iint(k),1,i) = ibclr( d(iint(k),1,i), ipos(k) )
+          d(iint(k),2,i) = ibset( d(iint(k),2,i), ipos(k) )
+        endif
+        diff = iand(diff,diff-1_bit_kind)
+      enddo
+
+      ! Time reversal symmetry
+      d(:,1,i+1) = d(:,2,i)
+      d(:,2,i+1) = d(:,1,i)
+
+    enddo
+
+  else
+
+    ! Initialize first determinant
+    d(:,1,1) = o(:,2)
+    d(:,2,1) = o(:,2)
+
+    do k=1,n_alpha_in_single
+      d(iint(k),1,1) = ibset( d(iint(k),1,1), ipos(k) )
+    enddo
+
+    do k=n_alpha_in_single+1,n
+      d(iint(k),2,1) = ibset( d(iint(k),2,1), ipos(k) )
+    enddo
+
+    do i=2,sze
+      ! Generate next permutation with Anderson's algorithm
+      v_prev = v
+      t = ior(v,v-1)
+      tt = t+1
+      v = ior(tt, shiftr( and(not(t),tt) - 1, trailz(v)+1) )
+
+      ! Find what has changed between v_prev and v
+      diff = ieor(v,v_prev)
+
+      ! Initialize with previous determinant
+      d(:,1,i) = d(:,1,i-1)
+      d(:,2,i) = d(:,2,i-1)
+
+      ! Swap bits only where they have changed from v_prev to v
+      do while (diff /= 0_bit_kind)
+        k = trailz(diff)+1
+        if (btest(v,k-1)) then
+          d(iint(k),1,i) = ibset( d(iint(k),1,i), ipos(k) )
+          d(iint(k),2,i) = ibclr( d(iint(k),2,i), ipos(k) )
+        else
+          d(iint(k),1,i) = ibclr( d(iint(k),1,i), ipos(k) )
+          d(iint(k),2,i) = ibset( d(iint(k),2,i), ipos(k) )
+        endif
+        diff = iand(diff,diff-1_bit_kind)
+      enddo
+
+    enddo
+
+  endif
 
 end
 
