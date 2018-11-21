@@ -318,14 +318,14 @@ BEGIN_PROVIDER [ integer, det_to_occ_pattern, (N_det) ]
  enddo
 
  !$OMP PARALLEL DO DEFAULT(SHARED) &
- !$OMP PRIVATE(i,k,j,found,occ)
+ !$OMP PRIVATE(i,k,j,r,l,key,found,occ)
  do i=1,N_det
     do k = 1, N_int
       occ(k,1) = ieor(psi_det(k,1,i),psi_det(k,2,i))
       occ(k,2) = iand(psi_det(k,1,i),psi_det(k,2,i))
     enddo
 
-    key = occ_pattern_search_key(psi_occ_pattern(1,1,i),N_int)
+    key = occ_pattern_search_key(occ,N_int)
 
     ! Binary search
     l = 1
@@ -378,9 +378,14 @@ BEGIN_PROVIDER [ integer, det_to_occ_pattern, (N_det) ]
         exit
       endif
       r = r+1
+      if (.not.found) then
+        print *,  '3 bug in ',  irp_here
+        stop -1
+      endif
     enddo
  enddo
  !$OMP END PARALLEL DO
+ deallocate(bit_tmp)
 END_PROVIDER
 
 
