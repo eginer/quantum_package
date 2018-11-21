@@ -85,20 +85,21 @@ subroutine occ_pattern_to_dets(o,d,sze,n_alpha,Nint)
 
   v = shiftl(1,n_alpha_in_single) - 1
 
+  ! Initialize first determinant
+  d(:,1,1) = o(:,2)
+  d(:,2,1) = o(:,2)
+
+  do k=1,n_alpha_in_single
+    d(iint(k),1,1) = ibset( d(iint(k),1,1), ipos(k) )
+  enddo
+
+  do k=n_alpha_in_single+1,n
+    d(iint(k),2,1) = ibset( d(iint(k),2,1), ipos(k) )
+  enddo
+
   sze = int(binom_int(n,n_alpha_in_single),4)
-  if (shiftl(n_alpha_in_single,1) == n) then
 
-    ! Initialize first determinant
-    d(:,1,1) = o(:,2)
-    d(:,2,1) = o(:,2)
-
-    do k=1,n_alpha_in_single
-      d(iint(k),1,1) = ibset( d(iint(k),1,1), ipos(k) )
-    enddo
-
-    do k=n_alpha_in_single+1,n
-      d(iint(k),2,1) = ibset( d(iint(k),2,1), ipos(k) )
-    enddo
+  if ( (shiftl(n_alpha_in_single,1) == n).and.n>0 ) then
 
     ! Time reversal symmetry
     d(:,1,2) = d(:,2,1)
@@ -138,18 +139,6 @@ subroutine occ_pattern_to_dets(o,d,sze,n_alpha,Nint)
     enddo
 
   else
-
-    ! Initialize first determinant
-    d(:,1,1) = o(:,2)
-    d(:,2,1) = o(:,2)
-
-    do k=1,n_alpha_in_single
-      d(iint(k),1,1) = ibset( d(iint(k),1,1), ipos(k) )
-    enddo
-
-    do k=n_alpha_in_single+1,n
-      d(iint(k),2,1) = ibset( d(iint(k),2,1), ipos(k) )
-    enddo
 
     do i=2,sze
       ! Generate next permutation with Anderson's algorithm
