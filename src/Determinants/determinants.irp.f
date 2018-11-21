@@ -497,6 +497,8 @@ subroutine save_wavefunction
   BEGIN_DOC
   !  Save the wave function into the EZFIO file
   END_DOC
+  read_wf = .False.
+  SOFT_TOUCH read_wf
   if (N_det < N_states) then
     return
   endif
