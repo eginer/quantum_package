@@ -132,6 +132,10 @@ program fci_zmq
   print*,   'correlation_ratio = ', correlation_energy_ratio
 
 
+  do k=1,N_states
+    rpt2(:) = pt2(:)/(1.d0 + norm(k)) 
+  enddo
+
   call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm)
   call save_iterations(psi_energy_with_nucl_rep(1:N_states),rpt2,N_det) 
   call print_extrapolated_energy(psi_energy_with_nucl_rep(1:N_states),rpt2)
