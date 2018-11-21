@@ -226,7 +226,7 @@ subroutine remove_duplicates_in_psi_det(found_duplicates)
   enddo
   !$OMP END DO
 
-  !$OMP DO schedule(dynamic,256)
+  !$OMP DO schedule(dynamic,1024)
   do i=1,N_det-1
     if (duplicate(i)) then
       cycle

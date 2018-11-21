@@ -65,7 +65,8 @@ integer function zmq_get_dvector(zmq_to_qp_run_socket, worker_id, name, x, size_
 
     rc = f77_zmq_recv(zmq_to_qp_run_socket,msg,len(msg),0)
     if (msg(1:14) /= 'get_data_reply') then
-      print *,  irp_here, 'msg(1:14) /= get_data_reply', msg(1:14)
+      print *,  irp_here, 'msg(1:14) /= get_data_reply'
+      print *,  '  ', trim(msg)
       zmq_get_dvector = -1
       go to 10
     endif

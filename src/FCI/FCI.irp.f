@@ -127,6 +127,7 @@ program fci_zmq
     call ezfio_set_fci_energy_pt2(psi_energy_with_nucl_rep(1:N_states)+pt2)
   endif
   print *,  'N_det             = ', N_det
+  print *,  'N_sop             = ', N_occ_pattern
   print *,  'N_states          = ', N_states
   print*,   'correlation_ratio = ', correlation_energy_ratio
 

@@ -13,7 +13,7 @@ subroutine ZMQ_selection(N_in, pt2, variance, norm)
   double precision, intent(out)  :: variance(N_states)
   double precision, intent(out)  :: norm(N_states)
   
-  PROVIDE psi_det psi_coef N_det qp_max_mem N_states pt2_F s2_eig N_det_generators
+!  PROVIDE psi_det psi_coef N_det qp_max_mem N_states pt2_F s2_eig N_det_generators
   
   N = max(N_in,1)
   if (.True.) then

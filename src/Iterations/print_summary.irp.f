@@ -57,6 +57,9 @@ subroutine print_summary(e_,pt2_,error_,variance_,norm_)
 
   print *,  'N_det             = ', N_det
   print *,  'N_states          = ', N_states
+  if (s2_eig) then
+    print *,  'N_sop             = ', N_occ_pattern
+  endif
 
   do k=1, N_states_p
     print*,'State ',k
