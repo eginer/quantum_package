@@ -393,21 +393,20 @@ BEGIN_PROVIDER [ double precision, c0_weight, (N_states) ]
  BEGIN_DOC
  ! Weight of the states in the selection : 1/c_0^2
  END_DOC
- integer :: i,k
- double precision :: c
- do i=1,N_states
-   c0_weight(i) = 1.d-31
-   c = maxval(psi_coef(:,i) * psi_coef(:,i))
-   c0_weight(i) = 1.d0/(c+1.d-20)
-   c0_weight(i) = min(c0_weight(i), 100.d0)
- enddo
- if (mpi_master) then
-    print *,  ''
-    print *,  'c0 weights'
-    print *,  '----------'
-    print *,  ''
-    print *,  c0_weight(1:N_states)
-    print *,  ''
+ if (N_states > 1) then
+    integer :: i
+    double precision :: c
+    do i=1,N_states
+      c0_weight(i) = 1.d-31
+      c = maxval(psi_coef(:,i) * psi_coef(:,i))
+      c0_weight(i) = 1.d0/(c+1.d-20)
+    enddo
+    c = 1.d0/minval(c0_weight(:))
+    do i=1,N_states
+      c0_weight(i) = c0_weight(i) * c
+    enddo
+ else
+    c0_weight = 1.d0
  endif
 
 END_PROVIDER

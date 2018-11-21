@@ -1,11 +1,10 @@
 program fci_zmq
   implicit none
   integer                        :: i,j,k
-  double precision, allocatable  :: pt2(:), variance(:), norm(:)
+  double precision, allocatable  :: pt2(:), variance(:), norm(:), rpt2(:)
   integer                        :: n_det_before, to_select
-  double precision               :: threshold_davidson_in
   
-  allocate (pt2(N_states), norm(N_states), variance(N_states))
+  allocate (pt2(N_states), rpt2(N_states), norm(N_states), variance(N_states))
 
   double precision               :: hf_energy_ref
   logical                        :: has
@@ -14,11 +13,9 @@ program fci_zmq
   relative_error=PT2_relative_error
 
   pt2 = -huge(1.e0)
+  rpt2 = -huge(1.e0)
   norm = 0.d0
   variance = 0.d0
-  threshold_davidson_in = threshold_davidson
-  threshold_davidson = threshold_davidson_in * 100.d0
-  SOFT_TOUCH threshold_davidson
 
   call diagonalize_CI
   call save_wavefunction
@@ -78,8 +75,13 @@ program fci_zmq
     call ezfio_set_fci_energy_pt2(psi_energy_with_nucl_rep+pt2)
     call write_double(6,correlation_energy_ratio, 'Correlation ratio')
     call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm)
-    call save_iterations(psi_energy_with_nucl_rep(1:N_states),pt2,N_det) 
-    call print_extrapolated_energy(psi_energy_with_nucl_rep(1:N_states),pt2)
+
+    do k=1,N_states
+      rpt2(:) = pt2(:)/(1.d0 + norm(k)) 
+    enddo
+
+    call save_iterations(psi_energy_with_nucl_rep(1:N_states),rpt2,N_det) 
+    call print_extrapolated_energy(psi_energy_with_nucl_rep(1:N_states),rpt2)
     N_iter += 1
 
     n_det_before = N_det
@@ -98,16 +100,12 @@ program fci_zmq
     PROVIDE  psi_det
     PROVIDE  psi_det_sorted
 
-    if (N_det >= N_det_max) then
-      threshold_davidson = threshold_davidson_in
-    end if
     call diagonalize_CI
     call save_wavefunction
     call ezfio_set_fci_energy(psi_energy_with_nucl_rep(1:N_states))
   enddo
 
   if (N_det < N_det_max) then
-      threshold_davidson = threshold_davidson_in
       call diagonalize_CI
       call save_wavefunction
       call ezfio_set_fci_energy(psi_energy_with_nucl_rep(1:N_states))
@@ -133,8 +131,8 @@ program fci_zmq
   print*,   'correlation_ratio = ', correlation_energy_ratio
 
 
-  call save_iterations(psi_energy_with_nucl_rep(1:N_states),pt2,N_det) 
-  call write_double(6,correlation_energy_ratio, 'Correlation ratio')
   call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm)
+  call save_iterations(psi_energy_with_nucl_rep(1:N_states),rpt2,N_det) 
+  call print_extrapolated_energy(psi_energy_with_nucl_rep(1:N_states),rpt2)
 
 end

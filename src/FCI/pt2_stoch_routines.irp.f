@@ -6,10 +6,8 @@ BEGIN_PROVIDER [ integer, pt2_stoch_istate ]
  pt2_stoch_istate = 1
 END_PROVIDER
 
- BEGIN_PROVIDER [ integer, pt2_N_teeth ]
-&BEGIN_PROVIDER [ integer, pt2_minDetInFirstTeeth ]
+ BEGIN_PROVIDER [ integer, pt2_F, (N_det_generators) ]
 &BEGIN_PROVIDER [ integer, pt2_n_tasks_max ]
-&BEGIN_PROVIDER [ integer, pt2_F, (N_det_generators) ]
   implicit none
   logical, external :: testTeethBuilding
   integer :: i
@@ -19,6 +17,12 @@ END_PROVIDER
   do i=1,N_det_generators
     pt2_F(i) = 1 + int(dble(pt2_n_tasks_max)*maxval(dsqrt(dabs(psi_coef_sorted_gen(i,1:N_states)))))
   enddo
+END_PROVIDER
+
+ BEGIN_PROVIDER [ integer, pt2_N_teeth ]
+&BEGIN_PROVIDER [ integer, pt2_minDetInFirstTeeth ]
+  implicit none
+  logical, external :: testTeethBuilding
   
   if(N_det_generators < 1024) then
     pt2_minDetInFirstTeeth = 1

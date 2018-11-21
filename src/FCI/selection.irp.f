@@ -727,9 +727,7 @@ subroutine splash_pq(mask, sp, det, i_gen, N_sel, bannedOrb, banned, mat, intere
   integer                        :: i, ii, j, k, l, h(0:2,2), p(0:4,2), nt
   integer(bit_kind)              :: perMask(N_int, 2), mobMask(N_int, 2), negMask(N_int, 2)
   integer(bit_kind)             :: phasemask(N_int,2)
-!   logical :: bandon
-!   
-!   bandon = .false.
+
   PROVIDE psi_selectors_coef_transp
   mat = 0d0
   

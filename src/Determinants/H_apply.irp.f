@@ -280,7 +280,7 @@ subroutine remove_duplicates_in_psi_det(found_duplicates)
     N_det = k
     psi_det_sorted_bit(:,:,1:N_det) = psi_det(:,:,1:N_det)
     psi_coef_sorted_bit(1:N_det,:) = psi_coef(1:N_det,:)
-    TOUCH N_det psi_det psi_coef psi_det_sorted_bit psi_coef_sorted_bit
+    TOUCH N_det psi_det psi_coef psi_det_sorted_bit psi_coef_sorted_bit c0_weight
   endif
   psi_det = psi_det_sorted
   psi_coef = psi_coef_sorted

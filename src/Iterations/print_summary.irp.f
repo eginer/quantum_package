@@ -20,7 +20,7 @@ subroutine print_summary(e_,pt2_,error_,variance_,norm_)
   N_states_p = min(N_det,N_states)
 
   do i=1,N_states_p
-    f(i) = 1.d0/(1+norm_(i))
+    f(i) = 1.d0/(1.d0+norm_(i))
   enddo
 
   print *, ''

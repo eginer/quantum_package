@@ -497,6 +497,10 @@ subroutine save_wavefunction
   BEGIN_DOC
   !  Save the wave function into the EZFIO file
   END_DOC
+
+  ! Trick to avoid re-reading the wave function every time N_det changes
+  read_wf = .False.
+
   if (N_det < N_states) then
     return
   endif
@@ -555,17 +559,10 @@ subroutine save_wavefunction_general(ndet,nstates,psidet,dim_psicoef,psicoef)
     allocate (psi_coef_save(ndet,nstates))
     double precision               :: accu_norm
     do k=1,nstates
-      accu_norm = 0.d0
       do i=1,ndet
-        accu_norm = accu_norm + psicoef(i,k) * psicoef(i,k)
+        psi_coef_save(i,k) = psicoef(i,k) 
       enddo
-      if (accu_norm == 0.d0) then
-        accu_norm = 1.e-12
-      endif
-      accu_norm = 1.d0/dsqrt(accu_norm)
-      do i=1,ndet
-        psi_coef_save(i,k) = psicoef(i,k) * accu_norm
-      enddo
+      call normalize(psi_coef_save(1,k),ndet)
     enddo
     
     call ezfio_set_determinants_psi_coef(psi_coef_save)

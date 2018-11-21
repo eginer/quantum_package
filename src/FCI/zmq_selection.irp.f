@@ -13,6 +13,7 @@ subroutine ZMQ_selection(N_in, pt2, variance, norm)
   double precision, intent(out)  :: variance(N_states)
   double precision, intent(out)  :: norm(N_states)
   
+  PROVIDE psi_det psi_coef N_det qp_max_mem N_states pt2_F s2_eig N_det_generators
   
   N = max(N_in,1)
   if (.True.) then
@@ -60,8 +61,8 @@ subroutine ZMQ_selection(N_in, pt2, variance, norm)
   task = ' ' 
 
  do i= 1, N_det_generators
-    do j=1,pt2_F(pt2_J(i))
-      write(task(ipos:ipos+30),'(I9,1X,I9,1X,I9,''|'')') j, pt2_J(i), N
+    do j=1,pt2_F(i)
+      write(task(ipos:ipos+30),'(I9,1X,I9,1X,I9,''|'')') j, i, N
       ipos += 30
       if (ipos > 100000-30) then
         if (add_task_to_taskserver(zmq_to_qp_run_socket,trim(task(1:ipos))) == -1) then
