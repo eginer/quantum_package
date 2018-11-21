@@ -18,6 +18,8 @@ BEGIN_PROVIDER [ double precision, pt2_E0_denominator, (N_states) ]
      pt2_E0_denominator(1:N_states) = barycentric_electronic_energy(1:N_states)
    else if (h0_type == "Variance") then
      pt2_E0_denominator(1:N_states) = psi_energy(1:N_states) !1.d0-nuclear_repulsion
+   else if (h0_type == "SOP") then
+     pt2_E0_denominator(1:N_states) = psi_energy(1:N_states)
    else
      print *,  h0_type, ' not implemented'
      stop

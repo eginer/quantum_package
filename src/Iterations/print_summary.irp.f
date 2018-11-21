@@ -60,15 +60,18 @@ subroutine print_summary(e_,pt2_,error_,variance_,norm_)
   if (s2_eig) then
     print *,  'N_sop             = ', N_occ_pattern
   endif
+  print *,  ''
 
   do k=1, N_states_p
-    print*,'State ',k
+    print*,'* State ',k
     print *,  'Variance        = ', variance_(k) 
     print *,  'PT norm         = ', dsqrt(norm_(k))
     print *,  'PT2             = ', pt2_(k)
+    print *,  'rPT2            = ', pt2_(k)*f(k)
     print *,  'E               = ', e_(k)
     print *,  'E+PT2 '//pt2_string//'  = ', e_(k)+pt2_(k), ' +/- ', error_(k)
     print *,  'E+rPT2'//pt2_string//'  = ', e_(k)+pt2_(k)*f(k), ' +/- ', error_(k)*f(k)
+    print *,  ''
   enddo
 
   print *,  '-----'

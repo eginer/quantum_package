@@ -1,5 +1,5 @@
 use bitmasks
-subroutine det_to_occ_pattern(d,o,Nint)
+subroutine occ_pattern_of_det(d,o,Nint)
   use bitmasks
   implicit none
   BEGIN_DOC
@@ -181,6 +181,7 @@ end
   ! array of the occ_pattern present in the wf
   ! psi_occ_pattern(:,1,j) = jth occ_pattern of the wave function : represent all the single occupations
   ! psi_occ_pattern(:,2,j) = jth occ_pattern of the wave function : represent all the double occupations
+  ! The occ patterns are sorted by occ_pattern_search_key
  END_DOC
  integer :: i,j,k
 
@@ -304,9 +305,18 @@ BEGIN_PROVIDER [ integer, det_to_occ_pattern, (N_det) ]
  BEGIN_DOC
  ! Returns the index of the occupation pattern for each determinant
  END_DOC
- integer :: i,j,k
+ integer :: i,j,k,r,l
+ integer*8 :: key
  integer(bit_kind) :: occ(N_int,2)
  logical :: found
+ integer*8, allocatable :: bit_tmp(:)
+ integer*8, external            :: occ_pattern_search_key
+
+ allocate(bit_tmp(N_occ_pattern))
+ do i=1,N_occ_pattern
+   bit_tmp(i) = occ_pattern_search_key(psi_occ_pattern(1,1,i),N_int)
+ enddo
+
  !$OMP PARALLEL DO DEFAULT(SHARED) &
  !$OMP PRIVATE(i,k,j,found,occ)
  do i=1,N_det
@@ -314,23 +324,82 @@ BEGIN_PROVIDER [ integer, det_to_occ_pattern, (N_det) ]
       occ(k,1) = ieor(psi_det(k,1,i),psi_det(k,2,i))
       occ(k,2) = iand(psi_det(k,1,i),psi_det(k,2,i))
     enddo
-    do j=1,N_occ_pattern
+
+    key = occ_pattern_search_key(psi_occ_pattern(1,1,i),N_int)
+
+    ! Binary search
+    l = 1
+    r = N_occ_pattern
+    do while(r-l > 1)
+      j = shiftr(r+l,1)
+      if (bit_tmp(j) < key) then
+        l = j
+      else
+        r = j
+      endif
+    enddo
+
+    do while (bit_tmp(l) == key)
+      if (l == 0) then
+        print *,  '1 bug in ', irp_here
+        stop -1
+      endif
       found = .True.
       do k=1,N_int
-        if ( (occ(k,1) /= psi_occ_pattern(k,1,j)) &
-        .or. (occ(k,2) /= psi_occ_pattern(k,2,j)) ) then
+        if ( (occ(k,1) /= psi_occ_pattern(k,1,l)) &
+        .or. (occ(k,2) /= psi_occ_pattern(k,2,l)) ) then
           found = .False.
           exit
         endif
       enddo
       if (found) then
-        det_to_occ_pattern(i) = j
+        det_to_occ_pattern(i) = l
+        r=1
         exit
       endif
+      l = l-1
+    enddo
+
+    do while (bit_tmp(r) == key)
+      if (r > N_occ_pattern) then
+        print *,  '2 bug in ', irp_here
+        stop -1
+      endif
+      found = .True.
+      do k=1,N_int
+        if ( (occ(k,1) /= psi_occ_pattern(k,1,r)) &
+        .or. (occ(k,2) /= psi_occ_pattern(k,2,r)) ) then
+          found = .False.
+          exit
+        endif
+      enddo
+      if (found) then
+        det_to_occ_pattern(i) = r
+        exit
+      endif
+      r = r+1
     enddo
  enddo
  !$OMP END PARALLEL DO
 END_PROVIDER
+
+
+BEGIN_PROVIDER [ double precision, psi_occ_pattern_Hii, (N_occ_pattern) ]
+ implicit none
+ BEGIN_DOC
+ ! <I|h|I> where |I> is an occupation pattern. This is the minimum Hii of
+ ! all <i|h|i>, where the |i> are the determinants if oI>
+ END_DOC
+ integer :: j, i
+
+ psi_occ_pattern_Hii(:) = huge(1.d0)
+ do i=1,N_det
+  j = det_to_occ_pattern(i)
+  psi_occ_pattern_Hii(j) = min(psi_occ_pattern_Hii(j), psi_det_Hii(i))
+ enddo
+
+END_PROVIDER
+
 
 BEGIN_PROVIDER [ double precision, weight_occ_pattern, (N_occ_pattern,N_states) ]
  implicit none

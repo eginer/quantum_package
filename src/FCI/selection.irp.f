@@ -658,6 +658,7 @@ subroutine fill_buffer_double(i_generator, sp, h1, h2, bannedOrb, banned, fock_d
   integer(bit_kind) :: mask(N_int, 2), det(N_int, 2)
   double precision :: e_pert, delta_E, val, Hii, sum_e_pert, tmp, alpha_h_psi, coef
   double precision, external :: diag_H_mat_elem_fock
+  double precision :: E_shift
   
   logical, external :: detEq
   
@@ -670,7 +671,13 @@ subroutine fill_buffer_double(i_generator, sp, h1, h2, bannedOrb, banned, fock_d
   end if
   
   call apply_holes(psi_det_generators(1,1,i_generator), s1, h1, s2, h2, mask, ok, N_int)
+  E_shift = 0.d0
   
+  if (h0_type == "SOP") then
+    j = det_to_occ_pattern(i_generator)
+    E_shift = psi_det_Hii(i_generator) - psi_occ_pattern_Hii(j)
+  endif
+
   do p1=1,mo_tot_num
     if(bannedOrb(p1, s1)) cycle
     ib = 1
@@ -683,10 +690,11 @@ subroutine fill_buffer_double(i_generator, sp, h1, h2, bannedOrb, banned, fock_d
       call apply_particles(mask, s1, p1, s2, p2, det, ok, N_int)
       
       Hii = diag_H_mat_elem_fock(psi_det_generators(1,1,i_generator),det,fock_diag_tmp,N_int)
+
       sum_e_pert = 0d0
       
       do istate=1,N_states
-        delta_E = E0(istate) - Hii
+        delta_E = E0(istate) - Hii + E_shift
         alpha_h_psi = mat(istate, p1, p2) 
         val = alpha_h_psi + alpha_h_psi
         tmp = dsqrt(delta_E * delta_E + val * val)
@@ -699,10 +707,10 @@ subroutine fill_buffer_double(i_generator, sp, h1, h2, bannedOrb, banned, fock_d
         variance(istate) = variance(istate) + alpha_h_psi * alpha_h_psi 
         norm(istate) = norm(istate) + coef * coef 
 
-        if (h0_type /= "Variance") then
-          sum_e_pert = sum_e_pert + e_pert * state_average_weight(istate)
-        else
+        if (h0_type == "Variance") then
           sum_e_pert = sum_e_pert - alpha_h_psi * alpha_h_psi * state_average_weight(istate)
+        else
+          sum_e_pert = sum_e_pert + e_pert * state_average_weight(istate)
         endif
       end do
       

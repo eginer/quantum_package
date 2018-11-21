@@ -224,14 +224,17 @@ end = struct
   | EN
   | Barycentric
   | Variance
+  | SOP
   [@@deriving sexp]
 
   let to_string = function
   | EN -> \"EN\"
   | Variance -> \"Variance\"
   | Barycentric -> \"Barycentric\"
+  | SOP -> \"SOP\"
   let of_string  s = 
     match (String.lowercase_ascii s) with
+    | \"sop\" -> SOP
     | \"en\"  -> EN
     | \"variance\"  -> Variance
     | \"barycentric\" -> Barycentric

@@ -33,15 +33,6 @@ subroutine run
 
   call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm)
 
-  print *,  'State      ', k
-  do k=1,N_states
-    print *,  'N_det    = ', N_det
-    print *,  'PT2      = ', pt2(k)
-    print *,  'rPT2     = ', rpt2(k)
-    print *,  'E        = ', E_CI_before(k)
-    print *,  'E+PT2    = ', E_CI_before(k)+pt2(k), ' +/- ', error(k)
-    print *,  '-----'
-  enddo
   call ezfio_set_fci_energy(E_CI_before)
   call ezfio_set_fci_energy_pt2(E_CI_before+pt2)
 end
