@@ -37,7 +37,6 @@ BEGIN_PROVIDER [ character*(128), ezfio_filename ]
   character*(64) :: command, pidc
   write(pidc,*) getpid()
   write(command,*) 'echo 15 > /proc//'//trim(adjustl(pidc))//'/oom_adj'
-  print '(A)', command
   call system(command)
 
 

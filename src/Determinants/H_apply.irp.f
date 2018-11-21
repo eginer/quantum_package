@@ -226,7 +226,7 @@ subroutine remove_duplicates_in_psi_det(found_duplicates)
   enddo
   !$OMP END DO
 
-  !$OMP DO 
+  !$OMP DO schedule(dynamic,256)
   do i=1,N_det-1
     if (duplicate(i)) then
       cycle
@@ -250,10 +250,8 @@ subroutine remove_duplicates_in_psi_det(found_duplicates)
         endif
       enddo
       if (dup) then
-        !$OMP CRITICAL
         duplicate(j) = .True.
         found_duplicates = .True.
-        !$OMP END CRITICAL
       endif
       j += 1
       if (j > N_det) then
