@@ -327,62 +327,36 @@ BEGIN_PROVIDER [ integer, det_to_occ_pattern, (N_det) ]
 
     key = occ_pattern_search_key(occ,N_int)
 
-    ! Binary search
+    ! TODO: Binary search
     l = 1
     r = N_occ_pattern
-    do while(r-l > 1)
-      j = shiftr(r+l,1)
-      if (bit_tmp(j) < key) then
-        l = j
-      else
-        r = j
-      endif
-    enddo
-
-    do while (bit_tmp(l) == key)
-      if (l == 0) then
-        print *,  '1 bug in ', irp_here
-        stop -1
-      endif
+!    do while(r-l > 32)
+!      j = shiftr(r+l,1)
+!      if (bit_tmp(j) < key) then
+!        l = j
+!      else
+!        r = j
+!      endif
+!    enddo
+    do j=l,r
       found = .True.
       do k=1,N_int
-        if ( (occ(k,1) /= psi_occ_pattern(k,1,l)) &
-        .or. (occ(k,2) /= psi_occ_pattern(k,2,l)) ) then
+        if ( (occ(k,1) /= psi_occ_pattern(k,1,j)) &
+        .or. (occ(k,2) /= psi_occ_pattern(k,2,j)) ) then
           found = .False.
           exit
         endif
       enddo
       if (found) then
-        det_to_occ_pattern(i) = l
-        r=1
+        det_to_occ_pattern(i) = j
         exit
       endif
-      l = l-1
     enddo
 
-    do while (bit_tmp(r) == key)
-      if (r > N_occ_pattern) then
-        print *,  '2 bug in ', irp_here
-        stop -1
-      endif
-      found = .True.
-      do k=1,N_int
-        if ( (occ(k,1) /= psi_occ_pattern(k,1,r)) &
-        .or. (occ(k,2) /= psi_occ_pattern(k,2,r)) ) then
-          found = .False.
-          exit
-        endif
-      enddo
-      if (found) then
-        det_to_occ_pattern(i) = r
-        exit
-      endif
-      r = r+1
-      if (.not.found) then
-        print *,  '3 bug in ',  irp_here
-        stop -1
-      endif
-    enddo
+    if (.not.found) then
+      print *,  '3 bug in ',  irp_here
+      stop -1
+    endif
  enddo
  !$OMP END PARALLEL DO
  deallocate(bit_tmp)
