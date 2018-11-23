@@ -28,7 +28,7 @@ EZFIO parameters
 
 .. option:: lambda_type
 
-   Type of amplitudes used. lambda=0 : defined in [2], lambda=1 : defined in [1]
+   Type of amplitudes used. lambda=0 is defined in ref 2, lambda=1 is defined in ref 1
 
    Default: 0
 

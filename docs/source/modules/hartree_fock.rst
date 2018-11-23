@@ -69,9 +69,9 @@ EZFIO parameters
 
 .. option:: level_shift
 
-   Energy shift on the virtual |MOs| to improve |SCF| convergence
+   Initial value of the energy shift on the virtual |MOs|
 
-   Default: 0.2
+   Default: 0.0
 
 .. option:: scf_algorithm
 

@@ -22,10 +22,8 @@ FCIDUMP
   Interface with the FCI-QMC program `NECI`_, or the semi-stochastic Heat-Bath CI
   program `Dice`_.
 
-`QMCPack`_ / `CHAMP`_ / `QMC=Chem`_
+`QMCPack`_ / `CHAMP <https://www.utwente.nl/en/tnw/ccp/research/CHAMP.html>`_ / `QMC=Chem`_
   Trial wave functions can be used for Quantum Monte Carlo, with or without pseudo-potentials.
   These interfaces are provided as `external plugins`_.
-
-
 
 

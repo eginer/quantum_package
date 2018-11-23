@@ -1,6 +1,5 @@
 .. _Autoconf: http://www.gnu.org/software/autoconf
 .. _BLAS: http://www.netlib.org/blas/
-.. _CHAMP: https://www.utwente.nl/en/tnw/ccp/research/CHAMP.html
 .. _Core: https://opensource.janestreet.com/core/
 .. _Dice: https://sanshar.github.io/Dice/
 .. _EMSL_Basis_Set_Exchange_Local: https://github.com/TApplencourt/EMSL_Basis_Set_Exchange_Local

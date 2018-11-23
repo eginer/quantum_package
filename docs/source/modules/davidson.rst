@@ -25,7 +25,7 @@ EZFIO parameters
 
    Thresholds of Davidson's algorithm
 
-   Default: 1.e-12
+   Default: 1.e-10
 
 .. option:: n_states_diag
 
@@ -55,4 +55,4 @@ EZFIO parameters
 
    If true, use the distributed algorithm
 
-   Default: False
+   Default: True
