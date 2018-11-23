@@ -92,6 +92,6 @@ EZFIO parameters
 
 .. option:: no_oa_or_av_opt
 
-   If true, skip the (inactive+core) --> (active) and the (active) --> (virtual) orbital rotations within the |SCF| procedure
+   If |true|, skip the (inactive+core) --> (active) and the (active) --> (virtual) orbital rotations within the |SCF| procedure
 
    Default: False

@@ -35,7 +35,7 @@ EZFIO parameters
 
 .. option:: read_wf
 
-   If true, read the wave function from the |EZFIO| file
+   If |true|, read the wave function from the |EZFIO| file
 
    Default: False
 
@@ -106,7 +106,7 @@ EZFIO parameters
 
 .. option:: store_full_H_mat
 
-   If True, the Davidson diagonalization is performed by storing the full |H| matrix up to n_det_max_stored. Be careful, it can cost a lot of memory but can also save a lot of CPU time
+   If |true|, the Davidson diagonalization is performed by storing the full |H| matrix up to n_det_max_stored. Be careful, it can cost a lot of memory but can also save a lot of CPU time
 
    Default: False
 

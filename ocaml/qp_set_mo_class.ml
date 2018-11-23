@@ -162,7 +162,9 @@ let set ~core ~inact ~act ~virt ~del =
   ]
   in
 
+  (* Debug masks in output 
   List.iter ~f:(fun x-> print_endline (Bitlist.to_string x)) result;
+  *)
 
   (* Write masks *)
   let result =  List.map ~f:(fun x ->

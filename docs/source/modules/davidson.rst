@@ -41,18 +41,18 @@ EZFIO parameters
 
 .. option:: state_following
 
-   If true, the states are re-ordered to match the input states
+   If |true|, the states are re-ordered to match the input states
 
    Default: False
 
 .. option:: disk_based_davidson
 
-   If true, disk space is used to store the vectors
+   If |true|, disk space is used to store the vectors
 
    Default: False
 
 .. option:: distributed_davidson
 
-   If true, use the distributed algorithm
+   If |true|, use the distributed algorithm
 
    Default: True

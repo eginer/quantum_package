@@ -31,15 +31,6 @@
    users_guide/interfaces
 
 
-.. toctree::
-   :maxdepth: 1
-   :caption: Index of Modules
-   :glob:
-   :hidden:
-
-   modules/*
-
-
 
 .. toctree::
    :maxdepth: 1
@@ -48,6 +39,7 @@
 
    programmers_guide/programming
    programmers_guide/ezfio
+   programmers_guide/index
 
 
 .. toctree::

@@ -86,6 +86,6 @@ EZFIO parameters
 
 .. option:: ao_cartesian
 
-   If true, use |AOs| in Cartesian coordinates (6d,10f,...)
+   If |true|, use |AOs| in Cartesian coordinates (6d,10f,...)
 
    Default: false

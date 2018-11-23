@@ -14,7 +14,12 @@ Usage
 
 .. code:: bash
 
-   qp_run [-slave] <PROGRAM> <EZFIO_DIRECTORY>
+   qp_run [-slave] [-help] <PROGRAM> <EZFIO_DIRECTORY>
+
+
+.. option:: -help
+
+   Displays the list of available |qp| programs. 
 
 
 .. option:: -slave

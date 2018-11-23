@@ -68,4 +68,5 @@
 .. |H| replace:: :math:`\hat H`
 .. |Psi| replace:: :math:`|\Psi \rangle`
 .. |S^2| replace:: :math:`\widehat{S^2}`
-
+.. |true| replace:: ``true``
+.. |false| replace:: ``false``

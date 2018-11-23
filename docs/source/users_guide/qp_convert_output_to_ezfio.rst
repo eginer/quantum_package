@@ -6,8 +6,8 @@ qp_convert_output_to_ezfio
 .. program:: qp_convert_output_to_ezfio
 
 This Python script uses the `resultsFile`_ Python library to gather the
-geometry, |AOs| and |MOs| from output files of |GAMESS| or Gaussian, and creates an
-|EZFIO| directory with this information. Some constraints are necessary in the
+geometry, |AOs| and |MOs| from output files of |GAMESS| or Gaussian, and
+puts this data in an |EZFIO| database. Some constraints are necessary in the
 output file : the run needs to be a single point |HF|, |DFT| or |CAS| |SCF|.
 
 Usage 
