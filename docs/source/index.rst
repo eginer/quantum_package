@@ -22,13 +22,11 @@
    :hidden:
 
    users_guide/quickstart
-   users_guide/configure
    users_guide/interfaces
-   users_guide/qp_*
+   users_guide/excited_states
    users_guide/natural_orbitals
    users_guide/plugins
-   users_guide/excited_states
-   users_guide/interfaces
+   users_guide/index
 
 
 

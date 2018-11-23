@@ -15,19 +15,19 @@ Contains everything for the computation of the Hamiltonian in the basis of Slate
 EZFIO parameters
 ----------------
 
-.. option:: N_det_max
+.. option:: n_det_max
 
    Maximum number of determinants in the wave function
 
    Default: 1000000
 
-.. option:: N_det_max_full
+.. option:: n_det_max_full
 
    Maximum number of determinants where |H| is fully diagonalized
 
    Default: 1000
 
-.. option:: N_states
+.. option:: n_states
 
    Number of states to consider
 

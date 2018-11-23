@@ -123,7 +123,6 @@ The estimated |FCI| energy of HCN is ``-93.0501`` au.
 
   .. include:: /work.rst
 
-  * Interfaces : molden/fcidump
   * Natural orbitals
   * Parameters for Hartree-Fock
   * Parameters for Davidson

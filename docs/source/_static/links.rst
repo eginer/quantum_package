@@ -63,8 +63,12 @@
 .. |MRCC| replace:: :abbr:`MRCC (Multi-Reference Coupled Cluster)`
 .. |MRPT| replace:: :abbr:`MRPT (Multi-Reference Perturbation Theory)`
 .. |PT2| replace:: :abbr:`PT2 (Second order perturbative correction)`
+.. |QMC| replace:: :abbr:`QMC (Quantum Monte Carlo)`
 .. |SCF| replace:: :abbr:`SCF (Self Consistent Field)`
+.. |CASSCF| replace:: |CAS| - |SCF|
+.. |FCIQMC| replace:: |FCI| - |QMC|
 
+.. |kalpha| replace:: :math:`|\alpha \rangle`
 .. |H| replace:: :math:`\hat H`
 .. |Psi| replace:: :math:`|\Psi \rangle`
 .. |S^2| replace:: :math:`\widehat{S^2}`

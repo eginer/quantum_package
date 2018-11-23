@@ -80,7 +80,7 @@ EZFIO parameters
 
    Default: True
 
-.. option:: PT2_max
+.. option:: pt2_max
 
    The selection process stops when the largest |PT2| (for all the state) is lower
 
@@ -88,7 +88,7 @@ EZFIO parameters
 
    Default: 0.0001
 
-.. option:: PT2_relative_error
+.. option:: pt2_relative_error
 
    Stop stochastic |PT2| when the relative error is smaller than `PT2_relative_error`
 
