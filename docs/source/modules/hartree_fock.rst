@@ -95,3 +95,315 @@ EZFIO parameters
    If |true|, skip the (inactive+core) --> (active) and the (active) --> (virtual) orbital rotations within the |SCF| procedure
 
    Default: False
+
+
+Providers
+---------
+
+
+.. option:: fock_matrix_mo_alpha
+
+    .. code:: text
+
+        double precision, allocatable	:: fock_matrix_mo_alpha	(mo_tot_num,mo_tot_num)
+
+        File: Fock_matrix.irp.f
+
+    Fock matrix on the MO basis
+
+
+
+
+.. option:: extrapolate_fock_matrix
+
+    .. code:: text
+
+        subroutine extrapolate_Fock_matrix(      &
+        error_matrix_DIIS,Fock_matrix_DIIS,    &
+        Fock_matrix_AO_,size_Fock_matrix_AO,   &
+        iteration_SCF,dim_DIIS                 &
+        )
+
+        File: Roothaan_Hall_SCF.irp.f
+
+    Compute the extrapolated Fock matrix using the DIIS procedure
+
+
+
+
+.. option:: fock_matrix_ao_alpha
+
+    .. code:: text
+
+        double precision, allocatable	:: fock_matrix_ao_alpha	(ao_num,ao_num)
+        double precision, allocatable	:: fock_matrix_ao_beta	(ao_num,ao_num)
+
+        File: Fock_matrix.irp.f
+
+    Alpha Fock matrix in AO basis set
+
+
+
+
+.. option:: hf_energy
+
+    .. code:: text
+
+        double precision	:: hf_energy
+
+        File: Fock_matrix.irp.f
+
+    Hartree-Fock energy
+
+
+
+
+.. option:: fock_matrix_diag_mo
+
+    .. code:: text
+
+        double precision, allocatable	:: fock_matrix_mo	(mo_tot_num,mo_tot_num)
+        double precision, allocatable	:: fock_matrix_diag_mo	(mo_tot_num)
+
+        File: Fock_matrix.irp.f
+
+    Fock matrix on the MO basis. For open shells, the ROHF Fock Matrix is 
+ |   F-K    |  F + K/2  |    F     | |---------------------------------| | F + K/2  |     F     |  F - K/2 | |---------------------------------| |    F     |  F - K/2  |  F + K   | 
+ F = 1/2 (Fa + Fb) 
+ K = Fb - Fa 
+
+
+
+
+
+.. option:: fock_matrix_ao_beta
+
+    .. code:: text
+
+        double precision, allocatable	:: fock_matrix_ao_alpha	(ao_num,ao_num)
+        double precision, allocatable	:: fock_matrix_ao_beta	(ao_num,ao_num)
+
+        File: Fock_matrix.irp.f
+
+    Alpha Fock matrix in AO basis set
+
+
+
+
+.. option:: hf_density_matrix_ao
+
+    .. code:: text
+
+        double precision, allocatable	:: hf_density_matrix_ao	(ao_num,ao_num)
+
+        File: HF_density_matrix_ao.irp.f
+
+    S^{-1}.P.S^{-1}  where P = C.C^t
+
+
+
+
+.. option:: fps_spf_matrix_ao
+
+    .. code:: text
+
+        double precision, allocatable	:: fps_spf_matrix_ao	(AO_num,AO_num)
+
+        File: DIIS.irp.f
+
+    Commutator FPS - SPF
+
+
+
+
+.. option:: threshold_diis_nonzero
+
+    .. code:: text
+
+        double precision	:: threshold_diis_nonzero
+
+        File: DIIS.irp.f
+
+    If threshold_DIIS is zero, choose sqrt(thresh_scf)
+
+
+
+
+.. option:: ao_bi_elec_integral_alpha
+
+    .. code:: text
+
+        double precision, allocatable	:: ao_bi_elec_integral_alpha	(ao_num,ao_num)
+        double precision, allocatable	:: ao_bi_elec_integral_beta	(ao_num,ao_num)
+
+        File: Fock_matrix.irp.f
+
+    Alpha Fock matrix in AO basis set
+
+
+
+
+.. option:: eigenvectors_fock_matrix_ao
+
+    .. code:: text
+
+        double precision, allocatable	:: eigenvalues_fock_matrix_ao	(AO_num)
+        double precision, allocatable	:: eigenvectors_fock_matrix_ao	(AO_num,AO_num)
+
+        File: DIIS.irp.f
+
+    Eigenvalues and eigenvectors of the Fock matrix over the AO basis
+
+
+
+
+.. option:: fock_matrix_mo_beta
+
+    .. code:: text
+
+        double precision, allocatable	:: fock_matrix_mo_beta	(mo_tot_num,mo_tot_num)
+
+        File: Fock_matrix.irp.f
+
+    Fock matrix on the MO basis
+
+
+
+
+.. option:: eigenvectors_fock_matrix_mo
+
+    .. code:: text
+
+        double precision, allocatable	:: diagonal_fock_matrix_mo	(mo_tot_num)
+        double precision, allocatable	:: eigenvectors_fock_matrix_mo	(ao_num,mo_tot_num)
+
+        File: diagonalize_fock.irp.f
+
+    Diagonal Fock matrix in the MO basis
+
+
+
+
+.. option:: fock_matrix_mo
+
+    .. code:: text
+
+        double precision, allocatable	:: fock_matrix_mo	(mo_tot_num,mo_tot_num)
+        double precision, allocatable	:: fock_matrix_diag_mo	(mo_tot_num)
+
+        File: Fock_matrix.irp.f
+
+    Fock matrix on the MO basis. For open shells, the ROHF Fock Matrix is 
+ |   F-K    |  F + K/2  |    F     | |---------------------------------| | F + K/2  |     F     |  F - K/2 | |---------------------------------| |    F     |  F - K/2  |  F + K   | 
+ F = 1/2 (Fa + Fb) 
+ K = Fb - Fa 
+
+
+
+
+
+.. option:: fps_spf_matrix_mo
+
+    .. code:: text
+
+        double precision, allocatable	:: fps_spf_matrix_mo	(mo_tot_num,mo_tot_num)
+
+        File: DIIS.irp.f
+
+    Commutator FPS - SPF in MO basis
+
+
+
+
+.. option:: diagonal_fock_matrix_mo_sum
+
+    .. code:: text
+
+        double precision, allocatable	:: diagonal_fock_matrix_mo_sum	(mo_tot_num)
+
+        File: diagonalize_fock.irp.f
+
+    diagonal element of the fock matrix calculated as the sum over all the interactions with all the electrons in the RHF determinant diagonal_Fock_matrix_mo_sum(i) = sum_{j=1, N_elec} 2 J_ij -K_ij
+
+
+
+
+.. option:: hf_density_matrix_ao_alpha
+
+    .. code:: text
+
+        double precision, allocatable	:: hf_density_matrix_ao_alpha	(ao_num,ao_num)
+
+        File: HF_density_matrix_ao.irp.f
+
+    S^{-1}.P_alpha.S^{-1}
+
+
+
+
+.. option:: hf_density_matrix_ao_beta
+
+    .. code:: text
+
+        double precision, allocatable	:: hf_density_matrix_ao_beta	(ao_num,ao_num)
+
+        File: HF_density_matrix_ao.irp.f
+
+    S^{-1}.P_beta.S^{-1}
+
+
+
+
+.. option:: eigenvalues_fock_matrix_ao
+
+    .. code:: text
+
+        double precision, allocatable	:: eigenvalues_fock_matrix_ao	(AO_num)
+        double precision, allocatable	:: eigenvectors_fock_matrix_ao	(AO_num,AO_num)
+
+        File: DIIS.irp.f
+
+    Eigenvalues and eigenvectors of the Fock matrix over the AO basis
+
+
+
+
+.. option:: ao_bi_elec_integral_beta
+
+    .. code:: text
+
+        double precision, allocatable	:: ao_bi_elec_integral_alpha	(ao_num,ao_num)
+        double precision, allocatable	:: ao_bi_elec_integral_beta	(ao_num,ao_num)
+
+        File: Fock_matrix.irp.f
+
+    Alpha Fock matrix in AO basis set
+
+
+
+
+.. option:: fock_matrix_ao
+
+    .. code:: text
+
+        double precision, allocatable	:: fock_matrix_ao	(ao_num,ao_num)
+
+        File: Fock_matrix.irp.f
+
+    Fock matrix in AO basis set
+
+
+
+
+.. option:: diagonal_fock_matrix_mo
+
+    .. code:: text
+
+        double precision, allocatable	:: diagonal_fock_matrix_mo	(mo_tot_num)
+        double precision, allocatable	:: eigenvectors_fock_matrix_mo	(ao_num,mo_tot_num)
+
+        File: diagonalize_fock.irp.f
+
+    Diagonal Fock matrix in the MO basis
+
+

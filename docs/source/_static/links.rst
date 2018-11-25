@@ -64,6 +64,7 @@
 .. |MRPT| replace:: :abbr:`MRPT (Multi-Reference Perturbation Theory)`
 .. |PT2| replace:: :abbr:`PT2 (Second order perturbative correction)`
 .. |QMC| replace:: :abbr:`QMC (Quantum Monte Carlo)`
+.. |rst| replace:: :abbr:`RST (ReStructured Text)`
 .. |SCF| replace:: :abbr:`SCF (Self Consistent Field)`
 .. |CASSCF| replace:: |CAS| - |SCF|
 .. |FCIQMC| replace:: |FCI| - |QMC|
@@ -74,3 +75,6 @@
 .. |S^2| replace:: :math:`\widehat{S^2}`
 .. |true| replace:: ``true``
 .. |false| replace:: ``false``
+.. |README| replace:: :file:`README.rst`
+.. |NEED| replace:: :file:`NEED`
+
