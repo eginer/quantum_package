@@ -2,6 +2,13 @@
 &BEGIN_PROVIDER [ double precision, ao_deriv2_y,(ao_num,ao_num) ]
 &BEGIN_PROVIDER [ double precision, ao_deriv2_z,(ao_num,ao_num) ]
   implicit none
+  BEGIN_DOC
+  ! Second derivative matrix elements in the |AO| basis.
+  !
+  ! :math:`{\tt ao_deriv2_x} =
+  !  \langle \chi_i(x,y,z) | \frac{\partial^2}{\partial x^2} |\chi_j (x,y,z) \rangle`
+  !
+  END_DOC
   integer :: i,j,n,l
   double precision :: f
   integer :: dim1
@@ -12,12 +19,6 @@
   integer :: power_A(3), power_B(3)
   double precision :: d_a_2,d_2
   dim1=100
-  BEGIN_DOC
-  ! second derivatives matrix elements in the ao basis 
-  ! .. math::
-  !
-  !   {\tt ao_deriv2_x} = \langle \chi_i(x,y,z) \frac{\partial^2}{\partial x^2} |\chi_j (x,y,z) \rangle
-  END_DOC
 
   ! -- Dummy call to provide everything
    A_center(:) = 0.d0
@@ -61,9 +62,6 @@
       beta = ao_expo_ordered_transp(l,i)
       call overlap_gaussian_xyz(A_center,B_center,alpha,beta,power_A,power_B,overlap_x0,overlap_y0,overlap_z0,overlap,dim1)
       c = ao_coef_normalized_ordered_transp(n,j) * ao_coef_normalized_ordered_transp(l,i)
-!     if (abs(c) < 1.d-8) then
-!       cycle
-!     endif
 
       power_A(1) = power_A(1)-2
       if (power_A(1)>-1) then
@@ -122,8 +120,9 @@ END_PROVIDER
 BEGIN_PROVIDER [double precision, ao_kinetic_integral, (ao_num,ao_num)]
   implicit none
   BEGIN_DOC
-  ! array of the priminitve basis kinetic integrals
-  !  \langle \chi_i |\hat{T}| \chi_j \rangle
+  ! Kinetic energy integrals in the |AO| basis.
+  !
+  ! :math:`\langle \chi_i |\hat{T}| \chi_j \rangle`
   END_DOC
   integer                        :: i,j,k,l
   

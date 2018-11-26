@@ -1,7 +1,7 @@
 double precision function ao_value(i,r)
  implicit none
  BEGIN_DOC
-! return the value of the ith ao at point r
+! Returns the value of the i-th |AO| at point r
  END_DOC
  double precision, intent(in) :: r(3)
  integer, intent(in) :: i
@@ -34,7 +34,7 @@ end
 subroutine give_all_aos_at_r(r,aos_array)
  implicit none
  BEGIN_dOC
-! gives the values of aos at a given point r
+! Gives the values of |AOs| at a given point r
  END_DOC
  double precision, intent(in) :: r(3)
  double precision, intent(out) :: aos_array(ao_num)
@@ -43,6 +43,5 @@ subroutine give_all_aos_at_r(r,aos_array)
  do i = 1, ao_num 
   aos_array(i) = ao_value(i,r)
  enddo
-
 
 end

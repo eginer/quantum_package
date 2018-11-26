@@ -19,18 +19,18 @@ EZFIO parameters
 
 .. option:: thresh_dressed_ci
 
-   Threshold on the convergence of the dressed |CI| energy
+    Threshold on the convergence of the dressed |CI| energy
 
-   Default: 1.e-5
+    Default: 1.e-5
 
 .. option:: n_it_max_dressed_ci
 
-   Maximum number of dressed |CI| iterations
+    Maximum number of dressed |CI| iterations
 
-   Default: 10
+    Default: 10
 
 .. option:: dress_relative_error
 
-   Stop stochastic dressing when the relative error is smaller than :option:`perturbation PT2_relative_error`
+    Stop stochastic dressing when the relative error is smaller than :option:`perturbation PT2_relative_error`
 
-   Default: 0.001
+    Default: 0.001

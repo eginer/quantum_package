@@ -12,23 +12,9 @@ Index of Modules
    /modules/*
 
 
-Index of Providers
-------------------
+.. Auto-generated file
 
-.. toctree::
-   :maxdepth: 1
-   :glob:
+.. include:: index_providers.rst
 
-   /providers/*
-
-
-Index of Subroutines/Functions
-------------------------------
-
-.. toctree::
-   :maxdepth: 1
-   :glob:
-
-   /subroutines/*
 
 

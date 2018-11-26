@@ -3,8 +3,7 @@
   implicit none
   integer :: i,j,n,l
   BEGIN_DOC
- ! array of the mono electronic hamiltonian on the AOs basis
- ! : sum of the kinetic and nuclear electronic potential 
+ ! Array of the one-electron Hamiltonian on the |AO| basis.
   END_DOC
   do j = 1, ao_num
    do i = 1, ao_num

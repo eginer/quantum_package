@@ -1,4 +1,4 @@
-#!/bin/env python2
+#!/usr/bin/env python2
 
 from __future__ import print_function
 import os
@@ -28,19 +28,19 @@ def generate_modules(abs_module, entities):
         config_file.readfp(f)
         for section in config_file.sections():
             doc = config_file.get(section,"doc")
-            doc     = "   " + doc.replace("\n","\n\n   ")+"\n"
+            doc = "    " + doc.replace("\n","\n\n    ")+"\n"
             try:
                 default = config_file.get(section,"default")
-                default = "   " + "Default: %s\n"%default
+                default = "    " + "Default: %s\n"%default
             except:
                 default = ""
             rst += [ ".. option:: %s\n"%(section), doc, default ]
 
   providers = []
   subroutines = []
-  for k in entities:
+  for k in sorted(entities.keys()):
     e = entities[k]
-    if e["module"] == module:
+    if e["module"].lower() == module.lower():
         if "/" not in e["file"] and e["file"] != "ezfio_interface.irp.f":
             if e["type"] == 's':
                 subroutines.append(e)
@@ -51,13 +51,13 @@ def generate_modules(abs_module, entities):
     rst += [ "", "Providers", "---------", "" ]
     for p in providers:
         rst += [ """
-.. option:: %s
+.. c:var:: %s
 
     .. code:: text
 
         %s
 
-        File: %s
+    File: :file:`%s`
 
     %s
 
@@ -65,7 +65,31 @@ def generate_modules(abs_module, entities):
 """ % ( p["name"],
         "\n        ".join(p["decl"]),
         p["file"],
-        " ".join(p["doc"]).replace(".br","\n"),
+        " ".join(p["doc"]).replace("\n ","\n    "),
+      ) ]
+
+
+
+  if subroutines:
+    rst += [ "", "Subroutines / functions", "-----------------------", "" ]
+    for p in subroutines:
+        rst += [ """
+
+.. c:function:: %s
+
+    .. code:: text
+
+        %s
+
+    File: :file:`%s`
+
+    %s
+
+
+""" % ( p["name"],
+        "\n        ".join(p["decl"]),
+        p["file"],
+        " ".join(p["doc"]).replace("\n ","\n    "),
       ) ]
 
 
@@ -114,11 +138,14 @@ def generate_providers(abs_module):
                         state = 3
                         continue
                     if line.startswith(".SH Need"):
-                        break
+                        state = 0
+                        continue
                     if line.startswith(".SH Instability"):
-                        break
+                        state = 0
+                        continue
                     if line.startswith(".SH Call"):
-                        break
+                        state = 0
+                        continue
 
                     if state == 1:
                         entity["decl"] += [ line ]
@@ -129,16 +156,48 @@ def generate_providers(abs_module):
                         else:
                             entity["type"] = 'p'
                     elif state == 2:
+                        if line.startswith(".br"):
+                          line = "\n"
                         entity["doc"] += [ line ]
                     elif state == 3:
                         if line.startswith(".br"):
                             continue
-                        entity["file"] = line
+                        entity["file"] = line.split("/")[-1]
+                        try:
+                            entity["module"] = line.split("/")[-2]
+                        except: pass
+                        break
 
             entities [ entity["name"] ] = entity
 
   return entities
 
+
+def generate_index(entities):
+
+  rst_file = os.path.join('programmers_guide','index_providers.rst')
+
+  with open(rst_file,'w') as f: 
+    rst = [ "Index of Providers", 
+            "------------------", 
+            "" ]
+
+    for e in sorted(entities.keys()):
+        e = entities[e]
+        if e["type"] == 'p':
+            rst.append("* :c:data:`%s`" % (e["name"]))
+
+    rst += [ "",
+             "Index of Subroutines/Functions", 
+             "------------------------------", 
+             "" ]
+
+    for e in sorted(entities.keys()):
+        e = entities[e]
+        if e["type"] == 's':
+            rst.append("* :c:func:`%s`" % (e["name"]))
+
+    f.write("\n".join(rst))
 
 
 
@@ -159,7 +218,13 @@ def main():
       if read_entities:
         for k in read_entities:
             entities[k] = read_entities[k]
-      generate_modules(abs_module,entities)
+
+  for abs_module in os.listdir(SRC):
+    abs_module = os.path.join(SRC,abs_module)
+    if os.path.exists( os.path.join(abs_module, "README.rst") ):
+        generate_modules(abs_module,entities)
+
+  generate_index(entities)
 
 if __name__ == '__main__':
   main()

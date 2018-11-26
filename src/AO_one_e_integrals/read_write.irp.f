@@ -2,7 +2,7 @@
 &BEGIN_PROVIDER [ logical, write_ao_one_integrals ]
    
    BEGIN_DOC
-   ! One level of abstraction for disk_access_ao_integrals and disk_access_mo_integrals
+   ! If |true|, read/write one-electrons from/to disk.
    END_DOC
    implicit none
    

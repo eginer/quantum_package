@@ -5,7 +5,8 @@
   implicit none
   BEGIN_DOC  
 ! Overlap between atomic basis functions:
-! :math:`\int \chi_i(r) \chi_j(r) dr)`
+!
+! :math:`\int \chi_i(r) \chi_j(r) dr`
   END_DOC
   integer :: i,j,n,l
   double precision :: f
@@ -73,8 +74,9 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, ao_overlap_abs,(ao_num,ao_num) ]
   implicit none
   BEGIN_DOC  
-! Overlap between absolute value of atomic basis functions:
-! :math:`\int |\chi_i(r)| |\chi_j(r)| dr)`
+! Overlap between absolute values of atomic basis functions:
+!
+! :math:`\int |\chi_i(r)| |\chi_j(r)| dr`
   END_DOC
   integer :: i,j,n,l
   double precision :: f
@@ -127,7 +129,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, S_inv,(ao_num,ao_num) ]
  implicit none
  BEGIN_DOC
-! S^-1
+! Inverse of the overlap matrix
  END_DOC
  call get_pseudo_inverse(ao_overlap,size(ao_overlap,1),ao_num,ao_num,S_inv,size(S_inv,1))
 END_PROVIDER
@@ -135,7 +137,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, S_half_inv, (AO_num,AO_num) ]
 
   BEGIN_DOC
-!   Matrix X = S^{-1/2} obtained by SVD
+!   :math:`X = S^{-1/2}` obtained by SVD
   END_DOC
 
   implicit none
@@ -194,7 +196,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, S_half, (ao_num,ao_num)  ]
  implicit none
  BEGIN_DOC
- ! S^{1/2}
+ ! :math:`S^{1/2}`
  END_DOC
 
   integer :: i,j,k

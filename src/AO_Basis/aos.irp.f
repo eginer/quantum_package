@@ -1,7 +1,7 @@
 BEGIN_PROVIDER [ integer, ao_prim_num_max ]
  implicit none
  BEGIN_DOC
- ! max number of primitives
+ ! Max number of primitives.
  END_DOC
  ao_prim_num_max = maxval(ao_prim_num)
 END_PROVIDER
@@ -10,7 +10,7 @@ END_PROVIDER
 &BEGIN_PROVIDER [ double precision, ao_coef_normalization_factor, (ao_num) ]
   implicit none
   BEGIN_DOC
-  ! Coefficients including the AO normalization
+  ! Coefficients including the |AO| normalization
   END_DOC
   double precision               :: norm,overlap_x,overlap_y,overlap_z,C_A(3), c
   integer                        :: l, powA(3), nz
@@ -46,7 +46,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, ao_coef_normalization_libint_factor, (ao_num) ]
   implicit none
   BEGIN_DOC
-  ! Coefficients including the AO normalization
+  ! |AO| normalization for interfacing with libint
   END_DOC
   double precision               :: norm,overlap_x,overlap_y,overlap_z,C_A(3), c
   integer                        :: l, powA(3), nz
@@ -78,34 +78,34 @@ END_PROVIDER
 
  BEGIN_PROVIDER [ double precision, ao_coef_normalized_ordered, (ao_num,ao_prim_num_max) ]
 &BEGIN_PROVIDER [ double precision, ao_expo_ordered, (ao_num,ao_prim_num_max) ]
-   implicit none
-   BEGIN_DOC
-   ! Sorted primitives to accelerate 4 index MO transformation
-   END_DOC
-   
-   integer                        :: iorder(ao_prim_num_max)
-   double precision               :: d(ao_prim_num_max,2)
-   integer                        :: i,j
-   do i=1,ao_num
-     do j=1,ao_prim_num(i)
-       iorder(j) = j
-       d(j,1) = ao_expo(i,j)
-       d(j,2) = ao_coef_normalized(i,j)
-     enddo
-     call dsort(d(1,1),iorder,ao_prim_num(i))
-     call dset_order(d(1,2),iorder,ao_prim_num(i))
-     do j=1,ao_prim_num(i)
-       ao_expo_ordered(i,j) = d(j,1)
-       ao_coef_normalized_ordered(i,j) = d(j,2)
-     enddo
-   enddo
+  implicit none
+  BEGIN_DOC
+  ! Sorted primitives to accelerate 4 index |MO| transformation
+  END_DOC
+  
+  integer                        :: iorder(ao_prim_num_max)
+  double precision               :: d(ao_prim_num_max,2)
+  integer                        :: i,j
+  do i=1,ao_num
+    do j=1,ao_prim_num(i)
+      iorder(j) = j
+      d(j,1) = ao_expo(i,j)
+      d(j,2) = ao_coef_normalized(i,j)
+    enddo
+    call dsort(d(1,1),iorder,ao_prim_num(i))
+    call dset_order(d(1,2),iorder,ao_prim_num(i))
+    do j=1,ao_prim_num(i)
+      ao_expo_ordered(i,j) = d(j,1)
+      ao_coef_normalized_ordered(i,j) = d(j,2)
+    enddo
+  enddo
 END_PROVIDER
 
 
 BEGIN_PROVIDER [ double precision, ao_coef_normalized_ordered_transp, (ao_prim_num_max,ao_num) ]
   implicit none
   BEGIN_DOC
-  ! Transposed ao_coef_normalized_ordered
+  ! Transposed :c:var:`ao_coef_normalized_ordered`
   END_DOC
   integer                        :: i,j
   do j=1, ao_num
@@ -119,7 +119,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, ao_expo_ordered_transp, (ao_prim_num_max,ao_num) ]
   implicit none
   BEGIN_DOC
-  ! Transposed ao_expo_ordered
+  ! Transposed :c:var:`ao_expo_ordered`
   END_DOC
   integer                        :: i,j
   do j=1, ao_num
@@ -135,7 +135,7 @@ END_PROVIDER
 &BEGIN_PROVIDER [ character*(128), ao_l_char, (ao_num) ]
  implicit none
  BEGIN_DOC
-! ao_l = l value of the AO: a+b+c in x^a y^b z^c
+! :math:`l` value of the |AO|: :math`a+b+c` in :math:`x^a y^b z^c`
  END_DOC
  integer :: i
  do i=1,ao_num
@@ -151,7 +151,7 @@ integer function ao_power_index(nx,ny,nz)
   BEGIN_DOC
   ! Unique index given to a triplet of powers:
   !
-  ! 1/2 (l-n_x)*(l-n_x+1) + n_z + 1
+  ! :math:`\frac{1}{2} (l-n_x) (l-n_x+1) + n_z + 1`
   END_DOC
   integer                        :: l
   l = nx + ny + nz
@@ -161,7 +161,7 @@ end
 
 BEGIN_PROVIDER [ character*(128), l_to_charater, (0:7)]
  BEGIN_DOC
- ! character corresponding to the "L" value of an AO orbital
+ ! Character corresponding to the "l" value of an |AO|
  END_DOC
  implicit none
  l_to_charater(0)='S'
@@ -178,10 +178,10 @@ END_PROVIDER
  BEGIN_PROVIDER [ integer, Nucl_N_Aos, (nucl_num)]
 &BEGIN_PROVIDER [ integer, N_AOs_max ]
  implicit none
- integer :: i
  BEGIN_DOC
- ! Number of AOs per atom
+ ! Number of |AOs| per atom
  END_DOC
+ integer :: i
  Nucl_N_Aos = 0
  do i = 1, ao_num
   Nucl_N_Aos(ao_nucl(i)) +=1
@@ -192,7 +192,7 @@ END_PROVIDER
  BEGIN_PROVIDER [ integer, Nucl_Aos, (nucl_num,N_AOs_max)]
  implicit none
  BEGIN_DOC
- ! List of AOs attached on each atom
+ ! List of |AOs| centered on each atom
  END_DOC
  integer :: i
  integer, allocatable :: nucl_tmp(:)
@@ -212,9 +212,9 @@ END_PROVIDER
  implicit none
  integer :: i,j,k
  BEGIN_DOC
- ! Index of the shell type Aos and of the corresponding Aos 
- ! Per convention, for P,D,F and G AOs, we take the index 
- ! of the AO with the the corresponding power in the "X" axis
+ ! Index of the shell type |AOs| and of the corresponding |AOs|
+ ! By convention, for p,d,f and g |AOs|, we take the index 
+ ! of the |AO| with the the corresponding power in the x axis
  END_DOC
  do i = 1, nucl_num
   Nucl_num_shell_Aos(i) = 0
@@ -258,6 +258,9 @@ END_PROVIDER
 
 BEGIN_PROVIDER [ character*(4), ao_l_char_space, (ao_num) ]
  implicit none
+ BEGIN_DOC
+! Converts an l value to a string
+ END_DOC
  integer :: i
  character*(4) :: give_ao_character_space
  do i=1,ao_num

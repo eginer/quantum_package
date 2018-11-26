@@ -2,9 +2,11 @@
  &BEGIN_PROVIDER [ double precision, ao_spread_y, (ao_num,ao_num)]
  &BEGIN_PROVIDER [ double precision, ao_spread_z, (ao_num,ao_num)]
  BEGIN_DOC
- ! array of the integrals of AO_i * x^2 AO_j
- ! array of the integrals of AO_i * y^2 AO_j
- ! array of the integrals of AO_i * z^2 AO_j
+ ! * array of the integrals of AO_i * x^2 AO_j
+ !
+ ! * array of the integrals of AO_i * y^2 AO_j
+ !
+ ! * array of the integrals of AO_i * z^2 AO_j
  END_DOC
  implicit none
   integer :: i,j,n,l
@@ -73,9 +75,11 @@
  &BEGIN_PROVIDER [ double precision, ao_dipole_y, (ao_num,ao_num)]
  &BEGIN_PROVIDER [ double precision, ao_dipole_z, (ao_num,ao_num)]
  BEGIN_DOC
- ! array of the integrals of AO_i * x AO_j
- ! array of the integrals of AO_i * y AO_j
- ! array of the integrals of AO_i * z AO_j
+ ! * array of the integrals of AO_i * x AO_j
+ !
+ ! * array of the integrals of AO_i * y AO_j
+ !
+ ! * array of the integrals of AO_i * z AO_j
  END_DOC
  implicit none
   integer :: i,j,n,l
@@ -143,9 +147,11 @@
  &BEGIN_PROVIDER [ double precision, ao_deriv_1_y, (ao_num,ao_num)]
  &BEGIN_PROVIDER [ double precision, ao_deriv_1_z, (ao_num,ao_num)]
  BEGIN_DOC
- ! array of the integrals of AO_i * d/dx  AO_j
- ! array of the integrals of AO_i * d/dy  AO_j
- ! array of the integrals of AO_i * d/dz  AO_j
+ ! * array of the integrals of AO_i * d/dx  AO_j
+ !
+ ! * array of the integrals of AO_i * d/dy  AO_j
+ !
+ ! * array of the integrals of AO_i * d/dz  AO_j
  END_DOC
  implicit none
   integer :: i,j,n,l
@@ -214,47 +220,9 @@
 
 
 
- subroutine overlap_bourrin_x_abs(A_center,B_center,alpha,beta,power_A,power_B,overlap_x,lower_exp_val,dx,nx)
- implicit none
-! compute the following integral :
-!  int [-infty ; +infty] of [(x-A_center)^(power_A) * (x-B_center)^power_B * exp(-alpha(x-A_center)^2) * exp(-beta(x-B_center)^2) ]
- integer :: i,j,k,l
- integer,intent(in) :: power_A,power_B
- double precision, intent(in) :: lower_exp_val
- double precision,intent(in) :: A_center, B_center,alpha,beta
- double precision, intent(out) :: overlap_x,dx
- integer, intent(in) :: nx
- double precision :: x_min,x_max,domain,x,power,factor,dist,p,p_inv,rho
- double precision :: P_center,pouet_timy
- if(power_A.lt.0.or.power_B.lt.0)then
-  overlap_x = 0.d0
-  dx = 0.d0
-  return
- endif
- p = alpha + beta
- p_inv= 1.d0/p
- rho = alpha * beta * p_inv
- dist = (A_center - B_center)*(A_center - B_center)
- P_center = (alpha * A_center + beta * B_center) * p_inv
- factor = dexp(-rho * dist)
- pouet_timy = dsqrt(lower_exp_val/p)
-  x_min = P_center - pouet_timy
-  x_max = P_center + pouet_timy
-!print*,'xmin = ',x_min
-!print*,'xmax = ',x_max
- domain = x_max-x_min
- dx = domain/dble(nx)
- overlap_x = 0.d0
- x = x_min
- do i = 1, nx
-  x += dx
-  overlap_x += (power(power_A,x-A_center) * power(power_B,x-B_center)) * dexp(-p * (x-P_center)*(x-P_center))
- enddo
- overlap_x *= factor * dx
-end
 
  subroutine overlap_bourrin_spread(A_center,B_center,alpha,beta,power_A,power_B,overlap_x,lower_exp_val,dx,nx)
-! compute the following integral :
+! Computes the following integral :
 !  int [-infty ; +infty] of [(x-A_center)^(power_A) * (x-B_center)^power_B * exp(-alpha(x-A_center)^2) * exp(-beta(x-B_center)^2) * x ]
 !  needed for the dipole and those things
  implicit none
@@ -264,7 +232,7 @@ end
  double precision,intent(in) :: A_center, B_center,alpha,beta
  double precision, intent(out) :: overlap_x,dx
  integer, intent(in) :: nx
- double precision :: x_min,x_max,domain,x,power,factor,dist,p,p_inv,rho
+ double precision :: x_min,x_max,domain,x,factor,dist,p,p_inv,rho
  double precision :: P_center,pouet_timy
  if(power_A.lt.0.or.power_B.lt.0)then
   overlap_x = 0.d0
@@ -292,19 +260,12 @@ end
  x = x_min
  do i = 1, nx
   x += dx
-  overlap_x += power(power_A,x-A_center) * power(power_B,x-B_center) * dexp(-p * (x-P_center)*(x-P_center)) * x * x
+  overlap_x += (x-A_center)**(power_A) * (x-B_center)**(power_B) * dexp(-p * (x-P_center)*(x-P_center)) * x * x
  enddo
  overlap_x *= factor * dx
 
  end
 
- double precision function power(n,x)
- implicit none
- integer :: i,n
- double precision :: x,accu
- power = x**n
- return
- end
 
  subroutine overlap_bourrin_dipole(A_center,B_center,alpha,beta,power_A,power_B,overlap_x,lower_exp_val,dx,nx)
 ! compute the following integral :
@@ -317,7 +278,7 @@ end
  double precision,intent(in) :: A_center, B_center,alpha,beta
  double precision, intent(out) :: overlap_x,dx
  integer, intent(in) :: nx
- double precision :: x_min,x_max,domain,x,power,factor,dist,p,p_inv,rho
+ double precision :: x_min,x_max,domain,x,factor,dist,p,p_inv,rho
  double precision :: P_center
  if(power_A.lt.0.or.power_B.lt.0)then
   overlap_x = 0.d0
@@ -347,7 +308,7 @@ end
  x = x_min
  do i = 1, nx
   x += dx
-  overlap_x += power(power_A,x-A_center) * power(power_B,x-B_center) * dexp(-p * (x-P_center)*(x-P_center)) * x
+  overlap_x += (x-A_center)**(power_A) * (x-B_center)**(power_B) * dexp(-p * (x-P_center)*(x-P_center)) * x
  enddo
  overlap_x *= factor * dx
 
@@ -378,7 +339,7 @@ end
  double precision,intent(in) :: A_center, B_center,alpha,beta
  double precision, intent(out) :: overlap_x,dx
  integer, intent(in) :: nx
- double precision :: x_min,x_max,domain,x,power,factor,dist,p,p_inv,rho
+ double precision :: x_min,x_max,domain,x,factor,dist,p,p_inv,rho
  double precision :: P_center,pouet_timy
  if(power_A.lt.0.or.power_B.lt.0)then
   overlap_x = 0.d0
@@ -406,7 +367,7 @@ end
  x = x_min
  do i = 1, nx
   x += dx
-  overlap_x += power(power_A,x-A_center) * power(power_B,x-B_center) * dexp(-p * (x-P_center)*(x-P_center))
+  overlap_x += (x-A_center)**(power_A) * (x-B_center)**(power_B) * dexp(-p * (x-P_center)*(x-P_center))
  enddo
  overlap_x *= factor * dx
  end

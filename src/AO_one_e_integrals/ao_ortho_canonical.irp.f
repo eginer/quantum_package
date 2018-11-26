@@ -2,7 +2,8 @@
 &BEGIN_PROVIDER [ integer, ao_cart_to_sphe_num ]
   implicit none
   BEGIN_DOC
-! ao_cart_to_sphe coefficients of the current basis set
+! Coefficients to go from cartesian to spherical coordinates in the current
+! basis set
   END_DOC
   integer :: i
   integer, external              :: ao_power_index
@@ -49,7 +50,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, ao_cart_to_sphe_overlap, (ao_cart_to_sphe_num,ao_cart_to_sphe_num) ]
  implicit none
  BEGIN_DOC
- ! AO overlap matrix in the spherical basis set
+ ! |AO| overlap matrix in the spherical basis set
  END_DOC
  double precision, allocatable :: S(:,:)
  allocate (S(ao_cart_to_sphe_num,ao_num))
@@ -71,7 +72,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, ao_cart_to_sphe_inv, (ao_cart_to_sphe_num,ao_num) ]
  implicit none
  BEGIN_DOC
- ! AO_cart_to_sphe_coef^(-1)
+ ! Inverse of :c:var:`ao_cart_to_sphe_coef`
  END_DOC
 
  call get_pseudo_inverse(ao_cart_to_sphe_coef,size(ao_cart_to_sphe_coef,1),&

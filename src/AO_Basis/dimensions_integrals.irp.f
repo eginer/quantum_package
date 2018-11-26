@@ -1,6 +1,9 @@
  BEGIN_PROVIDER [ integer, n_pt_max_integrals ]
 &BEGIN_PROVIDER [ integer, n_pt_max_i_x]
  implicit none
+ BEGIN_DOC
+! Number of points used in the numerical integrations.
+ END_DOC
  integer :: n_pt_sup
  integer :: prim_power_l_max
  include 'Utils/constants.include.F'

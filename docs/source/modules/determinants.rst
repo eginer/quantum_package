@@ -17,106 +17,4529 @@ EZFIO parameters
 
 .. option:: n_det_max
 
-   Maximum number of determinants in the wave function
+    Maximum number of determinants in the wave function
 
-   Default: 1000000
+    Default: 1000000
 
 .. option:: n_det_max_full
 
-   Maximum number of determinants where |H| is fully diagonalized
+    Maximum number of determinants where |H| is fully diagonalized
 
-   Default: 1000
+    Default: 1000
 
 .. option:: n_states
 
-   Number of states to consider
+    Number of states to consider
 
-   Default: 1
+    Default: 1
 
 .. option:: read_wf
 
-   If |true|, read the wave function from the |EZFIO| file
+    If |true|, read the wave function from the |EZFIO| file
 
-   Default: False
+    Default: False
 
 .. option:: s2_eig
 
-   Force the wave function to be an eigenfunction of |S^2|
+    Force the wave function to be an eigenfunction of |S^2|
 
-   Default: True
+    Default: True
 
 .. option:: used_weight
 
-   0: 1./(c_0^2), 1: 1/N_states, 2: input state-average weight, 3: 1/(Norm_L3(Psi))
+    0: 1./(c_0^2), 1: 1/N_states, 2: input state-average weight, 3: 1/(Norm_L3(Psi))
 
-   Default: 0
+    Default: 0
 
 .. option:: threshold_generators
 
-   Thresholds on generators (fraction of the square of the norm)
+    Thresholds on generators (fraction of the square of the norm)
 
-   Default: 0.99
+    Default: 0.99
 
 .. option:: threshold_selectors
 
-   Thresholds on selectors (fraction of the square of the norm)
+    Thresholds on selectors (fraction of the square of the norm)
 
-   Default: 0.999
+    Default: 0.999
 
 .. option:: n_int
 
-   Number of integers required to represent bitstrings (set in module :ref:`bitmask`)
+    Number of integers required to represent bitstrings (set in module :ref:`bitmask`)
 
 
 .. option:: bit_kind
 
-   (set in module :ref:`bitmask`)
+    (set in module :ref:`bitmask`)
 
 
 .. option:: mo_label
 
-   Label of the |MOs| on which the determinants are expressed
+    Label of the |MOs| on which the determinants are expressed
 
 
 .. option:: n_det
 
-   Number of determinants in the current wave function
+    Number of determinants in the current wave function
 
 
 .. option:: psi_coef
 
-   Coefficients of the wave function
+    Coefficients of the wave function
 
 
 .. option:: psi_det
 
-   Determinants of the variational space
+    Determinants of the variational space
 
 
 .. option:: expected_s2
 
-   Expected value of |S^2|
+    Expected value of |S^2|
 
 
 .. option:: target_energy
 
-   Energy that should be obtained when truncating the wave function (optional)
+    Energy that should be obtained when truncating the wave function (optional)
 
-   Default: 0.
+    Default: 0.
 
 .. option:: store_full_H_mat
 
-   If |true|, the Davidson diagonalization is performed by storing the full |H| matrix up to n_det_max_stored. Be careful, it can cost a lot of memory but can also save a lot of CPU time
+    If |true|, the Davidson diagonalization is performed by storing the full |H| matrix up to n_det_max_stored. Be careful, it can cost a lot of memory but can also save a lot of CPU time
 
-   Default: False
+    Default: False
 
 .. option:: n_det_max_stored
 
-   Maximum number of determinants for which the full |H| matrix is stored. be careful, the memory requested scales as 10*n_det_max_stored**2. for instance, 90000 determinants represents a matrix of size 60 Gb.
+    Maximum number of determinants for which the full |H| matrix is stored. be careful, the memory requested scales as 10*n_det_max_stored**2. for instance, 90000 determinants represents a matrix of size 60 Gb.
 
-   Default: 90000
+    Default: 90000
 
 .. option:: state_average_weight
 
-   Weight of the states in state-average calculations.
+    Weight of the states in state-average calculations.
+
+
+
+Providers
+---------
+
+
+.. c:var:: abs_psi_coef_max
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_coef_max	(N_states)
+        double precision, allocatable	:: psi_coef_min	(N_states)
+        double precision, allocatable	:: abs_psi_coef_max	(N_states)
+        double precision, allocatable	:: abs_psi_coef_min	(N_states)
+
+    File: :file:`determinants.irp.f`
+
+    Max and min values of the coefficients
+
+
+
+
+.. c:var:: abs_psi_coef_min
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_coef_max	(N_states)
+        double precision, allocatable	:: psi_coef_min	(N_states)
+        double precision, allocatable	:: abs_psi_coef_max	(N_states)
+        double precision, allocatable	:: abs_psi_coef_min	(N_states)
+
+    File: :file:`determinants.irp.f`
+
+    Max and min values of the coefficients
+
+
+
+
+.. c:var:: barycentric_electronic_energy
+
+    .. code:: text
+
+        double precision, allocatable	:: barycentric_electronic_energy	(N_states)
+
+    File: :file:`energy.irp.f`
+
+    TODO : ASCII Elephant
+
+
+
+
+.. c:var:: bi_elec_ref_bitmask_energy
+
+    .. code:: text
+
+        double precision	:: ref_bitmask_energy
+        double precision	:: mono_elec_ref_bitmask_energy
+        double precision	:: kinetic_ref_bitmask_energy
+        double precision	:: nucl_elec_ref_bitmask_energy
+        double precision	:: bi_elec_ref_bitmask_energy
+
+    File: :file:`ref_bitmask.irp.f`
+
+    Energy of the reference bitmask used in Slater rules
+
+
+
+
+.. c:var:: c0_weight
+
+    .. code:: text
+
+        double precision, allocatable	:: c0_weight	(N_states)
+
+    File: :file:`density_matrix.irp.f`
+
+    Weight of the states in the selection : 1/c_0^2
+
+
+
+
+.. c:var:: det_alpha_norm
+
+    .. code:: text
+
+        double precision, allocatable	:: det_alpha_norm	(N_det_alpha_unique)
+        double precision, allocatable	:: det_beta_norm	(N_det_beta_unique)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Norm of the alpha and beta spin determinants in the wave function: 
+    ||Da||_i \sum_j C_{ij}**2
+
+
+
+
+.. c:var:: det_beta_norm
+
+    .. code:: text
+
+        double precision, allocatable	:: det_alpha_norm	(N_det_alpha_unique)
+        double precision, allocatable	:: det_beta_norm	(N_det_beta_unique)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Norm of the alpha and beta spin determinants in the wave function: 
+    ||Da||_i \sum_j C_{ij}**2
+
+
+
+
+.. c:var:: det_to_occ_pattern
+
+    .. code:: text
+
+        integer, allocatable	:: det_to_occ_pattern	(N_det)
+
+    File: :file:`occ_pattern.irp.f`
+
+    Returns the index of the occupation pattern for each determinant
+
+
+
+
+.. c:var:: diag_algorithm
+
+    .. code:: text
+
+        character*(64)	:: diag_algorithm
+
+    File: :file:`determinants.irp.f`
+
+    Diagonalization algorithm (Davidson or Lapack)
+
+
+
+
+.. c:var:: diagonal_h_matrix_on_psi_det
+
+    .. code:: text
+
+        double precision, allocatable	:: diagonal_h_matrix_on_psi_det	(N_det)
+
+    File: :file:`energy.irp.f`
+
+    Diagonal of the Hamiltonian ordered as psi_det
+
+
+
+
+.. c:var:: double_exc_bitmask
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: double_exc_bitmask	(N_int,4,N_double_exc_bitmasks)
+
+    File: :file:`determinants_bitmasks.irp.f`
+
+    double_exc_bitmask(:,1,i) is the bitmask for holes of excitation 1 double_exc_bitmask(:,2,i) is the bitmask for particles of excitation 1 double_exc_bitmask(:,3,i) is the bitmask for holes of excitation 2 double_exc_bitmask(:,4,i) is the bitmask for particles of excitation 2 for a given couple of hole/particle excitations i.
+
+
+
+
+.. c:var:: expected_s2
+
+    .. code:: text
+
+        double precision	:: expected_s2
+
+    File: :file:`s2.irp.f`
+
+    Expected value of S2 : S*(S+1)
+
+
+
+
+.. c:var:: fock_operator_closed_shell_ref_bitmask
+
+    .. code:: text
+
+        double precision, allocatable	:: fock_operator_closed_shell_ref_bitmask	(mo_tot_num,mo_tot_num)
+
+    File: :file:`mono_excitations.irp.f`
+
+    
+
+
+
+
+.. c:var:: h_apply_buffer_allocated
+
+    .. code:: text
+
+        logical	:: h_apply_buffer_allocated
+        integer(omp_lock_kind), allocatable	:: h_apply_buffer_lock	(64,0:nproc-1)
+
+    File: :file:`H_apply.irp.f`
+
+    Buffer of determinants/coefficients/perturbative energy for H_apply. Uninitialized. Filled by H_apply subroutines.
+
+
+
+
+.. c:var:: h_apply_buffer_lock
+
+    .. code:: text
+
+        logical	:: h_apply_buffer_allocated
+        integer(omp_lock_kind), allocatable	:: h_apply_buffer_lock	(64,0:nproc-1)
+
+    File: :file:`H_apply.irp.f`
+
+    Buffer of determinants/coefficients/perturbative energy for H_apply. Uninitialized. Filled by H_apply subroutines.
+
+
+
+
+.. c:var:: h_matrix_all_dets
+
+    .. code:: text
+
+        double precision, allocatable	:: h_matrix_all_dets	(N_det,N_det)
+
+    File: :file:`utils.irp.f`
+
+    H matrix on the basis of the slater determinants defined by psi_det
+
+
+
+
+.. c:var:: h_matrix_cas
+
+    .. code:: text
+
+        double precision, allocatable	:: h_matrix_cas	(N_det_cas,N_det_cas)
+
+    File: :file:`psi_cas.irp.f`
+
+    
+
+
+
+
+.. c:var:: idx_cas
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_cas	(N_int,2,psi_det_size)
+        double precision, allocatable	:: psi_cas_coef	(psi_det_size,n_states)
+        integer, allocatable	:: idx_cas	(psi_det_size)
+        integer	:: n_det_cas
+
+    File: :file:`psi_cas.irp.f`
+
+    CAS wave function, defined from the application of the CAS bitmask on the determinants. idx_cas gives the indice of the CAS determinant in psi_det.
+
+
+
+
+.. c:var:: idx_non_cas
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_non_cas	(N_int,2,psi_det_size)
+        double precision, allocatable	:: psi_non_cas_coef	(psi_det_size,n_states)
+        integer, allocatable	:: idx_non_cas	(psi_det_size)
+        integer	:: n_det_non_cas
+
+    File: :file:`psi_cas.irp.f`
+
+    Set of determinants which are not part of the CAS, defined from the application of the CAS bitmask on the determinants. idx_non_cas gives the indice of the determinant in psi_det.
+
+
+
+
+.. c:var:: kinetic_ref_bitmask_energy
+
+    .. code:: text
+
+        double precision	:: ref_bitmask_energy
+        double precision	:: mono_elec_ref_bitmask_energy
+        double precision	:: kinetic_ref_bitmask_energy
+        double precision	:: nucl_elec_ref_bitmask_energy
+        double precision	:: bi_elec_ref_bitmask_energy
+
+    File: :file:`ref_bitmask.irp.f`
+
+    Energy of the reference bitmask used in Slater rules
+
+
+
+
+.. c:var:: l3_weight
+
+    .. code:: text
+
+        double precision, allocatable	:: l3_weight	(N_states)
+
+    File: :file:`density_matrix.irp.f`
+
+    Weight of the states in the selection : 1/(sum_i |c_i|^3)
+
+
+
+
+.. c:var:: max_degree_exc
+
+    .. code:: text
+
+        integer	:: max_degree_exc
+
+    File: :file:`determinants.irp.f`
+
+    Maximum degree of excitation in the wf
+
+
+
+
+.. c:var:: mo_energy_expval
+
+    .. code:: text
+
+        double precision, allocatable	:: mo_energy_expval	(N_states,mo_tot_num,2,2)
+
+    File: :file:`mo_energy_expval.irp.f`
+
+    Third index is spin. Fourth index is 1:creation, 2:annihilation
+
+
+
+
+.. c:var:: mono_elec_ref_bitmask_energy
+
+    .. code:: text
+
+        double precision	:: ref_bitmask_energy
+        double precision	:: mono_elec_ref_bitmask_energy
+        double precision	:: kinetic_ref_bitmask_energy
+        double precision	:: nucl_elec_ref_bitmask_energy
+        double precision	:: bi_elec_ref_bitmask_energy
+
+    File: :file:`ref_bitmask.irp.f`
+
+    Energy of the reference bitmask used in Slater rules
+
+
+
+
+.. c:var:: n_det
+
+    .. code:: text
+
+        integer	:: n_det
+
+    File: :file:`determinants.irp.f`
+
+    Number of determinants in the wave function
+
+
+
+
+.. c:var:: n_det_alpha_unique
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_det_alpha_unique	(N_int,psi_det_size)
+        integer	:: n_det_alpha_unique
+
+    File: :file:`spindeterminants.irp.f_template_141`
+
+    Unique alpha determinants
+
+
+
+
+.. c:var:: n_det_beta_unique
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_det_beta_unique	(N_int,psi_det_size)
+        integer	:: n_det_beta_unique
+
+    File: :file:`spindeterminants.irp.f_template_141`
+
+    Unique beta determinants
+
+
+
+
+.. c:var:: n_det_cas
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_cas	(N_int,2,psi_det_size)
+        double precision, allocatable	:: psi_cas_coef	(psi_det_size,n_states)
+        integer, allocatable	:: idx_cas	(psi_det_size)
+        integer	:: n_det_cas
+
+    File: :file:`psi_cas.irp.f`
+
+    CAS wave function, defined from the application of the CAS bitmask on the determinants. idx_cas gives the indice of the CAS determinant in psi_det.
+
+
+
+
+.. c:var:: n_det_non_cas
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_non_cas	(N_int,2,psi_det_size)
+        double precision, allocatable	:: psi_non_cas_coef	(psi_det_size,n_states)
+        integer, allocatable	:: idx_non_cas	(psi_det_size)
+        integer	:: n_det_non_cas
+
+    File: :file:`psi_cas.irp.f`
+
+    Set of determinants which are not part of the CAS, defined from the application of the CAS bitmask on the determinants. idx_non_cas gives the indice of the determinant in psi_det.
+
+
+
+
+.. c:var:: n_double_exc_bitmasks
+
+    .. code:: text
+
+        integer	:: n_double_exc_bitmasks
+
+    File: :file:`determinants_bitmasks.irp.f`
+
+    Number of double excitation bitmasks
+
+
+
+
+.. c:var:: n_occ_pattern
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_occ_pattern	(N_int,2,psi_det_size)
+        integer	:: n_occ_pattern
+
+    File: :file:`occ_pattern.irp.f`
+
+    array of the occ_pattern present in the wf psi_occ_pattern(:,1,j) = jth occ_pattern of the wave function : represent all the single occupations psi_occ_pattern(:,2,j) = jth occ_pattern of the wave function : represent all the double occupations The occ patterns are sorted by occ_pattern_search_key
+
+
+
+
+.. c:var:: n_single_exc_bitmasks
+
+    .. code:: text
+
+        integer	:: n_single_exc_bitmasks
+
+    File: :file:`determinants_bitmasks.irp.f`
+
+    Number of single excitation bitmasks
+
+
+
+
+.. c:var:: nucl_elec_ref_bitmask_energy
+
+    .. code:: text
+
+        double precision	:: ref_bitmask_energy
+        double precision	:: mono_elec_ref_bitmask_energy
+        double precision	:: kinetic_ref_bitmask_energy
+        double precision	:: nucl_elec_ref_bitmask_energy
+        double precision	:: bi_elec_ref_bitmask_energy
+
+    File: :file:`ref_bitmask.irp.f`
+
+    Energy of the reference bitmask used in Slater rules
+
+
+
+
+.. c:var:: one_body_dm_ao_alpha
+
+    .. code:: text
+
+        double precision, allocatable	:: one_body_dm_ao_alpha	(ao_num,ao_num)
+        double precision, allocatable	:: one_body_dm_ao_beta	(ao_num,ao_num)
+
+    File: :file:`density_matrix.irp.f`
+
+    one body density matrix on the AO basis : rho_AO(alpha) , rho_AO(beta)
+
+
+
+
+.. c:var:: one_body_dm_ao_beta
+
+    .. code:: text
+
+        double precision, allocatable	:: one_body_dm_ao_alpha	(ao_num,ao_num)
+        double precision, allocatable	:: one_body_dm_ao_beta	(ao_num,ao_num)
+
+    File: :file:`density_matrix.irp.f`
+
+    one body density matrix on the AO basis : rho_AO(alpha) , rho_AO(beta)
+
+
+
+
+.. c:var:: one_body_dm_dagger_mo_spin_index
+
+    .. code:: text
+
+        double precision, allocatable	:: one_body_dm_dagger_mo_spin_index	(mo_tot_num,mo_tot_num,N_states,2)
+
+    File: :file:`density_matrix.irp.f`
+
+    
+
+
+
+
+.. c:var:: one_body_dm_mo
+
+    .. code:: text
+
+        double precision, allocatable	:: one_body_dm_mo	(mo_tot_num,mo_tot_num)
+
+    File: :file:`density_matrix.irp.f`
+
+    One-body density matrix
+
+
+
+
+.. c:var:: one_body_dm_mo_alpha
+
+    .. code:: text
+
+        double precision, allocatable	:: one_body_dm_mo_alpha	(mo_tot_num,mo_tot_num,N_states)
+        double precision, allocatable	:: one_body_dm_mo_beta	(mo_tot_num,mo_tot_num,N_states)
+
+    File: :file:`density_matrix.irp.f`
+
+    Alpha and beta one-body density matrix for each state
+
+
+
+
+.. c:var:: one_body_dm_mo_alpha_average
+
+    .. code:: text
+
+        double precision, allocatable	:: one_body_dm_mo_alpha_average	(mo_tot_num,mo_tot_num)
+        double precision, allocatable	:: one_body_dm_mo_beta_average	(mo_tot_num,mo_tot_num)
+
+    File: :file:`density_matrix.irp.f`
+
+    Alpha and beta one-body density matrix for each state
+
+
+
+
+.. c:var:: one_body_dm_mo_alpha_old
+
+    .. code:: text
+
+        double precision, allocatable	:: one_body_dm_mo_alpha_old	(mo_tot_num,mo_tot_num,N_states)
+        double precision, allocatable	:: one_body_dm_mo_beta_old	(mo_tot_num,mo_tot_num,N_states)
+
+    File: :file:`density_matrix.irp.f`
+
+    Alpha and beta one-body density matrix for each state
+
+
+
+
+.. c:var:: one_body_dm_mo_beta
+
+    .. code:: text
+
+        double precision, allocatable	:: one_body_dm_mo_alpha	(mo_tot_num,mo_tot_num,N_states)
+        double precision, allocatable	:: one_body_dm_mo_beta	(mo_tot_num,mo_tot_num,N_states)
+
+    File: :file:`density_matrix.irp.f`
+
+    Alpha and beta one-body density matrix for each state
+
+
+
+
+.. c:var:: one_body_dm_mo_beta_average
+
+    .. code:: text
+
+        double precision, allocatable	:: one_body_dm_mo_alpha_average	(mo_tot_num,mo_tot_num)
+        double precision, allocatable	:: one_body_dm_mo_beta_average	(mo_tot_num,mo_tot_num)
+
+    File: :file:`density_matrix.irp.f`
+
+    Alpha and beta one-body density matrix for each state
+
+
+
+
+.. c:var:: one_body_dm_mo_beta_old
+
+    .. code:: text
+
+        double precision, allocatable	:: one_body_dm_mo_alpha_old	(mo_tot_num,mo_tot_num,N_states)
+        double precision, allocatable	:: one_body_dm_mo_beta_old	(mo_tot_num,mo_tot_num,N_states)
+
+    File: :file:`density_matrix.irp.f`
+
+    Alpha and beta one-body density matrix for each state
+
+
+
+
+.. c:var:: one_body_dm_mo_diff
+
+    .. code:: text
+
+        double precision, allocatable	:: one_body_dm_mo_diff	(mo_tot_num,mo_tot_num,2:N_states)
+
+    File: :file:`density_matrix.irp.f`
+
+    Difference of the one-body density matrix with respect to the ground state
+
+
+
+
+.. c:var:: one_body_dm_mo_spin_index
+
+    .. code:: text
+
+        double precision, allocatable	:: one_body_dm_mo_spin_index	(mo_tot_num,mo_tot_num,N_states,2)
+
+    File: :file:`density_matrix.irp.f`
+
+    
+
+
+
+
+.. c:var:: one_body_single_double_dm_mo_alpha
+
+    .. code:: text
+
+        double precision, allocatable	:: one_body_single_double_dm_mo_alpha	(mo_tot_num,mo_tot_num)
+        double precision, allocatable	:: one_body_single_double_dm_mo_beta	(mo_tot_num,mo_tot_num)
+
+    File: :file:`density_matrix.irp.f`
+
+    Alpha and beta one-body density matrix for each state
+
+
+
+
+.. c:var:: one_body_single_double_dm_mo_beta
+
+    .. code:: text
+
+        double precision, allocatable	:: one_body_single_double_dm_mo_alpha	(mo_tot_num,mo_tot_num)
+        double precision, allocatable	:: one_body_single_double_dm_mo_beta	(mo_tot_num,mo_tot_num)
+
+    File: :file:`density_matrix.irp.f`
+
+    Alpha and beta one-body density matrix for each state
+
+
+
+
+.. c:var:: one_body_spin_density_ao
+
+    .. code:: text
+
+        double precision, allocatable	:: one_body_spin_density_ao	(ao_num,ao_num)
+
+    File: :file:`density_matrix.irp.f`
+
+    one body spin density matrix on the AO basis : rho_AO(alpha) - rho_AO(beta)
+
+
+
+
+.. c:var:: one_body_spin_density_mo
+
+    .. code:: text
+
+        double precision, allocatable	:: one_body_spin_density_mo	(mo_tot_num,mo_tot_num)
+
+    File: :file:`density_matrix.irp.f`
+
+    rho(alpha) - rho(beta)
+
+
+
+
+.. c:var:: psi_average_norm_contrib
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_average_norm_contrib	(psi_det_size)
+
+    File: :file:`determinants.irp.f`
+
+    Contribution of determinants to the state-averaged density
+
+
+
+
+.. c:var:: psi_average_norm_contrib_sorted
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_det_sorted	(N_int,2,psi_det_size)
+        double precision, allocatable	:: psi_coef_sorted	(psi_det_size,N_states)
+        double precision, allocatable	:: psi_average_norm_contrib_sorted	(psi_det_size)
+        integer, allocatable	:: psi_det_sorted_order	(psi_det_size)
+
+    File: :file:`determinants.irp.f`
+
+    Wave function sorted by determinants contribution to the norm (state-averaged) 
+    psi_det_sorted_order(i) -> k : index in psi_det
+
+
+
+
+.. c:var:: psi_bilinear_matrix
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_bilinear_matrix	(N_det_alpha_unique,N_det_beta_unique,N_states)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Coefficient matrix if the wave function is expressed in a bilinear form : D_a^t C D_b
+
+
+
+
+.. c:var:: psi_bilinear_matrix_columns
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_bilinear_matrix_values	(N_det,N_states)
+        integer, allocatable	:: psi_bilinear_matrix_rows	(N_det)
+        integer, allocatable	:: psi_bilinear_matrix_columns	(N_det)
+        integer, allocatable	:: psi_bilinear_matrix_order	(N_det)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Sparse coefficient matrix if the wave function is expressed in a bilinear form : D_a^t C D_b 
+    Rows are alpha determinants and columns are beta. 
+    Order refers to psi_det
+
+
+
+
+.. c:var:: psi_bilinear_matrix_columns_loc
+
+    .. code:: text
+
+        integer, allocatable	:: psi_bilinear_matrix_columns_loc	(N_det_beta_unique+1)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Sparse coefficient matrix if the wave function is expressed in a bilinear form : D_a^t C D_b 
+    Rows are alpha determinants and columns are beta. 
+    Order refers to psi_det
+
+
+
+
+.. c:var:: psi_bilinear_matrix_order
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_bilinear_matrix_values	(N_det,N_states)
+        integer, allocatable	:: psi_bilinear_matrix_rows	(N_det)
+        integer, allocatable	:: psi_bilinear_matrix_columns	(N_det)
+        integer, allocatable	:: psi_bilinear_matrix_order	(N_det)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Sparse coefficient matrix if the wave function is expressed in a bilinear form : D_a^t C D_b 
+    Rows are alpha determinants and columns are beta. 
+    Order refers to psi_det
+
+
+
+
+.. c:var:: psi_bilinear_matrix_order_reverse
+
+    .. code:: text
+
+        integer, allocatable	:: psi_bilinear_matrix_order_reverse	(N_det)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Order which allows to go from psi_bilinear_matrix to psi_det
+
+
+
+
+.. c:var:: psi_bilinear_matrix_order_transp_reverse
+
+    .. code:: text
+
+        integer, allocatable	:: psi_bilinear_matrix_order_transp_reverse	(N_det)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Order which allows to go from psi_bilinear_matrix_order_transp to psi_bilinear_matrix
+
+
+
+
+.. c:var:: psi_bilinear_matrix_rows
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_bilinear_matrix_values	(N_det,N_states)
+        integer, allocatable	:: psi_bilinear_matrix_rows	(N_det)
+        integer, allocatable	:: psi_bilinear_matrix_columns	(N_det)
+        integer, allocatable	:: psi_bilinear_matrix_order	(N_det)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Sparse coefficient matrix if the wave function is expressed in a bilinear form : D_a^t C D_b 
+    Rows are alpha determinants and columns are beta. 
+    Order refers to psi_det
+
+
+
+
+.. c:var:: psi_bilinear_matrix_transp_columns
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_bilinear_matrix_transp_values	(N_det,N_states)
+        integer, allocatable	:: psi_bilinear_matrix_transp_rows	(N_det)
+        integer, allocatable	:: psi_bilinear_matrix_transp_columns	(N_det)
+        integer, allocatable	:: psi_bilinear_matrix_transp_order	(N_det)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Transpose of psi_bilinear_matrix D_b^t C^t D_a 
+    Rows are Alpha determinants and columns are beta, but the matrix is stored in row major format
+
+
+
+
+.. c:var:: psi_bilinear_matrix_transp_order
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_bilinear_matrix_transp_values	(N_det,N_states)
+        integer, allocatable	:: psi_bilinear_matrix_transp_rows	(N_det)
+        integer, allocatable	:: psi_bilinear_matrix_transp_columns	(N_det)
+        integer, allocatable	:: psi_bilinear_matrix_transp_order	(N_det)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Transpose of psi_bilinear_matrix D_b^t C^t D_a 
+    Rows are Alpha determinants and columns are beta, but the matrix is stored in row major format
+
+
+
+
+.. c:var:: psi_bilinear_matrix_transp_rows
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_bilinear_matrix_transp_values	(N_det,N_states)
+        integer, allocatable	:: psi_bilinear_matrix_transp_rows	(N_det)
+        integer, allocatable	:: psi_bilinear_matrix_transp_columns	(N_det)
+        integer, allocatable	:: psi_bilinear_matrix_transp_order	(N_det)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Transpose of psi_bilinear_matrix D_b^t C^t D_a 
+    Rows are Alpha determinants and columns are beta, but the matrix is stored in row major format
+
+
+
+
+.. c:var:: psi_bilinear_matrix_transp_rows_loc
+
+    .. code:: text
+
+        integer, allocatable	:: psi_bilinear_matrix_transp_rows_loc	(N_det_alpha_unique+1)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Location of the columns in the psi_bilinear_matrix
+
+
+
+
+.. c:var:: psi_bilinear_matrix_transp_values
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_bilinear_matrix_transp_values	(N_det,N_states)
+        integer, allocatable	:: psi_bilinear_matrix_transp_rows	(N_det)
+        integer, allocatable	:: psi_bilinear_matrix_transp_columns	(N_det)
+        integer, allocatable	:: psi_bilinear_matrix_transp_order	(N_det)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Transpose of psi_bilinear_matrix D_b^t C^t D_a 
+    Rows are Alpha determinants and columns are beta, but the matrix is stored in row major format
+
+
+
+
+.. c:var:: psi_bilinear_matrix_values
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_bilinear_matrix_values	(N_det,N_states)
+        integer, allocatable	:: psi_bilinear_matrix_rows	(N_det)
+        integer, allocatable	:: psi_bilinear_matrix_columns	(N_det)
+        integer, allocatable	:: psi_bilinear_matrix_order	(N_det)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Sparse coefficient matrix if the wave function is expressed in a bilinear form : D_a^t C D_b 
+    Rows are alpha determinants and columns are beta. 
+    Order refers to psi_det
+
+
+
+
+.. c:var:: psi_cas
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_cas	(N_int,2,psi_det_size)
+        double precision, allocatable	:: psi_cas_coef	(psi_det_size,n_states)
+        integer, allocatable	:: idx_cas	(psi_det_size)
+        integer	:: n_det_cas
+
+    File: :file:`psi_cas.irp.f`
+
+    CAS wave function, defined from the application of the CAS bitmask on the determinants. idx_cas gives the indice of the CAS determinant in psi_det.
+
+
+
+
+.. c:var:: psi_cas_coef
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_cas	(N_int,2,psi_det_size)
+        double precision, allocatable	:: psi_cas_coef	(psi_det_size,n_states)
+        integer, allocatable	:: idx_cas	(psi_det_size)
+        integer	:: n_det_cas
+
+    File: :file:`psi_cas.irp.f`
+
+    CAS wave function, defined from the application of the CAS bitmask on the determinants. idx_cas gives the indice of the CAS determinant in psi_det.
+
+
+
+
+.. c:var:: psi_cas_coef_sorted_bit
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_cas_sorted_bit	(N_int,2,psi_det_size)
+        double precision, allocatable	:: psi_cas_coef_sorted_bit	(psi_det_size,N_states)
+
+    File: :file:`psi_cas.irp.f`
+
+    CAS determinants sorted to accelerate the search of a random determinant in the wave function.
+
+
+
+
+.. c:var:: psi_cas_energy
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_cas_energy	(N_states)
+
+    File: :file:`psi_cas.irp.f`
+
+    
+
+
+
+
+.. c:var:: psi_cas_energy_diagonalized
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_coef_cas_diagonalized	(N_det_cas,N_states)
+        double precision, allocatable	:: psi_cas_energy_diagonalized	(N_states)
+
+    File: :file:`psi_cas.irp.f`
+
+    
+
+
+
+
+.. c:var:: psi_cas_sorted_bit
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_cas_sorted_bit	(N_int,2,psi_det_size)
+        double precision, allocatable	:: psi_cas_coef_sorted_bit	(psi_det_size,N_states)
+
+    File: :file:`psi_cas.irp.f`
+
+    CAS determinants sorted to accelerate the search of a random determinant in the wave function.
+
+
+
+
+.. c:var:: psi_coef
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_coef	(psi_det_size,N_states)
+
+    File: :file:`determinants.irp.f`
+
+    The wave function coefficients. Initialized with Hartree-Fock if the EZFIO file is empty
+
+
+
+
+.. c:var:: psi_coef_cas_diagonalized
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_coef_cas_diagonalized	(N_det_cas,N_states)
+        double precision, allocatable	:: psi_cas_energy_diagonalized	(N_states)
+
+    File: :file:`psi_cas.irp.f`
+
+    
+
+
+
+
+.. c:var:: psi_coef_max
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_coef_max	(N_states)
+        double precision, allocatable	:: psi_coef_min	(N_states)
+        double precision, allocatable	:: abs_psi_coef_max	(N_states)
+        double precision, allocatable	:: abs_psi_coef_min	(N_states)
+
+    File: :file:`determinants.irp.f`
+
+    Max and min values of the coefficients
+
+
+
+
+.. c:var:: psi_coef_min
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_coef_max	(N_states)
+        double precision, allocatable	:: psi_coef_min	(N_states)
+        double precision, allocatable	:: abs_psi_coef_max	(N_states)
+        double precision, allocatable	:: abs_psi_coef_min	(N_states)
+
+    File: :file:`determinants.irp.f`
+
+    Max and min values of the coefficients
+
+
+
+
+.. c:var:: psi_coef_sorted
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_det_sorted	(N_int,2,psi_det_size)
+        double precision, allocatable	:: psi_coef_sorted	(psi_det_size,N_states)
+        double precision, allocatable	:: psi_average_norm_contrib_sorted	(psi_det_size)
+        integer, allocatable	:: psi_det_sorted_order	(psi_det_size)
+
+    File: :file:`determinants.irp.f`
+
+    Wave function sorted by determinants contribution to the norm (state-averaged) 
+    psi_det_sorted_order(i) -> k : index in psi_det
+
+
+
+
+.. c:var:: psi_coef_sorted_bit
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_det_sorted_bit	(N_int,2,psi_det_size)
+        double precision, allocatable	:: psi_coef_sorted_bit	(psi_det_size,N_states)
+
+    File: :file:`determinants.irp.f`
+
+    Determinants on which we apply <i|H|psi> for perturbation. They are sorted by determinants interpreted as integers. Useful to accelerate the search of a random determinant in the wave function.
+
+
+
+
+.. c:var:: psi_det
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_det	(N_int,2,psi_det_size)
+
+    File: :file:`determinants.irp.f`
+
+    The wave function determinants. Initialized with Hartree-Fock if the EZFIO file is empty
+
+
+
+
+.. c:var:: psi_det_alpha
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_det_alpha	(N_int,psi_det_size)
+
+    File: :file:`spindeterminants.irp.f`
+
+    List of alpha determinants of psi_det
+
+
+
+
+.. c:var:: psi_det_alpha_unique
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_det_alpha_unique	(N_int,psi_det_size)
+        integer	:: n_det_alpha_unique
+
+    File: :file:`spindeterminants.irp.f_template_141`
+
+    Unique alpha determinants
+
+
+
+
+.. c:var:: psi_det_beta
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_det_beta	(N_int,psi_det_size)
+
+    File: :file:`spindeterminants.irp.f`
+
+    List of beta determinants of psi_det
+
+
+
+
+.. c:var:: psi_det_beta_unique
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_det_beta_unique	(N_int,psi_det_size)
+        integer	:: n_det_beta_unique
+
+    File: :file:`spindeterminants.irp.f_template_141`
+
+    Unique beta determinants
+
+
+
+
+.. c:var:: psi_det_hii
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_det_hii	(N_det)
+
+    File: :file:`determinants.irp.f`
+
+    <i|h|i> for all determinants.
+
+
+
+
+.. c:var:: psi_det_size
+
+    .. code:: text
+
+        integer	:: psi_det_size
+
+    File: :file:`determinants.irp.f`
+
+    Size of the psi_det/psi_coef arrays
+
+
+
+
+.. c:var:: psi_det_sorted
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_det_sorted	(N_int,2,psi_det_size)
+        double precision, allocatable	:: psi_coef_sorted	(psi_det_size,N_states)
+        double precision, allocatable	:: psi_average_norm_contrib_sorted	(psi_det_size)
+        integer, allocatable	:: psi_det_sorted_order	(psi_det_size)
+
+    File: :file:`determinants.irp.f`
+
+    Wave function sorted by determinants contribution to the norm (state-averaged) 
+    psi_det_sorted_order(i) -> k : index in psi_det
+
+
+
+
+.. c:var:: psi_det_sorted_bit
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_det_sorted_bit	(N_int,2,psi_det_size)
+        double precision, allocatable	:: psi_coef_sorted_bit	(psi_det_size,N_states)
+
+    File: :file:`determinants.irp.f`
+
+    Determinants on which we apply <i|H|psi> for perturbation. They are sorted by determinants interpreted as integers. Useful to accelerate the search of a random determinant in the wave function.
+
+
+
+
+.. c:var:: psi_det_sorted_order
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_det_sorted	(N_int,2,psi_det_size)
+        double precision, allocatable	:: psi_coef_sorted	(psi_det_size,N_states)
+        double precision, allocatable	:: psi_average_norm_contrib_sorted	(psi_det_size)
+        integer, allocatable	:: psi_det_sorted_order	(psi_det_size)
+
+    File: :file:`determinants.irp.f`
+
+    Wave function sorted by determinants contribution to the norm (state-averaged) 
+    psi_det_sorted_order(i) -> k : index in psi_det
+
+
+
+
+.. c:var:: psi_non_cas
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_non_cas	(N_int,2,psi_det_size)
+        double precision, allocatable	:: psi_non_cas_coef	(psi_det_size,n_states)
+        integer, allocatable	:: idx_non_cas	(psi_det_size)
+        integer	:: n_det_non_cas
+
+    File: :file:`psi_cas.irp.f`
+
+    Set of determinants which are not part of the CAS, defined from the application of the CAS bitmask on the determinants. idx_non_cas gives the indice of the determinant in psi_det.
+
+
+
+
+.. c:var:: psi_non_cas_coef
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_non_cas	(N_int,2,psi_det_size)
+        double precision, allocatable	:: psi_non_cas_coef	(psi_det_size,n_states)
+        integer, allocatable	:: idx_non_cas	(psi_det_size)
+        integer	:: n_det_non_cas
+
+    File: :file:`psi_cas.irp.f`
+
+    Set of determinants which are not part of the CAS, defined from the application of the CAS bitmask on the determinants. idx_non_cas gives the indice of the determinant in psi_det.
+
+
+
+
+.. c:var:: psi_non_cas_coef_sorted_bit
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_non_cas_sorted_bit	(N_int,2,psi_det_size)
+        double precision, allocatable	:: psi_non_cas_coef_sorted_bit	(psi_det_size,N_states)
+
+    File: :file:`psi_cas.irp.f`
+
+    CAS determinants sorted to accelerate the search of a random determinant in the wave function.
+
+
+
+
+.. c:var:: psi_non_cas_sorted_bit
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_non_cas_sorted_bit	(N_int,2,psi_det_size)
+        double precision, allocatable	:: psi_non_cas_coef_sorted_bit	(psi_det_size,N_states)
+
+    File: :file:`psi_cas.irp.f`
+
+    CAS determinants sorted to accelerate the search of a random determinant in the wave function.
+
+
+
+
+.. c:var:: psi_occ_pattern
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: psi_occ_pattern	(N_int,2,psi_det_size)
+        integer	:: n_occ_pattern
+
+    File: :file:`occ_pattern.irp.f`
+
+    array of the occ_pattern present in the wf psi_occ_pattern(:,1,j) = jth occ_pattern of the wave function : represent all the single occupations psi_occ_pattern(:,2,j) = jth occ_pattern of the wave function : represent all the double occupations The occ patterns are sorted by occ_pattern_search_key
+
+
+
+
+.. c:var:: psi_occ_pattern_hii
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_occ_pattern_hii	(N_occ_pattern)
+
+    File: :file:`occ_pattern.irp.f`
+
+    <I|h|I> where |I> is an occupation pattern. This is the minimum Hii of all <i|h|i>, where the |i> are the determinants if oI>
+
+
+
+
+.. c:var:: ref_bitmask_energy
+
+    .. code:: text
+
+        double precision	:: ref_bitmask_energy
+        double precision	:: mono_elec_ref_bitmask_energy
+        double precision	:: kinetic_ref_bitmask_energy
+        double precision	:: nucl_elec_ref_bitmask_energy
+        double precision	:: bi_elec_ref_bitmask_energy
+
+    File: :file:`ref_bitmask.irp.f`
+
+    Energy of the reference bitmask used in Slater rules
+
+
+
+
+.. c:var:: ref_closed_shell_bitmask
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: ref_closed_shell_bitmask	(N_int,2)
+
+    File: :file:`mono_excitations.irp.f`
+
+    
+
+
+
+
+.. c:var:: s2_values
+
+    .. code:: text
+
+        double precision, allocatable	:: s2_values	(N_states)
+
+    File: :file:`s2.irp.f`
+
+    array of the averaged values of the S^2 operator on the various states
+
+
+
+
+.. c:var:: s_z
+
+    .. code:: text
+
+        double precision	:: s_z
+        double precision	:: s_z2_sz
+
+    File: :file:`s2.irp.f`
+
+    z component of the Spin
+
+
+
+
+.. c:var:: s_z2_sz
+
+    .. code:: text
+
+        double precision	:: s_z
+        double precision	:: s_z2_sz
+
+    File: :file:`s2.irp.f`
+
+    z component of the Spin
+
+
+
+
+.. c:var:: single_exc_bitmask
+
+    .. code:: text
+
+        integer(bit_kind), allocatable	:: single_exc_bitmask	(N_int,2,N_single_exc_bitmasks)
+
+    File: :file:`determinants_bitmasks.irp.f`
+
+    single_exc_bitmask(:,1,i) is the bitmask for holes single_exc_bitmask(:,2,i) is the bitmask for particles for a given couple of hole/particle excitations i.
+
+
+
+
+.. c:var:: singles_alpha_csc
+
+    .. code:: text
+
+        integer, allocatable	:: singles_alpha_csc	(singles_alpha_csc_size)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Dimension of the singles_alpha array
+
+
+
+
+.. c:var:: singles_alpha_csc_idx
+
+    .. code:: text
+
+        integer*8, allocatable	:: singles_alpha_csc_idx	(N_det_alpha_unique+1)
+        integer*8	:: singles_alpha_csc_size
+
+    File: :file:`spindeterminants.irp.f`
+
+    Dimension of the singles_alpha array
+
+
+
+
+.. c:var:: singles_alpha_csc_size
+
+    .. code:: text
+
+        integer*8, allocatable	:: singles_alpha_csc_idx	(N_det_alpha_unique+1)
+        integer*8	:: singles_alpha_csc_size
+
+    File: :file:`spindeterminants.irp.f`
+
+    Dimension of the singles_alpha array
+
+
+
+
+.. c:var:: singles_alpha_size
+
+    .. code:: text
+
+        integer	:: singles_alpha_size
+
+    File: :file:`spindeterminants.irp.f`
+
+    Dimension of the singles_alpha array
+
+
+
+
+.. c:var:: state_average_weight
+
+    .. code:: text
+
+        double precision, allocatable	:: state_average_weight	(N_states)
+
+    File: :file:`density_matrix.irp.f`
+
+    Weights in the state-average calculation of the density matrix
+
+
+
+
+.. c:var:: two_body_dm_ab_big_array_act
+
+    .. code:: text
+
+        double precision, allocatable	:: two_body_dm_ab_big_array_act	(n_act_orb,n_act_orb,n_act_orb,n_act_orb)
+        double precision, allocatable	:: two_body_dm_ab_big_array_core_act	(n_core_orb_allocate,n_act_orb,n_act_orb)
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    two_body_dm_ab_big_array_act = Purely active part of the two body density matrix two_body_dm_ab_big_array_act_core takes only into account the single excitation within the active space that adds terms in the act <-> core two body dm two_body_dm_ab_big_array_act_core(i,j,k)  = < a^\dagger_i n_k a_j > with i,j in the ACTIVE SPACE with k in the CORE SPACE 
+    The alpha-beta extra diagonal energy FOR WF DEFINED AS AN APPROXIMATION OF A CAS can be computed thanks to sum_{h1,p1,h2,p2} two_body_dm_ab_big_array_act(h1,p1,h2,p2) * (h1p1|h2p2) +  sum_{h1,p1,h2,p2} two_body_dm_ab_big_array_core_act(h1,p1,h2,p2) * (h1p1|h2p2)
+
+
+
+
+.. c:var:: two_body_dm_ab_big_array_core_act
+
+    .. code:: text
+
+        double precision, allocatable	:: two_body_dm_ab_big_array_act	(n_act_orb,n_act_orb,n_act_orb,n_act_orb)
+        double precision, allocatable	:: two_body_dm_ab_big_array_core_act	(n_core_orb_allocate,n_act_orb,n_act_orb)
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    two_body_dm_ab_big_array_act = Purely active part of the two body density matrix two_body_dm_ab_big_array_act_core takes only into account the single excitation within the active space that adds terms in the act <-> core two body dm two_body_dm_ab_big_array_act_core(i,j,k)  = < a^\dagger_i n_k a_j > with i,j in the ACTIVE SPACE with k in the CORE SPACE 
+    The alpha-beta extra diagonal energy FOR WF DEFINED AS AN APPROXIMATION OF A CAS can be computed thanks to sum_{h1,p1,h2,p2} two_body_dm_ab_big_array_act(h1,p1,h2,p2) * (h1p1|h2p2) +  sum_{h1,p1,h2,p2} two_body_dm_ab_big_array_core_act(h1,p1,h2,p2) * (h1p1|h2p2)
+
+
+
+
+.. c:var:: two_body_dm_ab_diag_act
+
+    .. code:: text
+
+        double precision, allocatable	:: two_body_dm_ab_diag_act	(n_act_orb,n_act_orb)
+        double precision, allocatable	:: two_body_dm_ab_diag_inact	(n_inact_orb_allocate,n_inact_orb_allocate)
+        double precision, allocatable	:: two_body_dm_ab_diag_core	(n_core_orb_allocate,n_core_orb_allocate)
+        double precision, allocatable	:: two_body_dm_ab_diag_all	(mo_tot_num,mo_tot_num)
+        double precision, allocatable	:: two_body_dm_diag_core_a_act_b	(n_core_orb_allocate,n_act_orb)
+        double precision, allocatable	:: two_body_dm_diag_core_b_act_a	(n_core_orb_allocate,n_act_orb)
+        double precision, allocatable	:: two_body_dm_diag_core_act	(n_core_orb_allocate,n_act_orb)
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    two_body_dm_ab_diag_all(k,m) = <\Psi | n_(k\alpha) n_(m\beta) | \Psi> two_body_dm_ab_diag_act(k,m) is restricted to the active orbitals : orbital k = list_act(k) two_body_dm_ab_diag_inact(k,m) is restricted to the inactive orbitals : orbital k = list_inact(k) two_body_dm_ab_diag_core(k,m) is restricted to the core orbitals : orbital k = list_core(k) two_body_dm_ab_diag_core_b_act_a(k,m) represents the core beta <-> active alpha part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_a_act_b(k,m) represents the core alpha <-> active beta part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_act(k,m) represents the core<->active part of the diagonal two body dm when we traced on the spin orbital k = list_core(k) orbital m = list_act(m)
+
+
+
+
+.. c:var:: two_body_dm_ab_diag_all
+
+    .. code:: text
+
+        double precision, allocatable	:: two_body_dm_ab_diag_act	(n_act_orb,n_act_orb)
+        double precision, allocatable	:: two_body_dm_ab_diag_inact	(n_inact_orb_allocate,n_inact_orb_allocate)
+        double precision, allocatable	:: two_body_dm_ab_diag_core	(n_core_orb_allocate,n_core_orb_allocate)
+        double precision, allocatable	:: two_body_dm_ab_diag_all	(mo_tot_num,mo_tot_num)
+        double precision, allocatable	:: two_body_dm_diag_core_a_act_b	(n_core_orb_allocate,n_act_orb)
+        double precision, allocatable	:: two_body_dm_diag_core_b_act_a	(n_core_orb_allocate,n_act_orb)
+        double precision, allocatable	:: two_body_dm_diag_core_act	(n_core_orb_allocate,n_act_orb)
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    two_body_dm_ab_diag_all(k,m) = <\Psi | n_(k\alpha) n_(m\beta) | \Psi> two_body_dm_ab_diag_act(k,m) is restricted to the active orbitals : orbital k = list_act(k) two_body_dm_ab_diag_inact(k,m) is restricted to the inactive orbitals : orbital k = list_inact(k) two_body_dm_ab_diag_core(k,m) is restricted to the core orbitals : orbital k = list_core(k) two_body_dm_ab_diag_core_b_act_a(k,m) represents the core beta <-> active alpha part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_a_act_b(k,m) represents the core alpha <-> active beta part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_act(k,m) represents the core<->active part of the diagonal two body dm when we traced on the spin orbital k = list_core(k) orbital m = list_act(m)
+
+
+
+
+.. c:var:: two_body_dm_ab_diag_core
+
+    .. code:: text
+
+        double precision, allocatable	:: two_body_dm_ab_diag_act	(n_act_orb,n_act_orb)
+        double precision, allocatable	:: two_body_dm_ab_diag_inact	(n_inact_orb_allocate,n_inact_orb_allocate)
+        double precision, allocatable	:: two_body_dm_ab_diag_core	(n_core_orb_allocate,n_core_orb_allocate)
+        double precision, allocatable	:: two_body_dm_ab_diag_all	(mo_tot_num,mo_tot_num)
+        double precision, allocatable	:: two_body_dm_diag_core_a_act_b	(n_core_orb_allocate,n_act_orb)
+        double precision, allocatable	:: two_body_dm_diag_core_b_act_a	(n_core_orb_allocate,n_act_orb)
+        double precision, allocatable	:: two_body_dm_diag_core_act	(n_core_orb_allocate,n_act_orb)
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    two_body_dm_ab_diag_all(k,m) = <\Psi | n_(k\alpha) n_(m\beta) | \Psi> two_body_dm_ab_diag_act(k,m) is restricted to the active orbitals : orbital k = list_act(k) two_body_dm_ab_diag_inact(k,m) is restricted to the inactive orbitals : orbital k = list_inact(k) two_body_dm_ab_diag_core(k,m) is restricted to the core orbitals : orbital k = list_core(k) two_body_dm_ab_diag_core_b_act_a(k,m) represents the core beta <-> active alpha part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_a_act_b(k,m) represents the core alpha <-> active beta part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_act(k,m) represents the core<->active part of the diagonal two body dm when we traced on the spin orbital k = list_core(k) orbital m = list_act(m)
+
+
+
+
+.. c:var:: two_body_dm_ab_diag_inact
+
+    .. code:: text
+
+        double precision, allocatable	:: two_body_dm_ab_diag_act	(n_act_orb,n_act_orb)
+        double precision, allocatable	:: two_body_dm_ab_diag_inact	(n_inact_orb_allocate,n_inact_orb_allocate)
+        double precision, allocatable	:: two_body_dm_ab_diag_core	(n_core_orb_allocate,n_core_orb_allocate)
+        double precision, allocatable	:: two_body_dm_ab_diag_all	(mo_tot_num,mo_tot_num)
+        double precision, allocatable	:: two_body_dm_diag_core_a_act_b	(n_core_orb_allocate,n_act_orb)
+        double precision, allocatable	:: two_body_dm_diag_core_b_act_a	(n_core_orb_allocate,n_act_orb)
+        double precision, allocatable	:: two_body_dm_diag_core_act	(n_core_orb_allocate,n_act_orb)
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    two_body_dm_ab_diag_all(k,m) = <\Psi | n_(k\alpha) n_(m\beta) | \Psi> two_body_dm_ab_diag_act(k,m) is restricted to the active orbitals : orbital k = list_act(k) two_body_dm_ab_diag_inact(k,m) is restricted to the inactive orbitals : orbital k = list_inact(k) two_body_dm_ab_diag_core(k,m) is restricted to the core orbitals : orbital k = list_core(k) two_body_dm_ab_diag_core_b_act_a(k,m) represents the core beta <-> active alpha part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_a_act_b(k,m) represents the core alpha <-> active beta part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_act(k,m) represents the core<->active part of the diagonal two body dm when we traced on the spin orbital k = list_core(k) orbital m = list_act(m)
+
+
+
+
+.. c:var:: two_body_dm_ab_map
+
+    .. code:: text
+
+        type(map_type)	:: two_body_dm_ab_map
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    Map of the two body density matrix elements for the alpha/beta elements
+
+
+
+
+.. c:var:: two_body_dm_diag_core_a_act_b
+
+    .. code:: text
+
+        double precision, allocatable	:: two_body_dm_ab_diag_act	(n_act_orb,n_act_orb)
+        double precision, allocatable	:: two_body_dm_ab_diag_inact	(n_inact_orb_allocate,n_inact_orb_allocate)
+        double precision, allocatable	:: two_body_dm_ab_diag_core	(n_core_orb_allocate,n_core_orb_allocate)
+        double precision, allocatable	:: two_body_dm_ab_diag_all	(mo_tot_num,mo_tot_num)
+        double precision, allocatable	:: two_body_dm_diag_core_a_act_b	(n_core_orb_allocate,n_act_orb)
+        double precision, allocatable	:: two_body_dm_diag_core_b_act_a	(n_core_orb_allocate,n_act_orb)
+        double precision, allocatable	:: two_body_dm_diag_core_act	(n_core_orb_allocate,n_act_orb)
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    two_body_dm_ab_diag_all(k,m) = <\Psi | n_(k\alpha) n_(m\beta) | \Psi> two_body_dm_ab_diag_act(k,m) is restricted to the active orbitals : orbital k = list_act(k) two_body_dm_ab_diag_inact(k,m) is restricted to the inactive orbitals : orbital k = list_inact(k) two_body_dm_ab_diag_core(k,m) is restricted to the core orbitals : orbital k = list_core(k) two_body_dm_ab_diag_core_b_act_a(k,m) represents the core beta <-> active alpha part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_a_act_b(k,m) represents the core alpha <-> active beta part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_act(k,m) represents the core<->active part of the diagonal two body dm when we traced on the spin orbital k = list_core(k) orbital m = list_act(m)
+
+
+
+
+.. c:var:: two_body_dm_diag_core_act
+
+    .. code:: text
+
+        double precision, allocatable	:: two_body_dm_ab_diag_act	(n_act_orb,n_act_orb)
+        double precision, allocatable	:: two_body_dm_ab_diag_inact	(n_inact_orb_allocate,n_inact_orb_allocate)
+        double precision, allocatable	:: two_body_dm_ab_diag_core	(n_core_orb_allocate,n_core_orb_allocate)
+        double precision, allocatable	:: two_body_dm_ab_diag_all	(mo_tot_num,mo_tot_num)
+        double precision, allocatable	:: two_body_dm_diag_core_a_act_b	(n_core_orb_allocate,n_act_orb)
+        double precision, allocatable	:: two_body_dm_diag_core_b_act_a	(n_core_orb_allocate,n_act_orb)
+        double precision, allocatable	:: two_body_dm_diag_core_act	(n_core_orb_allocate,n_act_orb)
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    two_body_dm_ab_diag_all(k,m) = <\Psi | n_(k\alpha) n_(m\beta) | \Psi> two_body_dm_ab_diag_act(k,m) is restricted to the active orbitals : orbital k = list_act(k) two_body_dm_ab_diag_inact(k,m) is restricted to the inactive orbitals : orbital k = list_inact(k) two_body_dm_ab_diag_core(k,m) is restricted to the core orbitals : orbital k = list_core(k) two_body_dm_ab_diag_core_b_act_a(k,m) represents the core beta <-> active alpha part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_a_act_b(k,m) represents the core alpha <-> active beta part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_act(k,m) represents the core<->active part of the diagonal two body dm when we traced on the spin orbital k = list_core(k) orbital m = list_act(m)
+
+
+
+
+.. c:var:: two_body_dm_diag_core_b_act_a
+
+    .. code:: text
+
+        double precision, allocatable	:: two_body_dm_ab_diag_act	(n_act_orb,n_act_orb)
+        double precision, allocatable	:: two_body_dm_ab_diag_inact	(n_inact_orb_allocate,n_inact_orb_allocate)
+        double precision, allocatable	:: two_body_dm_ab_diag_core	(n_core_orb_allocate,n_core_orb_allocate)
+        double precision, allocatable	:: two_body_dm_ab_diag_all	(mo_tot_num,mo_tot_num)
+        double precision, allocatable	:: two_body_dm_diag_core_a_act_b	(n_core_orb_allocate,n_act_orb)
+        double precision, allocatable	:: two_body_dm_diag_core_b_act_a	(n_core_orb_allocate,n_act_orb)
+        double precision, allocatable	:: two_body_dm_diag_core_act	(n_core_orb_allocate,n_act_orb)
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    two_body_dm_ab_diag_all(k,m) = <\Psi | n_(k\alpha) n_(m\beta) | \Psi> two_body_dm_ab_diag_act(k,m) is restricted to the active orbitals : orbital k = list_act(k) two_body_dm_ab_diag_inact(k,m) is restricted to the inactive orbitals : orbital k = list_inact(k) two_body_dm_ab_diag_core(k,m) is restricted to the core orbitals : orbital k = list_core(k) two_body_dm_ab_diag_core_b_act_a(k,m) represents the core beta <-> active alpha part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_a_act_b(k,m) represents the core alpha <-> active beta part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_act(k,m) represents the core<->active part of the diagonal two body dm when we traced on the spin orbital k = list_core(k) orbital m = list_act(m)
+
+
+
+
+.. c:var:: two_body_dm_in_map
+
+    .. code:: text
+
+        logical	:: two_body_dm_in_map
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    If True, the map of the two body density matrix alpha/beta is provided
+
+
+
+
+.. c:var:: weight_occ_pattern
+
+    .. code:: text
+
+        double precision, allocatable	:: weight_occ_pattern	(N_occ_pattern,N_states)
+
+    File: :file:`occ_pattern.irp.f`
+
+    Weight of the occupation patterns in the wave function
+
+
+
+
+Subroutines / functions
+-----------------------
+
+
+
+.. c:function:: a_operator
+
+    .. code:: text
+
+        subroutine a_operator(iorb,ispin,key,hjj,Nint,na,nb)
+
+    File: :file:`slater_rules.irp.f`
+
+    Needed for diag_H_mat_elem
+
+
+
+
+
+.. c:function:: ac_operator
+
+    .. code:: text
+
+        subroutine ac_operator(iorb,ispin,key,hjj,Nint,na,nb)
+
+    File: :file:`slater_rules.irp.f`
+
+    Needed for diag_H_mat_elem
+
+
+
+
+
+.. c:function:: add_values_to_two_body_dm_map
+
+    .. code:: text
+
+        subroutine add_values_to_two_body_dm_map(mask_ijkl)
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    Adds values to the map of two_body_dm according to some bitmask
+
+
+
+
+
+.. c:function:: apply_excitation
+
+    .. code:: text
+
+        subroutine apply_excitation(det, exc, res, ok, Nint)
+
+    File: :file:`determinants.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: apply_hole
+
+    .. code:: text
+
+        subroutine apply_hole(det, s1, h1, res, ok, Nint)
+
+    File: :file:`determinants.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: apply_holes
+
+    .. code:: text
+
+        subroutine apply_holes(det, s1, h1, s2, h2, res, ok, Nint)
+
+    File: :file:`determinants.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: apply_mono
+
+    .. code:: text
+
+        subroutine apply_mono(i_hole,i_particle,ispin_excit,key_in,Nint)
+
+    File: :file:`excitations_utils.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: apply_particle
+
+    .. code:: text
+
+        subroutine apply_particle(det, s1, p1, res, ok, Nint)
+
+    File: :file:`determinants.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: apply_particles
+
+    .. code:: text
+
+        subroutine apply_particles(det, s1, p1, s2, p2, res, ok, Nint)
+
+    File: :file:`determinants.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: au0_h_au0
+
+    .. code:: text
+
+        subroutine au0_h_au0(energies,psi_in,psi_in_coef,ndet,dim_psi_coef)
+
+    File: :file:`mo_energy_expval.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: bitstring_to_list_ab
+
+    .. code:: text
+
+        subroutine bitstring_to_list_ab( string, list, n_elements, Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    Gives the inidices(+1) of the bits set to 1 in the bit string For alpha/beta determinants
+
+
+
+
+
+.. c:function:: bitstring_to_list_ab_old
+
+    .. code:: text
+
+        subroutine bitstring_to_list_ab_old( string, list, n_elements, Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    Gives the inidices(+1) of the bits set to 1 in the bit string For alpha/beta determinants
+
+
+
+
+
+.. c:function:: build_fock_tmp
+
+    .. code:: text
+
+        subroutine build_fock_tmp(fock_diag_tmp,det_ref,Nint)
+
+    File: :file:`Fock_diag.irp.f`
+
+    Build the diagonal of the Fock matrix corresponding to a generator determinant. F_00 is <i|H|i> = E0.
+
+
+
+
+
+.. c:function:: clear_bit_to_integer
+
+    .. code:: text
+
+        subroutine clear_bit_to_integer(i_physical,key,Nint)
+
+    File: :file:`create_excitations.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: compute_diag_two_body_dm_ab
+
+    .. code:: text
+
+        double precision function compute_diag_two_body_dm_ab(r1,r2)
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: compute_diag_two_body_dm_ab_act
+
+    .. code:: text
+
+        double precision function compute_diag_two_body_dm_ab_act(r1,r2)
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: compute_diag_two_body_dm_ab_core
+
+    .. code:: text
+
+        double precision function compute_diag_two_body_dm_ab_core(r1,r2)
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: compute_diag_two_body_dm_ab_core_act
+
+    .. code:: text
+
+        double precision function compute_diag_two_body_dm_ab_core_act(r1,r2)
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: compute_extra_diag_two_body_dm_ab
+
+    .. code:: text
+
+        double precision function compute_extra_diag_two_body_dm_ab(r1,r2)
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    compute the extra diagonal contribution to the alpha/bet two body density at r1, r2
+
+
+
+
+
+.. c:function:: compute_extra_diag_two_body_dm_ab_act
+
+    .. code:: text
+
+        double precision function compute_extra_diag_two_body_dm_ab_act(r1,r2)
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    compute the extra diagonal contribution to the two body density at r1, r2 involving ONLY THE ACTIVE PART, which means that the four index of the excitations involved in the two body density matrix are ACTIVE
+
+
+
+
+
+.. c:function:: compute_extra_diag_two_body_dm_ab_core_act
+
+    .. code:: text
+
+        double precision function compute_extra_diag_two_body_dm_ab_core_act(r1,r2)
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    compute the extra diagonal contribution to the two body density at r1, r2 involving ONLY THE ACTIVE PART, which means that the four index of the excitations involved in the two body density matrix are ACTIVE
+
+
+
+
+
+.. c:function:: connected_to_ref
+
+    .. code:: text
+
+        integer function connected_to_ref(key,keys,Nint,N_past_in,Ndet)
+
+    File: :file:`connected_to_ref.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: connected_to_ref_by_mono
+
+    .. code:: text
+
+        integer function connected_to_ref_by_mono(key,keys,Nint,N_past_in,Ndet)
+
+    File: :file:`connected_to_ref.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: copy_h_apply_buffer_to_wf
+
+    .. code:: text
+
+        subroutine copy_H_apply_buffer_to_wf
+
+    File: :file:`H_apply.irp.f`
+
+    Copies the H_apply buffer to psi_coef. After calling this subroutine, N_det, psi_det and psi_coef need to be touched
+
+
+
+
+
+.. c:function:: copy_psi_bilinear_to_psi
+
+    .. code:: text
+
+        subroutine copy_psi_bilinear_to_psi(psi, isize)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Overwrites psi_det and psi_coef with the wf in bilinear order
+
+
+
+
+
+.. c:function:: create_microlist
+
+    .. code:: text
+
+        subroutine create_microlist(minilist, N_minilist, key_mask, microlist, idx_microlist, N_microlist, ptr_microlist, Nint)
+
+    File: :file:`filter_connected.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: create_minilist
+
+    .. code:: text
+
+        subroutine create_minilist(key_mask, fullList, miniList, idx_miniList, N_fullList, N_miniList, Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: create_minilist_find_previous
+
+    .. code:: text
+
+        subroutine create_minilist_find_previous(key_mask, fullList, miniList, N_fullList, N_miniList, fullMatch, Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: create_wf_of_psi_bilinear_matrix
+
+    .. code:: text
+
+        subroutine create_wf_of_psi_bilinear_matrix(truncate)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Generate a wave function containing all possible products of alpha and beta determinants
+
+
+
+
+
+.. c:function:: decode_exc
+
+    .. code:: text
+
+        subroutine decode_exc(exc,degree,h1,p1,h2,p2,s1,s2)
+
+    File: :file:`slater_rules.irp.f`
+
+    Decodes the exc arrays returned by get_excitation. h1,h2 : Holes p1,p2 : Particles s1,s2 : Spins (1:alpha, 2:beta) degree : Degree of excitation
+
+
+
+
+
+.. c:function:: decode_exc_spin
+
+    .. code:: text
+
+        subroutine decode_exc_spin(exc,h1,p1,h2,p2)
+
+    File: :file:`slater_rules.irp.f`
+
+    Decodes the exc arrays returned by get_excitation. h1,h2 : Holes p1,p2 : Particles
+
+
+
+
+
+.. c:function:: decode_exc_spin_new
+
+    .. code:: text
+
+        subroutine decode_exc_spin_new(exc,h1,p1,h2,p2)
+
+    File: :file:`slater_rules.irp.f`
+
+    Decodes the exc arrays returned by get_excitation. h1,h2 : Holes p1,p2 : Particles
+
+
+
+
+
+.. c:function:: det_inf
+
+    .. code:: text
+
+        logical function det_inf(key1, key2, Nint)
+
+    File: :file:`sort_dets_ab.irp.f`
+
+    Ordering function for determinants
+
+
+
+
+
+.. c:function:: det_search_key
+
+    .. code:: text
+
+        integer*8 function det_search_key(det,Nint)
+
+    File: :file:`connected_to_ref.irp.f`
+
+    Return an integer*8 corresponding to a determinant index for searching
+
+
+
+
+
+.. c:function:: detcmp
+
+    .. code:: text
+
+        integer function detCmp(a,b,Nint)
+
+    File: :file:`determinants.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: deteq
+
+    .. code:: text
+
+        logical function detEq(a,b,Nint)
+
+    File: :file:`determinants.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: diag_h_mat_elem
+
+    .. code:: text
+
+        double precision function diag_H_mat_elem(det_in,Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    Computes <i|H|i>
+
+
+
+
+
+.. c:function:: diag_h_mat_elem_au0_h_au0
+
+    .. code:: text
+
+        subroutine diag_H_mat_elem_au0_h_au0(det_in,Nint,hii)
+
+    File: :file:`mo_energy_expval.irp.f`
+
+    Computes <i|H|i> for any determinant i. Used for wave functions with an additional electron.
+
+
+
+
+
+.. c:function:: diag_h_mat_elem_fock
+
+    .. code:: text
+
+        double precision function diag_H_mat_elem_fock(det_ref,det_pert,fock_diag_tmp,Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    Computes <i|H|i> when i is at most a double excitation from a reference.
+
+
+
+
+
+.. c:function:: diag_s_mat_elem
+
+    .. code:: text
+
+        double precision function diag_S_mat_elem(key_i,Nint)
+
+    File: :file:`s2.irp.f`
+
+    Returns <i|S^2|i>
+
+
+
+
+
+.. c:function:: diagonalize_s2_betweenstates
+
+    .. code:: text
+
+        subroutine diagonalize_s2_betweenstates(keys_tmp,u_0,n,nmax_keys,nmax_coefs,nstates,s2_eigvalues)
+
+    File: :file:`s2.irp.f`
+
+    You enter with nstates vectors in u_0 that may be coupled by S^2 The subroutine diagonalize the S^2 operator in the basis of these states. The vectors that you obtain in output are no more coupled by S^2, which does not necessary mean that they are eigenfunction of S^2. n,nmax,nstates = number of determinants, physical dimension of the arrays and number of states keys_tmp = array of integer(bit_kind) that represents the determinants psi_coefs(i,j) = coeff of the ith determinant in the jth state VECTORS ARE SUPPOSED TO BE ORTHONORMAL IN INPUT
+
+
+
+
+
+.. c:function:: do_mono_excitation
+
+    .. code:: text
+
+        subroutine do_mono_excitation(key_in,i_hole,i_particle,ispin,i_ok)
+
+    File: :file:`create_excitations.irp.f`
+
+    Apply the mono excitation operator : a^{dager}_(i_particle) a_(i_hole) of spin = ispin on key_in ispin = 1  == alpha ispin = 2  == beta i_ok = 1  == the excitation is possible i_ok = -1 == the excitation is not possible
+
+
+
+
+
+.. c:function:: do_spin_flip
+
+    .. code:: text
+
+        subroutine do_spin_flip(key_in,i_flip,ispin,i_ok)
+
+    File: :file:`create_excitations.irp.f`
+
+    flip the spin ispin in the orbital i_flip on key_in ispin = 1  == alpha ispin = 2  == beta i_ok = 1  == the flip is possible i_ok = -1 == the flip is not possible
+
+
+
+
+
+.. c:function:: doubly_occ_empty_in_couple
+
+    .. code:: text
+
+        subroutine doubly_occ_empty_in_couple(det_in,n_couples,couples,couples_out)
+
+    File: :file:`useful_for_ovb.irp.f`
+
+    n_couples is the number of couples of orbitals to be checked couples(i,1) = first orbital of the ith couple couples(i,2) = second orbital of the ith couple returns the array couples_out couples_out(i) = .True. if det_in contains an orbital empty in the ith couple  AND an orbital doubly occupied in the ith couple
+
+
+
+
+
+.. c:function:: doubly_occ_empty_in_couple_and_no_hund_elsewhere
+
+    .. code:: text
+
+        subroutine doubly_occ_empty_in_couple_and_no_hund_elsewhere(det_in,n_couple_no_hund,couple_ion,couple_no_hund,is_ok)
+
+    File: :file:`useful_for_ovb.irp.f`
+
+    n_couples is the number of couples of orbitals to be checked couples(i,1) = first orbital of the ith couple couples(i,2) = second orbital of the ith couple returns the array couples_out couples_out(i) = .True. if det_in contains an orbital empty in the ith couple  AND an orbital doubly occupied in the ith couple
+
+
+
+
+
+.. c:function:: fill_h_apply_buffer_no_selection
+
+    .. code:: text
+
+        subroutine fill_H_apply_buffer_no_selection(n_selected,det_buffer,Nint,iproc)
+
+    File: :file:`H_apply.irp.f`
+
+    Fill the H_apply buffer with determiants for CISD
+
+
+
+
+
+.. c:function:: filter_connected
+
+    .. code:: text
+
+        subroutine filter_connected(key1,key2,Nint,sze,idx)
+
+    File: :file:`filter_connected.irp.f`
+
+    Filters out the determinants that are not connected by H 
+    returns the array idx which contains the index of the 
+    determinants in the array key1 that interact 
+    via the H operator with key2. 
+    idx(0) is the number of determinants that interact with key1
+
+
+
+
+
+.. c:function:: filter_connected_i_h_psi0
+
+    .. code:: text
+
+        subroutine filter_connected_i_H_psi0(key1,key2,Nint,sze,idx)
+
+    File: :file:`filter_connected.irp.f`
+
+    returns the array idx which contains the index of the 
+    determinants in the array key1 that interact 
+    via the H operator with key2. 
+    idx(0) is the number of determinants that interact with key1
+
+
+
+
+
+.. c:function:: filter_connected_i_h_psi0_sc2
+
+    .. code:: text
+
+        subroutine filter_connected_i_H_psi0_SC2(key1,key2,Nint,sze,idx,idx_repeat)
+
+    File: :file:`filter_connected.irp.f`
+
+    standard filter_connected_i_H_psi but returns in addition 
+    the array of the index of the non connected determinants to key1 
+    in order to know what double excitation can be repeated on key1 
+    idx_repeat(0) is the number of determinants that can be used 
+    to repeat the excitations
+
+
+
+
+
+.. c:function:: filter_not_connected
+
+    .. code:: text
+
+        subroutine filter_not_connected(key1,key2,Nint,sze,idx)
+
+    File: :file:`filter_connected.irp.f`
+
+    Returns the array idx which contains the index of the 
+    determinants in the array key1 that DO NOT interact 
+    via the H operator with key2. 
+    idx(0) is the number of determinants that DO NOT interact with key1
+
+
+
+
+
+.. c:function:: flip_generators
+
+    .. code:: text
+
+        subroutine flip_generators()
+
+    File: :file:`determinants.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: generate_all_alpha_beta_det_products
+
+    .. code:: text
+
+        subroutine generate_all_alpha_beta_det_products
+
+    File: :file:`spindeterminants.irp.f`
+
+    Create a wave function from all possible alpha x beta determinants
+
+
+
+
+
+.. c:function:: get_all_spin_doubles
+
+    .. code:: text
+
+        subroutine get_all_spin_doubles(buffer, idx, spindet, Nint, size_buffer, doubles, n_doubles)
+
+    File: :file:`spindeterminants.irp.f`
+
+    
+    Returns the indices of all the double excitations in the list of unique alpha determinants. 
+
+
+
+
+
+
+.. c:function:: get_all_spin_doubles_1
+
+    .. code:: text
+
+        subroutine get_all_spin_doubles_1(buffer, idx, spindet, size_buffer, doubles, n_doubles)
+
+    File: :file:`spindeterminants.irp.f`
+
+    
+    Returns the indices of all the double excitations in the list of unique alpha determinants. 
+
+
+
+
+
+
+.. c:function:: get_all_spin_doubles_2
+
+    .. code:: text
+
+        subroutine get_all_spin_doubles_2(buffer, idx, spindet, size_buffer, doubles, n_doubles)
+
+    File: :file:`spindeterminants.irp.f_template_1215`
+
+    
+    Returns the indices of all the double excitations in the list of unique alpha determinants. 
+
+
+
+
+
+
+.. c:function:: get_all_spin_doubles_3
+
+    .. code:: text
+
+        subroutine get_all_spin_doubles_3(buffer, idx, spindet, size_buffer, doubles, n_doubles)
+
+    File: :file:`spindeterminants.irp.f_template_1215`
+
+    
+    Returns the indices of all the double excitations in the list of unique alpha determinants. 
+
+
+
+
+
+
+.. c:function:: get_all_spin_doubles_4
+
+    .. code:: text
+
+        subroutine get_all_spin_doubles_4(buffer, idx, spindet, size_buffer, doubles, n_doubles)
+
+    File: :file:`spindeterminants.irp.f_template_1215`
+
+    
+    Returns the indices of all the double excitations in the list of unique alpha determinants. 
+
+
+
+
+
+
+.. c:function:: get_all_spin_doubles_n_int
+
+    .. code:: text
+
+        subroutine get_all_spin_doubles_N_int(buffer, idx, spindet, size_buffer, doubles, n_doubles)
+
+    File: :file:`spindeterminants.irp.f_template_1215`
+
+    
+    Returns the indices of all the double excitations in the list of unique alpha determinants. 
+
+
+
+
+
+
+.. c:function:: get_all_spin_singles
+
+    .. code:: text
+
+        subroutine get_all_spin_singles(buffer, idx, spindet, Nint, size_buffer, singles, n_singles)
+
+    File: :file:`spindeterminants.irp.f`
+
+    
+    Returns the indices of all the single excitations in the list of unique alpha determinants. 
+
+
+
+
+
+
+.. c:function:: get_all_spin_singles_1
+
+    .. code:: text
+
+        subroutine get_all_spin_singles_1(buffer, idx, spindet, size_buffer, singles, n_singles)
+
+    File: :file:`spindeterminants.irp.f`
+
+    
+    Returns the indices of all the single excitations in the list of unique alpha determinants. 
+
+
+
+
+
+
+.. c:function:: get_all_spin_singles_2
+
+    .. code:: text
+
+        subroutine get_all_spin_singles_2(buffer, idx, spindet, size_buffer, singles, n_singles)
+
+    File: :file:`spindeterminants.irp.f_template_1215`
+
+    
+    Returns the indices of all the single excitations in the list of unique alpha determinants. 
+
+
+
+
+
+
+.. c:function:: get_all_spin_singles_3
+
+    .. code:: text
+
+        subroutine get_all_spin_singles_3(buffer, idx, spindet, size_buffer, singles, n_singles)
+
+    File: :file:`spindeterminants.irp.f_template_1215`
+
+    
+    Returns the indices of all the single excitations in the list of unique alpha determinants. 
+
+
+
+
+
+
+.. c:function:: get_all_spin_singles_4
+
+    .. code:: text
+
+        subroutine get_all_spin_singles_4(buffer, idx, spindet, size_buffer, singles, n_singles)
+
+    File: :file:`spindeterminants.irp.f_template_1215`
+
+    
+    Returns the indices of all the single excitations in the list of unique alpha determinants. 
+
+
+
+
+
+
+.. c:function:: get_all_spin_singles_and_doubles
+
+    .. code:: text
+
+        subroutine get_all_spin_singles_and_doubles(buffer, idx, spindet, Nint, size_buffer, singles, doubles, n_singles, n_doubles)
+
+    File: :file:`spindeterminants.irp.f`
+
+    
+    Returns the indices of all the single and double excitations in the list of unique alpha determinants. 
+    /!\ : The buffer is transposed ! 
+
+
+
+
+
+
+.. c:function:: get_all_spin_singles_and_doubles_1
+
+    .. code:: text
+
+        subroutine get_all_spin_singles_and_doubles_1(buffer, idx, spindet, size_buffer, singles, doubles, n_singles, n_doubles)
+
+    File: :file:`spindeterminants.irp.f`
+
+    
+    Returns the indices of all the single and double excitations in the list of unique alpha determinants. 
+    /!\ : The buffer is transposed ! 
+
+
+
+
+
+
+.. c:function:: get_all_spin_singles_and_doubles_2
+
+    .. code:: text
+
+        subroutine get_all_spin_singles_and_doubles_2(buffer, idx, spindet, size_buffer, singles, doubles, n_singles, n_doubles)
+
+    File: :file:`spindeterminants.irp.f_template_1215`
+
+    
+    Returns the indices of all the single and double excitations in the list of unique alpha determinants. 
+    /!\ : The buffer is transposed ! 
+
+
+
+
+
+
+.. c:function:: get_all_spin_singles_and_doubles_3
+
+    .. code:: text
+
+        subroutine get_all_spin_singles_and_doubles_3(buffer, idx, spindet, size_buffer, singles, doubles, n_singles, n_doubles)
+
+    File: :file:`spindeterminants.irp.f_template_1215`
+
+    
+    Returns the indices of all the single and double excitations in the list of unique alpha determinants. 
+    /!\ : The buffer is transposed ! 
+
+
+
+
+
+
+.. c:function:: get_all_spin_singles_and_doubles_4
+
+    .. code:: text
+
+        subroutine get_all_spin_singles_and_doubles_4(buffer, idx, spindet, size_buffer, singles, doubles, n_singles, n_doubles)
+
+    File: :file:`spindeterminants.irp.f_template_1215`
+
+    
+    Returns the indices of all the single and double excitations in the list of unique alpha determinants. 
+    /!\ : The buffer is transposed ! 
+
+
+
+
+
+
+.. c:function:: get_all_spin_singles_and_doubles_n_int
+
+    .. code:: text
+
+        subroutine get_all_spin_singles_and_doubles_N_int(buffer, idx, spindet, size_buffer, singles, doubles, n_singles, n_doubles)
+
+    File: :file:`spindeterminants.irp.f_template_1215`
+
+    
+    Returns the indices of all the single and double excitations in the list of unique alpha determinants. 
+    /!\ : The buffer is transposed ! 
+
+
+
+
+
+
+.. c:function:: get_all_spin_singles_n_int
+
+    .. code:: text
+
+        subroutine get_all_spin_singles_N_int(buffer, idx, spindet, size_buffer, singles, n_singles)
+
+    File: :file:`spindeterminants.irp.f_template_1215`
+
+    
+    Returns the indices of all the single excitations in the list of unique alpha determinants. 
+
+
+
+
+
+
+.. c:function:: get_double_excitation
+
+    .. code:: text
+
+        subroutine get_double_excitation(det1,det2,exc,phase,Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    Returns the two excitation operators between two doubly excited determinants and the phase
+
+
+
+
+
+.. c:function:: get_double_excitation_phase
+
+    .. code:: text
+
+        subroutine get_double_excitation_phase(det1,det2,exc,phase,Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: get_double_excitation_phase_new
+
+    .. code:: text
+
+        subroutine get_double_excitation_phase_new(det1,det2,exc,phase,Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: get_double_excitation_spin
+
+    .. code:: text
+
+        subroutine get_double_excitation_spin(det1,det2,exc,phase,Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    Returns the two excitation operators between two doubly excited spin-determinants and the phase
+
+
+
+
+
+.. c:function:: get_double_excitation_spin_new
+
+    .. code:: text
+
+        subroutine get_double_excitation_spin_new(det1,det2,exc,phase,Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    Returns the two excitation operators between two doubly excited spin-determinants and the phase
+
+
+
+
+
+.. c:function:: get_excitation
+
+    .. code:: text
+
+        subroutine get_excitation(det1,det2,exc,degree,phase,Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    Returns the excitation operators between two determinants and the phase
+
+
+
+
+
+.. c:function:: get_excitation_degree
+
+    .. code:: text
+
+        subroutine get_excitation_degree(key1,key2,degree,Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    Returns the excitation degree between two determinants
+
+
+
+
+
+.. c:function:: get_excitation_degree_spin
+
+    .. code:: text
+
+        subroutine get_excitation_degree_spin(key1,key2,degree,Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    Returns the excitation degree between two determinants
+
+
+
+
+
+.. c:function:: get_excitation_degree_spin_new
+
+    .. code:: text
+
+        subroutine get_excitation_degree_spin_new(key1,key2,degree,Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    Returns the excitation degree between two determinants
+
+
+
+
+
+.. c:function:: get_excitation_degree_vector
+
+    .. code:: text
+
+        subroutine get_excitation_degree_vector(key1,key2,degree,Nint,sze,idx)
+
+    File: :file:`slater_rules.irp.f`
+
+    Applies get_excitation_degree to an array of determinants
+
+
+
+
+
+.. c:function:: get_excitation_degree_vector_double_alpha_beta
+
+    .. code:: text
+
+        subroutine get_excitation_degree_vector_double_alpha_beta(key1,key2,degree,Nint,sze,idx)
+
+    File: :file:`slater_rules.irp.f`
+
+    Applies get_excitation_degree to an array of determinants and return only the mono excitations and the connections through exchange integrals
+
+
+
+
+
+.. c:function:: get_excitation_degree_vector_mono
+
+    .. code:: text
+
+        subroutine get_excitation_degree_vector_mono(key1,key2,degree,Nint,sze,idx)
+
+    File: :file:`slater_rules.irp.f`
+
+    Applies get_excitation_degree to an array of determinants and return only the mono excitations
+
+
+
+
+
+.. c:function:: get_excitation_degree_vector_mono_or_exchange
+
+    .. code:: text
+
+        subroutine get_excitation_degree_vector_mono_or_exchange(key1,key2,degree,Nint,sze,idx)
+
+    File: :file:`slater_rules.irp.f`
+
+    Applies get_excitation_degree to an array of determinants and return only the mono excitations and the connections through exchange integrals
+
+
+
+
+
+.. c:function:: get_excitation_degree_vector_mono_or_exchange_verbose
+
+    .. code:: text
+
+        subroutine get_excitation_degree_vector_mono_or_exchange_verbose(key1,key2,degree,Nint,sze,idx)
+
+    File: :file:`slater_rules.irp.f`
+
+    Applies get_excitation_degree to an array of determinants and return only the mono excitations and the connections through exchange integrals
+
+
+
+
+
+.. c:function:: get_excitation_spin
+
+    .. code:: text
+
+        subroutine get_excitation_spin(det1,det2,exc,degree,phase,Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    Returns the excitation operators between two determinants and the phase
+
+
+
+
+
+.. c:function:: get_excitation_spin_new
+
+    .. code:: text
+
+        subroutine get_excitation_spin_new(det1,det2,exc,degree,phase,Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    Returns the excitation operators between two determinants and the phase
+
+
+
+
+
+.. c:function:: get_get_two_body_dm_ab_map_elements
+
+    .. code:: text
+
+        subroutine get_get_two_body_dm_ab_map_elements(j,k,l,sze,out_val,map)
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    Returns multiple elements of the \rho_{ijkl}^{\alpha \beta }, all i for j,k,l fixed.
+
+
+
+
+
+.. c:function:: get_index_in_psi_det_alpha_unique
+
+    .. code:: text
+
+        integer function get_index_in_psi_det_alpha_unique(key,Nint)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Returns the index of the determinant in the ``psi_det_alpha_unique`` array
+
+
+
+
+
+.. c:function:: get_index_in_psi_det_beta_unique
+
+    .. code:: text
+
+        integer function get_index_in_psi_det_beta_unique(key,Nint)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Returns the index of the determinant in the ``psi_det_beta_unique`` array
+
+
+
+
+
+.. c:function:: get_index_in_psi_det_sorted_bit
+
+    .. code:: text
+
+        integer function get_index_in_psi_det_sorted_bit(key,Nint)
+
+    File: :file:`connected_to_ref.irp.f`
+
+    Returns the index of the determinant in the ``psi_det_sorted_bit`` array
+
+
+
+
+
+.. c:function:: get_mono_excitation
+
+    .. code:: text
+
+        subroutine get_mono_excitation(det1,det2,exc,phase,Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    Returns the excitation operator between two singly excited determinants and the phase
+
+
+
+
+
+.. c:function:: get_mono_excitation_from_fock
+
+    .. code:: text
+
+        subroutine get_mono_excitation_from_fock(det_1,det_2,h,p,spin,phase,hij)
+
+    File: :file:`mono_excitations.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: get_mono_excitation_spin
+
+    .. code:: text
+
+        subroutine get_mono_excitation_spin(det1,det2,exc,phase,Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    Returns the excitation operator between two singly excited determinants and the phase
+
+
+
+
+
+.. c:function:: get_mono_excitation_spin_new
+
+    .. code:: text
+
+        subroutine get_mono_excitation_spin_new(det1,det2,exc,phase,Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    Returns the excitation operator between two singly excited determinants and the phase
+
+
+
+
+
+.. c:function:: get_occ_from_key
+
+    .. code:: text
+
+        subroutine get_occ_from_key(key,occ,Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    Returns a list of occupation numbers from a bitstring
+
+
+
+
+
+.. c:function:: get_phase
+
+    .. code:: text
+
+        subroutine get_phase(key1,key2,phase,Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    Returns the phase between key1 and key2
+
+
+
+
+
+.. c:function:: get_phasemask_bit
+
+    .. code:: text
+
+        subroutine get_phasemask_bit(det1, pm, Nint)
+
+    File: :file:`slater_rules.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: get_s2
+
+    .. code:: text
+
+        subroutine get_s2(key_i,key_j,Nint,s2)
+
+    File: :file:`s2.irp.f`
+
+    Returns <S^2>
+
+
+
+
+
+.. c:function:: get_two_body_dm_ab_map_element
+
+    .. code:: text
+
+        double precision function get_two_body_dm_ab_map_element(i,j,k,l,map)
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    Returns one value of the wo body density matrix \rho_{ijkl}^{\alpha \beta} defined as : \rho_{ijkl}^{\alpha \beta  } = <\Psi|a^{\dagger}_{i\alpha} a^{\dagger}_{j\beta} a_{k\beta} a_{l\alpha}|\Psi>
+
+
+
+
+
+.. c:function:: get_uj_s2_ui
+
+    .. code:: text
+
+        subroutine get_uJ_s2_uI(psi_keys_tmp,psi_coefs_tmp,n,nmax_coefs,nmax_keys,s2,nstates)
+
+    File: :file:`s2.irp.f`
+
+    returns the matrix elements of S^2 "s2(i,j)" between the "nstates" states psi_coefs_tmp(:,i) and psi_coefs_tmp(:,j)
+
+
+
+
+
+.. c:function:: getmobiles
+
+    .. code:: text
+
+        subroutine getMobiles(key,key_mask, mobiles,Nint)
+
+    File: :file:`filter_connected.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: give_index_of_doubly_occ_in_active_space
+
+    .. code:: text
+
+        subroutine give_index_of_doubly_occ_in_active_space(det_in,doubly_occupied_array)
+
+    File: :file:`useful_for_ovb.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: h_u_0_stored
+
+    .. code:: text
+
+        subroutine H_u_0_stored(v_0,u_0,hmatrix,sze)
+
+    File: :file:`slater_rules.irp.f`
+
+    Computes v_0 = H|u_0> 
+    n : number of determinants 
+    uses the big_matrix_stored array
+
+
+
+
+
+.. c:function:: i_h_j
+
+    .. code:: text
+
+        subroutine i_H_j(key_i,key_j,Nint,hij)
+
+    File: :file:`slater_rules.irp.f`
+
+    Returns <i|H|j> where i and j are determinants
+
+
+
+
+
+.. c:function:: i_h_j_double_alpha_beta
+
+    .. code:: text
+
+        subroutine i_H_j_double_alpha_beta(key_i,key_j,Nint,hij)
+
+    File: :file:`slater_rules.irp.f`
+
+    Returns <i|H|j> where i and j are determinants differing by an opposite-spin double excitation
+
+
+
+
+
+.. c:function:: i_h_j_double_spin
+
+    .. code:: text
+
+        subroutine i_H_j_double_spin(key_i,key_j,Nint,hij)
+
+    File: :file:`slater_rules.irp.f`
+
+    Returns <i|H|j> where i and j are determinants differing by a same-spin double excitation
+
+
+
+
+
+.. c:function:: i_h_j_mono_spin
+
+    .. code:: text
+
+        subroutine i_H_j_mono_spin(key_i,key_j,Nint,spin,hij)
+
+    File: :file:`slater_rules.irp.f`
+
+    Returns <i|H|j> where i and j are determinants differing by a single excitation
+
+
+
+
+
+.. c:function:: i_h_j_phase_out
+
+    .. code:: text
+
+        subroutine i_H_j_phase_out(key_i,key_j,Nint,hij,phase,exc,degree)
+
+    File: :file:`slater_rules.irp.f`
+
+    Returns <i|H|j> where i and j are determinants
+
+
+
+
+
+.. c:function:: i_h_j_s2
+
+    .. code:: text
+
+        subroutine i_H_j_s2(key_i,key_j,Nint,hij,s2)
+
+    File: :file:`slater_rules.irp.f`
+
+    Returns <i|H|j> where i and j are determinants
+
+
+
+
+
+.. c:function:: i_h_j_verbose
+
+    .. code:: text
+
+        subroutine i_H_j_verbose(key_i,key_j,Nint,hij,hmono,hdouble)
+
+    File: :file:`slater_rules.irp.f`
+
+    Returns <i|H|j> where i and j are determinants
+
+
+
+
+
+.. c:function:: i_h_psi
+
+    .. code:: text
+
+        subroutine i_H_psi(key,keys,coef,Nint,Ndet,Ndet_max,Nstate,i_H_psi_array)
+
+    File: :file:`slater_rules.irp.f`
+
+    Computes <i|H|Psi> = \sum_J c_J <i|H|J>. 
+    Uses filter_connected_i_H_psi0 to get all the |J> to which |i> is connected. The i_H_psi_minilist is much faster but requires to build the minilists
+
+
+
+
+
+.. c:function:: i_h_psi_minilist
+
+    .. code:: text
+
+        subroutine i_H_psi_minilist(key,keys,idx_key,N_minilist,coef,Nint,Ndet,Ndet_max,Nstate,i_H_psi_array)
+
+    File: :file:`slater_rules.irp.f`
+
+    Computes <i|H|Psi> = \sum_J c_J <i|H|J>. 
+    Uses filter_connected_i_H_psi0 to get all the |J> to which |i> is connected. The |J> are searched in short pre-computed lists.
+
+
+
+
+
+.. c:function:: i_h_psi_sc2
+
+    .. code:: text
+
+        subroutine i_H_psi_SC2(key,keys,coef,Nint,Ndet,Ndet_max,Nstate,i_H_psi_array,idx_repeat)
+
+    File: :file:`slater_rules.irp.f`
+
+    <key|H|psi> for the various Nstate 
+    returns in addition 
+    the array of the index of the non connected determinants to key1 
+    in order to know what double excitation can be repeated on key1 
+    idx_repeat(0) is the number of determinants that can be used 
+    to repeat the excitations
+
+
+
+
+
+.. c:function:: i_h_psi_sc2_verbose
+
+    .. code:: text
+
+        subroutine i_H_psi_SC2_verbose(key,keys,coef,Nint,Ndet,Ndet_max,Nstate,i_H_psi_array,idx_repeat)
+
+    File: :file:`slater_rules.irp.f`
+
+    <key|H|psi> for the various Nstate 
+    returns in addition 
+    the array of the index of the non connected determinants to key1 
+    in order to know what double excitation can be repeated on key1 
+    idx_repeat(0) is the number of determinants that can be used 
+    to repeat the excitations
+
+
+
+
+
+.. c:function:: i_h_psi_sec_ord
+
+    .. code:: text
+
+        subroutine i_H_psi_sec_ord(key,keys,coef,Nint,Ndet,Ndet_max,Nstate,i_H_psi_array,idx_interaction,interactions)
+
+    File: :file:`slater_rules.irp.f`
+
+    <key|H|psi> for the various Nstates
+
+
+
+
+
+.. c:function:: i_s2_psi_minilist
+
+    .. code:: text
+
+        subroutine i_S2_psi_minilist(key,keys,idx_key,N_minilist,coef,Nint,Ndet,Ndet_max,Nstate,i_S2_psi_array)
+
+    File: :file:`s2.irp.f`
+
+    Computes <i|S2|Psi> = \sum_J c_J <i|S2|J>. 
+    Uses filter_connected_i_H_psi0 to get all the |J> to which |i> is connected. The |J> are searched in short pre-computed lists.
+
+
+
+
+
+.. c:function:: insert_into_two_body_dm_ab_map
+
+    .. code:: text
+
+        subroutine insert_into_two_body_dm_ab_map(n_product,buffer_i, buffer_values, thr)
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    Create new entry into two_body_dm_ab_map, or accumulate in an existing entry
+
+
+
+
+
+.. c:function:: insert_into_two_body_dm_big_array
+
+    .. code:: text
+
+        subroutine insert_into_two_body_dm_big_array(big_array,dim1,dim2,dim3,dim4,contrib,h1,p1,h2,p2)
+
+    File: :file:`two_body_dm_map.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: is_connected_to
+
+    .. code:: text
+
+        logical function is_connected_to(key,keys,Nint,Ndet)
+
+    File: :file:`connected_to_ref.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: is_connected_to_by_mono
+
+    .. code:: text
+
+        logical function is_connected_to_by_mono(key,keys,Nint,Ndet)
+
+    File: :file:`connected_to_ref.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: is_generable_cassd
+
+    .. code:: text
+
+        logical function is_generable_cassd(det1, det2, Nint)
+
+    File: :file:`connected_to_ref.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: is_in_wavefunction
+
+    .. code:: text
+
+        logical function is_in_wavefunction(key,Nint)
+
+    File: :file:`connected_to_ref.irp.f`
+
+    True if the determinant ``det`` is in the wave function
+
+
+
+
+
+.. c:function:: is_spin_flip_possible
+
+    .. code:: text
+
+        logical function is_spin_flip_possible(key_in,i_flip,ispin)
+
+    File: :file:`create_excitations.irp.f`
+
+    returns .True. if the spin-flip of spin ispin in the orbital i_flip is possible on key_in
+
+
+
+
+
+.. c:function:: make_s2_eigenfunction
+
+    .. code:: text
+
+        subroutine make_s2_eigenfunction
+
+    File: :file:`occ_pattern.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: n_closed_shell
+
+    .. code:: text
+
+        integer function n_closed_shell(det_in,nint)
+
+    File: :file:`useful_for_ovb.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: n_closed_shell_cas
+
+    .. code:: text
+
+        integer function n_closed_shell_cas(det_in,nint)
+
+    File: :file:`useful_for_ovb.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: n_open_shell
+
+    .. code:: text
+
+        integer function n_open_shell(det_in,nint)
+
+    File: :file:`useful_for_ovb.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: neutral_no_hund_in_couple
+
+    .. code:: text
+
+        subroutine neutral_no_hund_in_couple(det_in,n_couples,couples,couples_out)
+
+    File: :file:`useful_for_ovb.irp.f`
+
+    n_couples is the number of couples of orbitals to be checked couples(i,1) = first orbital of the ith couple couples(i,2) = second orbital of the ith couple returns the array couples_out couples_out(i) = .True. if det_in contains an orbital empty in the ith couple  AND an orbital doubly occupied in the ith couple
+
+
+
+
+
+.. c:function:: occ_pattern_of_det
+
+    .. code:: text
+
+        subroutine occ_pattern_of_det(d,o,Nint)
+
+    File: :file:`occ_pattern.irp.f`
+
+    Transforms a determinant to an occupation pattern 
+    occ(:,1) : Single occupations 
+    occ(:,2) : Double occupations 
+
+
+
+
+
+
+.. c:function:: occ_pattern_search_key
+
+    .. code:: text
+
+        integer*8 function occ_pattern_search_key(det,Nint)
+
+    File: :file:`connected_to_ref.irp.f`
+
+    Return an integer*8 corresponding to a determinant index for searching
+
+
+
+
+
+.. c:function:: occ_pattern_to_dets
+
+    .. code:: text
+
+        subroutine occ_pattern_to_dets(o,d,sze,n_alpha,Nint)
+
+    File: :file:`occ_pattern.irp.f`
+
+    Generate all possible determinants for a give occ_pattern
+
+
+
+
+
+.. c:function:: occ_pattern_to_dets_size
+
+    .. code:: text
+
+        subroutine occ_pattern_to_dets_size(o,sze,n_alpha,Nint)
+
+    File: :file:`occ_pattern.irp.f`
+
+    Number of possible determinants for a given occ_pattern
+
+
+
+
+
+.. c:function:: pull_pt2
+
+    .. code:: text
+
+        subroutine pull_pt2(zmq_socket_pull,pt2,norm_pert,H_pert_diag,i_generator,N_st,n,task_id)
+
+    File: :file:`H_apply.irp.f`
+
+    Pull PT2 calculation in the collector
+
+
+
+
+
+.. c:function:: push_pt2
+
+    .. code:: text
+
+        subroutine push_pt2(zmq_socket_push,pt2,norm_pert,H_pert_diag,i_generator,N_st,task_id)
+
+    File: :file:`H_apply.irp.f`
+
+    Push PT2 calculation to the collector
+
+
+
+
+
+.. c:function:: read_dets
+
+    .. code:: text
+
+        subroutine read_dets(det,Nint,Ndet)
+
+    File: :file:`determinants.irp.f`
+
+    Reads the determinants from the EZFIO file
+
+
+
+
+
+.. c:function:: remove_duplicates_in_psi_det
+
+    .. code:: text
+
+        subroutine remove_duplicates_in_psi_det(found_duplicates)
+
+    File: :file:`H_apply.irp.f`
+
+    Removes duplicate determinants in the wave function.
+
+
+
+
+
+.. c:function:: resize_h_apply_buffer
+
+    .. code:: text
+
+        subroutine resize_H_apply_buffer(new_size,iproc)
+
+    File: :file:`H_apply.irp.f`
+
+    Resizes the H_apply buffer of proc iproc. The buffer lock should be set before calling this function.
+
+
+
+
+
+.. c:function:: s2_u_0
+
+    .. code:: text
+
+        subroutine S2_u_0(v_0,u_0,n,keys_tmp,Nint)
+
+    File: :file:`s2.irp.f`
+
+    Computes v_0 = S^2|u_0> 
+    n : number of determinants 
+
+
+
+
+
+
+.. c:function:: s2_u_0_nstates
+
+    .. code:: text
+
+        subroutine S2_u_0_nstates(v_0,u_0,n,keys_tmp,Nint,N_st,sze_8)
+
+    File: :file:`s2.irp.f`
+
+    Computes v_0  = S^2|u_0> 
+    n : number of determinants 
+
+
+
+
+
+
+.. c:function:: save_natural_mos
+
+    .. code:: text
+
+        subroutine save_natural_mos
+
+    File: :file:`density_matrix.irp.f`
+
+    Save natural orbitals, obtained by diagonalization of the one-body density matrix in the MO basis
+
+
+
+
+
+.. c:function:: save_ref_determinant
+
+    .. code:: text
+
+        subroutine save_ref_determinant
+
+    File: :file:`determinants.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: save_wavefunction
+
+    .. code:: text
+
+        subroutine save_wavefunction
+
+    File: :file:`determinants.irp.f`
+
+    Save the wave function into the EZFIO file
+
+
+
+
+
+.. c:function:: save_wavefunction_general
+
+    .. code:: text
+
+        subroutine save_wavefunction_general(ndet,nstates,psidet,dim_psicoef,psicoef)
+
+    File: :file:`determinants.irp.f`
+
+    Save the wave function into the EZFIO file
+
+
+
+
+
+.. c:function:: save_wavefunction_specified
+
+    .. code:: text
+
+        subroutine save_wavefunction_specified(ndet,nstates,psidet,psicoef,ndetsave,index_det_save)
+
+    File: :file:`determinants.irp.f`
+
+    Save the wave function into the EZFIO file
+
+
+
+
+
+.. c:function:: save_wavefunction_truncated
+
+    .. code:: text
+
+        subroutine save_wavefunction_truncated(thr)
+
+    File: :file:`determinants.irp.f`
+
+    Save the wave function into the EZFIO file
+
+
+
+
+
+.. c:function:: save_wavefunction_unsorted
+
+    .. code:: text
+
+        subroutine save_wavefunction_unsorted
+
+    File: :file:`determinants.irp.f`
+
+    Save the wave function into the EZFIO file
+
+
+
+
+
+.. c:function:: set_bit_to_integer
+
+    .. code:: text
+
+        subroutine set_bit_to_integer(i_physical,key,Nint)
+
+    File: :file:`create_excitations.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: set_natural_mos
+
+    .. code:: text
+
+        subroutine set_natural_mos
+
+    File: :file:`density_matrix.irp.f`
+
+    Set natural orbitals, obtained by diagonalization of the one-body density matrix in the MO basis
+
+
+
+
+
+.. c:function:: sort_dets_ab
+
+    .. code:: text
+
+        subroutine sort_dets_ab(key, idx, shortcut, N_key, Nint)
+
+    File: :file:`sort_dets_ab.irp.f`
+
+    Uncodumented : TODO
+
+
+
+
+
+.. c:function:: sort_dets_ab_v
+
+    .. code:: text
+
+        subroutine sort_dets_ab_v(key_in, key_out, idx, shortcut, version, N_key, Nint)
+
+    File: :file:`sort_dets_ab.irp.f`
+
+    Uncodumented : TODO
+
+
+
+
+
+.. c:function:: sort_dets_ba_v
+
+    .. code:: text
+
+        subroutine sort_dets_ba_v(key_in, key_out, idx, shortcut, version, N_key, Nint)
+
+    File: :file:`sort_dets_ab.irp.f`
+
+    Uncodumented : TODO
+
+
+
+
+
+.. c:function:: sort_dets_by_det_search_key
+
+    .. code:: text
+
+        subroutine sort_dets_by_det_search_key(Ndet, det_in, coef_in, sze, det_out, coef_out, N_st)
+
+    File: :file:`determinants.irp.f`
+
+    Determinants are sorted are sorted according to their det_search_key. Useful to accelerate the search of a random determinant in the wave function. 
+    /!\ The first dimension of coef_out and coef_in need to be psi_det_size 
+
+
+
+
+
+
+.. c:function:: spin_det_search_key
+
+    .. code:: text
+
+        integer*8 function spin_det_search_key(det,Nint)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Return an integer(8) corresponding to a determinant index for searching
+
+
+
+
+
+.. c:function:: tamiser
+
+    .. code:: text
+
+        subroutine tamiser(key, idx, no, n, Nint, N_key)
+
+    File: :file:`sort_dets_ab.irp.f`
+
+    Uncodumented : TODO
+
+
+
+
+
+.. c:function:: u_0_h_u_0_stored
+
+    .. code:: text
+
+        subroutine u_0_H_u_0_stored(e_0,u_0,hmatrix,sze)
+
+    File: :file:`slater_rules.irp.f`
+
+    Computes e_0 = <u_0|H|u_0> 
+    n : number of determinants 
+    uses the big_matrix_stored array
+
+
+
+
+
+.. c:function:: u_0_s2_u_0
+
+    .. code:: text
+
+        subroutine u_0_S2_u_0(e_0,u_0,n,keys_tmp,Nint,N_st,sze_8)
+
+    File: :file:`s2.irp.f`
+
+    Computes e_0 = <u_0|S2|u_0>/<u_0|u_0> 
+    n : number of determinants 
+
+
+
+
+
+
+.. c:function:: wf_of_psi_bilinear_matrix
+
+    .. code:: text
+
+        subroutine wf_of_psi_bilinear_matrix(truncate)
+
+    File: :file:`spindeterminants.irp.f`
+
+    Generate a wave function containing all possible products of alpha and beta determinants
+
+
+
+
+
+.. c:function:: write_spindeterminants
+
+    .. code:: text
+
+        subroutine write_spindeterminants
+
+    File: :file:`spindeterminants.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: zmq_get_n_det
+
+    .. code:: text
+
+        integer function zmq_get_N_det(zmq_to_qp_run_socket, worker_id)
+
+    File: :file:`zmq.irp.f_template_379`
+
+    Get N_det from the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_get_n_det_alpha_unique
+
+    .. code:: text
+
+        integer function zmq_get_N_det_alpha_unique(zmq_to_qp_run_socket, worker_id)
+
+    File: :file:`zmq.irp.f_template_379`
+
+    Get N_det_alpha_unique from the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_get_n_det_beta_unique
+
+    .. code:: text
+
+        integer function zmq_get_N_det_beta_unique(zmq_to_qp_run_socket, worker_id)
+
+    File: :file:`zmq.irp.f_template_379`
+
+    Get N_det_beta_unique from the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_get_n_states
+
+    .. code:: text
+
+        integer function zmq_get_N_states(zmq_to_qp_run_socket, worker_id)
+
+    File: :file:`zmq.irp.f_template_379`
+
+    Get N_states from the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_get_psi
+
+    .. code:: text
+
+        integer function zmq_get_psi(zmq_to_qp_run_socket, worker_id)
+
+    File: :file:`zmq.irp.f`
+
+    Get the wave function from the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_get_psi_bilinear
+
+    .. code:: text
+
+        integer function zmq_get_psi_bilinear(zmq_to_qp_run_socket, worker_id)
+
+    File: :file:`zmq.irp.f`
+
+    Get the wave function from the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_get_psi_bilinear_matrix_columns
+
+    .. code:: text
+
+        integer*8 function zmq_get_psi_bilinear_matrix_columns(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f_template_500`
+
+    Get psi_bilinear_matrix_columns on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_get_psi_bilinear_matrix_order
+
+    .. code:: text
+
+        integer*8 function zmq_get_psi_bilinear_matrix_order(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f_template_500`
+
+    Get psi_bilinear_matrix_order on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_get_psi_bilinear_matrix_rows
+
+    .. code:: text
+
+        integer*8 function zmq_get_psi_bilinear_matrix_rows(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f_template_500`
+
+    Get psi_bilinear_matrix_rows on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_get_psi_bilinear_matrix_values
+
+    .. code:: text
+
+        integer*8 function zmq_get_psi_bilinear_matrix_values(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f_template_564`
+
+    get psi_bilinear_matrix_values on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_get_psi_coef
+
+    .. code:: text
+
+        integer*8 function zmq_get_psi_coef(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f_template_564`
+
+    get psi_coef on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_get_psi_det
+
+    .. code:: text
+
+        integer*8 function zmq_get_psi_det(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f_template_440`
+
+    Get psi_det on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_get_psi_det_alpha_unique
+
+    .. code:: text
+
+        integer*8 function zmq_get_psi_det_alpha_unique(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f_template_440`
+
+    Get psi_det_alpha_unique on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_get_psi_det_beta_unique
+
+    .. code:: text
+
+        integer*8 function zmq_get_psi_det_beta_unique(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f_template_440`
+
+    Get psi_det_beta_unique on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_get_psi_det_size
+
+    .. code:: text
+
+        integer function zmq_get_psi_det_size(zmq_to_qp_run_socket, worker_id)
+
+    File: :file:`zmq.irp.f_template_379`
+
+    Get psi_det_size from the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_get_psi_notouch
+
+    .. code:: text
+
+        integer function zmq_get_psi_notouch(zmq_to_qp_run_socket, worker_id)
+
+    File: :file:`zmq.irp.f`
+
+    Get the wave function from the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_put_n_det
+
+    .. code:: text
+
+        integer function zmq_put_N_det(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f_template_379`
+
+    Put N_det on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_put_n_det_alpha_unique
+
+    .. code:: text
+
+        integer function zmq_put_N_det_alpha_unique(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f_template_379`
+
+    Put N_det_alpha_unique on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_put_n_det_beta_unique
+
+    .. code:: text
+
+        integer function zmq_put_N_det_beta_unique(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f_template_379`
+
+    Put N_det_beta_unique on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_put_n_states
+
+    .. code:: text
+
+        integer function zmq_put_N_states(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f_template_379`
+
+    Put N_states on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_put_psi
+
+    .. code:: text
+
+        integer function zmq_put_psi(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f`
+
+    Put the wave function on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_put_psi_bilinear
+
+    .. code:: text
+
+        integer function zmq_put_psi_bilinear(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f`
+
+    Put the wave function on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_put_psi_bilinear_matrix_columns
+
+    .. code:: text
+
+        integer*8 function zmq_put_psi_bilinear_matrix_columns(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f_template_500`
+
+    Put psi_bilinear_matrix_columns on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_put_psi_bilinear_matrix_order
+
+    .. code:: text
+
+        integer*8 function zmq_put_psi_bilinear_matrix_order(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f_template_500`
+
+    Put psi_bilinear_matrix_order on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_put_psi_bilinear_matrix_rows
+
+    .. code:: text
+
+        integer*8 function zmq_put_psi_bilinear_matrix_rows(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f_template_500`
+
+    Put psi_bilinear_matrix_rows on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_put_psi_bilinear_matrix_values
+
+    .. code:: text
+
+        integer*8 function zmq_put_psi_bilinear_matrix_values(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f_template_564`
+
+    Put psi_bilinear_matrix_values on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_put_psi_coef
+
+    .. code:: text
+
+        integer*8 function zmq_put_psi_coef(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f_template_564`
+
+    Put psi_coef on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_put_psi_det
+
+    .. code:: text
+
+        integer*8 function zmq_put_psi_det(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f_template_440`
+
+    Put psi_det on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_put_psi_det_alpha_unique
+
+    .. code:: text
+
+        integer*8 function zmq_put_psi_det_alpha_unique(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f_template_440`
+
+    Put psi_det_alpha_unique on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_put_psi_det_beta_unique
+
+    .. code:: text
+
+        integer*8 function zmq_put_psi_det_beta_unique(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f_template_440`
+
+    Put psi_det_beta_unique on the qp_run scheduler
+
+
+
+
+
+.. c:function:: zmq_put_psi_det_size
+
+    .. code:: text
+
+        integer function zmq_put_psi_det_size(zmq_to_qp_run_socket,worker_id)
+
+    File: :file:`zmq.irp.f_template_379`
+
+    Put psi_det_size on the qp_run scheduler
+
 
