@@ -2,7 +2,7 @@
 # 
 # Creates a self-contained binary distribution in the form of a tar.gz file
 # 
-# Tue Jan 13 14:06:25 CET 2015
+# Mon Nov 26 22:57:50 CET 2018
 #
 
 
@@ -20,14 +20,10 @@ if [[ -f quantum_package.rc \
    && -d src  \
    && -d bin  \
    && -d ocaml \
+   && -d external \
    && -d scripts ]]
 then
-  head -1 README.md | grep "IMPORTANT" > /dev/null
-  if [[ $? -ne 0 ]]
-  then
-    echo "This doesn't look like a quantum_package directory  (README.md)"
-    exit 1
-  fi
+  : # OK, this is a quantum_package directory
 else
   echo "This doesn't look like a quantum_package directory"
   exit 1
@@ -65,10 +61,10 @@ echo "Creating root of static directory"
 #     ---------------------------------
 
 rm -rf -- ${QPACKAGE_STATIC}
-mkdir -p -- ${QPACKAGE_STATIC}/{bin,lib,extra_lib,install}
+mkdir -p -- ${QPACKAGE_STATIC}/{bin,lib,extra_lib,external}
 if [[ $? -ne 0 ]] ;
 then
-  echo "Error creating ${QPACKAGE_STATIC}/{bin,lib,extra_lib,install}"
+  echo "Error creating ${QPACKAGE_STATIC}/{bin,lib,extra_lib,external}"
   exit 1
 fi
 
@@ -141,18 +137,6 @@ fi
 cp -- ${QPACKAGE_STATIC}/extra_lib/lib{[gi]omp*,mkl*,lapack*,blas*,z*} ${QPACKAGE_STATIC}/lib/
 
 #
-echo "Copying EMSL_Basis directory"
-#     ---------------------------- 
-
-cp -r -- ${QP_ROOT}/install/emsl ${QPACKAGE_STATIC}/install
-if [[ $? -ne 0 ]] ;
-then
-  echo 'cp -r -- ${QP_ROOT}/install/emsl ${QPACKAGE_STATIC}/'
-  exit 1
-fi
-
-
-#
 echo "Copying scripts directory"
 #     ------------------------- 
 
@@ -162,37 +146,29 @@ then
   echo 'cp -r -- ${QP_ROOT}/scripts ${QPACKAGE_STATIC}/'
   exit 1
 fi
-cp ${QP_ROOT}/install/EZFIO/Python/ezfio.py ${QPACKAGE_STATIC}/scripts/
+#
+
+echo "Copying external libraries"
+#     --------------------------
+
+cp -r -- ${QP_ROOT}/external/emsl ${QPACKAGE_STATIC}/external
+if [[ $? -ne 0 ]] ;
+then
+  echo 'cp -r -- ${QP_ROOT}/external/emsl ${QPACKAGE_STATIC}/'
+  exit 1
+fi
+
+cp -r ${QP_ROOT}/external/Python ${QPACKAGE_STATIC}/external/
+mkdir ${QPACKAGE_STATIC}/external/ezfio
+cp -r ${QP_ROOT}/external/ezfio/Python ${QPACKAGE_STATIC}/external/ezfio/
+cp -r ${QP_ROOT}/external/ezfio/Bash   ${QPACKAGE_STATIC}/external/ezfio/
 
 
 #
 echo "Creating quantum_package.rc"
 #     ---------------------------
 
-cat << EOF > ${QPACKAGE_STATIC}/quantum_package.rc
-export QP_ROOT=\$( cd \$(dirname "\${BASH_SOURCE}")  ; pwd -P )
-
-export QP_EZFIO=\${QP_ROOT}/install/EZFIO
-export QP_PYTHON=\${QP_ROOT}/scripts:\${QP_ROOT}/scripts/ezfio_interface:\${QP_ROOT}/scripts/utility:\${QP_ROOT}/scripts/module:\${QP_ROOT}/scripts/pseudo:\${QP_ROOT}/scripts/compilation:\${QP_ROOT}/install/bats:\${QP_ROOT}/install/Downloads:\${QP_ROOT}/install/eigen:\${QP_ROOT}/install/p_graphviz:\${QP_ROOT}/install/gmp:\${QP_ROOT}/install/resultsFile:\${QP_ROOT}/install/_build:\${QP_ROOT}/install/emsl:\${QP_ROOT}/install/scripts:\${QP_ROOT}/install/docopt:\${QP_ROOT}/install/irpf90:\${QP_ROOT}/install/zlib:\${QP_ROOT}/install/EZFIO
-
-export IRPF90=\${QP_ROOT}/bin/irpf90
-export NINJA=\${QP_ROOT}/bin/ninja
-function qp_prepend_export () {
-eval "value_1="\\\${\$1}""
-if [[ -z \$value_1 ]] ; then
-    echo "\${2}:"
-else
-    echo "\${2}:\${value_1}"
-fi
-}
-export PYTHONPATH=\$(qp_prepend_export "PYTHONPATH" "\${QP_EZFIO}/Python":"\${QP_PYTHON}")
-export PATH=\$(qp_prepend_export "PATH" "\${QP_PYTHON}":"\${QP_ROOT}"/bin:"\${QP_ROOT}"/ocaml)
-export LD_LIBRARY_PATH=\$(qp_prepend_export "LD_LIBRARY_PATH" "\${QP_ROOT}"/lib:"\${QP_ROOT}"/extra_lib:"\${QP_ROOT}"/lib64)
-export LIBRARY_PATH=\$(qp_prepend_export "LIBRARY_PATH" "\${QP_ROOT}"/lib:"\${QP_ROOT}"/extra_lib:"\${QP_ROOT}"/lib64)
-export C_INCLUDE_PATH=\$(qp_prepend_export "C_INCLUDE_PATH" "\${QP_ROOT}"/include)
-
-# export QP_NIC=ib0
-EOF
+sed "s!^export QP_ROOT=.*\$!export QP_ROOT=\$( cd \$(dirname "\${BASH_SOURCE}")  ; pwd -P )!" ${QP_ROOT}/quantum_package.rc.default > ${QPACKAGE_STATIC}/quantum_package.rc
 
 #exit 0
 #

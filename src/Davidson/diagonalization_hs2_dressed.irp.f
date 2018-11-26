@@ -404,7 +404,7 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
         s2(k) = s_(k,k) + S_z2_Sz
       enddo
 
-      if (s2_eig) then
+      if (only_expected_s2) then
           do k=1,shift2
             state_ok(k) = (dabs(s2(k)-expected_s2) < 0.6d0)
           enddo
