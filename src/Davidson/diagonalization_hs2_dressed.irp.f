@@ -487,21 +487,42 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
       ! Compute residual vector and davidson step
       ! -----------------------------------------
       
-      do k=1,N_st_diag
-        do i=1,sze
-          U(i,shift2+k) =  &
-            (lambda(k) * U(i,shift2+k) - W(i,shift2+k) )      &
-              * (1.d0 + s2(k) * U(i,shift2+k) - S(i,shift2+k) - S_z2_Sz &
-            )/max(H_jj(i) - lambda (k),1.d-2)
+      if (only_expected_s2) then
+
+        do k=1,N_st_diag
+          do i=1,sze
+            U(i,shift2+k) =  &
+              (lambda(k) * U(i,shift2+k) - W(i,shift2+k) )      &
+                * (1.d0 + s2(k) * U(i,shift2+k) - S(i,shift2+k) - S_z2_Sz &
+              )/max(H_jj(i) - lambda (k),1.d-2)
+          enddo
+
+          if (k <= N_st) then
+            residual_norm(k) = u_dot_u(U(1,shift2+k),sze)
+            to_print(1,k) = lambda(k) + nuclear_repulsion
+            to_print(2,k) = s2(k)
+            to_print(3,k) = residual_norm(k)
+          endif
+        enddo
+      
+      else
+      
+        do k=1,N_st_diag
+          do i=1,sze
+            U(i,shift2+k) =  &
+              (lambda(k) * U(i,shift2+k) - W(i,shift2+k) )      &
+               /max(H_jj(i) - lambda (k),1.d-2)
+          enddo
+
+          if (k <= N_st) then
+            residual_norm(k) = u_dot_u(U(1,shift2+k),sze)
+            to_print(1,k) = lambda(k) + nuclear_repulsion
+            to_print(2,k) = s2(k)
+            to_print(3,k) = residual_norm(k)
+          endif
         enddo
 
-        if (k <= N_st) then
-          residual_norm(k) = u_dot_u(U(1,shift2+k),sze)
-          to_print(1,k) = lambda(k) + nuclear_repulsion
-          to_print(2,k) = s2(k)
-          to_print(3,k) = residual_norm(k)
-        endif
-      enddo
+      endif
       
       write(6,'(1X,I3,1X,100(1X,F16.10,1X,F11.6,1X,E11.3))')  iter, to_print(1:3,1:N_st)
       call davidson_converged(lambda,residual_norm,wall,iter,cpu,N_st,converged)
