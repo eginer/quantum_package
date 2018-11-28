@@ -39,6 +39,7 @@ END_PROVIDER
    double precision, allocatable  :: s2_eigvalues(:)
    double precision, allocatable  :: e_array(:)
    integer, allocatable           :: iorder(:)
+   logical                        :: converged
    
    PROVIDE threshold_davidson nthreads_davidson
    ! Guess values for the "N_states" states of the CI_eigenvectors
@@ -58,7 +59,42 @@ END_PROVIDER
      
      call davidson_diag_HS2(psi_det,CI_eigenvectors, CI_eigenvectors_s2, &
          size(CI_eigenvectors,1),CI_electronic_energy,               &
-         N_det,min(N_det,N_states),min(N_det,N_states_diag),N_int,0)
+         N_det,min(N_det,N_states),min(N_det,N_states_diag),N_int,0,converged)
+
+     integer :: N_states_diag_save 
+     N_states_diag_save = N_states_diag
+     do while (.not.converged)
+        double precision, allocatable :: CI_electronic_energy_tmp (:) 
+        double precision, allocatable :: CI_eigenvectors_tmp (:,:) 
+        double precision, allocatable :: CI_eigenvectors_s2_tmp (:) 
+
+        N_states_diag  *= 2
+        TOUCH N_states_diag
+
+        allocate (CI_electronic_energy_tmp (N_states_diag) )
+        allocate (CI_eigenvectors_tmp (N_det,N_states_diag) )
+        allocate (CI_eigenvectors_s2_tmp (N_states_diag) )
+
+        CI_electronic_energy_tmp(1:N_states_diag_save) = CI_electronic_energy(1:N_states_diag_save) 
+        CI_eigenvectors_tmp(1:N_det,1:N_states_diag_save) = CI_eigenvectors(1:N_det,1:N_states_diag_save) 
+        CI_eigenvectors_s2_tmp(1:N_states_diag_save) = CI_eigenvectors_s2(1:N_states_diag_save) 
+
+        call davidson_diag_HS2(psi_det,CI_eigenvectors_tmp, CI_eigenvectors_s2_tmp, &
+            size(CI_eigenvectors_tmp,1),CI_electronic_energy_tmp,               &
+            N_det,min(N_det,N_states),min(N_det,N_states_diag),N_int,0,converged)
+
+        CI_electronic_energy(1:N_states_diag_save) = CI_electronic_energy_tmp(1:N_states_diag_save)
+        CI_eigenvectors(1:N_det,1:N_states_diag_save) = CI_eigenvectors_tmp(1:N_det,1:N_states_diag_save)
+        CI_eigenvectors_s2(1:N_states_diag_save) = CI_eigenvectors_s2_tmp(1:N_states_diag_save)
+
+        deallocate (CI_electronic_energy_tmp)
+        deallocate (CI_eigenvectors_tmp)
+        deallocate (CI_eigenvectors_s2_tmp)
+     enddo
+     if (N_states_diag > N_states_diag_save) then
+       N_states_diag = N_states_diag_save
+       TOUCH N_states_diag
+     endif
      
    else if (diag_algorithm == "Lapack") then
      
