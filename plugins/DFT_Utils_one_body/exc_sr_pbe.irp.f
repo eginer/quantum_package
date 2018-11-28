@@ -373,7 +373,7 @@ END_DOC
 
 
 
-subroutine Ec_pbe_only(mu,rhoc,rhoo,sigmacc,sigmaco,sigmaoo,ec)
+subroutine ec_pbe_only(mu,rhoc,rhoo,sigmacc,sigmaco,sigmaoo,ec)
 !************************************************************************
 !     Short-range PBE correlation energy functional for erf interaction
 !

@@ -9,15 +9,18 @@
  integer :: i,j,k,l,m,n
  double precision :: get_mo_bielec_integral,get_mo_bielec_integral_erf
  double precision :: integral, integral_erf, contrib
+ double precision :: integrals_array(mo_tot_num,mo_tot_num),integrals_erf_array(mo_tot_num,mo_tot_num)
  short_range_Hartree_operator = 0.d0
  short_range_Hartree = 0.d0
  do i = 1, mo_tot_num
   do j = 1, mo_tot_num
-   if(dabs(one_body_dm_average_mo_for_dft(i,j)).le.1.d-12)cycle
+   if(dabs(one_body_dm_average_mo_for_dft(j,i)).le.1.d-12)cycle
+   call get_mo_bielec_integrals_i1j1(i,j,mo_tot_num,integrals_array,mo_integrals_map)
+   call get_mo_bielec_integrals_erf_i1j1(i,j,mo_tot_num,integrals_erf_array,mo_integrals_erf_map)
    do k = 1, mo_tot_num
     do l = 1, mo_tot_num
-     integral = get_mo_bielec_integral(i,k,j,l,mo_integrals_map) ! <ik|jl> = (ij|kl)
-     integral_erf = get_mo_bielec_integral_erf(i,k,j,l,mo_integrals_erf_map)
+     integral = integrals_array(l,k)
+     integral_erf = integrals_erf_array(l,k)
      contrib = one_body_dm_average_mo_for_dft(i,j) * (integral  - integral_erf)
      short_range_Hartree_operator(l,k) += contrib 
      short_range_Hartree += contrib * one_body_dm_average_mo_for_dft(k,l) 
@@ -62,36 +65,28 @@ BEGIN_PROVIDER [double precision, Fock_matrix_expectation_value]
 END_PROVIDER 
 
  BEGIN_PROVIDER [double precision, Trace_v_xc, (N_states)]
+&BEGIN_PROVIDER [double precision, Trace_v_H, (N_states)]
 &BEGIN_PROVIDER [double precision, Trace_v_Hxc, (N_states)]
  implicit none
  integer :: i,j,istate
- double precision :: tmp(mo_tot_num,mo_tot_num)
+ double precision :: dm
  BEGIN_DOC 
-! Trace_v_xc  = \sum_{i,j} rho_{ij} v^{xc}_{ij} 
+! Trace_v_xc  = \sum_{i,j} (rho_{ij}_\alpha v^{xc}_{ij}^\alpha  + rho_{ij}_\beta v^{xc}_{ij}^\beta)
+! Trace_v_Hxc = \sum_{i,j} v^{H}_{ij} (rho_{ij}_\alpha + rho_{ij}_\beta)
 ! Trace_v_Hxc = \sum_{i,j} rho_{ij} v^{Hxc}_{ij} 
  END_DOC
-! WARNING: I think there is a bug it potential_alpha should be contracted with density_matrix_alpha and 
-! potential_beta should be contracted with density_matrix_beta for opne-shell systems ! JT
- print *,'WARNING: Trace_v_xc is wrong for open-shell systems: MUST BE CORRECTED'
  do istate = 1, N_states
-  tmp = 0.d0
+  Trace_v_xc(istate) = 0.d0
+  Trace_v_H(istate) = 0.d0
   do i = 1, mo_tot_num
    do j = 1, mo_tot_num
-     tmp(i,j) =   + 0.5d0 * (potential_x_alpha_mo(i,j,istate) + potential_c_alpha_mo(i,j,istate)&
-                  +          potential_x_beta_mo(i,j,istate)  + potential_c_beta_mo(i,j,istate)   )
+     Trace_v_xc(istate) += (potential_x_alpha_mo(j,i,istate) + potential_c_alpha_mo(j,i,istate)) * one_body_dm_alpha_mo_for_dft(j,i,istate) 
+     Trace_v_xc(istate) += (potential_x_beta_mo(j,i,istate)  + potential_c_beta_mo(j,i,istate) ) * one_body_dm_beta_mo_for_dft(j,i,istate)
+     dm = one_body_dm_alpha_mo_for_dft(j,i,istate) + one_body_dm_beta_mo_for_dft(j,i,istate)
+     Trace_v_H(istate) += dm * short_range_Hartree_operator(j,i)
    enddo
   enddo
-  call get_average(tmp,one_body_dm_mo_for_dft(1,1,istate),Trace_v_xc(istate))
-
-  tmp = 0.d0
-  do i = 1, mo_tot_num
-   do j = 1, mo_tot_num
-     tmp(i,j) =    short_range_Hartree_operator(j,i) & 
-                 + 0.5d0 * (potential_x_alpha_mo(j,i,istate) + potential_c_alpha_mo(j,i,istate)&
-                      +     potential_x_beta_mo(j,i,istate)  + potential_c_beta_mo(j,i,istate)   )
-   enddo
-  enddo
-  call get_average(tmp,one_body_dm_mo_for_dft(1,1,istate),Trace_v_Hxc(istate))
+  Trace_v_Hxc(istate) = Trace_v_xc(istate) + Trace_v_H(istate)
  enddo
 
 END_PROVIDER 
