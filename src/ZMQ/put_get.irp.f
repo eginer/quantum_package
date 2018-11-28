@@ -17,6 +17,7 @@ integer function zmq_put_dvector(zmq_to_qp_run_socket, worker_id, name, x, size_
   write(msg,'(A,1X,I8,1X,A200)') 'put_data '//trim(zmq_state), worker_id, name
   rc = f77_zmq_send(zmq_to_qp_run_socket,trim(msg),len(trim(msg)),ZMQ_SNDMORE)
   if (rc /= len(trim(msg))) then
+    print *,  trim(msg)
     zmq_put_dvector = -1
     return 
   endif
@@ -29,6 +30,7 @@ integer function zmq_put_dvector(zmq_to_qp_run_socket, worker_id, name, x, size_
 
   rc = f77_zmq_recv(zmq_to_qp_run_socket,msg,len(msg),0)
   if (msg(1:rc) /= 'put_data_reply ok') then
+    print *,  trim(msg)
     zmq_put_dvector = -1
     return
   endif
@@ -58,6 +60,7 @@ integer function zmq_get_dvector(zmq_to_qp_run_socket, worker_id, name, x, size_
     write(msg,'(A,1X,I8,1X,A200)') 'get_data '//trim(zmq_state), worker_id, name
     rc = f77_zmq_send(zmq_to_qp_run_socket,trim(msg),len(trim(msg)),0)
     if (rc /= len(trim(msg))) then
+      print *,  trim(msg)
       zmq_get_dvector = -1
       print *,  irp_here, 'rc /= len(trim(msg))', rc, len(trim(msg))
       go to 10
@@ -120,6 +123,7 @@ integer function zmq_put_ivector(zmq_to_qp_run_socket, worker_id, name, x, size_
   write(msg,'(A,1X,I8,1X,A200)') 'put_data '//trim(zmq_state), worker_id, name
   rc = f77_zmq_send(zmq_to_qp_run_socket,trim(msg),len(trim(msg)),ZMQ_SNDMORE)
   if (rc /= len(trim(msg))) then
+    print *,  trim(msg)
     zmq_put_ivector = -1
     return 
   endif
@@ -132,6 +136,7 @@ integer function zmq_put_ivector(zmq_to_qp_run_socket, worker_id, name, x, size_
 
   rc = f77_zmq_recv(zmq_to_qp_run_socket,msg,len(msg),0)
   if (msg(1:rc) /= 'put_data_reply ok') then
+    print *,  trim(msg)
     zmq_put_ivector = -1
     return
   endif
@@ -161,12 +166,14 @@ integer function zmq_get_ivector(zmq_to_qp_run_socket, worker_id, name, x, size_
     write(msg,'(A,1X,I8,1X,A200)') 'get_data '//trim(zmq_state), worker_id, name
     rc = f77_zmq_send(zmq_to_qp_run_socket,trim(msg),len(trim(msg)),0)
     if (rc /= len(trim(msg))) then
+      print *,  trim(msg)
       zmq_get_ivector = -1
       go to 10
     endif
 
     rc = f77_zmq_recv(zmq_to_qp_run_socket,msg,len(msg),0)
     if (msg(1:14) /= 'get_data_reply') then
+      print *,  trim(msg)
       zmq_get_ivector = -1
       go to 10
     endif
@@ -218,6 +225,7 @@ integer function zmq_put8_dvector(zmq_to_qp_run_socket, worker_id, name, x, size
   write(msg,'(A,1X,I8,1X,A200)') 'put_data '//trim(zmq_state), worker_id, name
   rc = f77_zmq_send(zmq_to_qp_run_socket,trim(msg),len(trim(msg)),ZMQ_SNDMORE)
   if (rc /= len(trim(msg))) then
+    print *,  trim(msg)
     zmq_put8_dvector = -1
     print *,  'Failed in put_data'
     return 
@@ -233,6 +241,7 @@ integer function zmq_put8_dvector(zmq_to_qp_run_socket, worker_id, name, x, size
   rc = f77_zmq_recv(zmq_to_qp_run_socket,msg,len(msg),0)
   if (msg(1:rc) /= 'put_data_reply ok') then
     print *,  'Failed in recv ',  rc
+    print *,  trim(msg)
     zmq_put8_dvector = -1
     return
   endif
@@ -262,6 +271,7 @@ integer function zmq_get8_dvector(zmq_to_qp_run_socket, worker_id, name, x, size
     write(msg,'(A,1X,I8,1X,A200)') 'get_data '//trim(zmq_state), worker_id, name
     rc = f77_zmq_send(zmq_to_qp_run_socket,trim(msg),len(trim(msg)),0)
     if (rc /= len(trim(msg))) then
+      print *,  trim(msg)
       zmq_get8_dvector = -1
       print *,  irp_here, 'rc /= len(trim(msg))', rc, len(trim(msg))
       go to 10
@@ -269,7 +279,8 @@ integer function zmq_get8_dvector(zmq_to_qp_run_socket, worker_id, name, x, size
 
     rc = f77_zmq_recv(zmq_to_qp_run_socket,msg,len(msg),0)
     if (msg(1:14) /= 'get_data_reply') then
-      print *,  irp_here, 'msg(1:14) /= get_data_reply', msg(1:14)
+      print *,  irp_here, 'msg(1:14) /= get_data_reply'
+      print *,  trim(msg)
       zmq_get8_dvector = -1
       go to 10
     endif
@@ -330,6 +341,7 @@ integer function zmq_put_dmatrix(zmq_to_qp_run_socket, worker_id, name, x, size_
     write(msg,'(A,1X,I8,1X,A,I8.8)') 'put_data '//trim(zmq_state), worker_id, trim(name), j
     rc = f77_zmq_send(zmq_to_qp_run_socket,trim(msg),len(trim(msg)),ZMQ_SNDMORE)
     if (rc /= len(trim(msg))) then
+      print *,  trim(msg)
       zmq_put_dmatrix = -1
       print *,  'Failed in put_data', rc, j
       return 
@@ -344,6 +356,7 @@ integer function zmq_put_dmatrix(zmq_to_qp_run_socket, worker_id, name, x, size_
 
     rc = f77_zmq_recv(zmq_to_qp_run_socket,msg,len(msg),0)
     if (msg(1:rc) /= 'put_data_reply ok') then
+      print *,  trim(msg)
       print *,  'Failed in recv ',  rc, j
       zmq_put_dmatrix = -1
       return
@@ -382,6 +395,7 @@ integer function zmq_get_dmatrix(zmq_to_qp_run_socket, worker_id, name, x, size_
       write(msg,'(A,1X,I8,1X,A,I8.8)') 'get_data '//trim(zmq_state), worker_id, trim(name),j
       rc = f77_zmq_send(zmq_to_qp_run_socket,trim(msg),len(trim(msg)),0)
       if (rc /= len(trim(msg))) then
+        print *,  trim(msg)
         zmq_get_dmatrix = -1
         print *,  irp_here, 'rc /= len(trim(msg))', rc, len(trim(msg))
         go to 10
@@ -389,7 +403,8 @@ integer function zmq_get_dmatrix(zmq_to_qp_run_socket, worker_id, name, x, size_
 
       rc = f77_zmq_recv(zmq_to_qp_run_socket,msg,len(msg),0)
       if (msg(1:14) /= 'get_data_reply') then
-        print *,  irp_here, 'msg(1:14) /= get_data_reply', msg(1:14)
+        print *,  irp_here, 'msg(1:14) /= get_data_reply'
+        print *,  trim(msg)
         zmq_get_dmatrix = -1
         go to 10
       endif
@@ -444,6 +459,7 @@ integer function zmq_put8_ivector(zmq_to_qp_run_socket, worker_id, name, x, size
   write(msg,'(A,1X,I8,1X,A200)') 'put_data '//trim(zmq_state), worker_id, name
   rc = f77_zmq_send(zmq_to_qp_run_socket,trim(msg),len(trim(msg)),ZMQ_SNDMORE)
   if (rc /= len(trim(msg))) then
+    print *,  trim(msg)
     zmq_put8_ivector = -1
     return 
   endif
@@ -456,6 +472,7 @@ integer function zmq_put8_ivector(zmq_to_qp_run_socket, worker_id, name, x, size
 
   rc = f77_zmq_recv(zmq_to_qp_run_socket,msg,len(msg),0)
   if (msg(1:rc) /= 'put_data_reply ok') then
+    print *,  trim(msg)
     zmq_put8_ivector = -1
     return
   endif
@@ -485,12 +502,14 @@ integer function zmq_get8_ivector(zmq_to_qp_run_socket, worker_id, name, x, size
     write(msg,'(A,1X,I8,1X,A200)') 'get_data '//trim(zmq_state), worker_id, name
     rc = f77_zmq_send(zmq_to_qp_run_socket,trim(msg),len(trim(msg)),0)
     if (rc /= len(trim(msg))) then
+      print *,  trim(msg)
       zmq_get8_ivector = -1
       go to 10
     endif
 
     rc = f77_zmq_recv(zmq_to_qp_run_socket,msg,len(msg),0)
     if (msg(1:14) /= 'get_data_reply') then
+      print *,  trim(msg)
       zmq_get8_ivector = -1
       go to 10
     endif
@@ -542,6 +561,7 @@ integer function zmq_put_int(zmq_to_qp_run_socket, worker_id, name, x)
   write(msg,'(A,1X,I8,1X,A200)') 'put_data '//trim(zmq_state), worker_id, name
   rc = f77_zmq_send(zmq_to_qp_run_socket,trim(msg),len(trim(msg)),ZMQ_SNDMORE)
   if (rc /= len(trim(msg))) then
+    print *,  trim(msg)
     zmq_put_int = -1
     return 
   endif
@@ -554,6 +574,7 @@ integer function zmq_put_int(zmq_to_qp_run_socket, worker_id, name, x)
 
   rc = f77_zmq_recv(zmq_to_qp_run_socket,msg,len(msg),0)
   if (msg(1:rc) /= 'put_data_reply ok') then
+    print *,  trim(msg)
     zmq_put_int = -1
     return
   endif
@@ -581,12 +602,14 @@ integer function zmq_get_int(zmq_to_qp_run_socket, worker_id, name, x)
     write(msg,'(A,1X,I8,1X,A200)') 'get_data '//trim(zmq_state), worker_id, name
     rc = f77_zmq_send(zmq_to_qp_run_socket,trim(msg),len(trim(msg)),0)
     if (rc /= len(trim(msg))) then
+      print *,  trim(msg)
       zmq_get_int = -1
       go to 10
     endif
 
     rc = f77_zmq_recv(zmq_to_qp_run_socket,msg,len(msg),0)
     if (msg(1:14) /= 'get_data_reply') then
+      print *,  trim(msg)
       zmq_get_int = -1
       go to 10
     endif
@@ -643,12 +666,14 @@ integer function zmq_get_int_nompi(zmq_to_qp_run_socket, worker_id, name, x)
   write(msg,'(A,1X,I8,1X,A200)') 'get_data '//trim(zmq_state), worker_id, name
   rc = f77_zmq_send(zmq_to_qp_run_socket,trim(msg),len(trim(msg)),0)
   if (rc /= len(trim(msg))) then
+    print *,  trim(msg)
     zmq_get_int_nompi = -1
     go to 10
   endif
 
   rc = f77_zmq_recv(zmq_to_qp_run_socket,msg,len(msg),0)
   if (msg(1:14) /= 'get_data_reply') then
+    print *,  trim(msg)
     zmq_get_int_nompi = -1
     go to 10
   endif
@@ -690,6 +715,7 @@ integer function zmq_put_i8matrix(zmq_to_qp_run_socket, worker_id, name, x, size
     write(msg,'(A,1X,I8,1X,A,I8.8)') 'put_data '//trim(zmq_state), worker_id, trim(name), j
     rc = f77_zmq_send(zmq_to_qp_run_socket,trim(msg),len(trim(msg)),ZMQ_SNDMORE)
     if (rc /= len(trim(msg))) then
+      print *,  trim(msg)
       zmq_put_i8matrix = -1
       print *,  irp_here, 'Failed in put_data', rc, j
       return 
@@ -705,6 +731,7 @@ integer function zmq_put_i8matrix(zmq_to_qp_run_socket, worker_id, name, x, size
     rc = f77_zmq_recv(zmq_to_qp_run_socket,msg,len(msg),0)
     if (msg(1:rc) /= 'put_data_reply ok') then
       print *,  irp_here, 'Failed in recv ',  rc, j
+      print *,  trim(msg)
       zmq_put_i8matrix = -1
       return
     endif
@@ -750,6 +777,7 @@ integer function zmq_get_i8matrix(zmq_to_qp_run_socket, worker_id, name, x, size
       rc = f77_zmq_recv(zmq_to_qp_run_socket,msg,len(msg),0)
       if (msg(1:14) /= 'get_data_reply') then
         print *,  irp_here, 'msg(1:14) /= get_data_reply', msg(1:14)
+        print *,  trim(msg)
         zmq_get_i8matrix = -1
         go to 10
       endif
@@ -813,6 +841,7 @@ integer function zmq_put_imatrix(zmq_to_qp_run_socket, worker_id, name, x, size_
     write(msg,'(A,1X,I8,1X,A,I8.8)') 'put_data '//trim(zmq_state), worker_id, trim(name), j
     rc = f77_zmq_send(zmq_to_qp_run_socket,trim(msg),len(trim(msg)),ZMQ_SNDMORE)
     if (rc /= len(trim(msg))) then
+      print *,  trim(msg)
       zmq_put_imatrix = -1
       print *,  irp_here, 'Failed in put_data', rc, j
       return 
@@ -827,6 +856,7 @@ integer function zmq_put_imatrix(zmq_to_qp_run_socket, worker_id, name, x, size_
 
     rc = f77_zmq_recv(zmq_to_qp_run_socket,msg,len(msg),0)
     if (msg(1:rc) /= 'put_data_reply ok') then
+      print *,  trim(msg)
       print *,  irp_here, 'Failed in recv ',  rc, j
       zmq_put_imatrix = -1
       return
@@ -865,6 +895,7 @@ integer function zmq_get_imatrix(zmq_to_qp_run_socket, worker_id, name, x, size_
       write(msg,'(A,1X,I8,1X,A,I8.8)') 'get_data '//trim(zmq_state), worker_id, trim(name),j
       rc = f77_zmq_send(zmq_to_qp_run_socket,trim(msg),len(trim(msg)),0)
       if (rc /= len(trim(msg))) then
+        print *,  trim(msg)
         zmq_get_imatrix = -1
         print *,  irp_here, 'rc /= len(trim(msg))', rc, len(trim(msg))
         go to 10
@@ -872,6 +903,7 @@ integer function zmq_get_imatrix(zmq_to_qp_run_socket, worker_id, name, x, size_
 
       rc = f77_zmq_recv(zmq_to_qp_run_socket,msg,len(msg),0)
       if (msg(1:14) /= 'get_data_reply') then
+        print *,  trim(msg)
         print *,  irp_here, 'msg(1:14) /= get_data_reply', msg(1:14)
         zmq_get_imatrix = -1
         go to 10

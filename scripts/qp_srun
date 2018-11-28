@@ -69,7 +69,7 @@ as a single-node job before re-submitting the current job.
 fi
 rm -f $INPUT/work/qp_run_address
 set -x
-srun -n 1 qp_run $PROG $INPUT &
+srun -N 1 -n 1 qp_run $PROG $INPUT &
 
 if [[ $NPROC -gt 1 ]]
 then

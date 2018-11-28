@@ -486,11 +486,11 @@ subroutine u_0_H_u_0(e_0,u_0,n,keys_tmp,Nint,N_st,sze)
   double precision               :: u_dot_u,u_dot_v,diag_H_mat_elem
   integer                        :: i,j
 
-  if ((sze > 100000).and.distributed_davidson) then
-    allocate (v_0(sze,N_states_diag),s_0(sze,N_states_diag), u_1(sze,N_states_diag))
-    u_1(1:sze,1:N_states) = u_0(1:sze,1:N_states)
-    u_1(1:sze,N_states+1:N_states_diag) = 0.d0
-    call H_S2_u_0_nstates_zmq(v_0,s_0,u_1,N_states_diag,sze)
+  if ((n > 100000).and.distributed_davidson) then
+    allocate (v_0(n,N_states_diag),s_0(n,N_states_diag), u_1(n,N_states_diag))
+    u_1(1:n,1:N_states) = u_0(1:n,1:N_states)
+    u_1(1:n,N_states+1:N_states_diag) = 0.d0
+    call H_S2_u_0_nstates_zmq(v_0,s_0,u_1,N_states_diag,n)
     deallocate(u_1)
   else
     allocate (v_0(n,N_st),s_0(n,N_st),u_1(n,N_st))

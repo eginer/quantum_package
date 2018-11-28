@@ -3,6 +3,7 @@ IRPF90_man/
 irpf90.make
 irpf90_entities
 tags
+Makefile
 AO_Basis
 AO_one_e_integrals
 Bitmask
