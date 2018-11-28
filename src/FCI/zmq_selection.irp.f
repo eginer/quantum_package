@@ -121,7 +121,7 @@ subroutine ZMQ_selection(N_in, pt2, variance, norm)
     norm(i) = 0.d0
   enddo
   if (N_in > 0) then
-    if (s2_eig.or.(N_states > 1) ) then
+    if (s2_eig) then
       call make_selection_buffer_s2(b)
     endif
     call fill_H_apply_buffer_no_selection(b%cur,b%det,N_int,0) 
