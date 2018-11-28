@@ -93,12 +93,33 @@ subroutine run_wf
       ! ---------
 
       call wall_time(t0)
+      IRP_IF MPI_DEBUG
+        call mpi_print('zmq_get_psi')
+      IRP_ENDIF
       if (zmq_get_psi(zmq_to_qp_run_socket,1) == -1) cycle
+      IRP_IF MPI_DEBUG
+        call mpi_print('zmq_get_dvector threshold_generators')
+      IRP_ENDIF
       if (zmq_get_dvector(zmq_to_qp_run_socket,1,'threshold_generators',threshold_generators,1) == -1) cycle
+      IRP_IF MPI_DEBUG
+        call mpi_print('zmq_get_dvector threshold_selectors')
+      IRP_ENDIF
       if (zmq_get_dvector(zmq_to_qp_run_socket,1,'threshold_selectors',threshold_selectors,1) == -1) cycle
+      IRP_IF MPI_DEBUG
+        call mpi_print('zmq_get_dvector energy')
+      IRP_ENDIF
       if (zmq_get_dvector(zmq_to_qp_run_socket,1,'energy',energy,N_states) == -1) cycle
+      IRP_IF MPI_DEBUG
+        call mpi_print('zmq_get_N_det_generators')
+      IRP_ENDIF
       if (zmq_get_N_det_generators (zmq_to_qp_run_socket, 1) == -1) cycle
+      IRP_IF MPI_DEBUG
+        call mpi_print('zmq_get_N_det_selectors')
+      IRP_ENDIF
       if (zmq_get_N_det_selectors(zmq_to_qp_run_socket, 1) == -1) cycle
+      IRP_IF MPI_DEBUG
+        call mpi_print('zmq_get_dvector state_average_weight')
+      IRP_ENDIF
       if (zmq_get_dvector(zmq_to_qp_run_socket,1,'state_average_weight',state_average_weight,N_states) == -1) cycle
       psi_energy(1:N_states) = energy(1:N_states)
       TOUCH psi_energy state_average_weight threshold_selectors threshold_generators
@@ -114,18 +135,21 @@ subroutine run_wf
       call wall_time(t1)
       call write_double(6,(t1-t0),'Broadcast time')
   
+      IRP_IF MPI_DEBUG
+        call mpi_print('Entering OpenMP section')
+      IRP_ENDIF
       !$OMP PARALLEL PRIVATE(i)
       i = omp_get_thread_num()
       call run_selection_slave(0,i,energy)
       !$OMP END PARALLEL
-      print *,  'Selection done'
+      print *,  mpi_rank, ': Selection done'
       IRP_IF MPI
         call MPI_BARRIER(MPI_COMM_WORLD, ierr)
         if (ierr /= MPI_SUCCESS) then
           print *,  irp_here, 'error in barrier'
         endif
       IRP_ENDIF
-      print *,  'All selection done'
+      call mpi_print('----------')
 
     else if (zmq_state(1:8) == 'davidson') then
 
@@ -133,26 +157,33 @@ subroutine run_wf
       ! --------
 
       call wall_time(t0)
+      IRP_IF MPI_DEBUG
+        call mpi_print('zmq_get_N_states_diag')
+      IRP_ENDIF
       if (zmq_get_N_states_diag(zmq_to_qp_run_socket,1) == -1) cycle
+      IRP_IF MPI_DEBUG
+        call mpi_print('zmq_get_psi')
+      IRP_ENDIF
       if (zmq_get_psi(zmq_to_qp_run_socket,1) == -1) cycle
+      IRP_IF MPI_DEBUG
+        call mpi_print('zmq_get_dvector energy')
+      IRP_ENDIF
       if (zmq_get_dvector(zmq_to_qp_run_socket,1,'energy',energy,N_states_diag) == -1) cycle
 
       call wall_time(t1)
-      if (mpi_master) then
-        call write_double(6,(t1-t0),'Broadcast time')
-      endif
+      call write_double(6,(t1-t0),'Broadcast time')
 
       call omp_set_nested(.True.)
       call davidson_slave_tcp(0)
       call omp_set_nested(.False.)
-      print *,  'Davidson done'
+      print *,  mpi_rank, ': Davidson done'
       IRP_IF MPI
         call MPI_BARRIER(MPI_COMM_WORLD, ierr)
         if (ierr /= MPI_SUCCESS) then
           print *,  irp_here, 'error in barrier'
         endif
       IRP_ENDIF
-      print *,  'All Davidson done'
+      call mpi_print('----------')
 
     else if (zmq_state(1:3) == 'pt2') then
 
@@ -166,13 +197,37 @@ subroutine run_wf
         endif
       IRP_ENDIF
       call wall_time(t0)
+      IRP_IF MPI_DEBUG
+        call mpi_print('zmq_get_psi')
+      IRP_ENDIF
       if (zmq_get_psi(zmq_to_qp_run_socket,1) == -1) cycle
+      IRP_IF MPI_DEBUG
+        call mpi_print('zmq_get_N_det_generators')
+      IRP_ENDIF
       if (zmq_get_N_det_generators (zmq_to_qp_run_socket, 1) == -1) cycle
+      IRP_IF MPI_DEBUG
+        call mpi_print('zmq_get_N_det_selectors')
+      IRP_ENDIF
       if (zmq_get_N_det_selectors(zmq_to_qp_run_socket, 1) == -1) cycle
+      IRP_IF MPI_DEBUG
+        call mpi_print('zmq_get_dvector threshold_generators')
+      IRP_ENDIF
       if (zmq_get_dvector(zmq_to_qp_run_socket,1,'threshold_generators',threshold_generators,1) == -1) cycle
+      IRP_IF MPI_DEBUG
+        call mpi_print('zmq_get_dvector threshold_selectors')
+      IRP_ENDIF
       if (zmq_get_dvector(zmq_to_qp_run_socket,1,'threshold_selectors',threshold_selectors,1) == -1) cycle
+      IRP_IF MPI_DEBUG
+        call mpi_print('zmq_get_dvector energy')
+      IRP_ENDIF
       if (zmq_get_dvector(zmq_to_qp_run_socket,1,'energy',energy,N_states) == -1) cycle
+      IRP_IF MPI_DEBUG
+        call mpi_print('zmq_get_ivector pt2_stoch_istate')
+      IRP_ENDIF
       if (zmq_get_ivector(zmq_to_qp_run_socket,1,'pt2_stoch_istate',pt2_stoch_istate,1) == -1) cycle
+      IRP_IF MPI_DEBUG
+        call mpi_print('zmq_get_dvector state_average_weight')
+      IRP_ENDIF
       if (zmq_get_dvector(zmq_to_qp_run_socket,1,'state_average_weight',state_average_weight,N_states) == -1) cycle
       psi_energy(1:N_states) = energy(1:N_states)
       TOUCH psi_energy state_average_weight pt2_stoch_istate threshold_selectors threshold_generators
@@ -194,14 +249,17 @@ subroutine run_wf
         endif
       IRP_ENDIF
 
+      IRP_IF MPI_DEBUG
+        call mpi_print('Entering OpenMP section')
+      IRP_ENDIF
       if (.true.) then
         !$OMP PARALLEL PRIVATE(i)
         i = omp_get_thread_num()
         call run_pt2_slave(0,i,pt2_e0_denominator)
         !$OMP END PARALLEL
       endif
-      print *,  'PT2 done'
       FREE state_average_weight
+      print *,  mpi_rank, ': PT2 done'
 
       IRP_IF MPI
         call MPI_BARRIER(MPI_COMM_WORLD, ierr)
@@ -209,7 +267,7 @@ subroutine run_wf
           print *,  irp_here, 'error in barrier'
         endif
       IRP_ENDIF
-      print *,  'All PT2 done'
+      call mpi_print('----------')
 
     endif
 

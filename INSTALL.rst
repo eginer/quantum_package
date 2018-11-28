@@ -209,7 +209,7 @@ EZFIO
 
 *EZFIO* is the Easy Fortran Input/Output library generator.
 
-* Download EZFIO here : `<https://github.com/scemama/EZFIO/releases/latest>`_ and move
+* Download EZFIO here : `<https://gitlab.com/scemama/EZFIO/-/archive/master/EZFIO-master.tar.gz>`_ and move
   the downloaded archive in the :file:`${QP_ROOT}/external` directory
 
 * Extract the archive, and rename it as :file:`${QP_ROOT}/external/ezfio`

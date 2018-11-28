@@ -97,3 +97,13 @@ integer8  ; integer*8         ; 8  ; INTEGER8 ;;
 END_TEMPLATE
 
 
+subroutine mpi_print(string)
+  implicit none
+  BEGIN_DOC
+! Print string to stdout if the MPI rank is zero.
+  END_DOC
+  character*(*)                  :: string
+  if (mpi_master) then
+    print *, string
+  endif
+end

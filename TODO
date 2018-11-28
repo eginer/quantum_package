@@ -4,9 +4,7 @@
   repertoire plugins
 * Mettre les fichiers de test dans le directory source
 * Separer les integrales bielectroniques en AO et MO
-* Une facon simple de lancer les calculs en parallele
 * Creer une page web pas trop degueu et la mettre ici : http://lcpq.github.io/quantum_package
-* Version binaire en tar.gz
 * Un module pour lire les integrales Moleculaires depuis un FCIDUMP
 * Un module pour lire des integrales Atomiques (voir module de Mimi pour lire les AO Slater)
 * Include la DFT si c'est propre
@@ -40,8 +38,6 @@
 
 * Programmers doc:
 
-  * Fetch all IRP documentation via scripts 
   * Example : Simple Hartree-Fock program from scratch
-
 
 * Config file for Cray
