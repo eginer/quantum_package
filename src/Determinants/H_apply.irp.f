@@ -191,12 +191,12 @@ subroutine copy_H_apply_buffer_to_wf
   !$OMP END PARALLEL
   SOFT_TOUCH N_det psi_det psi_coef
   
-  logical :: found_duplicates
-  call remove_duplicates_in_psi_det(found_duplicates)
-  do k=1,N_states
-    call normalize(psi_coef(1,k),N_det)
-  enddo
-  SOFT_TOUCH N_det psi_det psi_coef
+!  logical :: found_duplicates
+!  call remove_duplicates_in_psi_det(found_duplicates)
+!  do k=1,N_states
+!    call normalize(psi_coef(1,k),N_det)
+!  enddo
+!  SOFT_TOUCH N_det psi_det psi_coef
   
 end
 

@@ -141,40 +141,135 @@ subroutine make_selection_buffer_s2(b)
   use selection_types
   type(selection_buffer), intent(inout) :: b
 
-  integer(bit_kind), pointer :: o(:,:,:)
-  double precision, pointer  :: val(:)
+  integer(bit_kind), allocatable :: o(:,:,:)
+  double precision, allocatable  :: val(:)
 
   integer :: n_d
   integer :: i,k,sze,n_alpha,j,n
+  logical                        :: dup
  
-  ! Create occupation patterns
-  n_d = 0
-  allocate(o(N_int,2,b%cur))
-  do i=1,b%cur
+  ! Sort
+  integer, allocatable           :: iorder(:)
+  integer*8, allocatable         :: bit_tmp(:)
+  integer*8, external            :: occ_pattern_search_key
+  integer(bit_kind), allocatable :: tmp_array(:,:,:)
+  logical, allocatable           :: duplicate(:)
+
+  n_d = b%cur
+  allocate(o(N_int,2,b%cur), iorder(n_d), duplicate(n_d), bit_tmp(n_d), &
+           tmp_array(N_int,2,n_d), val(n_d) )
+
+  do i=1,n_d
     do k=1,N_int
       o(k,1,i) = ieor(b%det(k,1,i), b%det(k,2,i))
       o(k,2,i) = iand(b%det(k,1,i), b%det(k,2,i))
     enddo
+    iorder(i) = i
+    bit_tmp(i) = occ_pattern_search_key(o(1,1,i),N_int)
+  enddo
+
+  deallocate(b%det)
+
+  call i8sort(bit_tmp,iorder,n_d)
+
+  do i=1,n_d
+    do k=1,N_int
+      tmp_array(k,1,i) = o(k,1,iorder(i))
+      tmp_array(k,2,i) = o(k,2,iorder(i))
+    enddo
+    val(i) = b%val(iorder(i))
+    duplicate(i) = .False.
+  enddo
+  
+  ! Find duplicates
+  do i=1,n_d-1
+    if (duplicate(i)) then
+      cycle
+    endif
+    j = i+1
+    do while (bit_tmp(j)==bit_tmp(i))
+      if (duplicate(j)) then
+        j+=1
+        if (j>n_d) then
+          exit
+        endif
+        cycle
+      endif
+      dup = .True.
+      do k=1,N_int
+        if ( (tmp_array(k,1,i) /= tmp_array(k,1,j))                   &
+              .or. (tmp_array(k,2,i) /= tmp_array(k,2,j)) ) then
+          dup = .False.
+          exit
+        endif
+      enddo
+      if (dup) then
+        val(i) = val(i) + val(j)
+        duplicate(j) = .True.
+      endif
+      j+=1
+      if (j>n_d) then
+        exit
+      endif
+    enddo
+  enddo
+  
+  deallocate (b%val)
+  ! Copy filtered result
+  integer :: n_p
+  n_p=0
+  do i=1,n_d
+    if (duplicate(i)) then
+      cycle
+    endif
+    n_p = n_p + 1
+    do k=1,N_int
+      o(k,1,n_p) = tmp_array(k,1,i)
+      o(k,2,n_p) = tmp_array(k,2,i)
+    enddo
+    val(n_p) = val(i)
+  enddo
+  
+  ! Sort by importance
+  do i=1,n_p
+    iorder(i) = i
+  end do
+  call dsort(val,iorder,n_p)
+  do i=1,n_p
+    do k=1,N_int
+      tmp_array(k,1,i) = o(k,1,iorder(i))
+      tmp_array(k,2,i) = o(k,2,iorder(i))
+    enddo
+  enddo
+  do i=1,n_p
+    do k=1,N_int
+      o(k,1,i) = tmp_array(k,1,i)
+      o(k,2,i) = tmp_array(k,2,i)
+    enddo
+  enddo
+  
+  ! Create determinants
+  n_d = 0
+  do i=1,n_p
     call occ_pattern_to_dets_size(o(1,1,i),sze,elec_alpha_num,N_int)
     n_d = n_d + sze
     if (n_d > b%cur) exit
   enddo
-  deallocate(b%det)
 
-  allocate(b%det(N_int,2,n_d), val(n_d))
+  allocate(b%det(N_int,2,n_d), b%val(n_d))
   k=1
-  do i=1,b%cur
+  do i=1,n_p
     n=n_d
+    call occ_pattern_to_dets_size(o(1,1,i),n,elec_alpha_num,N_int)
     call occ_pattern_to_dets(o(1,1,i),b%det(1,1,k),n,elec_alpha_num,N_int)
-    val(k) = b%val(i)
+    b%val(k) = val(i)
     do j=k+1,k+n-1
-      val(j) = 0.d0
+      b%val(j) = val(i)
     enddo
     k = k+n
-    if (k > b%cur) exit
+    if (k > n_d) exit
   enddo
-  deallocate(o,b%val)
-  b%val => val
-  b%N = k-1
-  b%cur = k-1
+  deallocate(o)
+  b%N = n_d
+  b%cur = n_d
 end

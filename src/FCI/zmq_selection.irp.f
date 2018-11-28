@@ -97,13 +97,12 @@ subroutine ZMQ_selection(N_in, pt2, variance, norm)
     nproc_target = min(nproc_target,nproc)
   endif
 
+  f(:) = 1.d0
   if (.not.do_pt2) then
   double precision :: f(N_states), u_dot_u
-    do k=1,N_states
+    do k=1,min(N_det,N_states)
      f(k) = 1.d0 / u_dot_u(psi_selectors_coef(1,k), N_det_selectors)
     enddo
-  else
-    f(:) = 1.d0
   endif
 
   !$OMP PARALLEL DEFAULT(shared)  SHARED(b, pt2, variance, norm)  PRIVATE(i) NUM_THREADS(nproc_target+1)
