@@ -157,6 +157,7 @@ subroutine make_selection_buffer_s2(b)
     enddo
     call occ_pattern_to_dets_size(o(1,1,i),sze,elec_alpha_num,N_int)
     n_d = n_d + sze
+    if (n_d > b%cur) exit
   enddo
   deallocate(b%det)
 
@@ -170,6 +171,7 @@ subroutine make_selection_buffer_s2(b)
       val(j) = 0.d0
     enddo
     k = k+n
+    if (k > b%cur) exit
   enddo
   deallocate(o,b%val)
   b%val => val

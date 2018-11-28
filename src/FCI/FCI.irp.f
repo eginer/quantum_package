@@ -10,6 +10,8 @@ program fci_zmq
   logical                        :: has
   double precision               :: relative_error
 
+  PROVIDE H_apply_buffer_allocated
+
   relative_error=PT2_relative_error
 
   pt2 = -huge(1.e0)
@@ -17,6 +19,9 @@ program fci_zmq
   norm = 0.d0
   variance = 0.d0
 
+  if (s2_eig) then
+    call make_s2_eigenfunction
+  endif
   call diagonalize_CI
   call save_wavefunction
   
@@ -85,15 +90,9 @@ program fci_zmq
     N_iter += 1
 
     n_det_before = N_det
-    if (s2_eig) then
-      to_select = N_det/2+1
-      to_select = max(N_states_diag, to_select)
-      to_select = min(to_select, N_det_max-n_det_before)
-    else
-      to_select = N_det
-      to_select = max(N_states_diag, to_select)
-      to_select = min(to_select, N_det_max-n_det_before)
-    endif
+    to_select = N_det
+    to_select = max(N_states_diag, to_select)
+    to_select = min(to_select, N_det_max-n_det_before)
     call ZMQ_selection(to_select, pt2, variance, norm)
     
     PROVIDE  psi_coef

@@ -449,7 +449,6 @@ subroutine make_s2_eigenfunction
 
   call copy_H_apply_buffer_to_wf
   SOFT_TOUCH N_det psi_coef psi_det psi_occ_pattern N_occ_pattern
-  print *,  'Added determinants for S^2'
   call write_time(6)
 
 end
