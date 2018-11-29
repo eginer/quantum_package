@@ -15,7 +15,7 @@
  !$OMP PARALLEL DO &
  !$OMP DEFAULT (NONE)  &
  !$OMP PRIVATE (i_point,r,local_potential) & 
- !$OMP shARED (n_points_final_grid,final_grid_points,mu_of_r_hf_coalescence_vector) 
+ !$OMP ShARED (n_points_final_grid,final_grid_points,mu_of_r_hf_coalescence_vector) 
  do i_point = 1, n_points_final_grid
   r(1) = final_grid_points(1,i_point)
   r(2) = final_grid_points(2,i_point)
@@ -45,7 +45,7 @@
  double precision :: cpu0,cpu1,local_potential,two_body_dm
  print*,'providing the mu_of_r_psi_coalescence_vector ...'
  call wall_time(cpu0)
- r = 0.d0
+!r = 0.d0
 !call local_r12_operator_on_hf(r,r,local_potential)
 !!$OMP PARALLEL DO &
 !!$OMP DEFAULT (NONE)  &
@@ -60,8 +60,10 @@
 !enddo
 !!$OMP END PARALLEL DO
 
- provide on_top_of_r_vector_simple 
- provide f_psi_B
+ if(.True.)then
+  provide on_top_of_r_vector_simple 
+  provide f_psi_B
+ endif
  !$OMP PARALLEL DO &
  !$OMP DEFAULT (NONE)  &
  !$OMP PRIVATE (i_point,r,local_potential,two_body_dm) & 

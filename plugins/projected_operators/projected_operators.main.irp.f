@@ -3,11 +3,11 @@ program projected_operators
   BEGIN_DOC
 ! TODO
   END_DOC
-  read_wf = .True.
-  touch read_wf
-  call routine_v
-  call routine_rho 
-! call routine_final
+! read_wf = .True.
+! touch read_wf
+! call routine_v
+! call routine_rho 
+  call routine_final
 
 end
 
@@ -61,7 +61,7 @@ subroutine routine_final
  do ipoint  = 1, n_points_final_grid
   weight=final_weight_functions_at_final_grid_points(ipoint)
 ! accu += dabs(f_psi_B_old(ipoint) - f_psi_B(ipoint)) *weight
-  accu += dabs(f_psi_B(ipoint)) *weight
+  accu += (f_psi_B(ipoint)) *weight
  enddo
  print*,'*******************'
  print*,'*******************'
