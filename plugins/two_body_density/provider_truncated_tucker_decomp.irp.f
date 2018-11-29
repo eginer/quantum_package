@@ -875,6 +875,20 @@ END_PROVIDER
  enddo
 END_PROVIDER
 
+!BEGIN_PROVIDER [double precision, mos_array_r_j_tuck, (mo_tot_num,n_eigen_i_tucker_max,N_states)] 
+!BEGIN_PROVIDER [double precision, truncated_u_i_tucker_t, (n_eigen_i_tucker_max,mo_tot_num,N_states)]
+
+!do i = 1, n_points_final_grid
+! r(1) = final_grid_points(1,i)
+! r(2) = final_grid_points(2,i)
+! r(3) = final_grid_points(3,i)
+! weight=final_weight_functions_at_final_grid_points(i)
+! call give_all_mos_at_r(r,mos_array_r)
+! call dgemm('N','N',n_eigen_i_tucker(1),1,mo_tot_num,1.d0,truncated_u_i_tucker_t(1,1,1),n_eigen_i_tucker(1),mos_array_r,mo_tot_num,0.d0,mos_array_r_i,n_eigen_i_tucker(1))
+! call dgemm('N','N',n_eigen_j_tucker(1),1,mo_tot_num,1.d0,truncated_u_j_tucker_t(1,1,1),n_eigen_j_tucker(1),mos_array_r,mo_tot_num,0.d0,mos_array_r_j,n_eigen_j_tucker(1))
+
+!ND_PROVIDER
+
 
  subroutine truncated_tucker_decomposition_provider
  implicit none
