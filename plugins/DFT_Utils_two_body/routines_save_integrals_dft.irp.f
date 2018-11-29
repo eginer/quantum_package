@@ -44,7 +44,7 @@ subroutine save_one_e_shifted_effective_potential
 
 end
 
-subroutine write_all_integrals_for_mrdft
+subroutine write_all_integrals_for_shifted_mrdft
  implicit none
  BEGIN_DOC
  ! saves all integrals needed for RS-DFT-MRCI calculation: one-body effective potential and two-elec erf integrals
