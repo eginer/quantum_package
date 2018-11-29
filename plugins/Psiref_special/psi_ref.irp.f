@@ -1,15 +1,5 @@
 use bitmasks
 
- BEGIN_PROVIDER [double precision, thresh_coef_cas ]
-&BEGIN_PROVIDER [double precision, thresh_coef_lmct ]
-&BEGIN_PROVIDER [double precision, thresh_coef_mlct]
- implicit none
-  thresh_coef_cas  = 0.0d0
-  thresh_coef_lmct = 0.02d0
-  thresh_coef_mlct = 0.05d0
-
- END_PROVIDER 
-
  BEGIN_PROVIDER [ integer(bit_kind), psi_ref_fobo, (N_int,2,psi_det_size) ]
 &BEGIN_PROVIDER [ double precision, psi_ref_fobo_coef,  (psi_det_size,n_states) ]
 &BEGIN_PROVIDER [ integer, idx_ref_fobo_cas_lmct_mlct, (psi_det_size,2) ]

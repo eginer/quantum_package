@@ -11,6 +11,7 @@ BEGIN_PROVIDER [double precision, dressing_ref_fobo_hamiltonian, (n_det_ref_fobo
  accu_positive = 0.d0
  integer :: h1,p1,h2,p2,s1,s2
  print*, 'providing the dressing_ref_fobo_hamiltonian ...'
+ ! IDEA : invert the loops over ref and non ref and parallelize the computation of HIJ
  do istate = 1, N_states
    do i = 1, N_det_non_ref_fobo
     call filter_connected_i_H_psi0(psi_ref_fobo,psi_non_ref_fobo(1,1,i),N_int,N_det_ref_fobo,idx)
@@ -26,6 +27,7 @@ BEGIN_PROVIDER [double precision, dressing_ref_fobo_hamiltonian, (n_det_ref_fobo
      hik = H_ref_fobo(k) * lambda_special(istate,i)
      do jj = 1, idx(0)
       l = idx(jj)
+      ! IDEA : change the indices of the Hamiltonian 
       dressing_ref_fobo_hamiltonian(k,l,istate) += hik * H_ref_fobo(l)
      enddo
     enddo
