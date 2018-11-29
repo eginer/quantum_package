@@ -37,6 +37,7 @@ END_PROVIDER
 
  BEGIN_PROVIDER [double precision, effective_one_e_potential, (mo_tot_num, mo_tot_num,N_states)]
 &BEGIN_PROVIDER [double precision, effective_one_e_potential_without_kin, (mo_tot_num, mo_tot_num,N_states)]
+&BEGIN_PROVIDER [double precision, shifted_effective_one_e_potential_without_kin, (mo_tot_num, mo_tot_num,N_states)]
  implicit none
  integer :: i,j,istate
  effective_one_e_potential = 0.d0
@@ -44,17 +45,21 @@ END_PROVIDER
 ! effective_one_e_potential(i,j) = <i| v_{H}^{sr} |j> + <i| h_{core} |j> + <i|v_{xc} |j> 
 ! Taking the expectation value does not provide any energy
 ! but effective_one_e_potential(i,j) is the potential coupling DFT and WFT part to be used in any WFT calculation
+! shifted_effective_one_e_potential_without_kin  =  effective_one_e_potential_without_kin + shifting_constant on the diagonal 
  END_DOC
  do istate = 1, N_states
   do i = 1, mo_tot_num
    do j = 1, mo_tot_num
-    effective_one_e_potential(i,j,istate) = short_range_Hartree_operator(i,j,istate) + mo_nucl_elec_integral(i,j) + mo_kinetic_integral(i,j) & 
+    effective_one_e_potential(i,j,istate) = short_range_Hartree_operator(i,j,istate) + mo_nucl_elec_integral(i,j) + mo_kinetic_integral(i,j)    & 
                                    + 0.5d0 * (potential_x_alpha_mo(i,j,istate) + potential_c_alpha_mo(i,j,istate)                               &
-                                   +          potential_x_beta_mo(i,j,istate) + potential_c_beta_mo(i,j,istate)   )
-    effective_one_e_potential_without_kin(i,j,istate) = short_range_Hartree_operator(i,j,istate) + mo_nucl_elec_integral(i,j)  & 
+                                   +          potential_x_beta_mo(i,j,istate)  + potential_c_beta_mo(i,j,istate)   )
+    effective_one_e_potential_without_kin(i,j,istate) = short_range_Hartree_operator(i,j,istate) + mo_nucl_elec_integral(i,j)                   & 
                                    + 0.5d0 * (potential_x_alpha_mo(i,j,istate) + potential_c_alpha_mo(i,j,istate)                               &
                                    +          potential_x_beta_mo(i,j,istate)  + potential_c_beta_mo(i,j,istate)   )
    enddo
+  enddo
+  do i = 1, mo_tot_num
+   shifted_effective_one_e_potential_without_kin(i,i,istate) = effective_one_e_potential_without_kin(i,i,istate) + shifting_constant(istate)
   enddo
  enddo
 END_PROVIDER 
