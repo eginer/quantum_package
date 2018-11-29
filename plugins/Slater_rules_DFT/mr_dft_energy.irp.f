@@ -80,8 +80,8 @@ subroutine print_variational_energy_dft_mu_of_r
  print*, 'mu_of_r_potential = ',mu_of_r_potential
  print*,  ' MR DFT energy with pure correlation part for the DFT '
  if(md_correlation_functional.EQ."basis_set_LDA")then
-   write(*, '(A34,X,F16.10)') 'TOTAL ENERGY ECMD LDA             =',psi_energy+Energy_c_md_mu_of_r_LDA+nuclear_repulsion
-   write(*, '(A28,X,F16.10)') 'TOTAL ENERGY EC   LDA             =',psi_energy+energy_c_LDA_mu_of_r+nuclear_repulsion
+   write(*, '(A34,X,F16.10)') 'TOTAL ENERGY ECMD LDA     =',psi_energy+Energy_c_md_mu_of_r_LDA+nuclear_repulsion
+   write(*, '(A28,X,F16.10)') 'TOTAL ENERGY EC   LDA     =',psi_energy+energy_c_LDA_mu_of_r+nuclear_repulsion
    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
    print*, ''
    write(*, '(A28,X,F16.10)') 'Variational energy of Psi = ',psi_energy + nuclear_repulsion
