@@ -2133,11 +2133,11 @@ subroutine ac_operator(iorb,ispin,key,hjj,Nint,na,nb)
   key(k,ispin) = ibset(key(k,ispin),l)
   other_spin = iand(ispin,1)+1
   
-  if (iorb > mo_tot_num) then
-    print *,  irp_here, 'iorb > mo_tot_num'
-    print *,  iorb, mo_tot_num
-    stop -1
-  endif
+!  if (iorb > mo_tot_num) then
+!    print *,  irp_here, 'iorb > mo_tot_num'
+!    print *,  iorb, mo_tot_num
+!    stop -1
+!  endif
   hjj = hjj + mo_mono_elec_integral(iorb,iorb)
   
   ! Same spin
