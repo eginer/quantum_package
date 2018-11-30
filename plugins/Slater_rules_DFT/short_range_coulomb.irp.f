@@ -134,3 +134,19 @@ BEGIN_PROVIDER [double precision, one_e_energy_potential, (mo_tot_num, mo_tot_nu
 
 END_PROVIDER 
 
+!!!!!!!!!!!!!!test pour manu RS DFT !!!
+
+ BEGIN_PROVIDER [double precision, exp_value_V_SR_mu, (N_states)]
+ implicit none
+ integer :: i,j,i_state
+ exp_value_V_SR_mu = 0.d0
+ do i_state = 1, N_states
+  do j = 1, mo_tot_num
+   do i = 1, mo_tot_num
+    exp_value_V_SR_mu(i_state) += (one_body_dm_mo_alpha(i,j,i_state)+one_body_dm_mo_beta(i,j,i_state))*(short_range_Hartree_operator(i,j)+ 0.5d0 * (potential_x_alpha_mo(i,j,i_state)+potential_c_alpha_mo(i,j,i_state)+potential_x_beta_mo(i,j,i_state)+potential_c_beta_mo(i,j,i_state)))
+
+
+   enddo
+  enddo
+ enddo
+END_PROVIDER

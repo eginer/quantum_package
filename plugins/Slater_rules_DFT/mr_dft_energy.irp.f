@@ -53,20 +53,22 @@ implicit none
   print*, ''
   print*, 'Component of the energy ....'
   print*, ''
-  write(*, '(A22,X,F16.10)') 'nuclear_repulsion   = ',nuclear_repulsion
-  write(*, '(A22,X,F16.10)') 'psi_energy_erf      = ',psi_energy_erf
-  write(*, '(A22,X,F16.10)') 'psi_energy_core     = ',psi_energy_core
-  write(*, '(A22,X,F16.10)') 'E^LR                = ',psi_energy_core + psi_energy_erf
+  write(*, '(A22,X,F16.10)') 'nuclear_repulsion     = ',nuclear_repulsion
+  write(*, '(A22,X,F16.10)') 'psi_energy_erf        = ',psi_energy_erf
+  write(*, '(A22,X,F16.10)') 'psi_energy_core       = ',psi_energy_core
+  write(*, '(A22,X,F16.10)') 'E^LR                  = ',psi_energy_core + psi_energy_erf
   !write(*, '(A22,X,F16.10)') 'E_Hxc_Toulouse_1    = ',energy_Hxc(1)
   !write(*, '(A22,X,F16.10)') 'E_Hxc_Toulouse_2    = ',energy_Hxc_bis(1)
   !write(*, '(A22,X,F16.10)') 'E_Hxc_Toulouse_3    = ',energy_Hxc_ter(1)
   !write(*, '(A22,X,F16.10)') 'E_Hxc_Toulouse_4    = ',energy_Hxc_4(1)
-  write(*, '(A22,X,F16.10)') 'E_Hxc_Toulouse_5    = ',energy_Hxc_5(1)
+  !write(*, '(A22,X,F16.10)') 'E_Hxc_Toulouse_5    = ',energy_Hxc_5(1)
   !write(*, '(A22,X,F16.10)') 'Tot_Toulouse_1      = ',nuclear_repulsion +  psi_energy_core + psi_energy_erf + energy_Hxc
   !write(*, '(A22,X,F16.10)') 'Tot_Toulouse_2      = ',nuclear_repulsion +  psi_energy_core + psi_energy_erf + energy_Hxc_bis
   !write(*, '(A22,X,F16.10)') 'Tot_Toulouse_3      = ',nuclear_repulsion + psi_energy_core + psi_energy_erf + energy_Hxc_ter
   !write(*, '(A22,X,F16.10)') 'Tot_Toulouse_4      = ',nuclear_repulsion + psi_energy_core + psi_energy_erf + energy_Hxc_4
-  write(*, '(A22,X,F16.10)') 'Tot_Toulouse_5      = ',nuclear_repulsion +psi_energy_core + psi_energy_erf + energy_Hxc_5
+  !write(*, '(A22,X,F16.10)') 'Tot_Toulouse_5      = ',nuclear_repulsion +psi_energy_core + psi_energy_erf + energy_Hxc_5
+  write(*, '(A22,X,F16.10)') 'Expect value V_Sr,    = ',exp_value_V_SR_mu(1)
+  write(*, '(A22,X,F16.10)') 'E_x,sr+E_c,sr+E_H,sr  = ',short_range_Hartree+energy_x+energy_c
 end
 
 subroutine print_variational_energy_dft_mu_of_r
@@ -78,8 +80,8 @@ subroutine print_variational_energy_dft_mu_of_r
  print*, 'mu_of_r_potential = ',mu_of_r_potential
  print*,  ' MR DFT energy with pure correlation part for the DFT '
  if(md_correlation_functional.EQ."basis_set_LDA")then
-   write(*, '(A34,X,F16.10)') 'TOTAL ENERGY ECMD LDA             =',psi_energy+Energy_c_md_mu_of_r_LDA+nuclear_repulsion
-   write(*, '(A28,X,F16.10)') 'TOTAL ENERGY EC   LDA             =',psi_energy+energy_c_LDA_mu_of_r+nuclear_repulsion
+   write(*, '(A34,X,F16.10)') 'TOTAL ENERGY ECMD LDA     =',psi_energy+Energy_c_md_mu_of_r_LDA+nuclear_repulsion
+   write(*, '(A28,X,F16.10)') 'TOTAL ENERGY EC   LDA     =',psi_energy+energy_c_LDA_mu_of_r+nuclear_repulsion
    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
    print*, ''
    write(*, '(A28,X,F16.10)') 'Variational energy of Psi = ',psi_energy + nuclear_repulsion
