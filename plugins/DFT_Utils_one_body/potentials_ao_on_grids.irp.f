@@ -268,6 +268,5 @@ END_PROVIDER
   enddo
 
  call wall_time(wall_2)
- print*,'time to provide potential_x/c_alpha/beta_ao_PBE = ',wall_2 - wall_1
  
 END_PROVIDER 

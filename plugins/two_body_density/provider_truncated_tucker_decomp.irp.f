@@ -27,652 +27,6 @@ subroutine twobodydump
   enddo
 end
 
-subroutine tucker_decomposition 
- implicit none
- integer :: i,j,k,l,jkl
-
- double precision :: integral
- double precision, allocatable :: mat_i(:,:),mat_j(:,:),mat_k(:,:),mat_l(:,:)
- allocate(mat_i(mo_tot_num,mo_tot_num**3),mat_j(mo_tot_num,mo_tot_num**3),mat_k(mo_tot_num,mo_tot_num**3),mat_l(mo_tot_num,mo_tot_num**3))
-!!!!!!!unfoldage!!!!!!!
-
- do i = 1,mo_tot_num
-  jkl = 0
-  do l=1,mo_tot_num
-   do k=1,mo_tot_num
-    do j=1,mo_tot_num
-     jkl= jkl+1
-     mat_i(i,jkl)= two_bod_alpha_beta_mo_transposed(i,j,k,l,1)
-    enddo
-   enddo
-  enddo
- enddo
-
- do j = 1,mo_tot_num
-  jkl = 0
-  do l=1,mo_tot_num
-   do k=1,mo_tot_num
-    do i=1,mo_tot_num
-     jkl= jkl+1
-     mat_j(j,jkl)= two_bod_alpha_beta_mo_transposed(i,j,k,l,1)
-    enddo
-   enddo
-  enddo
- enddo
-
- do k = 1,mo_tot_num
-  jkl = 0
-  do l=1,mo_tot_num
-   do j=1,mo_tot_num
-    do i=1,mo_tot_num
-     jkl= jkl+1
-     mat_k(k,jkl)= two_bod_alpha_beta_mo_transposed(i,j,k,l,1)
-    enddo
-   enddo
-  enddo
- enddo
-
- do l = 1,mo_tot_num
-  jkl = 0
-  do k=1,mo_tot_num
-   do j=1,mo_tot_num
-    do i=1,mo_tot_num
-     jkl= jkl+1
-     mat_l(l,jkl)= two_bod_alpha_beta_mo_transposed(i,j,k,l,1)
-    enddo
-   enddo
-  enddo
- enddo
-
-!!!!!!!test SVD!!!!!!!
- 
- double precision, allocatable :: u_i(:,:),vt_i(:,:),D_i(:)
- allocate(u_i(mo_tot_num,mo_tot_num),vt_i(mo_tot_num**3,mo_tot_num**3),D_i(mo_tot_num))
- call svd(mat_i,size(mat_i,1),u_i,size(u_i,1),D_i,vt_i,size(vt_i,1),size(mat_i,1),size(mat_i,2))
-
- double precision, allocatable :: u_j(:,:),vt_j(:,:),D_j(:)
- allocate(u_j(mo_tot_num,mo_tot_num),vt_j(mo_tot_num**3,mo_tot_num**3),D_j(mo_tot_num))
- call svd(mat_j,size(mat_j,1),u_j,size(u_j,1),D_j,vt_j,size(vt_j,1),size(mat_j,1),size(mat_j,2))
-
- double precision, allocatable :: u_k(:,:),vt_k(:,:),D_k(:)
- allocate(u_k(mo_tot_num,mo_tot_num),vt_k(mo_tot_num**3,mo_tot_num**3),D_k(mo_tot_num))
- call svd(mat_k,size(mat_k,1),u_k,size(u_k,1),D_k,vt_k,size(vt_k,1),size(mat_k,1),size(mat_k,2))
-
- double precision, allocatable :: u_l(:,:),vt_l(:,:),D_l(:)
- allocate(u_l(mo_tot_num,mo_tot_num),vt_l(mo_tot_num**3,mo_tot_num**3),D_l(mo_tot_num))
- call svd(mat_l,size(mat_l,1),u_l,size(u_l,1),D_l,vt_l,size(vt_l,1),size(mat_l,1),size(mat_l,2))
-
- print*, 'D_i(k)=',D_i(1),D_i(2),D_i(3),D_i(4),D_i(5),D_i(6)
- print*, 'D_j(k)=',D_j(1),D_j(2),D_j(3),D_j(4),D_j(5),D_j(6)
- print*, 'D_k(k)=',D_k(1),D_k(2),D_k(3),D_k(4),D_k(5),D_k(6)
- print*, 'D_l(k)=',D_l(1),D_l(2),D_l(3),D_l(4),D_l(5),D_l(6)
-
-!!!!!!!test construction g!!!!!!!
-!!!!!!!transposer  
- double precision, allocatable :: u_i_t(:,:)
- allocate(u_i_t(mo_tot_num,mo_tot_num))
-
- double precision, allocatable :: u_j_t(:,:)
- allocate(u_j_t(mo_tot_num,mo_tot_num))
-
- double precision, allocatable :: u_k_t(:,:)
- allocate(u_k_t(mo_tot_num,mo_tot_num))
-
- double precision, allocatable :: u_l_t(:,:)
- allocate(u_l_t(mo_tot_num,mo_tot_num))
-
- do i = 1,mo_tot_num
-  do j = 1,mo_tot_num
-   u_i_t(i,j)=u_i(j,i)
-   u_j_t(i,j)=u_j(j,i)
-   u_k_t(i,j)=u_k(j,i)
-   u_l_t(i,j)=u_l(j,i)
-  enddo
- enddo
-
-
- double precision, allocatable :: g(:,:,:,:)
- allocate(g(mo_tot_num,mo_tot_num,mo_tot_num,mo_tot_num))
-integer :: r1,r2,r3,r4
-
- g = 0d0
-
- do i = 1,mo_tot_num
-  do j = 1,mo_tot_num
-   do k = 1,mo_tot_num
-    do l =1,mo_tot_num
-     do r1 = 1,mo_tot_num
-      do r2 = 1,mo_tot_num
-       do r3 = 1,mo_tot_num
-        do r4 = 1,mo_tot_num
-         g(i,j,k,l) += two_bod_alpha_beta_mo_transposed(r1,r2,r3,r4,1) * u_i_t(i,r1) * u_j_t(j,r2) * u_k_t(k,r3) * u_l_t(l,r4)
-        enddo
-       enddo
-      enddo
-     enddo
-    enddo
-   enddo
-  enddo
- enddo
-
-!!!!!!!!!!tucker truc!!!!!
-
- double precision, allocatable :: n2_bis(:,:,:,:)
- allocate(n2_bis(mo_tot_num,mo_tot_num,mo_tot_num,mo_tot_num))
-
- n2_bis= 0d0
-
- do i = 1,mo_tot_num
-  do j = 1,mo_tot_num
-   do k = 1,mo_tot_num
-    do l =1,mo_tot_num
-     do r1 =1,mo_tot_num
-      do r2 = 1,mo_tot_num
-       do r3 = 1,mo_tot_num
-        do r4 = 1,mo_tot_num
-         n2_bis(i,j,k,l) += g(r1,r2,r3,r4) * u_i(i,r1) * u_j(j,r2) * u_k(k,r3) * u_l(l,r4)
-        enddo
-       enddo
-      enddo
-     enddo
-    enddo
-   enddo
-  enddo
- enddo
-
-
- double precision :: accu
- accu= 0d0
- do i = 1,mo_tot_num
-  do j = 1,mo_tot_num
-   do k = 1,mo_tot_num
-    do l =1,mo_tot_num
-      accu +=  dabs(n2_bis(i,j,k,l) - two_bod_alpha_beta_mo_transposed(i,j,k,l,1))
-    enddo
-   enddo
-  enddo
- enddo
-
-
- print*, '**************'
- print*, 'accu=', accu
- print*, '**************'
-end
-
-
-subroutine truncated_tucker_decomposition 
- implicit none
- integer :: i,j,k,l,jkl
-
- double precision :: integral
- double precision, allocatable :: mat_i(:,:),mat_j(:,:),mat_k(:,:),mat_l(:,:)
- allocate(mat_i(mo_tot_num,mo_tot_num**3),mat_j(mo_tot_num,mo_tot_num**3),mat_k(mo_tot_num,mo_tot_num**3),mat_l(mo_tot_num,mo_tot_num**3))
-!!!!!!!unfoldage!!!!!!!
-
- do i = 1,mo_tot_num
-  jkl = 0
-  do l=1,mo_tot_num
-   do k=1,mo_tot_num
-    do j=1,mo_tot_num
-     jkl= jkl+1
-     mat_i(i,jkl)= two_bod_alpha_beta_mo_transposed(i,j,k,l,1)
-    enddo
-   enddo
-  enddo
- enddo
-
- do j = 1,mo_tot_num
-  jkl = 0
-  do l=1,mo_tot_num
-   do k=1,mo_tot_num
-    do i=1,mo_tot_num
-     jkl= jkl+1
-     mat_j(j,jkl)= two_bod_alpha_beta_mo_transposed(i,j,k,l,1)
-    enddo
-   enddo
-  enddo
- enddo
-
-!do k = 1,mo_tot_num
-! jkl = 0
-! do l=1,mo_tot_num
-!  do j=1,mo_tot_num
-!   do i=1,mo_tot_num
-!    jkl= jkl+1
-!    mat_k(k,jkl)= two_bod_alpha_beta_mo_transposed(i,j,k,l,1)
-!   enddo
-!  enddo
-! enddo
-!enddo
-
-!do l = 1,mo_tot_num
-! jkl = 0
-! do k=1,mo_tot_num
-!  do j=1,mo_tot_num
-!   do i=1,mo_tot_num
-!    jkl= jkl+1
-!    mat_l(l,jkl)= two_bod_alpha_beta_mo_transposed(i,j,k,l,1)
-!   enddo
-!  enddo
-! enddo
-!enddo
-
-!!!!!!!test SVD!!!!!!!
- 
- double precision, allocatable :: u_i(:,:),vt_i(:,:),D_i(:)
- allocate(u_i(mo_tot_num,mo_tot_num),vt_i(mo_tot_num**3,mo_tot_num**3),D_i(mo_tot_num))
- call svd(mat_i,size(mat_i,1),u_i,size(u_i,1),D_i,vt_i,size(vt_i,1),size(mat_i,1),size(mat_i,2))
-
- double precision, allocatable :: u_j(:,:),vt_j(:,:),D_j(:)
- allocate(u_j(mo_tot_num,mo_tot_num),vt_j(mo_tot_num**3,mo_tot_num**3),D_j(mo_tot_num))
- call svd(mat_j,size(mat_j,1),u_j,size(u_j,1),D_j,vt_j,size(vt_j,1),size(mat_j,1),size(mat_j,2))
-
-!double precision, allocatable :: u_k(:,:),vt_k(:,:),D_k(:)
-!allocate(u_k(mo_tot_num,mo_tot_num),vt_k(mo_tot_num**3,mo_tot_num**3),D_k(mo_tot_num))
-!call svd(mat_k,size(mat_k,1),u_k,size(u_k,1),D_k,vt_k,size(vt_k,1),size(mat_k,1),size(mat_k,2))
-
-!double precision, allocatable :: u_l(:,:),vt_l(:,:),D_l(:)
-!allocate(u_l(mo_tot_num,mo_tot_num),vt_l(mo_tot_num**3,mo_tot_num**3),D_l(mo_tot_num))
-!call svd(mat_l,size(mat_l,1),u_l,size(u_l,1),D_l,vt_l,size(vt_l,1),size(mat_l,1),size(mat_l,2))
-
-!!!!!!!Selection valeur propre!!!!!!!
- double precision :: threshinou
- integer :: n_eigen_i,n_eigen_j
- threshinou= 1d-5
- print*,'************************'
- print*,'threshinou    =',threshinou
- print*,'************************'
-
- n_eigen_i = 1 
- do while ( (dabs(D_i(n_eigen_i)) .gt. threshinou) .AND. (n_eigen_i .lt. mo_tot_num)  )
-  n_eigen_i += 1
-  print*,n_eigen_i,D_i(n_eigen_i)
- enddo
- print*,'************************'
- print*,'n_eigen_i    =',n_eigen_i
- print*,'************************'
-
-
- n_eigen_j = 1 
- do while ((dabs(D_j(n_eigen_j)) .gt. threshinou) .AND. (n_eigen_j .lt. mo_tot_num))
-  n_eigen_j += 1
-  print*,n_eigen_j,D_j(n_eigen_j)
- enddo
- print*,'************************'
- print*,'n_eigen_j    =',n_eigen_j
- print*,'************************'
-!!!!!!!Creation _truncated_U_i _truncated_U_j!!!!!!!
-
- double precision, allocatable :: truncated_u_i(:,:)
- allocate(truncated_u_i(mo_tot_num,n_eigen_i))
-
- double precision, allocatable :: truncated_u_j(:,:)
- allocate(truncated_u_j(mo_tot_num,n_eigen_j))
-
- do i=1,mo_tot_num
-  do j=1,n_eigen_i
-   truncated_u_i(i,j) = u_i(i,j)
-  enddo
- enddo
-
- do i=1,mo_tot_num
-  do j=1,n_eigen_j
-   truncated_u_j(i,j) = u_j(i,j)
-  enddo
- enddo
-
-!!!!!!!test construction g!!!!!!!
-!!!!!!!transposer  
- double precision, allocatable :: truncated_u_i_t(:,:)
- allocate(truncated_u_i_t(n_eigen_i,mo_tot_num))
-
- double precision, allocatable :: truncated_u_j_t(:,:)
- allocate(truncated_u_j_t(n_eigen_j,mo_tot_num))
-
-!double precision, allocatable :: u_k_t(:,:)
-!allocate(u_k_t(mo_tot_num,mo_tot_num))
-
-!double precision, allocatable :: u_l_t(:,:)
-!allocate(u_l_t(mo_tot_num,mo_tot_num))
-
- do i = 1,n_eigen_i
-  do j = 1,mo_tot_num
-   truncated_u_i_t(i,j)=u_i(j,i)
-  enddo
- enddo
-
- do i = 1,n_eigen_j
-  do j = 1,mo_tot_num
-   truncated_u_j_t(i,j)=u_j(j,i)
-  enddo
- enddo
-
-
- double precision, allocatable :: g(:,:,:,:)
- allocate(g(n_eigen_i,n_eigen_j,n_eigen_i,n_eigen_j))
- integer :: r1,r2,r3,r4
-
- g = 0d0
-
- do i = 1,n_eigen_i
-  do j = 1,n_eigen_j
-   do k = 1,n_eigen_i
-    do l =1,n_eigen_j
-     do r1 = 1,mo_tot_num
-      do r2 = 1,mo_tot_num
-       do r3 = 1,mo_tot_num
-        do r4 = 1,mo_tot_num
-         g(i,j,k,l) += two_bod_alpha_beta_mo_transposed(r1,r2,r3,r4,1) * truncated_u_i_t(i,r1) * truncated_u_j_t(j,r2) * truncated_u_i_t(k,r3) * truncated_u_j_t(l,r4)
-        enddo
-       enddo
-      enddo
-     enddo
-    enddo
-   enddo
-  enddo
- enddo
-
-!!!!!!!!!!tucker truc!!!!!
-
-!double precision, allocatable :: n2_bis(:,:,:,:)
-!allocate(n2_bis(mo_tot_num,mo_tot_num,mo_tot_num,mo_tot_num))
-
-!n2_bis= 0d0
-
-!do i = 1,mo_tot_num
-! do j = 1,mo_tot_num
-!  do k = 1,mo_tot_num
-!   do l =1,mo_tot_num
-!    do r1 =1,n_eigen_i
-!     do r2 = 1,n_eigen_j
-!      do r3 = 1,n_eigen_i
-!       do r4 = 1,n_eigen_j
-!        n2_bis(i,j,k,l) += g(r1,r2,r3,r4) * truncated_u_i(i,r1) * truncated_u_j(j,r2) * truncated_u_i(k,r3) * truncated_u_j(l,r4)
-!       enddo
-!      enddo
-!     enddo
-!    enddo
-!   enddo
-!  enddo
-! enddo
-!enddo
-
-
-!double precision :: accu
-!accu= 0d0
-!do i = 1,mo_tot_num
-! do j = 1,mo_tot_num
-!  do k = 1,mo_tot_num
-!   do l =1,mo_tot_num
-!     accu +=  dabs(n2_bis(i,j,k,l) - two_bod_alpha_beta_mo_transposed(i,j,k,l,1))
-!   enddo
-!  enddo
-! enddo
-!enddo
-
-
-!print*, '**************'
-!print*, 'accu=', accu
-!print*, '**************'
-
-!test sur l'energie!!!!!
- double precision :: get_mo_bielec_integral_ijkl_r3
- double precision, allocatable :: integrals_ij(:,:)
- allocate(integrals_ij(mo_tot_num,mo_tot_num))
-
-
- double precision :: n2_bis_ijkl,E_cor_tot_normal,E_cor_tot_tucker
-
- n2_bis_ijkl= 0d0
- E_cor_tot_normal = 0d0
- E_cor_tot_tucker = 0d0
-
-
- do i = 1,mo_tot_num
-  do j = 1,mo_tot_num
-   call get_mo_bielec_integrals_ijkl_r3_ij(i,j,mo_tot_num,integrals_ij,mo_integrals_ijkl_r3_map)
-   do k = 1,mo_tot_num
-    do l =1,mo_tot_num
-     n2_bis_ijkl = 0d0
-
-     do r1 =1,n_eigen_i
-      do r2 = 1,n_eigen_j
-       do r3 = 1,n_eigen_i
-        do r4 = 1,n_eigen_j
-         n2_bis_ijkl += g(r1,r2,r3,r4) * truncated_u_i(i,r1) * truncated_u_j(j,r2) * truncated_u_i(k,r3) * truncated_u_j(l,r4)
-        enddo
-       enddo
-      enddo
-     enddo
-
-     E_cor_tot_normal += two_bod_alpha_beta_mo_transposed(k,l,j,i,1) * integrals_ij(l,k)
-     E_cor_tot_tucker += n2_bis_ijkl * integrals_ij(l,k)
-    enddo
-   enddo
-  enddo
- enddo
-
-
- double precision :: accu
- accu= E_cor_tot_normal-E_cor_tot_tucker 
-
-
- print*, '**************'
- print*, 'accu=', accu
- print*, '**************'
-
-end
-
-
-subroutine truncated_tucker_decomposition_2 
- implicit none
- integer :: i,j,k,l,jkl
-
- double precision :: integral
- double precision, allocatable :: mat_i(:,:),mat_j(:,:),mat_k(:,:),mat_l(:,:)
- allocate(mat_i(mo_tot_num,mo_tot_num**3),mat_j(mo_tot_num,mo_tot_num**3),mat_k(mo_tot_num,mo_tot_num**3),mat_l(mo_tot_num,mo_tot_num**3))
-!!!!!!!unfoldage!!!!!!!
-
- do i = 1,mo_tot_num
-  jkl = 0
-  do l=1,mo_tot_num
-   do k=1,mo_tot_num
-    do j=1,mo_tot_num
-     jkl= jkl+1
-     mat_i(i,jkl)= two_bod_alpha_beta_mo_transposed(i,j,k,l,1)
-    enddo
-   enddo
-  enddo
- enddo
-
- do j = 1,mo_tot_num
-  jkl = 0
-  do l=1,mo_tot_num
-   do k=1,mo_tot_num
-    do i=1,mo_tot_num
-     jkl= jkl+1
-     mat_j(j,jkl)= two_bod_alpha_beta_mo_transposed(i,j,k,l,1)
-    enddo
-   enddo
-  enddo
- enddo
-
-!!!!!!!test SVD!!!!!!!
- 
- double precision, allocatable :: u_i(:,:),vt_i(:,:),D_i(:)
- allocate(u_i(mo_tot_num,mo_tot_num),vt_i(mo_tot_num**3,mo_tot_num**3),D_i(mo_tot_num))
- call svd(mat_i,size(mat_i,1),u_i,size(u_i,1),D_i,vt_i,size(vt_i,1),size(mat_i,1),size(mat_i,2))
-
- double precision, allocatable :: u_j(:,:),vt_j(:,:),D_j(:)
- allocate(u_j(mo_tot_num,mo_tot_num),vt_j(mo_tot_num**3,mo_tot_num**3),D_j(mo_tot_num))
- call svd(mat_j,size(mat_j,1),u_j,size(u_j,1),D_j,vt_j,size(vt_j,1),size(mat_j,1),size(mat_j,2))
-
-!!!!!!!Selection valeur propre!!!!!!!
- double precision :: threshinou
- integer :: n_eigen_i,n_eigen_j
- threshinou= 1d-2
- print*,'************************'
- print*,'threshinou    =',threshinou
- print*,'************************'
-
- n_eigen_i = 1 
- do while ( (dabs(D_i(n_eigen_i)) .gt. threshinou) .AND. (n_eigen_i .lt. mo_tot_num)  )
-  n_eigen_i += 1
-  print*,n_eigen_i,D_i(n_eigen_i)
- enddo
- print*,'************************'
- print*,'n_eigen_i    =',n_eigen_i
- print*,'************************'
-
-
- n_eigen_j = 1 
- do while ((dabs(D_j(n_eigen_j)) .gt. threshinou) .AND. (n_eigen_j .lt. mo_tot_num))
-  n_eigen_j += 1
-  print*,n_eigen_j,D_j(n_eigen_j)
- enddo
- print*,'************************'
- print*,'n_eigen_j    =',n_eigen_j
- print*,'************************'
-!!!!!!!Creation _truncated_U_i _truncated_U_j!!!!!!!
-
- double precision, allocatable :: truncated_u_i(:,:)
- allocate(truncated_u_i(mo_tot_num,n_eigen_i))
-
- double precision, allocatable :: truncated_u_j(:,:)
- allocate(truncated_u_j(mo_tot_num,n_eigen_j))
-
- do i=1,mo_tot_num
-  do j=1,n_eigen_i
-   truncated_u_i(i,j) = u_i(i,j)
-  enddo
- enddo
-
- do i=1,mo_tot_num
-  do j=1,n_eigen_j
-   truncated_u_j(i,j) = u_j(i,j)
-  enddo
- enddo
-
-!!!!!!!test construction g!!!!!!!
-!!!!!!!transposer  
- double precision, allocatable :: truncated_u_i_t(:,:)
- allocate(truncated_u_i_t(n_eigen_i,mo_tot_num))
-
- double precision, allocatable :: truncated_u_j_t(:,:)
- allocate(truncated_u_j_t(n_eigen_j,mo_tot_num))
-
- do i = 1,n_eigen_i
-  do j = 1,mo_tot_num
-   truncated_u_i_t(i,j)=u_i(j,i)
-  enddo
- enddo
-
- do i = 1,n_eigen_j
-  do j = 1,mo_tot_num
-   truncated_u_j_t(i,j)=u_j(j,i)
-  enddo
- enddo
-
-
- double precision, allocatable :: g(:,:,:,:)
- allocate(g(n_eigen_i,n_eigen_j,n_eigen_i,n_eigen_j))
- integer :: r1,r2,r3,r4
-
- g = 0d0
-
- do i = 1,n_eigen_i
-  do j = 1,n_eigen_j
-   do k = 1,n_eigen_i
-    do l =1,n_eigen_j
-     do r1 = 1,mo_tot_num
-      do r2 = 1,mo_tot_num
-       do r3 = 1,mo_tot_num
-        do r4 = 1,mo_tot_num
-         g(i,j,k,l) += two_bod_alpha_beta_mo_transposed(r1,r2,r3,r4,1) * truncated_u_i_t(i,r1) * truncated_u_j_t(j,r2) * truncated_u_i_t(k,r3) * truncated_u_j_t(l,r4)
-        enddo
-       enddo
-      enddo
-     enddo
-    enddo
-   enddo
-  enddo
- enddo
-
-!!!!!!!integrale numerique!!!!!!!!!
-
-double precision :: E_cor_tot_normal,E_cor_tot_tucker
-
- E_cor_tot_normal = 0d0
- E_cor_tot_tucker = 0d0
-
-
- double precision :: weight  
- double precision, allocatable :: r(:),mos_array_r(:),mos_array_r_i(:),mos_array_r_j(:)
- allocate(r(3),mos_array_r(mo_tot_num),mos_array_r_i(n_eigen_i),mos_array_r_j(n_eigen_j))
-
- do j = 1,nucl_num
-  do k = 1, n_points_radial_grid -1
-   do l = 1 , n_points_integration_angular
-    r(1) = grid_points_per_atom(1,l,k,j)
-    r(2) = grid_points_per_atom(2,l,k,j)
-    r(3) = grid_points_per_atom(3,l,k,j)
-    weight = final_weight_functions_at_grid_points(l,k,j)
-    call give_all_mos_at_r(r,mos_array_r)
-    call dgemm('N','N',n_eigen_i,1,mo_tot_num,1.d0,truncated_u_i_t,n_eigen_i,mos_array_r,mo_tot_num,0.d0,mos_array_r_i,n_eigen_i)    
-    call dgemm('N','N',n_eigen_j,1,mo_tot_num,1.d0,truncated_u_j_t,n_eigen_j,mos_array_r,mo_tot_num,0.d0,mos_array_r_j,n_eigen_j)    
- 
-     do r1 =1,n_eigen_i
-      do r2 = 1,n_eigen_j
-       do r3 = 1,n_eigen_i
-        do r4 = 1,n_eigen_j
-         E_cor_tot_tucker += g(r1,r2,r3,r4) *  mos_array_r_i(r1) * mos_array_r_j(r2) * mos_array_r_i(r3) * mos_array_r_j(r4) * weight
-        enddo
-       enddo
-      enddo
-     enddo  
-
-
-   enddo
-  enddo
- enddo
-
- integer :: m,n,p,q
- do j = 1,nucl_num
-  do k = 1, n_points_radial_grid -1
-   do l = 1 , n_points_integration_angular
-    r(1) = grid_points_per_atom(1,l,k,j)
-    r(2) = grid_points_per_atom(2,l,k,j)
-    r(3) = grid_points_per_atom(3,l,k,j)
-    weight = final_weight_functions_at_grid_points(l,k,j)
-    call give_all_mos_at_r(r,mos_array_r)
-
-    do m = 1,mo_tot_num
-     do n = 1,mo_tot_num
-      do p = 1,mo_tot_num
-       do q =1,mo_tot_num
-    
-        E_cor_tot_normal += two_bod_alpha_beta_mo_transposed(q,p,n,m,1)* mos_array_r(m)*mos_array_r(n)*mos_array_r(p)*mos_array_r(q)*weight 
-       enddo
-      enddo
-     enddo
-    enddo
-   enddo
-  enddo
- enddo
-
- double precision :: accu
- accu= E_cor_tot_normal-E_cor_tot_tucker 
-
-
- print*, '**************'
- print*, 'accu             =', accu
- print*, 'E_cor_tot_normal =', E_cor_tot_normal
- print*, 'E_cor_tot_tucker =', E_cor_tot_tucker
- print*, '**************'
-
-end
-
-
  BEGIN_PROVIDER [integer,n_eigen_i_tucker,(N_states)]
 &BEGIN_PROVIDER [integer,n_eigen_j_tucker,(N_states)]
 &BEGIN_PROVIDER [integer,n_eigen_i_tucker_max]
@@ -686,7 +40,6 @@ end
  threshinou= thr_ontop_approx 
  print*,'************************'
  print*,'threshinou    =',threshinou
- print*,'aaaaaaaaaaaaaaaaaaaaaa'
  print*,'************************'
 
  double precision :: integral
@@ -735,7 +88,7 @@ end
  
   call svd(mat_j,size(mat_j,1),u_j,size(u_j,1),D_j,vt_j,size(vt_j,1),size(mat_j,1),size(mat_j,2))
 
-  print*,'SVDs Ok' 
+  !print*,'SVDs Ok' 
 !!!!!!!!Selection valeur propre!!!!!!!
  
   n_eigen_i_tucker(istate) = 1
@@ -875,95 +228,236 @@ END_PROVIDER
  enddo
 END_PROVIDER
 
-!BEGIN_PROVIDER [double precision, mos_array_r_j_tuck, (mo_tot_num,n_eigen_i_tucker_max,N_states)] 
-!BEGIN_PROVIDER [double precision, truncated_u_i_tucker_t, (n_eigen_i_tucker_max,mo_tot_num,N_states)]
-
-!do i = 1, n_points_final_grid
-! r(1) = final_grid_points(1,i)
-! r(2) = final_grid_points(2,i)
-! r(3) = final_grid_points(3,i)
-! weight=final_weight_functions_at_final_grid_points(i)
-! call give_all_mos_at_r(r,mos_array_r)
-! call dgemm('N','N',n_eigen_i_tucker(1),1,mo_tot_num,1.d0,truncated_u_i_tucker_t(1,1,1),n_eigen_i_tucker(1),mos_array_r,mo_tot_num,0.d0,mos_array_r_i,n_eigen_i_tucker(1))
-! call dgemm('N','N',n_eigen_j_tucker(1),1,mo_tot_num,1.d0,truncated_u_j_tucker_t(1,1,1),n_eigen_j_tucker(1),mos_array_r,mo_tot_num,0.d0,mos_array_r_j,n_eigen_j_tucker(1))
-
-!ND_PROVIDER
-
-
- subroutine truncated_tucker_decomposition_provider
+ BEGIN_PROVIDER [double precision, mos_array_r_i_tuck, (n_points_final_grid,n_eigen_i_tucker_max,N_states)] 
+&BEGIN_PROVIDER [double precision, mos_array_r_j_tuck, (n_points_final_grid,n_eigen_j_tucker_max,N_states)]
  implicit none
- !!!!!!integrale numerique!!!!!!!!!
- integer :: r1,r2,r3,r4,i,j,k,l
- double precision :: E_cor_tot_normal,E_cor_tot_tucker
+ integer :: istate
+ do istate = 1, N_states 
+  call dgemm('N','N',n_points_final_grid,n_eigen_i_tucker_max,mo_tot_num,1.d0,mos_in_r_array_transp,n_points_final_grid,truncated_u_i_tucker(1,1,istate),mo_tot_num,0.d0,mos_array_r_i_tuck(1,1,istate),n_points_final_grid)
+  call dgemm('N','N',n_points_final_grid,n_eigen_j_tucker_max,mo_tot_num,1.d0,mos_in_r_array_transp,n_points_final_grid,truncated_u_j_tucker(1,1,istate),mo_tot_num,0.d0,mos_array_r_j_tuck(1,1,istate),n_points_final_grid)
+ enddo
+END_PROVIDER
 
- E_cor_tot_normal = 0d0
- E_cor_tot_tucker = 0d0
+ BEGIN_PROVIDER [integer, manuel_map, (mo_tot_num**2,2)]
+&BEGIN_PROVIDER [integer, manuel_map_rev, (mo_tot_num,mo_tot_num)]
+ implicit none
+ integer :: i,j,ij
+ ij = 0
+ do i = 1,mo_tot_num
+  do j=1,mo_tot_num
+   ij += 1
+   manuel_map(ij,1) = i
+   manuel_map(ij,2) = j
+   manuel_map_rev(i,j) = ij
+  enddo
+ enddo
+
+END_PROVIDER
 
 
- double precision :: weight,wall_1,wall_2  
- double precision, allocatable :: r(:),mos_array_r(:),mos_array_r_i(:),mos_array_r_j(:)
- allocate(r(3),mos_array_r(mo_tot_num),mos_array_r_i(n_eigen_i_tucker(1)),mos_array_r_j(n_eigen_j_tucker(1)))
- print*,'blabalabalabl = ',g_tucker(1,1,1,1,1)
+ BEGIN_PROVIDER [integer, n_singular_manuel]
+ implicit none
+ integer :: i,j,k,l,ij,kl
+ double precision :: threshinou
+ threshinou= thr_ontop_approx
+
+ print*,'************************'
+ print*,'threshinou manual    =',threshinou
+ print*,'************************'
+
+ double precision, allocatable :: mat_i(:,:)
+ allocate(mat_i(mo_tot_num**2,mo_tot_num**2))
+
+ double precision, allocatable :: u_i(:,:),vt_i(:,:),D_i(:)
+ allocate(u_i(mo_tot_num**2,mo_tot_num**2),vt_i(mo_tot_num**2,mo_tot_num**2),D_i(mo_tot_num**2))
+
+ ij = 0
+ kl = 0
+ !!!!!!unfoldage!!!!!!!
+ do i=1,mo_tot_num
+  do j=1,mo_tot_num
+   ij += 1
+   kl = 0
+   do k=1,mo_tot_num
+    do l=1,mo_tot_num
+     kl += 1
+     mat_i(ij,kl)= two_bod_alpha_beta_mo_transposed(l,k,j,i,1)
+    enddo
+   enddo
+  enddo
+ enddo
+ !!!!!!!test SVD!!!!!!!
+
+  call svd(mat_i,size(mat_i,1),u_i,size(u_i,1),D_i,vt_i,size(vt_i,1),size(mat_i,1),size(mat_i,2))
+ print*,'*****SVD TERMINE*' 
+  n_singular_manuel =1 
+  print*,n_singular_manuel,D_i(n_singular_manuel)
+  do while ( (dabs(D_i(n_singular_manuel)) .gt. threshinou) .AND. (n_singular_manuel .lt. mo_tot_num**2)  )
+   n_singular_manuel += 1
+   print*,n_singular_manuel,D_i(n_singular_manuel)
+  enddo
+  if (dabs(D_i(n_singular_manuel)) .lt. threshinou) then
+   n_singular_manuel -= 1
+  endif
+
+  print*,'************************'
+  print*,'n_eigen_manual Giiiiiinnneeerrrrr    =',n_singular_manuel
+  print*,'************************'
+
+END_PROVIDER
+
+ BEGIN_PROVIDER [double precision, singular_manuel, (n_singular_manuel)]
+&BEGIN_PROVIDER [double precision, eigen_left_manuel, (mo_tot_num**2,n_singular_manuel)]
+&BEGIN_PROVIDER [double precision, eigen_right_manuel, (mo_tot_num**2,n_singular_manuel)]
+ implicit none
+ integer :: i,j,k,l,ij,kl
+ double precision, allocatable :: mat_i(:,:)
+ allocate(mat_i(mo_tot_num**2,mo_tot_num**2))
+
+ double precision, allocatable :: u_i(:,:),vt_i(:,:),D_i(:)
+ allocate(u_i(mo_tot_num**2,mo_tot_num**2),vt_i(mo_tot_num**2,mo_tot_num**2),D_i(mo_tot_num**2))
+
+ ij = 0
+ kl = 0
+ !!!!!!unfoldage!!!!!!!
+ do i = 1,mo_tot_num
+  do j=1,mo_tot_num
+   ij += 1
+   kl = 0
+   do k=1,mo_tot_num
+    do l=1,mo_tot_num
+     kl += 1
+     mat_i(ij,kl)= two_bod_alpha_beta_mo_transposed(l,k,j,i,1)
+    enddo
+   enddo
+  enddo
+ enddo
+ !!!!!!!test SVD!!!!!!!
+
+  call svd(mat_i,size(mat_i,1),u_i,size(u_i,1),D_i,vt_i,size(vt_i,1),size(mat_i,1),size(mat_i,2))
+
+ do i = 1,n_singular_manuel
+  singular_manuel(i) = D_i(i)
+  do j = 1,mo_tot_num**2
+   eigen_left_manuel(j,i) = u_i(j,i)
+   eigen_right_manuel(j,i) = vt_i(i,j)
+  enddo 
+ enddo
+
+END_PROVIDER
+
+
+ BEGIN_PROVIDER [double precision, eigen_left_manuel_r, (n_points_final_grid,n_singular_manuel)]
+&BEGIN_PROVIDER [double precision, eigen_right_manuel_r, (n_points_final_grid,n_singular_manuel)]
+ implicit none
+ integer :: i,j,k
+
+ eigen_left_manuel_r = 0d0
+ eigen_right_manuel_r = 0d0
+ !!!!!!unfoldage!!!!!!!
+ do i = 1,n_points_final_grid
+  do j = 1,n_singular_manuel 
+   do k = 1,mo_tot_num**2
+    eigen_left_manuel_r(i,j)+= eigen_left_manuel(k,j) * mos_in_r_array(manuel_map(k,1),i) * mos_in_r_array(manuel_map(k,2),i)
+    eigen_right_manuel_r(i,j)+= eigen_right_manuel(k,j) * mos_in_r_array(manuel_map(k,1),i) * mos_in_r_array(manuel_map(k,2),i) 
+   enddo
+  enddo
+ enddo
+
+END_PROVIDER
+
+ BEGIN_PROVIDER [double precision, E_cor_tot_manual_prov]
+ implicit none
+ integer :: i,k
+ double precision :: weight,wall_1,wall_2
+ 
+ E_cor_tot_manual_prov = 0d0
+ provide eigen_left_manuel_r
+
  call wall_time(wall_1)
  do i = 1, n_points_final_grid
-  r(1) = final_grid_points(1,i)
-  r(2) = final_grid_points(2,i)
-  r(3) = final_grid_points(3,i)
-  weight=final_weight_functions_at_final_grid_points(i)   
-  call give_all_mos_at_r(r,mos_array_r)
-  call dgemm('N','N',n_eigen_i_tucker(1),1,mo_tot_num,1.d0,truncated_u_i_tucker_t(1,1,1),n_eigen_i_tucker(1),mos_array_r,mo_tot_num,0.d0,mos_array_r_i,n_eigen_i_tucker(1))    
-  call dgemm('N','N',n_eigen_j_tucker(1),1,mo_tot_num,1.d0,truncated_u_j_tucker_t(1,1,1),n_eigen_j_tucker(1),mos_array_r,mo_tot_num,0.d0,mos_array_r_j,n_eigen_j_tucker(1))    
- 
+  weight=final_weight_functions_at_final_grid_points(i)
+  do k =1,n_singular_manuel
+   E_cor_tot_manual_prov += singular_manuel(k) * eigen_left_manuel_r(i,k) * eigen_right_manuel_r(i,k) * weight
+  enddo
+ enddo
+ call wall_time(wall_2)
+ print*,'wall time Manual = ',wall_2 - wall_1
+
+END_PROVIDER
+
+  BEGIN_PROVIDER [double precision, E_cor_tot_tucker_fast_prov]
+ implicit none
+ integer :: i,r1,r2,r3,r4
+ double precision :: weight,wall_1,wall_2
+
+ E_cor_tot_tucker_fast_prov = 0d0
+ provide g_tucker
+
+ call wall_time(wall_1)
+ do i = 1, n_points_final_grid
+  weight=final_weight_functions_at_final_grid_points(i)
+
    do r1 =1,n_eigen_i_tucker(1)
     do r2 = 1,n_eigen_j_tucker(1)
      do r3 = 1,n_eigen_i_tucker(1)
       do r4 = 1,n_eigen_j_tucker(1)
-       E_cor_tot_tucker += g_tucker(r1,r2,r3,r4,1) *  mos_array_r_i(r1) * mos_array_r_j(r2) * mos_array_r_i(r3) * mos_array_r_j(r4) * weight
+       E_cor_tot_tucker_fast_prov += g_tucker(r1,r2,r3,r4,1) * weight * mos_array_r_i_tuck(i,r1,1) * mos_array_r_j_tuck(i,r2,1) *mos_array_r_i_tuck(i,r3,1) * mos_array_r_j_tuck(i,r4,1)
       enddo
      enddo
     enddo
-   enddo  
+   enddo
 
  enddo
  call wall_time(wall_2)
- print*,'wall time Tucker = ',wall_2 - wall_1
+ print*,'wall time Tucker fast = ',wall_2 - wall_1
+END_PROVIDER
 
+  BEGIN_PROVIDER [double precision, E_cor_tot_normal_prov]
+ implicit none
+ integer :: i,m,n,p,q
+ double precision :: weight,wall_4,wall_3
+ E_cor_tot_normal_prov = 0d0
+ provide two_bod_alpha_beta_mo_transposed
 
- integer :: m,n,p,q
- print*,'blabalabalabl = ',two_bod_alpha_beta_mo_transposed(1,1,1,1,1) 
- call wall_time(wall_1)
+ call wall_time(wall_3)
  do i = 1, n_points_final_grid
-  r(1) = final_grid_points(1,i)
-  r(2) = final_grid_points(2,i)
-  r(3) = final_grid_points(3,i)
   weight=final_weight_functions_at_final_grid_points(i)
-
-
-  call give_all_mos_at_r(r,mos_array_r)
 
   do m = 1,mo_tot_num
    do n = 1,mo_tot_num
     do p = 1,mo_tot_num
      do q =1,mo_tot_num
-  
-      E_cor_tot_normal += two_bod_alpha_beta_mo_transposed(q,p,n,m,1)* mos_array_r(m)*mos_array_r(n)*mos_array_r(p)*mos_array_r(q)*weight 
+      E_cor_tot_normal_prov += two_bod_alpha_beta_mo_transposed(q,p,n,m,1) *mos_in_r_array(m,i) * mos_in_r_array(n,i) * mos_in_r_array(p,i) * mos_in_r_array(q,i) * weight
      enddo
     enddo
    enddo
   enddo
 
  enddo
- call wall_time(wall_2)
- print*,'wall time exact  = ',wall_2 - wall_1
+ call wall_time(wall_4)
+print*,'wall time exact  = ',wall_4 - wall_3
+END_PROVIDER
+
+ subroutine comparaison_decomp_tensor
+ implicit none
 
  double precision :: accu
- accu= E_cor_tot_normal-E_cor_tot_tucker 
+ accu= E_cor_tot_normal_prov-E_cor_tot_tucker_fast_prov
+
+ double precision :: accu_Manu
+ accu_Manu= E_cor_tot_normal_prov-E_cor_tot_manual_prov
 
 
  print*, '**************'
- print*, 'Absolute error            =', accu
- print*, 'E_cor_tot_normal_provider =', E_cor_tot_normal
- print*, 'E_cor_tot_tucker_provider =', E_cor_tot_tucker
+ print*, 'Absolute error tucker          =', accu
+ print*, 'Absolute error manual          =', accu_Manu
  print*, '**************'
 
+ print*, '**************'
+ print*, 'E_cor_tot_normal_provider      =', E_cor_tot_normal_prov
+ print*, 'E_cor_tot_manual_provider      =', E_cor_tot_manual_prov
+ print*, 'E_cor_tot_tucker_provider_fast =', E_cor_tot_tucker_fast_prov
+ print*, '**************'
  end
+
