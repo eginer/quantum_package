@@ -156,7 +156,7 @@ subroutine make_selection_buffer_s2(b)
   logical, allocatable           :: duplicate(:)
 
   n_d = b%cur
-  allocate(o(N_int,2,b%cur), iorder(n_d), duplicate(n_d), bit_tmp(n_d), &
+  allocate(o(N_int,2,n_d), iorder(n_d), duplicate(n_d), bit_tmp(n_d), &
            tmp_array(N_int,2,n_d), val(n_d) )
 
   do i=1,n_d
@@ -253,7 +253,12 @@ subroutine make_selection_buffer_s2(b)
   do i=1,n_p
     call occ_pattern_to_dets_size(o(1,1,i),sze,elec_alpha_num,N_int)
     n_d = n_d + sze
-    if (n_d > b%cur) exit
+    if (n_d > b%cur) then
+      if (n_d - b%cur > b%cur - n_d + sze) then
+        n_d = n_d - sze
+      endif
+      exit
+    endif
   enddo
 
   allocate(b%det(N_int,2,n_d), b%val(n_d))
@@ -262,8 +267,7 @@ subroutine make_selection_buffer_s2(b)
     n=n_d
     call occ_pattern_to_dets_size(o(1,1,i),n,elec_alpha_num,N_int)
     call occ_pattern_to_dets(o(1,1,i),b%det(1,1,k),n,elec_alpha_num,N_int)
-    b%val(k) = val(i)
-    do j=k+1,k+n-1
+    do j=k,k+n-1
       b%val(j) = val(i)
     enddo
     k = k+n
@@ -273,3 +277,6 @@ subroutine make_selection_buffer_s2(b)
   b%N = n_d
   b%cur = n_d
 end
+
+
+
