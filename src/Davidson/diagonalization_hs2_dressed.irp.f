@@ -479,7 +479,7 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
           do i=1,sze
             U(i,shift2+k) =  &
               (lambda(k) * U(i,shift2+k) - W(i,shift2+k) )      &
-                * (1.d0 + s2(k) * U(i,shift2+k) - S(i,shift2+k) - S_z2_Sz &
+                * (1.d0 + expected_s2 * U(i,shift2+k) - (S(i,shift2+k) + S_z2_Sz) &
               )/max(H_jj(i) - lambda (k),1.d-2)
           enddo
 
