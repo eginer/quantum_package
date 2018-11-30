@@ -403,8 +403,8 @@ subroutine lapack_diagd(eigvalues,eigvectors,H,nmax,n)
 ! print*,'n = ',n
 
   A=H
-  lwork = 2*n*n + 6*n+ 1
-  liwork = 5*n + 3
+  lwork = max(1000,2*n*n + 6*n+ 1)
+  liwork = max(5*n + 3,1000)
   allocate (work(lwork),iwork(liwork))
 
   lwork = -1

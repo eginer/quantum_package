@@ -204,7 +204,8 @@ subroutine make_selection_buffer_s2(b)
         endif
       enddo
       if (dup) then
-        val(i) = val(i) + val(j)
+!        val(i) = val(i) + val(j)
+        val(i) = max(val(i), val(j))
         duplicate(j) = .True.
       endif
       j+=1
@@ -254,14 +255,14 @@ subroutine make_selection_buffer_s2(b)
     call occ_pattern_to_dets_size(o(1,1,i),sze,elec_alpha_num,N_int)
     n_d = n_d + sze
     if (n_d > b%cur) then
-      if (n_d - b%cur > b%cur - n_d + sze) then
-        n_d = n_d - sze
-      endif
+!      if (n_d - b%cur > b%cur - n_d + sze) then
+!        n_d = n_d - sze
+!      endif
       exit
     endif
   enddo
 
-  allocate(b%det(N_int,2,n_d), b%val(n_d))
+  allocate(b%det(N_int,2,2*n_d), b%val(2*n_d))
   k=1
   do i=1,n_p
     n=n_d
@@ -274,7 +275,7 @@ subroutine make_selection_buffer_s2(b)
     if (k > n_d) exit
   enddo
   deallocate(o)
-  b%N = n_d
+  b%N = 2*n_d
   b%cur = n_d
 end
 
