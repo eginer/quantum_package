@@ -281,7 +281,8 @@ END_PROVIDER
    do k=1,mo_tot_num
     do l=1,mo_tot_num
      kl += 1
-     mat_i(ij,kl)= two_bod_alpha_beta_mo_transposed(l,k,j,i,1)
+     !                                               1 2 2 1
+     mat_i(ij,kl) = two_bod_alpha_beta_mo_transposed(l,k,j,i,1)
     enddo
    enddo
   enddo
@@ -460,4 +461,24 @@ END_PROVIDER
  print*, 'E_cor_tot_tucker_provider_fast =', E_cor_tot_tucker_fast_prov
  print*, '**************'
  end
+
+
+
+ subroutine comparaison_manual_tensor
+ implicit none
+
+ double precision :: accu_Manu
+ accu_Manu= E_cor_tot_normal_prov-E_cor_tot_manual_prov
+
+
+ print*, '**************'
+ print*, 'Absolute error manual          =', accu_Manu
+ print*, '**************'
+
+ print*, '**************'
+ print*, 'E_cor_tot_normal_provider      =', E_cor_tot_normal_prov
+ print*, 'E_cor_tot_manual_provider      =', E_cor_tot_manual_prov
+ print*, '**************'
+ end
+
 
