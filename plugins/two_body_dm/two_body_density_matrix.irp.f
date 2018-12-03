@@ -578,17 +578,3 @@
   enddo
  endif
  end
-
-
- BEGIN_PROVIDER [double precision, two_bod_alpha_beta_ao, (ao_num,ao_num,ao_num,ao_num,N_states)]
- implicit none
- BEGIN_DOC
- !  two_bod_alpha_beta(i,j,k,l) = <Psi| a^{dagger}_{j,alpha} a^{dagger}_{l,beta} a_{k,beta} a_{i,alpha} | Psi>
- !  note that no 1/2 factor is introduced in order to take into acccount for the spin symmetry
- END_DOC
-  two_bod_alpha_beta_ao = 0.d0
- END_PROVIDER 
-
-
-
-
