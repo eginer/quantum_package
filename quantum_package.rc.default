@@ -26,7 +26,11 @@ export LIBRARY_PATH=$(qp_prepend_export "LIBRARY_PATH" "${QP_ROOT}"/lib:"${QP_RO
 export C_INCLUDE_PATH=$(qp_prepend_export "C_INCLUDE_PATH" "${QP_ROOT}"/include)
 
 if [[ $SHELL == "/bin/bash" ]] ; then
-  source ${QP_EZFIO}/Bash/ezfio.sh
+  if [[ -f ${QP_EZFIO}/Bash/ezfio.sh ]]; then
+      source ${QP_EZFIO}/Bash/ezfio.sh
+  else
+      echo "EZFIO is not installed."
+  fi
 fi
 
 #### END Don't modify 
