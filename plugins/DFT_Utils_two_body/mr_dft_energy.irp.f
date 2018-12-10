@@ -36,8 +36,10 @@ END_PROVIDER
   print*, ''
   print*,  '****************************************'
   print*, ''
-  write(*, '(A22,X,F16.10)') 'Approx eigenvalue   = ',Fock_matrix_expectation_value + psi_energy_erf
+  write(*, '(A22,X,F16.10)') 'Approx eigenvalue   = ',electronic_energy_mr_dft+nuclear_repulsion + Trace_v_Hxc - (short_range_Hartree + energy_x + energy_c)
   write(*, '(A22,X,F16.10)') 'Trace_v_xc          = ',Trace_v_xc
+  write(*, '(A22,X,F16.10)') 'Trace_v_Hxc         = ',Trace_v_Hxc
+  write(*, '(A22,X,F16.10)') 'shifting_constant   = ',shifting_constant
  
   write(*, '(A28,X,F16.10)') 'Variational energy of Psi = ',psi_energy
   write(*, '(A28,X,F16.10)') 'psi_energy_bielec         = ',psi_energy_bielec

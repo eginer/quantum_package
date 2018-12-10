@@ -56,10 +56,11 @@ END_PROVIDER
     effective_one_e_potential_without_kin(i,j,istate) = short_range_Hartree_operator(i,j,istate) + mo_nucl_elec_integral(i,j)                   & 
                                    + 0.5d0 * (potential_x_alpha_mo(i,j,istate) + potential_c_alpha_mo(i,j,istate)                               &
                                    +          potential_x_beta_mo(i,j,istate)  + potential_c_beta_mo(i,j,istate)   )
+    shifted_effective_one_e_potential_without_kin(j,i,istate) = effective_one_e_potential_without_kin(j,i,istate)
    enddo
   enddo
   do i = 1, mo_tot_num
-   shifted_effective_one_e_potential_without_kin(i,i,istate) = effective_one_e_potential_without_kin(i,i,istate) + shifting_constant(istate)
+   shifted_effective_one_e_potential_without_kin(i,i,istate) += shifting_constant(istate)
   enddo
  enddo
 END_PROVIDER 

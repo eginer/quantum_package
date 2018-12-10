@@ -106,8 +106,8 @@ fi
 # value of the convergence of the energy for the self-consistent CIPSI calculation at a given number of determinant
 thresh=$6
 if [ "$thresh" = "" ]; then
- echo "you did not specify the \$thresh parameter, it will be set to 0.0000001 by default (run --help for explanations)"
- thresh=0.0000001
+ echo "you did not specify the \$thresh parameter, it will be set to 0.0000000001 by default (run --help for explanations)"
+ thresh=0.0000000001
 fi
  echo "\$thresh is " $thresh
 
@@ -134,7 +134,7 @@ echo "WFT"  > ${ezfio}/dft_keywords/density_for_dft
 qp_edit -c ${ezfio}
 
 # write the effective Hamiltonian containing long-range interaction and short-range effective potential to be diagonalized in a self-consistent way
-qp_run write_integrals_restart_dft_no_ecmd ${ezfio} | tee ${ezfio}_rsdft-0
+qp_run write_effective_RSDFT_hamiltonian ${ezfio} | tee ${ezfio}_rsdft-0
 
 # save the RS-KS one-body density for the damping on the density 
 qp_run save_one_body_dm ${ezfio} 
@@ -143,7 +143,7 @@ echo "damping_rs_dft"  > ${ezfio}/dft_keywords/density_for_dft
 # specify the damping factor on the density : 0 == no update of the density, 1 == full update of the density 
 echo "0.75"            > ${ezfio}/dft_keywords/damping_for_rs_dft
 
-for i in {1..3}
+for i in {1..1}
 do
 #  run the CIPSI calculation with the effective Hamiltonian already stored in the EZFIO folder 
    echo "F"  >    ${ezfio}/determinants/read_wf 
@@ -155,7 +155,7 @@ do
    for j in {1..100}
    do
       # write the new effective Hamiltonian with the damped density (and the current density to be damped with the next density)
-      qp_run write_integrals_restart_dft_no_ecmd ${ezfio} | tee ${ezfio}/rsdft-${i}-${j}
+      qp_run write_effective_RSDFT_hamiltonian ${ezfio} | tee ${ezfio}/rsdft-${i}-${j}
       # value of the variational RS-DFT energy 
       EV_new=`grep "TOTAL ENERGY        =" ${ezfio}/rsdft-${i}-${j} | cut -d "=" -f 2`
       # rediagonalize the new effective Hamiltonian to obtain a new wave function and a new density 
@@ -170,5 +170,13 @@ do
       fi
       EV=$EV_new
     done
-    qp_run write_integrals_restart_dft_no_ecmd ${ezfio} | tee ${ezfio}_rsdft-${i}-final
+
+    qp_run write_effective_RSDFT_hamiltonian ${ezfio} | tee ${ezfio}_rsdft-${i}-final
+
+    echo "T"  >    ${ezfio}/determinants/read_wf
+
+    qp_run fci_zmq ${ezfio} | tee ${ezfio}_FCI_final.out_$ndetmax
+    
+    qp_run print_RSDFT_variational_energy ${ezfio} | tee ${ezfio}_printdft_final.out_$ndetmax
+    
 done

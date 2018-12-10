@@ -36,24 +36,20 @@ end
  ! Compute the number of SV > thresh
  END_DOC
  integer :: i,j,k,l,jkl,istate
- double precision :: threshinou
- threshinou= thr_ontop_approx 
+ double precision :: thresh
+ thresh= thr_ontop_approx 
  print*,'************************'
- print*,'threshinou    =',threshinou
+ print*,'thresh     truncated Tucker decomposition    =',thresh
  print*,'************************'
 
  double precision :: integral
  double precision, allocatable :: mat_i(:,:),mat_j(:,:)
-  print*,'alocate1'
  allocate(mat_i(mo_tot_num,mo_tot_num**3),mat_j(mo_tot_num,mo_tot_num**3))
 
  double precision, allocatable :: u_i(:,:),vt_i(:,:),D_i(:)
-
-  print*,'alocate2'
  allocate(u_i(mo_tot_num,mo_tot_num),vt_i(mo_tot_num**3,mo_tot_num**3),D_i(mo_tot_num))
 
  double precision, allocatable :: u_j(:,:),vt_j(:,:),D_j(:)
-  print*,'alocate3'
  allocate(u_j(mo_tot_num,mo_tot_num),vt_j(mo_tot_num**3,mo_tot_num**3),D_j(mo_tot_num))
 !!!!!!!unfoldage!!!!!!!
  do istate = 1,N_states
@@ -68,7 +64,7 @@ end
     enddo
    enddo
   enddo
- 
+
   do j = 1,mo_tot_num
    jkl = 0
    do l=1,mo_tot_num
@@ -80,24 +76,22 @@ end
     enddo
    enddo
   enddo
-  print*,'Unfoldage OK'
  
 !!!!!!!!test SVD!!!!!!!
   
   call svd(mat_i,size(mat_i,1),u_i,size(u_i,1),D_i,vt_i,size(vt_i,1),size(mat_i,1),size(mat_i,2))
- 
+
   call svd(mat_j,size(mat_j,1),u_j,size(u_j,1),D_j,vt_j,size(vt_j,1),size(mat_j,1),size(mat_j,2))
 
-  !print*,'SVDs Ok' 
 !!!!!!!!Selection valeur propre!!!!!!!
  
   n_eigen_i_tucker(istate) = 1
   print*,n_eigen_i_tucker(istate),D_i(n_eigen_i_tucker(istate)) 
-  do while ( (dabs(D_i(n_eigen_i_tucker(istate))) .gt. threshinou) .AND. (n_eigen_i_tucker(istate) .lt. mo_tot_num)  )
+  do while ( (dabs(D_i(n_eigen_i_tucker(istate))) .gt. thresh) .AND. (n_eigen_i_tucker(istate) .lt. mo_tot_num)  )
    n_eigen_i_tucker(istate) += 1
    print*,n_eigen_i_tucker(istate),D_i(n_eigen_i_tucker(istate))
   enddo
-  if (dabs(D_i(n_eigen_i_tucker(istate))) .lt. threshinou) then
+  if (dabs(D_i(n_eigen_i_tucker(istate))) .lt. thresh) then
    n_eigen_i_tucker(istate) -= 1 
   endif
 
@@ -108,11 +102,11 @@ end
  
   n_eigen_j_tucker(istate) = 1 
   print*,n_eigen_j_tucker(istate),D_j(n_eigen_j_tucker(istate))
-  do while ((dabs(D_j(n_eigen_j_tucker(istate))) .gt. threshinou) .AND. (n_eigen_j_tucker(istate) .lt. mo_tot_num))
+  do while ((dabs(D_j(n_eigen_j_tucker(istate))) .gt. thresh) .AND. (n_eigen_j_tucker(istate) .lt. mo_tot_num))
    n_eigen_j_tucker += 1
    print*,n_eigen_j_tucker(istate),D_j(n_eigen_j_tucker(istate))
   enddo
-  if (dabs(D_j(n_eigen_j_tucker(istate))) .lt. threshinou) then
+  if (dabs(D_j(n_eigen_j_tucker(istate))) .lt. thresh) then
    n_eigen_j_tucker(istate) -= 1
   endif
   print*,'************************'
@@ -206,19 +200,66 @@ END_PROVIDER
     truncated_u_j_tucker_t(i,j,istate)=u_j(j,i)
    enddo
   enddo
+
+
+ double precision, allocatable ::  g_tucker_1(:,:,:,:)
+ allocate(g_tucker_1(n_eigen_i_tucker(istate),mo_tot_num,mo_tot_num,mo_tot_num))
  
+ g_tucker_1 = 0d0
+
   do i = 1,n_eigen_i_tucker(istate)
-   do j = 1,n_eigen_j_tucker(istate)
-    do k = 1,n_eigen_i_tucker(istate)
-     do l =1,n_eigen_j_tucker(istate)
-      do r1 = 1,mo_tot_num
-       do r2 = 1,mo_tot_num
-        do r3 = 1,mo_tot_num
-         do r4 = 1,mo_tot_num
-          g_tucker(i,j,k,l,istate) += two_bod_alpha_beta_mo_transposed(r1,r2,r3,r4,istate) * truncated_u_i_tucker_t(i,r1,istate) * truncated_u_j_tucker_t(j,r2,istate) * truncated_u_i_tucker_t(k,r3,istate) * truncated_u_j_tucker_t(l,r4,istate)
-         enddo
-        enddo
-       enddo
+   do r1 = 1,mo_tot_num
+    do r2 = 1,mo_tot_num
+     do r3 = 1,mo_tot_num
+      do r4 = 1,mo_tot_num
+       g_tucker_1(i,r2,r3,r4) += two_bod_alpha_beta_mo_transposed(r1,r2,r3,r4,istate) * truncated_u_i_tucker_t(i,r1,istate) 
+      enddo
+     enddo
+    enddo
+   enddo
+  enddo
+
+ double precision, allocatable ::  g_tucker_2(:,:,:,:)
+ allocate(g_tucker_2(n_eigen_i_tucker(istate),n_eigen_j_tucker(istate),mo_tot_num,mo_tot_num))
+
+ g_tucker_2 = 0d0
+
+  do j = 1,n_eigen_j_tucker(istate)
+   do r1 = 1,n_eigen_i_tucker(istate)
+    do r2 = 1,mo_tot_num
+     do r3 = 1,mo_tot_num
+      do r4 = 1,mo_tot_num
+       g_tucker_2(r1,j,r3,r4) += g_tucker_1(r1,r2,r3,r4) * truncated_u_j_tucker_t(j,r2,istate) 
+      enddo
+     enddo
+    enddo
+   enddo
+  enddo
+
+ double precision, allocatable ::  g_tucker_3(:,:,:,:)
+ allocate(g_tucker_3(n_eigen_i_tucker(istate),n_eigen_j_tucker(istate),n_eigen_i_tucker(istate),mo_tot_num))
+
+ g_tucker_3 = 0d0
+
+  do k = 1,n_eigen_i_tucker(istate)
+   do r1 = 1,n_eigen_i_tucker(istate)
+    do r2 = 1,n_eigen_j_tucker(istate)
+     do r3 = 1,mo_tot_num
+      do r4 = 1,mo_tot_num
+       g_tucker_3(r1,r2,k,r4) += g_tucker_2(r1,r2,r3,r4) * truncated_u_i_tucker_t(k,r3,istate)                             
+      enddo
+     enddo
+    enddo
+   enddo
+  enddo
+
+
+  do l = 1,n_eigen_j_tucker(istate)
+   do r1 = 1,n_eigen_i_tucker(istate)
+    do r2 = 1,n_eigen_j_tucker(istate)
+     do r3 = 1,n_eigen_i_tucker(istate)
+      do r4 = 1,mo_tot_num
+       g_tucker(r1,r2,r3,l,istate) += g_tucker_3(r1,r2,r3,r4) * truncated_u_j_tucker_t(l,r4,istate)                             
       enddo
      enddo
     enddo
@@ -258,7 +299,7 @@ END_PROVIDER
  BEGIN_PROVIDER [integer, n_singular_manuel]
  implicit none
  integer :: i,j,k,l,ij,kl
- double precision :: threshinou
+ double precision :: threshinou 
  threshinou= thr_ontop_approx
 
  print*,'************************'
@@ -447,7 +488,7 @@ END_PROVIDER
  accu= E_cor_tot_normal_prov-E_cor_tot_tucker_fast_prov
 
  double precision :: accu_Manu
- accu_Manu= E_cor_tot_normal_prov-E_cor_tot_manual_prov
+ accu_Manu= E_cor_tot_normal_prov-integral_on_top_of_r_approx_svd(1)
 
 
  print*, '**************'
@@ -457,7 +498,7 @@ END_PROVIDER
 
  print*, '**************'
  print*, 'E_cor_tot_normal_provider      =', E_cor_tot_normal_prov
- print*, 'E_cor_tot_manual_provider      =', E_cor_tot_manual_prov
+ print*, 'E_cor_tot_manual_provider      =', integral_on_top_of_r_approx_svd(1)
  print*, 'E_cor_tot_tucker_provider_fast =', E_cor_tot_tucker_fast_prov
  print*, '**************'
  end
