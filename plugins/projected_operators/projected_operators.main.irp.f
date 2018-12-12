@@ -3,11 +3,20 @@ program projected_operators
   BEGIN_DOC
 ! TODO
   END_DOC
-! read_wf = .True.
-! touch read_wf
+  read_wf = .True.
+  touch read_wf
 ! call routine_v
 ! call routine_rho 
-  call routine_final
+! call routine_final
+ call print_energy
+
+end
+
+subroutine print_energy
+ implicit none
+ print*,'psi_energy_bielec_ab = ',psi_energy_bielec_ab
+ print*,'psi_energy_bielec    = ',psi_energy_bielec
+ print*,'psi_energy           = ',psi_energy - psi_energy_monoelec
 
 end
 

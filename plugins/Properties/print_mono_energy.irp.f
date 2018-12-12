@@ -13,9 +13,9 @@ subroutine routine
  print*, 'density mono energy = ',average
  print*, '**********************'
 !print*, 'psi_energy_bielec   = ',psi_energy_bielec(1)
-!print*, 'psi_energy_monoelec = ',psi_energy_monoelec(1)
-!print*, 'total energy        = ',psi_energy_monoelec(1) + psi_energy_bielec(1)
-!print*, 'total energy + nucl = ',psi_energy_monoelec(1) + psi_energy_bielec(1) + nuclear_repulsion
+!print*, 'psi_energy_h_core = ',psi_energy_h_core(1)
+!print*, 'total energy        = ',psi_energy_h_core(1) + psi_energy_bielec(1)
+!print*, 'total energy + nucl = ',psi_energy_h_core(1) + psi_energy_bielec(1) + nuclear_repulsion
 !print*, 'psi_energy          = ',psi_energy(1)
 !print*, 'psi_energy + nucl   = ',psi_energy(1) + nuclear_repulsion
  
