@@ -5,7 +5,8 @@ program two_body_dm
   END_DOC
  read_wf = .True.
  touch read_wf
- call routine_print
+! call routine_print
+ call comparaison_decomp_tensor
 end
 
 subroutine routine_print

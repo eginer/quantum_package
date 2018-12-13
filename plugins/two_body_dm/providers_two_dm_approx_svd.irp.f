@@ -165,12 +165,16 @@ BEGIN_PROVIDER [double precision, integral_on_top_of_r_approx_svd, (N_states)]
 ! Numerical integration of the on top pair density approximated by a svd 
  END_DOC 
  integer :: i,k
- double precision :: weight,wall_1,wall_2
+ double precision :: weight,wall_1,wall_2,wall_3,wall_4
  
  integral_on_top_of_r_approx_svd = 0.d0
+ call cpu_time(wall_3)
  provide singular_left_vec_approx_svd_two_dm_at_r
+ call cpu_time(wall_4)
 
- call wall_time(wall_1)
+ print*,'cpu time SVD provinding = ',wall_4 - wall_3
+
+ call cpu_time(wall_1)
  integer :: istate
  do istate = 1, N_states
   do i = 1, n_points_final_grid
@@ -178,8 +182,8 @@ BEGIN_PROVIDER [double precision, integral_on_top_of_r_approx_svd, (N_states)]
    integral_on_top_of_r_approx_svd(istate) += on_top_of_r_approx_svd(i,istate) * weight
   enddo
  enddo
- call wall_time(wall_2)
-
+ call cpu_time(wall_2)
+ print*,'cpu time SVD approx = ',wall_2 - wall_1
 END_PROVIDER
 
 BEGIN_PROVIDER [double precision, on_top_of_r_approx_svd, (n_points_final_grid,N_states)]
