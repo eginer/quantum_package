@@ -164,7 +164,8 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
       exit
     endif
   enddo
-  call omp_set_num_threads(nproc_target)
+  nthreads_davidson = nproc_target
+  TOUCH nthreads_davidson
   call write_int(6,nproc_target,'Number of threads for diagonalization')
   call write_double(6, r1, 'Memory(Gb)')
   write(6,'(A)') ''
@@ -553,7 +554,7 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
       y, s_, s_tmp,                                                  &
       lambda                                                         &
       )
-  call omp_set_num_threads(nproc)
+  FREE nthreads_davidson
 end
 
 
