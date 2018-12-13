@@ -19,13 +19,14 @@ subroutine write_time(iunit)
   if (.not.mpi_master) then
     return
   endif
+  write(6,*)
+  call print_memory_usage()
   call cpu_time(ct)
   call wall_time(wt)
-  write(iunit,*)
-  write(iunit,'(A,F15.6,A,F15.6,A)') &
+  write(6,'(A,F15.6,A,F15.6,A)') &
     '.. >>>>> [ WALL TIME: ', wt-output_wall_time_0, &
         ' s ] [ CPU  TIME: ', ct-output_cpu_time_0, ' s ] <<<<< ..'
-  write(iunit,*)
+  write(6,*)
 end
  
 subroutine write_double(iunit,value,label)
@@ -42,7 +43,7 @@ subroutine write_double(iunit,value,label)
   character*(64), parameter      :: f = '(A50,G24.16)'
   character*(50)                 :: newlabel
   write(newlabel,'(A,A)') '* ',trim(label)
-  write(iunit,f) newlabel, value
+  write(6,f) newlabel, value
 end
 
 
@@ -60,7 +61,7 @@ subroutine write_int(iunit,value,label)
   character*(64), parameter      :: f = '(A50,I16)'
   character*(50)                 :: newlabel
   write(newlabel,'(A,A)') '* ',trim(label)
-  write(iunit,f) newlabel, value
+  write(6,f) newlabel, value
 end
 
 
@@ -78,7 +79,7 @@ subroutine write_bool(iunit,value,label)
   character*(64), parameter      :: f = '(A50,L1)'
   character*(50)                 :: newlabel
   write(newlabel,'(A,A)') '* ',trim(label)
-  write(iunit,f) newlabel, value
+  write(6,f) newlabel, value
 end
 
 

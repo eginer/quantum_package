@@ -309,7 +309,7 @@ BEGIN_PROVIDER [ integer, qp_max_mem ]
  END_DOC
  character*(128) :: env
 
- qp_max_mem = -1
+ qp_max_mem = huge(1_8)
  call getenv('QP_MAXMEM',env)
  if (trim(env) /= '') then
     read(env,*) qp_max_mem

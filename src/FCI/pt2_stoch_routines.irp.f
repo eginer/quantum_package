@@ -46,6 +46,12 @@ logical function testTeethBuilding(minF, N)
   double precision, allocatable :: tilde_w(:), tilde_cW(:)
   integer, external :: dress_find_sample
 
+  double precision :: rss
+  double precision, external :: memory_of_double, memory_of_int
+
+  rss = memory_of_double(2*N_det_generators+1)
+  call check_mem(rss,irp_here)
+
   allocate(tilde_w(N_det_generators), tilde_cW(0:N_det_generators))
   
   do i=1,N_det_generators
@@ -296,7 +302,15 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error, varianc
   logical :: do_exit
 
 
-  zmq_to_qp_run_socket = new_zmq_to_qp_run_socket()
+  double precision :: rss
+  double precision, external :: memory_of_double, memory_of_int
+
+  rss  = memory_of_int(pt2_n_tasks_max*2+N_det_generators*2)
+  rss += memory_of_double(N_states*N_det_generators)*3.d0 
+  rss += memory_of_double(N_states*pt2_n_tasks_max)*3.d0 
+  rss += memory_of_double(pt2_N_teeth+1)*4.d0 
+  call check_mem(rss,irp_here)
+
   allocate(task_id(pt2_n_tasks_max), index(pt2_n_tasks_max), f(N_det_generators))
   allocate(d(N_det_generators+1))
   allocate(eI(N_states, N_det_generators), eI_task(N_states, pt2_n_tasks_max))
@@ -304,7 +318,11 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error, varianc
   allocate(nI(N_states, N_det_generators), nI_task(N_states, pt2_n_tasks_max))
   allocate(S(pt2_N_teeth+1), S2(pt2_N_teeth+1))
   allocate(T2(pt2_N_teeth+1), T3(pt2_N_teeth+1))
-   
+
+
+  
+  zmq_to_qp_run_socket = new_zmq_to_qp_run_socket()
+  
   pt2(:) = -huge(1.)
   error(:) = huge(1.)
   variance(:) = huge(1.)
@@ -492,6 +510,12 @@ BEGIN_PROVIDER[ double precision, pt2_u, (N_det_generators)]
   double precision :: dt
 
   ncache = min(N_det_generators,10000)
+
+  double precision :: rss
+  double precision, external :: memory_of_double, memory_of_int
+  rss = memory_of_int(ncache)*dble(pt2_N_teeth) + memory_of_int(N_det_generators)
+  call check_mem(rss,irp_here)
+
   allocate(ii(pt2_N_teeth,ncache),pt2_d(N_det_generators))
 
   pt2_R(:) = 0
@@ -570,6 +594,11 @@ END_PROVIDER
   double precision, allocatable :: tilde_w(:), tilde_cW(:)
   double precision :: r, tooth_width
   integer, external :: pt2_find_sample
+
+  double precision :: rss
+  double precision, external :: memory_of_double, memory_of_int
+  rss = memory_of_double(2*N_det_generators+1)
+  call check_mem(rss,irp_here)
 
   allocate(tilde_w(N_det_generators), tilde_cW(0:N_det_generators))
   

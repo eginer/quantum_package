@@ -4,6 +4,11 @@ program fci_zmq
   double precision, allocatable  :: pt2(:), variance(:), norm(:), rpt2(:)
   integer                        :: n_det_before, to_select
   
+  double precision :: rss
+  double precision, external :: memory_of_double
+  rss = memory_of_double(N_states)*4.d0
+  call check_mem(rss,irp_here)
+
   allocate (pt2(N_states), rpt2(N_states), norm(N_states), variance(N_states))
 
   double precision               :: hf_energy_ref

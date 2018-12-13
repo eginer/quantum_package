@@ -177,6 +177,10 @@ subroutine selection_collector(zmq_socket_pull, b, N, pt2, variance, norm)
 
   zmq_to_qp_run_socket = new_zmq_to_qp_run_socket()
   call create_selection_buffer(N, N*2, b2)
+  double precision :: rss
+  double precision, external :: memory_of_int
+  rss = memory_of_int(N_det_generators)
+  call check_mem(rss,irp_here)
   allocate(task_id(N_det_generators))
   more = 1
   pt2(:)           = 0d0

@@ -618,8 +618,6 @@ subroutine save_wavefunction_specified(ndet,nstates,psidet,psicoef,ndetsave,inde
   call ezfio_set_determinants_psi_det(psi_det_save)
   deallocate (psi_det_save)
   
-  progress_bar(1) = 7
-  progress_value = dble(progress_bar(1))
   allocate (psi_coef_save(ndetsave,nstates))
   double precision               :: accu_norm(nstates)
   accu_norm = 0.d0

@@ -8,6 +8,12 @@ subroutine create_selection_buffer(N, siz_, res)
 
   integer :: siz
   siz = max(siz_,1)
+
+  double precision :: rss
+  double precision, external :: memory_of_double, memory_of_int
+  rss = memory_of_double(siz)*(N_int*2+1)
+  call check_mem(rss,irp_here)
+
   allocate(res%det(N_int, 2, siz), res%val(siz))
 
   res%val(:) = 0d0
@@ -68,6 +74,10 @@ subroutine merge_selection_buffers(b1, b2)
     endif
   enddo
   nmwen = min(b1%N, b1%cur+b2%cur)
+  double precision :: rss
+  double precision, external :: memory_of_double
+  rss = memory_of_double(size(b1%val)) + 2*N_int*memory_of_double(size(b1%det,3))
+  call check_mem(rss,irp_here)
   allocate( val(size(b1%val)), detmp(N_int, 2, size(b1%det,3)) )
   i1=1
   i2=1
@@ -122,6 +132,10 @@ subroutine sort_selection_buffer(b)
   if (b%N == 0 .or. b%cur == 0) return
   nmwen = min(b%N, b%cur)
 
+  double precision :: rss
+  double precision, external :: memory_of_double, memory_of_int
+  rss = memory_of_int(b%cur) + 2*N_int*memory_of_double(size(b%det,3))
+  call check_mem(rss,irp_here)
   allocate(iorder(b%cur), detmp(N_int, 2, size(b%det,3)))
   do i=1,b%cur
     iorder(i) = i
@@ -156,6 +170,10 @@ subroutine make_selection_buffer_s2(b)
   logical, allocatable           :: duplicate(:)
 
   n_d = b%cur
+  double precision :: rss
+  double precision, external :: memory_of_double, memory_of_int
+  rss = (4*N_int+4)*memory_of_double(n_d)
+  call check_mem(rss,irp_here)
   allocate(o(N_int,2,n_d), iorder(n_d), duplicate(n_d), bit_tmp(n_d), &
            tmp_array(N_int,2,n_d), val(n_d) )
 
@@ -262,6 +280,8 @@ subroutine make_selection_buffer_s2(b)
     endif
   enddo
 
+  rss = (4*N_int+2)*memory_of_double(n_d)
+  call check_mem(rss,irp_here)
   allocate(b%det(N_int,2,2*n_d), b%val(2*n_d))
   k=1
   do i=1,n_p

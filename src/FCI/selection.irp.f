@@ -321,6 +321,11 @@ subroutine select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_d
   integer :: maskInd
 
   integer(bit_kind), allocatable:: preinteresting_det(:,:,:)
+  double precision :: rss
+  double precision, external :: memory_of_double, memory_of_int
+  rss = memory_of_int( (8*N_int+5)*N_det + N_det_alpha_unique + 4*N_int*N_det_selectors)
+  rss += memory_of_double(mo_tot_num*mo_tot_num*(N_states+1))
+  call check_mem(rss,irp_here)
   allocate (preinteresting_det(N_int,2,N_det))
 
   monoAdo = .true.

@@ -25,6 +25,12 @@ subroutine run_pt2_slave(thread,iproc,energy)
   integer :: n_tasks, k
   integer, allocatable :: i_generator(:), subset(:)
 
+  double precision :: rss
+  double precision, external :: memory_of_double, memory_of_int
+  rss  = memory_of_int(pt2_n_tasks_max)*67.d0 
+  rss += memory_of_double(pt2_n_tasks_max)*(N_states*3)
+  call check_mem(rss,irp_here)
+
   allocate(task_id(pt2_n_tasks_max), task(pt2_n_tasks_max))
   allocate(pt2(N_states,pt2_n_tasks_max), i_generator(pt2_n_tasks_max), subset(pt2_n_tasks_max))
   allocate(variance(N_states,pt2_n_tasks_max))

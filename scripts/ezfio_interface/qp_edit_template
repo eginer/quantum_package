@@ -168,7 +168,10 @@ let run check_only ?ndet ?state ezfio_filename =
   begin
     match state with
     | None -> ()
-    | Some n -> Input.Determinants_by_hand.extract_state (States_number.of_int n)
+    | Some n -> 
+       begin
+         Input.Determinants_by_hand.extract_state (States_number.of_int n)
+       end
   end;
 
 

@@ -99,7 +99,6 @@
    deallocate(work, F)
    
 
-
 END_PROVIDER
  
 BEGIN_PROVIDER [double precision, diagonal_Fock_matrix_mo_sum, (mo_tot_num)]
