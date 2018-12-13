@@ -131,7 +131,7 @@ if [[ "${PACKAGES}.x" != ".x" ]] ; then
 fi
 
 if [[ ${PACKAGES} = all ]] ; then
-        PACKAGES="ninja irpf90 zeromq f77zmq ocaml ezfio emsl docopt resultsFile"
+        PACKAGES="ninja irpf90 zeromq f77zmq ocaml ezfio emsl docopt resultsFile bats"
 fi
 
 
@@ -220,7 +220,7 @@ EOF
             else
                 # Conventional commands
                 export OPAMROOT=${OPAMROOT:-${QP_ROOT}/external/opam}
-                echo ${QP_ROOT}/bin
+                echo "QP>> Please install it here: " ${QP_ROOT}/bin
                 ${QP_ROOT}/external/opam_installer.sh 
             fi
             rm ${QP_ROOT}/external/opam_installer.sh
@@ -276,7 +276,16 @@ EOF
             rm -rf resultsFile-master resultsFile.tar.gz
             cd "${QP_ROOT}"
 
+    elif [[ ${PACKAGE} = bats ]] ; then
+        cd "${QP_ROOT}"/external
+        git clone https://github.com/bats-core/bats-core.git
+        cd bats-core
+        ./install.sh .
+        ln -s ./bin/bats "${QP_ROOT}"/bin/bats
+        cd "${QP_ROOT}"
     fi
+
+
 done
         
 
@@ -300,13 +309,13 @@ fi
 
 F77ZMQ=$(find_lib -lzmq -lf77zmq)
 if [[ ${F77ZMQ} = not_found ]] ; then
-        echo "Fortran binding of ZeroMQ is not installed."
+        echo "Fortran binding of ZeroMQ (f77zmq) is not installed."
         fail
 fi
 
 OPAM=$(find_exe opam)
 if [[ ${OPAM} = not_found ]] ; then
-        echo "OPAM package manager is not installed."
+        echo "OPAM (ocaml) package manager is not installed."
         fail
 fi
 
@@ -340,9 +349,16 @@ if [[ ${RESULTSFILE} = not_found ]] ; then
         fail
 fi
 
-echo "All dependencies installed."
-
-
+echo "  ___________________________  "
+echo "< All dependencies installed. >"
+echo "  ---------------------------  "
+echo "         \   ^__^              "
+echo "          \  (oo)\_______      "
+echo "             (__)\       )\/\. "
+echo "                 ||----w |     "
+echo "                 ||     ||     "
+   
+    
 
 if [[ -n $CONFIG ]] ; then
 

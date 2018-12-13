@@ -2,7 +2,7 @@
 The |qp|
 ========
 
-.. image:: /_static/qp.png
+.. image:: /_static/qp2.png
    :align: center
    :width: 200px
    :alt: Quantum Package

@@ -7,6 +7,7 @@ Usage:
        qp_module install <name>...
        qp_module list (--installed | --available-local)
        qp_module uninstall <name>
+
 Options:
     list: List all the modules available
     create: Create a new module
@@ -15,6 +16,9 @@ Options:
 import sys
 import os
 import subprocess
+from os import listdir
+from os.path import isdir, join
+
 
 try:
     from docopt import docopt
@@ -66,12 +70,11 @@ def save_new_module(path, l_child):
 """)
 
 def main(arguments):
-
-    if arguments in ["list_installed", "list_plugins"]:
-        if arguments["list_installed"]:            
+    if arguments["list"]:
+        if arguments["--installed"]:            
             l_repository = [QP_SRC]                
-        elif arguments["list_plugins"]:            
-            l_repository = [QP_PLUGINS]            
+        elif arguments["--available-local"]:            
+            l_repository = [join(QP_PLUGINS, f) for f in listdir(QP_PLUGINS) if isdir(join(QP_PLUGINS, f))]  
                                                    
         m_instance = ModuleHandler(l_repository)   
                                                    
@@ -112,7 +115,6 @@ def main(arguments):
         save_new_module(path, l_child_reduce)
 
         print "    [ OK ]"
-#        print "` {0} install {1} `".format(os.path.basename(__file__), name)
         print ""
         arguments["create"]=False
         arguments["install"]=True
@@ -121,23 +123,15 @@ def main(arguments):
     elif arguments["download"]:
         print "Not yet implemented"
         pass
-#        d_local = get_dict_child([QP_SRC])
-#        d_remote = get_dict_child(arguments["<path_folder>"])
-#
-#        d_child = d_local.copy()
-#        d_child.update(d_remote)
-#
-#        name = arguments["<name>"]
-#        l_module_descendant = get_l_module_descendant(d_child, [name])
-#
-#        for module in l_module_descendant:
-#            if module not in d_local:
-#                print "you need to install", module
 
     elif arguments["install"]:
 
+        # Python 2.6 ...
+        d_module_location= dict()
+
         d_local = get_dict_child([QP_SRC])
-        d_plugin = get_dict_child([QP_PLUGINS])
+        d_plugin = get_dict_child([join(QP_PLUGINS, f) for f in listdir(QP_PLUGINS) if isdir(join(QP_PLUGINS, f))])
+
 
         d_child = d_local.copy()
         d_child.update(d_plugin)
@@ -164,7 +158,9 @@ def main(arguments):
             print "Installation...",
 
             for module_to_cp in l_module_to_cp:
-                    src = os.path.join(QP_PLUGINS, module_to_cp)
+                    
+                    # Find the module. This is ugly. Quick fix, we should refactor
+                    src = [ join(QP_PLUGINS, f, module_to_cp) for f in listdir(QP_PLUGINS) if isdir(join(QP_PLUGINS, f,module_to_cp) ) ][0]
                     des = os.path.join(QP_SRC, module_to_cp)
                     try:
                         os.symlink(src, des)
