@@ -286,11 +286,11 @@ END_PROVIDER
 
  integral_on_top_of_r_tucker = 0d0
 
- call cpu_time(wall_1)
- provide mos_array_r_j_tuck
- call cpu_time(wall_2)
+!call cpu_time(wall_1)
+!provide mos_array_r_j_tuck
+!call cpu_time(wall_2)
 
- print*,'cpu time Tucker providing = ',wall_2 - wall_1
+!print*,'cpu time Tucker providing = ',wall_2 - wall_1
 
  call cpu_time(wall_1)
  do istate = 1, N_states
@@ -339,27 +339,35 @@ END_PROVIDER
 print*,'cpu time exact  = ',wall_4 - wall_3
 END_PROVIDER
 
- subroutine comparaison_decomp_tensor
- implicit none
+!subroutine comparaison_decomp_tensor
+!implicit none
 
- double precision :: accu
- accu= E_cor_tot_normal_prov-integral_on_top_of_r_tucker(1)
+!double precision :: wall_1,wall_2
 
- double precision :: accu_Manu
- accu_Manu= E_cor_tot_normal_prov-integral_on_top_of_r_approx_svd(1)
+!call cpu_time(wall_1)
+!provide mos_array_r_j_tuck
+!call cpu_time(wall_2)
+
+!print*,'cpu time Tucker providing = ',wall_2 - wall_1
+
+!double precision :: accu
+!accu= E_cor_tot_normal_prov-integral_on_top_of_r_tucker(1)
+
+!double precision :: accu_Manu
+!accu_Manu= E_cor_tot_normal_prov-integral_on_top_of_r_approx_svd(1)
 
 
- print*, '**************'
- print*, 'Absolute error tucker          =', accu
- print*, 'Absolute error manual          =', accu_Manu
- print*, '**************'
+!print*, '**************'
+!print*, 'Absolute error tucker          =', accu
+!print*, 'Absolute error manual          =', accu_Manu
+!print*, '**************'
 
- print*, '**************'
- print*, 'E_cor_tot_normal_provider      =', E_cor_tot_normal_prov
- print*, 'E_cor_tot_manual_provider      =', integral_on_top_of_r_approx_svd(1)
- print*, 'E_cor_tot_tucker_provider      =', integral_on_top_of_r_tucker(1) 
- print*, '**************'
- end
+!print*, '**************'
+!print*, 'E_cor_tot_normal_provider      =', E_cor_tot_normal_prov
+!print*, 'E_cor_tot_manual_provider      =', integral_on_top_of_r_approx_svd(1)
+!print*, 'E_cor_tot_tucker_provider      =', integral_on_top_of_r_tucker(1) 
+!print*, '**************'
+!end
 
 
 

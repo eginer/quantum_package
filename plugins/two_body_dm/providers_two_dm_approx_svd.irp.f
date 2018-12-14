@@ -168,11 +168,11 @@ BEGIN_PROVIDER [double precision, integral_on_top_of_r_approx_svd, (N_states)]
  double precision :: weight,wall_1,wall_2,wall_3,wall_4
  
  integral_on_top_of_r_approx_svd = 0.d0
- call cpu_time(wall_3)
- provide singular_left_vec_approx_svd_two_dm_at_r
- call cpu_time(wall_4)
+!call cpu_time(wall_3)
+!provide singular_left_vec_approx_svd_two_dm_at_r
+!call cpu_time(wall_4)
 
- print*,'cpu time SVD provinding = ',wall_4 - wall_3
+!print*,'cpu time SVD provinding = ',wall_4 - wall_3
 
  call cpu_time(wall_1)
  integer :: istate
