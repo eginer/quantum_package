@@ -277,12 +277,18 @@ EOF
             cd "${QP_ROOT}"
 
     elif [[ ${PACKAGE} = bats ]] ; then
-        cd "${QP_ROOT}"/external
-        git clone https://github.com/bats-core/bats-core.git
-        cd bats-core
-        ./install.sh .
-        ln -s ./bin/bats "${QP_ROOT}"/bin/bats
-        cd "${QP_ROOT}"
+
+            download \
+              "https://github.com/bats-core/bats-core/archive/v1.1.0.tar.gz" \
+              "${QP_ROOT}"/external/bats.tar.gz
+            cd "${QP_ROOT}"/external
+            tar -zxf bats.tar.gz 
+            cd bats-core-1.1.0/
+            ./install.sh $QP_ROOT
+            cd ..
+            rm -rf bats-core-1.1.0 "${QP_ROOT}"/external/bats.tar.gz
+            cd "${QP_ROOT}"
+
     fi
 
 
