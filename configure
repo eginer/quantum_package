@@ -210,7 +210,7 @@ EOF
             if [[ -n ${TRAVIS} ]] ; then
                 # Special commands for Travis CI
                 export OPAMROOT=${HOME}/.opam
-                cat << EOF | sh ${QP_ROOT}/external/opam_installer.sh --no-backup 
+                cat << EOF | bash ${QP_ROOT}/external/opam_installer.sh --no-backup 
 ${QP_ROOT}/bin
 
 
