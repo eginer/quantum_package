@@ -207,7 +207,7 @@ EOF
             chmod +x "${QP_ROOT}"/external/opam_installer.sh
             rm -f ${QP_ROOT}/bin/opam
 
-            if [[ ${TRAVIS} = true ]] ; then
+            if [[ -n ${TRAVIS} ]] ; then
                 # Special commands for Travis CI
                 export OPAMROOT=${HOME}/.opam
                 cat << EOF | sh ${QP_ROOT}/external/opam_installer.sh --no-backup 
