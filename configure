@@ -210,19 +210,19 @@ EOF
             if [[ ${TRAVIS} = true ]] ; then
                 # Special commands for Travis CI
                 export OPAMROOT=${HOME}/.opam
-                cat << EOF | ${QP_ROOT}/external/opam_installer.sh --no-backup 
+                cat << EOF | sh ${QP_ROOT}/external/opam_installer.sh --no-backup 
 ${QP_ROOT}/bin
 
 
 EOF
-                source ${OPAMROOT}/opam-init/init.sh > /dev/null 2> /dev/null || true
 
             else
                 # Conventional commands
                 export OPAMROOT=${OPAMROOT:-${QP_ROOT}/external/opam}
                 echo "QP>> Please install it here: " ${QP_ROOT}/bin
-                ${QP_ROOT}/external/opam_installer.sh 
+                sh ${QP_ROOT}/external/opam_installer.sh 
             fi
+            source ${OPAMROOT}/opam-init/init.sh > /dev/null 2> /dev/null || true
             rm ${QP_ROOT}/external/opam_installer.sh
 
             ${QP_ROOT}/bin/opam init --disable-sandboxing --verbose --yes --comp=4.07.0
