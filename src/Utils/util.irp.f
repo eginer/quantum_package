@@ -302,23 +302,6 @@ BEGIN_PROVIDER [ integer, nproc ]
   !$OMP END PARALLEL
 END_PROVIDER
 
-BEGIN_PROVIDER [ integer, qp_max_mem ]
- implicit none
- BEGIN_DOC
- ! Maximum memory in Gb
- END_DOC
- character*(128) :: env
-
- qp_max_mem = huge(1_8)
- call getenv('QP_MAXMEM',env)
- if (trim(env) /= '') then
-    read(env,*) qp_max_mem
-    call write_int(6,qp_max_mem,'Target maximum memory')
- endif
-
-
-END_PROVIDER
-
 
 double precision function u_dot_v(u,v,sze)
   implicit none

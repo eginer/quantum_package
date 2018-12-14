@@ -1,3 +1,19 @@
+BEGIN_PROVIDER [ integer, qp_max_mem ]
+ implicit none
+ BEGIN_DOC
+ ! Maximum memory in Gb
+ END_DOC
+ character*(128) :: env
+
+ qp_max_mem = huge(1)/10
+ call getenv('QP_MAXMEM',env)
+ if (trim(env) /= '') then
+    read(env,*) qp_max_mem
+    call write_int(6,qp_max_mem,'Target maximum memory')
+ endif
+
+END_PROVIDER
+
 subroutine resident_memory(value)
   implicit none
   BEGIN_DOC
