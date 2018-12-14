@@ -6,6 +6,7 @@
 ! kinetic, electron-nuclear and total h_core energy computed with the density matrix one_body_dm_mo_beta_for_dft+one_body_dm_mo_alpha_for_dft
  END_DOC
  integer :: i,j,istate
+ double precision :: accu
  psi_dft_energy_kinetic = 0.d0
  psi_dft_energy_nuclear_elec = 0.d0 
  do istate = 1, N_states 

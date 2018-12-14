@@ -2,9 +2,7 @@ program printwf
  implicit none 
  read_wf = .True.
  touch read_wf
- print*,'ref_bitmask_energy         = ',ref_bitmask_energy
  call routine
-
 end
 
 subroutine routine

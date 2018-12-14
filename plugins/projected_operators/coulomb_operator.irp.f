@@ -395,14 +395,18 @@ subroutine local_r12_operator_with_one_e_int_on_1s(r1,r2,integral)
 
 end
 
-BEGIN_PROVIDER [double precision, integrals_for_hf_potential, (mo_tot_num,mo_tot_num,elec_beta_num,elec_alpha_num)]
+BEGIN_PROVIDER [double precision, integrals_for_hf_potential, (mo_tot_num,mo_tot_num,elec_alpha_num,elec_alpha_num)]
  implicit none
+ BEGIN_DOC
+! integrals_for_hf_potential(k,l,i,j) = <ij|kl> where k,l runs over all orbitals and i,j until elec_alpha_num
+ END_DOC
  integer :: i,j,m,n
  double precision :: get_mo_bielec_integral
  do m = 1, elec_alpha_num ! electron 1 alpha 
-  do n = 1, elec_beta_num ! electron 2 beta 
+  do n = 1, elec_alpha_num ! electron 2 beta 
    do i = 1, mo_tot_num   ! electron 1 alpha
     do j = 1, mo_tot_num  ! electron 2 beta 
+                               !2 1 2 1                           1 2 1 2
      integrals_for_hf_potential(j,i,n,m) = get_mo_bielec_integral(m,n,i,j,mo_integrals_map) 
     enddo
    enddo
