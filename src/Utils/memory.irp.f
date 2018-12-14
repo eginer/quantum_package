@@ -68,7 +68,7 @@ end function
 subroutine check_mem(rss_in,routine)
   implicit none
   BEGIN_DOC
-! Checks if n gigabytes can be allocated. If not, the program exits
+! Checks if n gigabytes can be allocated. If not, exit the run.
   END_DOC
   double precision, intent(in) :: rss_in
   character*(*) :: routine
