@@ -287,7 +287,7 @@ END_PROVIDER
  integral_on_top_of_r_tucker = 0d0
 
 !call cpu_time(wall_1)
-!provide mos_array_r_j_tuck
+ provide mos_array_r_j_tuck
 !call cpu_time(wall_2)
 
 !print*,'cpu time Tucker providing = ',wall_2 - wall_1
