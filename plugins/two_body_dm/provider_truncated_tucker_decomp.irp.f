@@ -1,31 +1,31 @@
-subroutine twobodydump
-  implicit none
-  character*(128) :: output
-  integer :: i_unit_output,getUnitAndOpen
-  output=trim(ezfio_filename)//'.twobody_DUMP'
-  i_unit_output = getUnitAndOpen(output,'w')
+!subroutine twobodydump
+! implicit none
+! character*(128) :: output
+! integer :: i_unit_output,getUnitAndOpen
+! output=trim(ezfio_filename)//'.twobody_DUMP'
+! i_unit_output = getUnitAndOpen(output,'w')
 
-  integer :: i,j,k,l
+! integer :: i,j,k,l
 
-  double precision :: integral
-  PROVIDE two_bod_alpha_beta_mo_transposed
+! double precision :: integral
+! PROVIDE two_bod_alpha_beta_mo_transposed
 
-  do l=1,mo_tot_num
-   do k=1,mo_tot_num
-    do j=1,mo_tot_num
-     do i=1,mo_tot_num
-      integral = two_bod_alpha_beta_mo_transposed(i,j,k,l,1)
-      if (dabs(integral) > 1d-16) then
-        write(i_unit_output,*) integral, i,k,j,l
-      else
-       integral=0d0
-       write(i_unit_output,*) integral, i,k,j,l
-      endif
-     enddo
-    enddo
-   enddo
-  enddo
-end
+! do l=1,mo_tot_num
+!  do k=1,mo_tot_num
+!   do j=1,mo_tot_num
+!    do i=1,mo_tot_num
+!     integral = two_bod_alpha_beta_mo_transposed(i,j,k,l,1)
+!     if (dabs(integral) > 1d-16) then
+!       write(i_unit_output,*) integral, i,k,j,l
+!     else
+!      integral=0d0
+!      write(i_unit_output,*) integral, i,k,j,l
+!     endif
+!    enddo
+!   enddo
+!  enddo
+! enddo
+!nd
 
  BEGIN_PROVIDER [integer,n_eigen_i_tucker,(N_states)]
 &BEGIN_PROVIDER [integer,n_eigen_j_tucker,(N_states)]
@@ -59,7 +59,7 @@ end
     do k=1,mo_tot_num
      do j=1,mo_tot_num
       jkl= jkl+1
-      mat_i(i,jkl)= two_bod_alpha_beta_mo_transposed(i,j,k,l,istate)
+      mat_i(i,jkl)= two_bod_alpha_beta_mo_physician(i,j,k,l,istate)
      enddo
     enddo
    enddo
@@ -71,7 +71,7 @@ end
     do k=1,mo_tot_num
      do i=1,mo_tot_num
       jkl= jkl+1
-      mat_j(j,jkl)= two_bod_alpha_beta_mo_transposed(i,j,k,l,istate)
+      mat_j(j,jkl)= two_bod_alpha_beta_mo_physician(i,j,k,l,istate)
      enddo
     enddo
    enddo
@@ -147,7 +147,7 @@ END_PROVIDER
     do k=1,mo_tot_num
      do j=1,mo_tot_num
       jkl= jkl+1
-      mat_i(i,jkl)= two_bod_alpha_beta_mo_transposed(i,j,k,l,istate)
+      mat_i(i,jkl)= two_bod_alpha_beta_mo_physician(i,j,k,l,istate)
      enddo
     enddo
    enddo
@@ -159,7 +159,7 @@ END_PROVIDER
     do k=1,mo_tot_num
      do i=1,mo_tot_num
       jkl= jkl+1
-      mat_j(j,jkl)= two_bod_alpha_beta_mo_transposed(i,j,k,l,istate)
+      mat_j(j,jkl)= two_bod_alpha_beta_mo_physician(i,j,k,l,istate)
      enddo
     enddo
    enddo
@@ -208,11 +208,11 @@ END_PROVIDER
  g_tucker_1 = 0d0
 
   do i = 1,n_eigen_i_tucker(istate)
-   do r1 = 1,mo_tot_num
-    do r2 = 1,mo_tot_num
-     do r3 = 1,mo_tot_num
-      do r4 = 1,mo_tot_num
-       g_tucker_1(i,r2,r3,r4) += two_bod_alpha_beta_mo_transposed(r1,r2,r3,r4,istate) * truncated_u_i_tucker_t(i,r1,istate) 
+   do r4 = 1,mo_tot_num
+    do r3 = 1,mo_tot_num
+     do r2 = 1,mo_tot_num
+      do r1 = 1,mo_tot_num
+       g_tucker_1(i,r2,r3,r4) += two_bod_alpha_beta_mo_physician(r1,r2,r3,r4,istate) * truncated_u_i_tucker_t(i,r1,istate) 
       enddo
      enddo
     enddo
@@ -225,10 +225,10 @@ END_PROVIDER
  g_tucker_2 = 0d0
 
   do j = 1,n_eigen_j_tucker(istate)
-   do r1 = 1,n_eigen_i_tucker(istate)
-    do r2 = 1,mo_tot_num
-     do r3 = 1,mo_tot_num
-      do r4 = 1,mo_tot_num
+   do r4 = 1,mo_tot_num
+    do r3 = 1,mo_tot_num
+     do r2 = 1,mo_tot_num
+      do r1 = 1,n_eigen_i_tucker(istate)
        g_tucker_2(r1,j,r3,r4) += g_tucker_1(r1,r2,r3,r4) * truncated_u_j_tucker_t(j,r2,istate) 
       enddo
      enddo
@@ -242,10 +242,10 @@ END_PROVIDER
  g_tucker_3 = 0d0
 
   do k = 1,n_eigen_i_tucker(istate)
-   do r1 = 1,n_eigen_i_tucker(istate)
-    do r2 = 1,n_eigen_j_tucker(istate)
-     do r3 = 1,mo_tot_num
-      do r4 = 1,mo_tot_num
+   do r4 = 1,mo_tot_num
+    do r3 = 1,mo_tot_num
+     do r2 = 1,n_eigen_j_tucker(istate)
+      do r1 = 1,n_eigen_i_tucker(istate)
        g_tucker_3(r1,r2,k,r4) += g_tucker_2(r1,r2,r3,r4) * truncated_u_i_tucker_t(k,r3,istate)                             
       enddo
      enddo
@@ -255,10 +255,10 @@ END_PROVIDER
 
 
   do l = 1,n_eigen_j_tucker(istate)
-   do r1 = 1,n_eigen_i_tucker(istate)
-    do r2 = 1,n_eigen_j_tucker(istate)
-     do r3 = 1,n_eigen_i_tucker(istate)
-      do r4 = 1,mo_tot_num
+   do r4 = 1,mo_tot_num
+    do r3 = 1,n_eigen_i_tucker(istate)
+     do r2 = 1,n_eigen_j_tucker(istate)
+      do r1 = 1,n_eigen_i_tucker(istate)
        g_tucker(r1,r2,r3,l,istate) += g_tucker_3(r1,r2,r3,r4) * truncated_u_j_tucker_t(l,r4,istate)                             
       enddo
      enddo
@@ -279,180 +279,38 @@ END_PROVIDER
  enddo
 END_PROVIDER
 
- BEGIN_PROVIDER [integer, manuel_map, (mo_tot_num**2,2)]
-&BEGIN_PROVIDER [integer, manuel_map_rev, (mo_tot_num,mo_tot_num)]
+ BEGIN_PROVIDER [double precision, integral_on_top_of_r_tucker,(N_states)]
  implicit none
- integer :: i,j,ij
- ij = 0
- do i = 1,mo_tot_num
-  do j=1,mo_tot_num
-   ij += 1
-   manuel_map(ij,1) = i
-   manuel_map(ij,2) = j
-   manuel_map_rev(i,j) = ij
-  enddo
- enddo
-
-END_PROVIDER
-
-
- BEGIN_PROVIDER [integer, n_singular_manuel]
- implicit none
- integer :: i,j,k,l,ij,kl
- double precision :: threshinou 
- threshinou= thr_ontop_approx
-
- print*,'************************'
- print*,'threshinou manual    =',threshinou
- print*,'************************'
-
- double precision, allocatable :: mat_i(:,:)
- allocate(mat_i(mo_tot_num**2,mo_tot_num**2))
-
- double precision, allocatable :: u_i(:,:),vt_i(:,:),D_i(:)
- allocate(u_i(mo_tot_num**2,mo_tot_num**2),vt_i(mo_tot_num**2,mo_tot_num**2),D_i(mo_tot_num**2))
-
- ij = 0
- kl = 0
- !!!!!!unfoldage!!!!!!!
- do i=1,mo_tot_num
-  do j=1,mo_tot_num
-   ij += 1
-   kl = 0
-   do k=1,mo_tot_num
-    do l=1,mo_tot_num
-     kl += 1
-     !                                               1 2 2 1
-     mat_i(ij,kl) = two_bod_alpha_beta_mo_transposed(l,k,j,i,1)
-    enddo
-   enddo
-  enddo
- enddo
- !!!!!!!test SVD!!!!!!!
-
-  call svd(mat_i,size(mat_i,1),u_i,size(u_i,1),D_i,vt_i,size(vt_i,1),size(mat_i,1),size(mat_i,2))
- print*,'*****SVD TERMINE*' 
-  n_singular_manuel =1 
-  print*,n_singular_manuel,D_i(n_singular_manuel)
-  do while ( (dabs(D_i(n_singular_manuel)) .gt. threshinou) .AND. (n_singular_manuel .lt. mo_tot_num**2)  )
-   n_singular_manuel += 1
-   print*,n_singular_manuel,D_i(n_singular_manuel)
-  enddo
-  if (dabs(D_i(n_singular_manuel)) .lt. threshinou) then
-   n_singular_manuel -= 1
-  endif
-
-  print*,'************************'
-  print*,'n_eigen_manual Giiiiiinnneeerrrrr    =',n_singular_manuel
-  print*,'************************'
-
-END_PROVIDER
-
- BEGIN_PROVIDER [double precision, singular_manuel, (n_singular_manuel)]
-&BEGIN_PROVIDER [double precision, eigen_left_manuel, (mo_tot_num**2,n_singular_manuel)]
-&BEGIN_PROVIDER [double precision, eigen_right_manuel, (mo_tot_num**2,n_singular_manuel)]
- implicit none
- integer :: i,j,k,l,ij,kl
- double precision, allocatable :: mat_i(:,:)
- allocate(mat_i(mo_tot_num**2,mo_tot_num**2))
-
- double precision, allocatable :: u_i(:,:),vt_i(:,:),D_i(:)
- allocate(u_i(mo_tot_num**2,mo_tot_num**2),vt_i(mo_tot_num**2,mo_tot_num**2),D_i(mo_tot_num**2))
-
- ij = 0
- kl = 0
- !!!!!!unfoldage!!!!!!!
- do i = 1,mo_tot_num
-  do j=1,mo_tot_num
-   ij += 1
-   kl = 0
-   do k=1,mo_tot_num
-    do l=1,mo_tot_num
-     kl += 1
-     mat_i(ij,kl)= two_bod_alpha_beta_mo_transposed(l,k,j,i,1)
-    enddo
-   enddo
-  enddo
- enddo
- !!!!!!!test SVD!!!!!!!
-
-  call svd(mat_i,size(mat_i,1),u_i,size(u_i,1),D_i,vt_i,size(vt_i,1),size(mat_i,1),size(mat_i,2))
-
- do i = 1,n_singular_manuel
-  singular_manuel(i) = D_i(i)
-  do j = 1,mo_tot_num**2
-   eigen_left_manuel(j,i) = u_i(j,i)
-   eigen_right_manuel(j,i) = vt_i(i,j)
-  enddo 
- enddo
-
-END_PROVIDER
-
-
- BEGIN_PROVIDER [double precision, eigen_left_manuel_r, (n_points_final_grid,n_singular_manuel)]
-&BEGIN_PROVIDER [double precision, eigen_right_manuel_r, (n_points_final_grid,n_singular_manuel)]
- implicit none
- integer :: i,j,k
-
- eigen_left_manuel_r = 0d0
- eigen_right_manuel_r = 0d0
- !!!!!!unfoldage!!!!!!!
- do i = 1,n_points_final_grid
-  do j = 1,n_singular_manuel 
-   do k = 1,mo_tot_num**2
-    eigen_left_manuel_r(i,j)+= eigen_left_manuel(k,j) * mos_in_r_array(manuel_map(k,1),i) * mos_in_r_array(manuel_map(k,2),i)
-    eigen_right_manuel_r(i,j)+= eigen_right_manuel(k,j) * mos_in_r_array(manuel_map(k,1),i) * mos_in_r_array(manuel_map(k,2),i) 
-   enddo
-  enddo
- enddo
-
-END_PROVIDER
-
- BEGIN_PROVIDER [double precision, E_cor_tot_manual_prov]
- implicit none
- integer :: i,k
+ integer :: i,r1,r2,r3,r4,istate
  double precision :: weight,wall_1,wall_2
+
+ integral_on_top_of_r_tucker = 0d0
+
+!call cpu_time(wall_1)
+ provide mos_array_r_j_tuck
+!call cpu_time(wall_2)
+
+!print*,'cpu time Tucker providing = ',wall_2 - wall_1
+
+ call cpu_time(wall_1)
+ do istate = 1, N_states
+  do i = 1, n_points_final_grid
+   weight=final_weight_functions_at_final_grid_points(i)
  
- E_cor_tot_manual_prov = 0d0
- provide eigen_left_manuel_r
-
- call wall_time(wall_1)
- do i = 1, n_points_final_grid
-  weight=final_weight_functions_at_final_grid_points(i)
-  do k =1,n_singular_manuel
-   E_cor_tot_manual_prov += singular_manuel(k) * eigen_left_manuel_r(i,k) * eigen_right_manuel_r(i,k) * weight
-  enddo
- enddo
- call wall_time(wall_2)
- print*,'wall time Manual = ',wall_2 - wall_1
-
-END_PROVIDER
-
-  BEGIN_PROVIDER [double precision, E_cor_tot_tucker_fast_prov]
- implicit none
- integer :: i,r1,r2,r3,r4
- double precision :: weight,wall_1,wall_2
-
- E_cor_tot_tucker_fast_prov = 0d0
- provide g_tucker
-
- call wall_time(wall_1)
- do i = 1, n_points_final_grid
-  weight=final_weight_functions_at_final_grid_points(i)
-
-   do r1 =1,n_eigen_i_tucker(1)
-    do r2 = 1,n_eigen_j_tucker(1)
-     do r3 = 1,n_eigen_i_tucker(1)
-      do r4 = 1,n_eigen_j_tucker(1)
-       E_cor_tot_tucker_fast_prov += g_tucker(r1,r2,r3,r4,1) * weight * mos_array_r_i_tuck(i,r1,1) * mos_array_r_j_tuck(i,r2,1) *mos_array_r_i_tuck(i,r3,1) * mos_array_r_j_tuck(i,r4,1)
+    do r4 =1, n_eigen_j_tucker(istate)
+     do r3 = 1,n_eigen_i_tucker(istate)
+      do r2 = 1,n_eigen_j_tucker(istate)
+       do r1 = 1,n_eigen_i_tucker(istate)
+        integral_on_top_of_r_tucker(istate) += g_tucker(r1,r2,r3,r4,istate) * weight * mos_array_r_i_tuck(i,r1,istate) * mos_array_r_j_tuck(i,r2,istate) *mos_array_r_i_tuck(i,r3,istate) * mos_array_r_j_tuck(i,r4,istate)
+       enddo
       enddo
      enddo
     enddo
-   enddo
-
+ 
+  enddo
  enddo
- call wall_time(wall_2)
- print*,'wall time Tucker fast = ',wall_2 - wall_1
+ call cpu_time(wall_2)
+ print*,'cpu time Tucker = ',wall_2 - wall_1
 END_PROVIDER
 
   BEGIN_PROVIDER [double precision, E_cor_tot_normal_prov]
@@ -460,9 +318,9 @@ END_PROVIDER
  integer :: i,m,n,p,q
  double precision :: weight,wall_4,wall_3
  E_cor_tot_normal_prov = 0d0
- provide two_bod_alpha_beta_mo_transposed
+ provide two_bod_alpha_beta_mo_physician 
 
- call wall_time(wall_3)
+ call cpu_time(wall_3)
  do i = 1, n_points_final_grid
   weight=final_weight_functions_at_final_grid_points(i)
 
@@ -470,38 +328,46 @@ END_PROVIDER
    do n = 1,mo_tot_num
     do p = 1,mo_tot_num
      do q =1,mo_tot_num
-      E_cor_tot_normal_prov += two_bod_alpha_beta_mo_transposed(q,p,n,m,1) *mos_in_r_array(m,i) * mos_in_r_array(n,i) * mos_in_r_array(p,i) * mos_in_r_array(q,i) * weight
+      E_cor_tot_normal_prov += two_bod_alpha_beta_mo_physician(q,p,n,m,1) *mos_in_r_array(m,i) * mos_in_r_array(n,i) * mos_in_r_array(p,i) * mos_in_r_array(q,i) * weight
      enddo
     enddo
    enddo
   enddo
 
  enddo
- call wall_time(wall_4)
-print*,'wall time exact  = ',wall_4 - wall_3
+ call cpu_time(wall_4)
+print*,'cpu time exact  = ',wall_4 - wall_3
 END_PROVIDER
 
- subroutine comparaison_decomp_tensor
- implicit none
+!subroutine comparaison_decomp_tensor
+!implicit none
 
- double precision :: accu
- accu= E_cor_tot_normal_prov-E_cor_tot_tucker_fast_prov
+!double precision :: wall_1,wall_2
 
- double precision :: accu_Manu
- accu_Manu= E_cor_tot_normal_prov-integral_on_top_of_r_approx_svd(1)
+!call cpu_time(wall_1)
+!provide mos_array_r_j_tuck
+!call cpu_time(wall_2)
+
+!print*,'cpu time Tucker providing = ',wall_2 - wall_1
+
+!double precision :: accu
+!accu= E_cor_tot_normal_prov-integral_on_top_of_r_tucker(1)
+
+!double precision :: accu_Manu
+!accu_Manu= E_cor_tot_normal_prov-integral_on_top_of_r_approx_svd(1)
 
 
- print*, '**************'
- print*, 'Absolute error tucker          =', accu
- print*, 'Absolute error manual          =', accu_Manu
- print*, '**************'
+!print*, '**************'
+!print*, 'Absolute error tucker          =', accu
+!print*, 'Absolute error manual          =', accu_Manu
+!print*, '**************'
 
- print*, '**************'
- print*, 'E_cor_tot_normal_provider      =', E_cor_tot_normal_prov
- print*, 'E_cor_tot_manual_provider      =', integral_on_top_of_r_approx_svd(1)
- print*, 'E_cor_tot_tucker_provider_fast =', E_cor_tot_tucker_fast_prov
- print*, '**************'
- end
+!print*, '**************'
+!print*, 'E_cor_tot_normal_provider      =', E_cor_tot_normal_prov
+!print*, 'E_cor_tot_manual_provider      =', integral_on_top_of_r_approx_svd(1)
+!print*, 'E_cor_tot_tucker_provider      =', integral_on_top_of_r_tucker(1) 
+!print*, '**************'
+!end
 
 
 
@@ -509,7 +375,7 @@ END_PROVIDER
  implicit none
 
  double precision :: accu_Manu
- accu_Manu= E_cor_tot_normal_prov-E_cor_tot_manual_prov
+ accu_Manu= E_cor_tot_normal_prov-integral_on_top_of_r_approx_svd(1)
 
 
  print*, '**************'
@@ -518,7 +384,7 @@ END_PROVIDER
 
  print*, '**************'
  print*, 'E_cor_tot_normal_provider      =', E_cor_tot_normal_prov
- print*, 'E_cor_tot_manual_provider      =', E_cor_tot_manual_prov
+ print*, 'E_cor_tot_manual_provider      =', integral_on_top_of_r_approx_svd(1)
  print*, '**************'
  end
 
