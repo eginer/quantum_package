@@ -39,8 +39,9 @@ subroutine routine_v
   f = f_HF_aa_integrated(r)
   accu += f * weight 
  enddo
- print*,'accu*0.5          = ',accu*0.5
+ print*,'accu*0.5          = ',accu*0.5d0
  print*,'psi_energy_bielec = ',psi_energy_bielec
+ print*,'psi_energy_bielec_aa',psi_energy_bielec_aa
 end
  
 
@@ -70,8 +71,8 @@ subroutine routine_final
  accu = 0.d0
  do ipoint  = 1, n_points_final_grid
   weight=final_weight_functions_at_final_grid_points(ipoint)
-! accu += dabs(f_psi_B_old(ipoint) - f_psi_B(ipoint)) *weight
-  accu += (f_psi_B(ipoint)) *weight
+! accu += dabs(f_psi_ab_old(ipoint) - f_psi_ab(ipoint)) *weight
+  accu += (f_psi_ab(ipoint)) *weight
  enddo
  print*,'*******************'
  print*,'*******************'

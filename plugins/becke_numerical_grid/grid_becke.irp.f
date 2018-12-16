@@ -26,8 +26,6 @@ BEGIN_PROVIDER [integer, n_points_radial_grid]
  n_points_radial_grid = 60
 END_PROVIDER 
 
-
-
  BEGIN_PROVIDER [double precision, angular_quadrature_points, (n_points_integration_angular,3) ]
 &BEGIN_PROVIDER [double precision, weights_angular_points, (n_points_integration_angular)]
  implicit none
