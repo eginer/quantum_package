@@ -251,7 +251,7 @@ end
     do k=1,mo_tot_num
      do l=1,mo_tot_num
       kl += 1
-      mat_i(kl,ij) = two_bod_alpha_beta_mo_physician(l,k,j,i,istate) - one_body_dm_mo_alpha(k,i,istate)* one_body_dm_mo_alpha(l,j,istate)
+      mat_i(kl,ij) = two_bod_alpha_beta_mo_physician(l,k,j,i,istate) - one_body_dm_alpha_mo_for_dft(k,i,istate)* one_body_dm_beta_mo_for_dft(l,j,istate)
      enddo
     enddo
    enddo
@@ -310,7 +310,7 @@ END_PROVIDER
     do k=1,mo_tot_num
      do l=1,mo_tot_num
       kl += 1
-      mat_i(kl,ij) = two_bod_alpha_beta_mo_physician(l,k,j,i,istate) - one_body_dm_mo_alpha(k,i,istate)*one_body_dm_mo_alpha(l,j,istate)
+      mat_i(kl,ij) = two_bod_alpha_beta_mo_physician(l,k,j,i,istate) - one_body_dm_alpha_mo_for_dft(k,i,istate)*one_body_dm_beta_mo_for_dft(l,j,istate)
      enddo
     enddo
    enddo
@@ -385,16 +385,14 @@ END_PROVIDER
  integer :: i,istate
  double precision :: on_top_of_r_approx_svd_correlation_function
  double precision :: r(3)
- double precision :: dm_a(N_states),dm_b(N_states) 
+ double precision :: dm_a,dm_b 
  ! initialization for paralellization 
  on_top_of_r_approx_svd_correlation(1,1) = on_top_of_r_approx_svd_correlation_function(1,1)
  do istate = 1, N_states
   do i= 1, n_points_final_grid
-   r(1)=final_grid_points(1,i)
-   r(2)=final_grid_points(2,i)
-   r(3)=final_grid_points(3,i) 
-   call dm_dft_alpha_beta_at_r(r,dm_a,dm_b) 
-   on_top_of_r_approx_svd_correlation(i,istate) = dm_a(istate)*dm_b(istate)+ on_top_of_r_approx_svd_correlation_function(i,istate)
+   dm_a = one_body_dm_alpha_at_r(i,istate)
+   dm_b = one_body_dm_beta_at_r(i,istate)
+   on_top_of_r_approx_svd_correlation(i,istate) = dm_a*dm_b + on_top_of_r_approx_svd_correlation_function(i,istate)
   enddo
  enddo
 END_PROVIDER 
