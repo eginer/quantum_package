@@ -364,6 +364,8 @@ END_PROVIDER
  END_DOC 
  integer :: i,k
  double precision :: weight,wall_1,wall_2,wall_3,wall_4
+
+ provide singular_right_vec_approx_svd_two_dm_at_r_correlation  
  
  call cpu_time(wall_1)
  integer :: istate
