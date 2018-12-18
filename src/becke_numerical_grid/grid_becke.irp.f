@@ -158,7 +158,6 @@ BEGIN_PROVIDER [double precision, weight_functions_at_grid_points,   &
         enddo
         accu = 1.d0/accu
         weight_functions_at_grid_points(l,k,j) = tmp_array(j) * accu
-!       print*,weight_functions_at_grid_points(l,k,j)
       enddo
     enddo
   enddo
