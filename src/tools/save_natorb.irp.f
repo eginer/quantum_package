@@ -1,4 +1,8 @@
 program save_natorb
+  implicit none
+  BEGIN_DOC
+! Save natural MOs into the EZFIO
+  END_DOC
   read_wf = .True.
   touch read_wf
   call save_natural_mos
