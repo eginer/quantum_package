@@ -1,7 +1,6 @@
 * Virer tous les modules qui sont dans plugins
 * Permettre aux utilisateurs de facilement deposer des plugins dans plugins via une commande
-* Permettre de descendre plus bas dans l'arborescence de plugins pour permettre des `git clone` dans le 
-  repertoire plugins
+* Permettre de descendre plus bas dans l'arborescence de plugins pour permettre des `git clone` dans le repertoire plugins
 * Mettre les fichiers de test dans le directory source
 * Separer les integrales bielectroniques en AO et MO
 * Creer une page web pas trop degueu et la mettre ici : http://lcpq.github.io/quantum_package
@@ -39,5 +38,11 @@
 * Programmers doc:
 
   * Example : Simple Hartree-Fock program from scratch
+  * Examples : subroutine example_module
 
 * Config file for Cray
+* Noms des modules et fichiers en minuscule
+* Implicit none obligatoire
+
+* Doc des executables
+* Il faut que le programme ait le meme nom que la subroutine

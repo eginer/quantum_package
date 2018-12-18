@@ -143,12 +143,12 @@ subroutine ortho_qr(A,LDA,m,n)
 
   allocate (jpvt(n), tau(n), work(1))
   LWORK=-1
-  call  dgeqrf( m, n, A, LDA, TAU, WORK, LWORK, INFO )
+  call dgeqrf( m, n, A, LDA, TAU, WORK, LWORK, INFO )
   LWORK=2*int(WORK(1))
   deallocate(WORK)
   allocate(WORK(LWORK))
-  call  dgeqrf(m, n, A, LDA, TAU, WORK, LWORK, INFO )
-  call  dorgqr(m, n, n, A, LDA, tau, WORK, LWORK, INFO)
+  call dgeqrf(m, n, A, LDA, TAU, WORK, LWORK, INFO )
+  call dorgqr(m, n, n, A, LDA, tau, WORK, LWORK, INFO)
   deallocate(WORK,jpvt,tau)
 end
 
@@ -174,7 +174,7 @@ subroutine ortho_qr_unblocked(A,LDA,m,n)
   double precision, allocatable  :: tau(:), work(:)
 
   allocate (jpvt(n), tau(n), work(n))
-  call  dgeqr2( m, n, A, LDA, TAU, WORK, INFO )
+  call dgeqr2( m, n, A, LDA, TAU, WORK, INFO )
   call dorg2r(m, n, n, A, LDA, tau, WORK, INFO)
   deallocate(WORK,jpvt,tau)
 end
@@ -397,20 +397,20 @@ subroutine lapack_diagd(eigvalues,eigvectors,H,nmax,n)
   integer         ,allocatable   :: iwork(:)
   double precision,allocatable   :: A(:,:)
   integer                        :: lwork, info, i,j,l,k, liwork
-
+  
   allocate(A(nmax,n),eigenvalues(n))
-! print*,'Diagonalization by jacobi'
-! print*,'n = ',n
-
+  ! print*,'Diagonalization by jacobi'
+  ! print*,'n = ',n
+  
   A=H
   lwork = max(1000,2*n*n + 6*n+ 1)
   liwork = max(5*n + 3,1000)
   allocate (work(lwork),iwork(liwork))
-
+  
   lwork = -1
   liwork = -1
-  call DSYEVD( 'V', 'U', n, A, nmax, eigenvalues, work, lwork, &
-    iwork, liwork, info )
+  call DSYEVD( 'V', 'U', n, A, nmax, eigenvalues, work, lwork,       &
+      iwork, liwork, info )
   if (info < 0) then
     print *, irp_here, ': DSYEVD: the ',-info,'-th argument had an illegal value'
     stop 2
@@ -418,20 +418,20 @@ subroutine lapack_diagd(eigvalues,eigvectors,H,nmax,n)
   lwork  = int( work( 1 ) )
   liwork = iwork(1)
   deallocate (work,iwork)
-
+  
   allocate (work(lwork),iwork(liwork))
-  call DSYEVD( 'V', 'U', n, A, nmax, eigenvalues, work, lwork, &
-    iwork, liwork, info )
+  call DSYEVD( 'V', 'U', n, A, nmax, eigenvalues, work, lwork,       &
+      iwork, liwork, info )
   deallocate(work,iwork)
-
+  
   if (info < 0) then
     print *, irp_here, ': DSYEVD: the ',-info,'-th argument had an illegal value'
     stop 2
   else if( info > 0  ) then
-     write(*,*)'DSYEVD Failed'
-     stop 1
+    write(*,*)'DSYEVD Failed'
+    stop 1
   end if
-
+  
   eigvectors = 0.d0
   eigvalues = 0.d0
   do j = 1, n
@@ -465,8 +465,6 @@ subroutine lapack_diag(eigvalues,eigvectors,H,nmax,n)
   integer                        :: lwork, info, i,j,l,k, liwork
 
   allocate(A(nmax,n),eigenvalues(n))
-! print*,'Diagonalization by jacobi'
-! print*,'n = ',n
 
   A=H
   lwork = 2*n*n + 6*n+ 1
@@ -511,165 +509,3 @@ subroutine lapack_diag(eigvalues,eigvectors,H,nmax,n)
   deallocate(A,eigenvalues)
 end
 
-subroutine lapack_diag_s2(eigvalues,eigvectors,H,nmax,n)
-  implicit none
-  BEGIN_DOC
-  ! Diagonalize matrix H
-  !
-  ! H is untouched between input and ouptut
-  !
-  ! eigevalues(i) = ith lowest eigenvalue of the H matrix
-  !
-  ! eigvectors(i,j) = <i|psi_j> where i is the basis function and psi_j is the j th eigenvector
-  !
-  END_DOC
-  integer, intent(in)            :: n,nmax
-  double precision, intent(out)  :: eigvectors(nmax,n)
-  double precision, intent(out)  :: eigvalues(n)
-  double precision, intent(in)   :: H(nmax,n)
-  double precision,allocatable   :: eigenvalues(:)
-  double precision,allocatable   :: work(:)
-  double precision,allocatable   :: A(:,:)
-  integer                        :: lwork, info, i,j,l,k, liwork
-
-  allocate(A(nmax,n),eigenvalues(n))
-! print*,'Diagonalization by jacobi'
-! print*,'n = ',n
-
-  A=H
-  lwork = 2*n*n + 6*n+ 1
-  allocate (work(lwork))
-
-  lwork = -1
-  call DSYEV( 'V', 'U', n, A, nmax, eigenvalues, work, lwork, &
-    info )
-  if (info < 0) then
-    print *, irp_here, ': DSYEV: the ',-info,'-th argument had an illegal value'
-    stop 2
-  endif
-  lwork  = int( work( 1 ) )
-  deallocate (work)
-
-  allocate (work(lwork))
-  call DSYEV( 'V', 'U', n, A, nmax, eigenvalues, work, lwork, &
-    info )
-  deallocate(work)
-
-  if (info < 0) then
-    print *, irp_here, ': DSYEV: the ',-info,'-th argument had an illegal value'
-    stop 2
-  else if( info > 0  ) then
-     write(*,*)'DSYEV Failed'
-     stop 1
-  end if
-
-  eigvectors = 0.d0
-  eigvalues = 0.d0
-  do j = 1, n
-    eigvalues(j) = eigenvalues(j)
-    do i = 1, n
-      eigvectors(i,j) = A(i,j)
-    enddo
-  enddo
-  deallocate(A,eigenvalues)
-end
-
-
-
-
-subroutine lapack_partial_diag(eigvalues,eigvectors,H,nmax,n,n_st)
-  implicit none
-  BEGIN_DOC
-  ! Diagonalize matrix H
-  !
-  ! H is untouched between input and ouptut
-  !
-  ! eigevalues(i) = ith lowest eigenvalue of the H matrix
-  !
-  ! eigvectors(i,j) = <i|psi_j> where i is the basis function and psi_j is the j th eigenvector
-  !
-  END_DOC
-  integer, intent(in)            :: n,nmax,n_st
-  double precision, intent(out)  :: eigvectors(nmax,n)
-  double precision, intent(out)  :: eigvalues(n)
-  double precision, intent(in)   :: H(nmax,n)
-  double precision,allocatable   :: work(:)
-  integer         ,allocatable   :: iwork(:), isuppz(:)
-  double precision,allocatable   :: A(:,:)
-  integer                        :: lwork, info, i,j,l,k,m, liwork
-
-  allocate(A(nmax,n))
-
-  A=H
-  lwork = 2*n*n + 6*n+ 1
-  liwork = 5*n + 3
-  allocate (work(lwork),iwork(liwork),isuppz(2*N_st))
-
-  lwork = -1
-  liwork = -1
-  call DSYEVR( 'V', 'I', 'U', n, A, nmax, 0.d0, 0.d0, 1, n_st, 1.d-10, m, eigvalues, eigvectors, nmax, isuppz, work, lwork, &
-    iwork, liwork, info )
-  if (info < 0) then
-    print *, irp_here, ': DSYEVR: the ',-info,'-th argument had an illegal value'
-    stop 2
-  endif
-  lwork  = int( work( 1 ) )
-  liwork = iwork(1)
-  deallocate (work,iwork)
-
-  allocate (work(lwork),iwork(liwork))
-  call DSYEVR( 'V', 'I', 'U', n, A, nmax, 0.d0, 0.d0, 1, n_st, 1.d-10, m, eigvalues, eigvectors, nmax, isuppz, work, lwork, &
-    iwork, liwork, info )
-  deallocate(work,iwork)
-
-  if (info < 0) then
-    print *, irp_here, ': DSYEVR: the ',-info,'-th argument had an illegal value'
-    stop 2
-  else if( info > 0  ) then
-     write(*,*)'DSYEVR Failed'
-     stop 1
-  end if
-
-  deallocate(A)
-end
-
-
-subroutine set_zero_extra_diag(i1,i2,matrix,lda,m)
- implicit none
- integer, intent(in) :: i1,i2,lda,m
- double precision, intent(inout) :: matrix(lda,m)
- integer :: i,j
- do j=i1,i2
-  do i = 1,i1-1
-   matrix(i,j) = 0.d0
-   matrix(j,i) = 0.d0
-  enddo
- enddo
-
- do i = i2,i1
-  do j=i2+1,m
-   matrix(i,j) = 0.d0
-   matrix(j,i) = 0.d0
-  enddo
- enddo
-
-
-end
-
-
-
-subroutine matrix_vector_product(u0,u1,matrix,sze,lda)
- implicit none
- BEGIN_DOC
-! performs u1 += u0 * matrix 
- END_DOC
- integer, intent(in)             :: sze,lda
- double precision, intent(in)    :: u0(sze)
- double precision, intent(inout) :: u1(sze)
- double precision, intent(in)    :: matrix(lda,sze)
- integer :: i,j
- integer                        :: incx,incy
- incx = 1
- incy = 1
- call dsymv('U', sze, 1.d0, matrix, lda, u0, incx, 1.d0, u1, incy)
-end

@@ -53,7 +53,6 @@ subroutine run
 
 ! Choose SCF algorithm
 
-!    call damping_SCF   ! Deprecated routine
   call Roothaan_Hall_SCF
   
 end

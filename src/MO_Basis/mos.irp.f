@@ -242,65 +242,42 @@ subroutine ao_to_mo(A_ao,LDA_ao,A_mo,LDA_mo)
   deallocate(T)
 end
 
-subroutine mo_to_ao_no_overlap(A_mo,LDA_mo,A_ao,LDA_ao)
-  implicit none
-  BEGIN_DOC
-  ! Transform A from the MO basis to the S^-1 AO basis
-  ! Useful for density matrix
-  END_DOC
-  integer, intent(in)            :: LDA_ao,LDA_mo
-  double precision, intent(in)   :: A_mo(LDA_mo,mo_tot_num)
-  double precision, intent(out)  :: A_ao(LDA_ao,ao_num)
-  double precision, allocatable  :: T(:,:)
-  
-  allocate ( T(mo_tot_num,ao_num) )
-  !DIR$ ATTRIBUTES ALIGN : $IRP_ALIGN :: T
-  
-  call dgemm('N','T', mo_tot_num, ao_num, mo_tot_num,                &
-      1.d0, A_mo,size(A_mo,1),                                       &
-      mo_coef, size(mo_coef,1),                                      &
-      0.d0, T, size(T,1))
-  
-  call dgemm('N','N', ao_num, ao_num, mo_tot_num,                    &
-      1.d0, mo_coef,size(mo_coef,1),                                 &
-      T, size(T,1),                                                  &
-      0.d0, A_ao, size(A_ao,1))
-  
-  deallocate(T)
-end
 
 subroutine mix_mo_jk(j,k)
- implicit none
- integer, intent(in) :: j,k
- integer :: i,i_plus,i_minus
- BEGIN_DOC
-! subroutine that rotates the jth MO with the kth MO
-! to give two new MO's that are 
-!         '+' = 1/sqrt(2) (|j> + |k>) 
-!         '-' = 1/sqrt(2) (|j> - |k>)
-! by convention, the '+' MO is in the lower index (min(j,k))
-! by convention, the '-' MO is in the greater index (max(j,k))
- END_DOC
- double precision :: array_tmp(ao_num,2),dsqrt_2
- if(j==k)then
-  print*,'You want to mix two orbitals that are the same !'
-  print*,'It does not make sense ... '
-  print*,'Stopping ...'
-  stop
- endif
- array_tmp = 0.d0
- dsqrt_2 = 1.d0/dsqrt(2.d0)
- do i = 1, ao_num
-  array_tmp(i,1) = dsqrt_2 * (mo_coef(i,j) + mo_coef(i,k))
-  array_tmp(i,2) = dsqrt_2 * (mo_coef(i,j) - mo_coef(i,k))
- enddo
- i_plus = min(j,k)
- i_minus = max(j,k)
- do i = 1, ao_num
-  mo_coef(i,i_plus) = array_tmp(i,1)
-  mo_coef(i,i_minus) = array_tmp(i,2)
- enddo
-
+  implicit none
+  integer, intent(in)            :: j,k
+  integer                        :: i,i_plus,i_minus
+  BEGIN_DOC
+  ! Rotates the jth MO with the kth MO
+  ! to give two new MO's that are
+  !
+  !         '+' = 1/sqrt(2) (|j> + |k>)
+  !
+  !         '-' = 1/sqrt(2) (|j> - |k>)
+  !
+  ! by convention, the '+' MO is in the lower index (min(j,k))
+  ! by convention, the '-' MO is in the larger index (max(j,k))
+  END_DOC
+  double precision               :: array_tmp(ao_num,2),dsqrt_2
+  if(j==k)then
+    print*,'You want to mix two orbitals that are the same !'
+    print*,'It does not make sense ... '
+    print*,'Stopping ...'
+    stop
+  endif
+  array_tmp = 0.d0
+  dsqrt_2 = 1.d0/dsqrt(2.d0)
+  do i = 1, ao_num
+    array_tmp(i,1) = dsqrt_2 * (mo_coef(i,j) + mo_coef(i,k))
+    array_tmp(i,2) = dsqrt_2 * (mo_coef(i,j) - mo_coef(i,k))
+  enddo
+  i_plus = min(j,k)
+  i_minus = max(j,k)
+  do i = 1, ao_num
+    mo_coef(i,i_plus) = array_tmp(i,1)
+    mo_coef(i,i_minus) = array_tmp(i,2)
+  enddo
+  
 end
 
 subroutine ao_ortho_cano_to_ao(A_ao,LDA_ao,A,LDA)

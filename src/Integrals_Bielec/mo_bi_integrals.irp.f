@@ -157,49 +157,6 @@ BEGIN_PROVIDER [ logical, mo_bielec_integrals_in_map ]
   
 END_PROVIDER
 
-subroutine set_integrals_jj_into_map
-  use bitmasks
-  implicit none
-  integer                        :: i,j,n_integrals,i0,j0
-  double precision               :: buffer_value(mo_tot_num * mo_tot_num)
-  integer(key_kind)              :: buffer_i(mo_tot_num*mo_tot_num)
-  n_integrals = 0
-  do j0 = 1, n_virt_orb
-    j = list_virt(j0)
-    do i0 = j0, n_virt_orb
-      i = list_virt(i0)
-      n_integrals += 1
-      !    mo_bielec_integral_jj_exchange(i,j) = mo_bielec_integral_vv_exchange_from_ao(i,j)
-      call mo_bielec_integrals_index(i,j,i,j,buffer_i(n_integrals))
-      buffer_value(n_integrals) = mo_bielec_integral_vv_from_ao(i,j)
-    enddo
-  enddo
-  call insert_into_mo_integrals_map(n_integrals,buffer_i,buffer_value,&
-      real(mo_integrals_threshold,integral_kind))
-  call map_merge(mo_integrals_map)
-end
-
-subroutine set_integrals_exchange_jj_into_map
-  use bitmasks
-  implicit none
-  integer                        :: i,j,n_integrals,i0,j0
-  double precision               :: buffer_value(mo_tot_num * mo_tot_num)
-  integer(key_kind)              :: buffer_i(mo_tot_num*mo_tot_num)
-  n_integrals = 0
-  do j0 = 1, n_virt_orb
-    j = list_virt(j0)
-    do i0 = j0+1, n_virt_orb
-      i = list_virt(i0)
-      n_integrals += 1
-      call mo_bielec_integrals_index(i,j,j,i,buffer_i(n_integrals))
-      buffer_value(n_integrals) = mo_bielec_integral_vv_exchange_from_ao(i,j)
-    enddo
-  enddo
-  call insert_into_mo_integrals_map(n_integrals,buffer_i,buffer_value,&
-      real(mo_integrals_threshold,integral_kind))
-  call map_merge(mo_integrals_map)
-  
-end
 
 subroutine add_integrals_to_map(mask_ijkl)
   use bitmasks
@@ -1386,9 +1343,3 @@ subroutine clear_mo_map
   
 end
 
-subroutine provide_all_mo_integrals
-  implicit none
-  provide mo_integrals_map mo_bielec_integral_jj mo_bielec_integral_jj_anti
-  provide mo_bielec_integral_jj_exchange mo_bielec_integrals_in_map
-  
-end
