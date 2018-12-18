@@ -1,3 +1,34 @@
+subroutine set_bit_to_integer(i_physical,key,Nint)
+ use bitmasks
+ BEGIN_DOC
+ ! set to 1 the bit number i_physical in the bitstring key
+ END_DOC
+ implicit none
+ integer, intent(in) :: i_physical,Nint
+ integer(bit_kind), intent(inout) :: key(Nint)
+ integer :: k,j,i
+ k = ishft(i_physical-1,-bit_kind_shift)+1
+ j = i_physical-ishft(k-1,bit_kind_shift)-1
+ key(k) = ibset(key(k),j)
+end
+
+
+subroutine clear_bit_to_integer(i_physical,key,Nint)
+ use bitmasks
+ BEGIN_DOC
+ ! set to 0 the bit number i_physical in the bitstring key
+ END_DOC
+ implicit none
+ integer, intent(in) :: i_physical,Nint
+ integer(bit_kind), intent(inout) :: key(Nint)
+ integer :: k,j,i
+ k = ishft(i_physical-1,-bit_kind_shift)+1
+ j = i_physical-ishft(k-1,bit_kind_shift)-1
+ key(k) = ibclr(key(k),j)
+end
+
+
+
 subroutine bitstring_to_list( string, list, n_elements, Nint)
   use bitmasks
   implicit none
