@@ -15,7 +15,7 @@ function run_HF() {
   qp_edit -c $1
   ezfio set_file $1
   ezfio set hartree_fock thresh_scf 2.e-8
-  qp_run SCF $1
+  qp_run scf $1
   energy="$(ezfio get hartree_fock energy)"
   eq $energy $2 $thresh
 }
@@ -30,7 +30,7 @@ function run_FCI() {
   ezfio set determinants n_det_max $2
   ezfio set davidson threshold_davidson 1.e-10
 
-  qp_run FCI $1
+  qp_run fci $1
   energy="$(ezfio get FCI energy | tr '[]' ' ')"
   eq $energy $3 $thresh
   energy_pt2="$(ezfio get FCI energy_pt2 | tr '[]' ' ')"

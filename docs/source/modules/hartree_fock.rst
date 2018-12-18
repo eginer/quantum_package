@@ -108,7 +108,7 @@ Providers
         double precision, allocatable	:: ao_bi_elec_integral_alpha	(ao_num,ao_num)
         double precision, allocatable	:: ao_bi_elec_integral_beta	(ao_num,ao_num)
 
-    File: :file:`Fock_matrix.irp.f`
+    File: :file:`fock_matrix.irp.f`
 
     Alpha Fock matrix in AO basis set
 
@@ -122,36 +122,9 @@ Providers
         double precision, allocatable	:: ao_bi_elec_integral_alpha	(ao_num,ao_num)
         double precision, allocatable	:: ao_bi_elec_integral_beta	(ao_num,ao_num)
 
-    File: :file:`Fock_matrix.irp.f`
+    File: :file:`fock_matrix.irp.f`
 
     Alpha Fock matrix in AO basis set
-
-
-
-
-.. c:var:: diagonal_fock_matrix_mo
-
-    .. code:: text
-
-        double precision, allocatable	:: diagonal_fock_matrix_mo	(mo_tot_num)
-        double precision, allocatable	:: eigenvectors_fock_matrix_mo	(ao_num,mo_tot_num)
-
-    File: :file:`diagonalize_fock.irp.f`
-
-    Diagonal Fock matrix in the MO basis
-
-
-
-
-.. c:var:: diagonal_fock_matrix_mo_sum
-
-    .. code:: text
-
-        double precision, allocatable	:: diagonal_fock_matrix_mo_sum	(mo_tot_num)
-
-    File: :file:`diagonalize_fock.irp.f`
-
-    diagonal element of the fock matrix calculated as the sum over all the interactions with all the electrons in the RHF determinant diagonal_Fock_matrix_mo_sum(i) = sum_{j=1, N_elec} 2 J_ij -K_ij
 
 
 
@@ -163,7 +136,7 @@ Providers
         double precision, allocatable	:: eigenvalues_fock_matrix_ao	(AO_num)
         double precision, allocatable	:: eigenvectors_fock_matrix_ao	(AO_num,AO_num)
 
-    File: :file:`DIIS.irp.f`
+    File: :file:`diis.irp.f`
 
     Eigenvalues and eigenvectors of the Fock matrix over the AO basis
 
@@ -177,7 +150,7 @@ Providers
         double precision, allocatable	:: eigenvalues_fock_matrix_ao	(AO_num)
         double precision, allocatable	:: eigenvectors_fock_matrix_ao	(AO_num,AO_num)
 
-    File: :file:`DIIS.irp.f`
+    File: :file:`diis.irp.f`
 
     Eigenvalues and eigenvectors of the Fock matrix over the AO basis
 
@@ -188,12 +161,11 @@ Providers
 
     .. code:: text
 
-        double precision, allocatable	:: diagonal_fock_matrix_mo	(mo_tot_num)
         double precision, allocatable	:: eigenvectors_fock_matrix_mo	(ao_num,mo_tot_num)
 
     File: :file:`diagonalize_fock.irp.f`
 
-    Diagonal Fock matrix in the MO basis
+    Eigenvector of the Fock matrix in the MO basis obtained with level shift.
 
 
 
@@ -208,7 +180,7 @@ Providers
         iteration_SCF,dim_DIIS                 &
         )
 
-    File: :file:`Roothaan_Hall_SCF.irp.f`
+    File: :file:`roothaan_hall_scf.irp.f`
 
     Compute the extrapolated Fock matrix using the DIIS procedure
 
@@ -221,7 +193,7 @@ Providers
 
         double precision, allocatable	:: fock_matrix_ao	(ao_num,ao_num)
 
-    File: :file:`Fock_matrix.irp.f`
+    File: :file:`fock_matrix.irp.f`
 
     Fock matrix in AO basis set
 
@@ -235,7 +207,7 @@ Providers
         double precision, allocatable	:: fock_matrix_ao_alpha	(ao_num,ao_num)
         double precision, allocatable	:: fock_matrix_ao_beta	(ao_num,ao_num)
 
-    File: :file:`Fock_matrix.irp.f`
+    File: :file:`fock_matrix.irp.f`
 
     Alpha Fock matrix in AO basis set
 
@@ -249,7 +221,7 @@ Providers
         double precision, allocatable	:: fock_matrix_ao_alpha	(ao_num,ao_num)
         double precision, allocatable	:: fock_matrix_ao_beta	(ao_num,ao_num)
 
-    File: :file:`Fock_matrix.irp.f`
+    File: :file:`fock_matrix.irp.f`
 
     Alpha Fock matrix in AO basis set
 
@@ -263,7 +235,7 @@ Providers
         double precision, allocatable	:: fock_matrix_mo	(mo_tot_num,mo_tot_num)
         double precision, allocatable	:: fock_matrix_diag_mo	(mo_tot_num)
 
-    File: :file:`Fock_matrix.irp.f`
+    File: :file:`fock_matrix.irp.f`
 
     Fock matrix on the MO basis. For open shells, the ROHF Fock Matrix is 
     |   F-K    |  F + K/2  |    F     | |---------------------------------| | F + K/2  |     F     |  F - K/2 | |---------------------------------| |    F     |  F - K/2  |  F + K   | 
@@ -281,7 +253,7 @@ Providers
         double precision, allocatable	:: fock_matrix_mo	(mo_tot_num,mo_tot_num)
         double precision, allocatable	:: fock_matrix_diag_mo	(mo_tot_num)
 
-    File: :file:`Fock_matrix.irp.f`
+    File: :file:`fock_matrix.irp.f`
 
     Fock matrix on the MO basis. For open shells, the ROHF Fock Matrix is 
     |   F-K    |  F + K/2  |    F     | |---------------------------------| | F + K/2  |     F     |  F - K/2 | |---------------------------------| |    F     |  F - K/2  |  F + K   | 
@@ -298,7 +270,7 @@ Providers
 
         double precision, allocatable	:: fock_matrix_mo_alpha	(mo_tot_num,mo_tot_num)
 
-    File: :file:`Fock_matrix.irp.f`
+    File: :file:`fock_matrix.irp.f`
 
     Fock matrix on the MO basis
 
@@ -311,7 +283,7 @@ Providers
 
         double precision, allocatable	:: fock_matrix_mo_beta	(mo_tot_num,mo_tot_num)
 
-    File: :file:`Fock_matrix.irp.f`
+    File: :file:`fock_matrix.irp.f`
 
     Fock matrix on the MO basis
 
@@ -324,7 +296,7 @@ Providers
 
         double precision, allocatable	:: fps_spf_matrix_ao	(AO_num,AO_num)
 
-    File: :file:`DIIS.irp.f`
+    File: :file:`diis.irp.f`
 
     Commutator FPS - SPF
 
@@ -337,7 +309,7 @@ Providers
 
         double precision, allocatable	:: fps_spf_matrix_mo	(mo_tot_num,mo_tot_num)
 
-    File: :file:`DIIS.irp.f`
+    File: :file:`diis.irp.f`
 
     Commutator FPS - SPF in MO basis
 
@@ -350,7 +322,7 @@ Providers
 
         double precision, allocatable	:: hf_density_matrix_ao	(ao_num,ao_num)
 
-    File: :file:`HF_density_matrix_ao.irp.f`
+    File: :file:`hf_density_matrix_ao.irp.f`
 
     S^{-1}.P.S^{-1}  where P = C.C^t
 
@@ -363,7 +335,7 @@ Providers
 
         double precision, allocatable	:: hf_density_matrix_ao_alpha	(ao_num,ao_num)
 
-    File: :file:`HF_density_matrix_ao.irp.f`
+    File: :file:`hf_density_matrix_ao.irp.f`
 
     S^{-1}.P_alpha.S^{-1}
 
@@ -376,7 +348,7 @@ Providers
 
         double precision, allocatable	:: hf_density_matrix_ao_beta	(ao_num,ao_num)
 
-    File: :file:`HF_density_matrix_ao.irp.f`
+    File: :file:`hf_density_matrix_ao.irp.f`
 
     S^{-1}.P_beta.S^{-1}
 
@@ -389,7 +361,7 @@ Providers
 
         double precision	:: hf_energy
 
-    File: :file:`Fock_matrix.irp.f`
+    File: :file:`fock_matrix.irp.f`
 
     Hartree-Fock energy
 
@@ -402,7 +374,7 @@ Providers
 
         double precision	:: threshold_diis_nonzero
 
-    File: :file:`DIIS.irp.f`
+    File: :file:`diis.irp.f`
 
     If threshold_DIIS is zero, choose sqrt(thresh_scf)
 
@@ -420,23 +392,9 @@ Subroutines / functions
 
         subroutine create_guess
 
-    File: :file:`SCF.irp.f`
+    File: :file:`scf.irp.f`
 
     Create a MO guess if no MOs are present in the EZFIO directory
-
-
-
-
-
-.. c:function:: damping_scf
-
-    .. code:: text
-
-        subroutine damping_SCF
-
-    File: :file:`damping_SCF.irp.f`
-
-    
 
 
 
@@ -462,7 +420,7 @@ Subroutines / functions
 
         subroutine Roothaan_Hall_SCF
 
-    File: :file:`Roothaan_Hall_SCF.irp.f`
+    File: :file:`roothaan_hall_scf.irp.f`
 
     Roothaan-Hall algorithm for SCF Hartree-Fock calculation
 
@@ -476,7 +434,7 @@ Subroutines / functions
 
         subroutine run
 
-    File: :file:`SCF.irp.f`
+    File: :file:`scf.irp.f`
 
     Run SCF calculation
 
@@ -490,7 +448,7 @@ Subroutines / functions
 
         subroutine scf
 
-    File: :file:`SCF.irp.f`
+    File: :file:`scf.irp.f`
 
     Produce `Hartree_Fock` MO orbital output: mo_basis.mo_tot_num mo_basis.mo_label mo_basis.ao_md5 mo_basis.mo_coef mo_basis.mo_occ output: hartree_fock.energy optional: mo_basis.mo_coef
 

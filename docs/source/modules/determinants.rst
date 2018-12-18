@@ -104,18 +104,6 @@ EZFIO parameters
 
     Default: 0.
 
-.. option:: store_full_H_mat
-
-    If |true|, the Davidson diagonalization is performed by storing the full |H| matrix up to n_det_max_stored. Be careful, it can cost a lot of memory but can also save a lot of CPU time
-
-    Default: False
-
-.. option:: n_det_max_stored
-
-    Maximum number of determinants for which the full |H| matrix is stored. be careful, the memory requested scales as 10*n_det_max_stored**2. for instance, 90000 determinants represents a matrix of size 60 Gb.
-
-    Default: 90000
-
 .. option:: state_average_weight
 
     Weight of the states in state-average calculations.
@@ -316,7 +304,7 @@ Providers
         logical	:: h_apply_buffer_allocated
         integer(omp_lock_kind), allocatable	:: h_apply_buffer_lock	(64,0:nproc-1)
 
-    File: :file:`H_apply.irp.f`
+    File: :file:`h_apply.irp.f`
 
     Buffer of determinants/coefficients/perturbative energy for H_apply. Uninitialized. Filled by H_apply subroutines.
 
@@ -330,7 +318,7 @@ Providers
         logical	:: h_apply_buffer_allocated
         integer(omp_lock_kind), allocatable	:: h_apply_buffer_lock	(64,0:nproc-1)
 
-    File: :file:`H_apply.irp.f`
+    File: :file:`h_apply.irp.f`
 
     Buffer of determinants/coefficients/perturbative energy for H_apply. Uninitialized. Filled by H_apply subroutines.
 
@@ -1609,195 +1597,6 @@ Providers
 
 
 
-.. c:var:: two_body_dm_ab_big_array_act
-
-    .. code:: text
-
-        double precision, allocatable	:: two_body_dm_ab_big_array_act	(n_act_orb,n_act_orb,n_act_orb,n_act_orb)
-        double precision, allocatable	:: two_body_dm_ab_big_array_core_act	(n_core_orb_allocate,n_act_orb,n_act_orb)
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    two_body_dm_ab_big_array_act = Purely active part of the two body density matrix two_body_dm_ab_big_array_act_core takes only into account the single excitation within the active space that adds terms in the act <-> core two body dm two_body_dm_ab_big_array_act_core(i,j,k)  = < a^\dagger_i n_k a_j > with i,j in the ACTIVE SPACE with k in the CORE SPACE 
-    The alpha-beta extra diagonal energy FOR WF DEFINED AS AN APPROXIMATION OF A CAS can be computed thanks to sum_{h1,p1,h2,p2} two_body_dm_ab_big_array_act(h1,p1,h2,p2) * (h1p1|h2p2) +  sum_{h1,p1,h2,p2} two_body_dm_ab_big_array_core_act(h1,p1,h2,p2) * (h1p1|h2p2)
-
-
-
-
-.. c:var:: two_body_dm_ab_big_array_core_act
-
-    .. code:: text
-
-        double precision, allocatable	:: two_body_dm_ab_big_array_act	(n_act_orb,n_act_orb,n_act_orb,n_act_orb)
-        double precision, allocatable	:: two_body_dm_ab_big_array_core_act	(n_core_orb_allocate,n_act_orb,n_act_orb)
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    two_body_dm_ab_big_array_act = Purely active part of the two body density matrix two_body_dm_ab_big_array_act_core takes only into account the single excitation within the active space that adds terms in the act <-> core two body dm two_body_dm_ab_big_array_act_core(i,j,k)  = < a^\dagger_i n_k a_j > with i,j in the ACTIVE SPACE with k in the CORE SPACE 
-    The alpha-beta extra diagonal energy FOR WF DEFINED AS AN APPROXIMATION OF A CAS can be computed thanks to sum_{h1,p1,h2,p2} two_body_dm_ab_big_array_act(h1,p1,h2,p2) * (h1p1|h2p2) +  sum_{h1,p1,h2,p2} two_body_dm_ab_big_array_core_act(h1,p1,h2,p2) * (h1p1|h2p2)
-
-
-
-
-.. c:var:: two_body_dm_ab_diag_act
-
-    .. code:: text
-
-        double precision, allocatable	:: two_body_dm_ab_diag_act	(n_act_orb,n_act_orb)
-        double precision, allocatable	:: two_body_dm_ab_diag_inact	(n_inact_orb_allocate,n_inact_orb_allocate)
-        double precision, allocatable	:: two_body_dm_ab_diag_core	(n_core_orb_allocate,n_core_orb_allocate)
-        double precision, allocatable	:: two_body_dm_ab_diag_all	(mo_tot_num,mo_tot_num)
-        double precision, allocatable	:: two_body_dm_diag_core_a_act_b	(n_core_orb_allocate,n_act_orb)
-        double precision, allocatable	:: two_body_dm_diag_core_b_act_a	(n_core_orb_allocate,n_act_orb)
-        double precision, allocatable	:: two_body_dm_diag_core_act	(n_core_orb_allocate,n_act_orb)
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    two_body_dm_ab_diag_all(k,m) = <\Psi | n_(k\alpha) n_(m\beta) | \Psi> two_body_dm_ab_diag_act(k,m) is restricted to the active orbitals : orbital k = list_act(k) two_body_dm_ab_diag_inact(k,m) is restricted to the inactive orbitals : orbital k = list_inact(k) two_body_dm_ab_diag_core(k,m) is restricted to the core orbitals : orbital k = list_core(k) two_body_dm_ab_diag_core_b_act_a(k,m) represents the core beta <-> active alpha part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_a_act_b(k,m) represents the core alpha <-> active beta part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_act(k,m) represents the core<->active part of the diagonal two body dm when we traced on the spin orbital k = list_core(k) orbital m = list_act(m)
-
-
-
-
-.. c:var:: two_body_dm_ab_diag_all
-
-    .. code:: text
-
-        double precision, allocatable	:: two_body_dm_ab_diag_act	(n_act_orb,n_act_orb)
-        double precision, allocatable	:: two_body_dm_ab_diag_inact	(n_inact_orb_allocate,n_inact_orb_allocate)
-        double precision, allocatable	:: two_body_dm_ab_diag_core	(n_core_orb_allocate,n_core_orb_allocate)
-        double precision, allocatable	:: two_body_dm_ab_diag_all	(mo_tot_num,mo_tot_num)
-        double precision, allocatable	:: two_body_dm_diag_core_a_act_b	(n_core_orb_allocate,n_act_orb)
-        double precision, allocatable	:: two_body_dm_diag_core_b_act_a	(n_core_orb_allocate,n_act_orb)
-        double precision, allocatable	:: two_body_dm_diag_core_act	(n_core_orb_allocate,n_act_orb)
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    two_body_dm_ab_diag_all(k,m) = <\Psi | n_(k\alpha) n_(m\beta) | \Psi> two_body_dm_ab_diag_act(k,m) is restricted to the active orbitals : orbital k = list_act(k) two_body_dm_ab_diag_inact(k,m) is restricted to the inactive orbitals : orbital k = list_inact(k) two_body_dm_ab_diag_core(k,m) is restricted to the core orbitals : orbital k = list_core(k) two_body_dm_ab_diag_core_b_act_a(k,m) represents the core beta <-> active alpha part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_a_act_b(k,m) represents the core alpha <-> active beta part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_act(k,m) represents the core<->active part of the diagonal two body dm when we traced on the spin orbital k = list_core(k) orbital m = list_act(m)
-
-
-
-
-.. c:var:: two_body_dm_ab_diag_core
-
-    .. code:: text
-
-        double precision, allocatable	:: two_body_dm_ab_diag_act	(n_act_orb,n_act_orb)
-        double precision, allocatable	:: two_body_dm_ab_diag_inact	(n_inact_orb_allocate,n_inact_orb_allocate)
-        double precision, allocatable	:: two_body_dm_ab_diag_core	(n_core_orb_allocate,n_core_orb_allocate)
-        double precision, allocatable	:: two_body_dm_ab_diag_all	(mo_tot_num,mo_tot_num)
-        double precision, allocatable	:: two_body_dm_diag_core_a_act_b	(n_core_orb_allocate,n_act_orb)
-        double precision, allocatable	:: two_body_dm_diag_core_b_act_a	(n_core_orb_allocate,n_act_orb)
-        double precision, allocatable	:: two_body_dm_diag_core_act	(n_core_orb_allocate,n_act_orb)
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    two_body_dm_ab_diag_all(k,m) = <\Psi | n_(k\alpha) n_(m\beta) | \Psi> two_body_dm_ab_diag_act(k,m) is restricted to the active orbitals : orbital k = list_act(k) two_body_dm_ab_diag_inact(k,m) is restricted to the inactive orbitals : orbital k = list_inact(k) two_body_dm_ab_diag_core(k,m) is restricted to the core orbitals : orbital k = list_core(k) two_body_dm_ab_diag_core_b_act_a(k,m) represents the core beta <-> active alpha part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_a_act_b(k,m) represents the core alpha <-> active beta part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_act(k,m) represents the core<->active part of the diagonal two body dm when we traced on the spin orbital k = list_core(k) orbital m = list_act(m)
-
-
-
-
-.. c:var:: two_body_dm_ab_diag_inact
-
-    .. code:: text
-
-        double precision, allocatable	:: two_body_dm_ab_diag_act	(n_act_orb,n_act_orb)
-        double precision, allocatable	:: two_body_dm_ab_diag_inact	(n_inact_orb_allocate,n_inact_orb_allocate)
-        double precision, allocatable	:: two_body_dm_ab_diag_core	(n_core_orb_allocate,n_core_orb_allocate)
-        double precision, allocatable	:: two_body_dm_ab_diag_all	(mo_tot_num,mo_tot_num)
-        double precision, allocatable	:: two_body_dm_diag_core_a_act_b	(n_core_orb_allocate,n_act_orb)
-        double precision, allocatable	:: two_body_dm_diag_core_b_act_a	(n_core_orb_allocate,n_act_orb)
-        double precision, allocatable	:: two_body_dm_diag_core_act	(n_core_orb_allocate,n_act_orb)
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    two_body_dm_ab_diag_all(k,m) = <\Psi | n_(k\alpha) n_(m\beta) | \Psi> two_body_dm_ab_diag_act(k,m) is restricted to the active orbitals : orbital k = list_act(k) two_body_dm_ab_diag_inact(k,m) is restricted to the inactive orbitals : orbital k = list_inact(k) two_body_dm_ab_diag_core(k,m) is restricted to the core orbitals : orbital k = list_core(k) two_body_dm_ab_diag_core_b_act_a(k,m) represents the core beta <-> active alpha part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_a_act_b(k,m) represents the core alpha <-> active beta part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_act(k,m) represents the core<->active part of the diagonal two body dm when we traced on the spin orbital k = list_core(k) orbital m = list_act(m)
-
-
-
-
-.. c:var:: two_body_dm_ab_map
-
-    .. code:: text
-
-        type(map_type)	:: two_body_dm_ab_map
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    Map of the two body density matrix elements for the alpha/beta elements
-
-
-
-
-.. c:var:: two_body_dm_diag_core_a_act_b
-
-    .. code:: text
-
-        double precision, allocatable	:: two_body_dm_ab_diag_act	(n_act_orb,n_act_orb)
-        double precision, allocatable	:: two_body_dm_ab_diag_inact	(n_inact_orb_allocate,n_inact_orb_allocate)
-        double precision, allocatable	:: two_body_dm_ab_diag_core	(n_core_orb_allocate,n_core_orb_allocate)
-        double precision, allocatable	:: two_body_dm_ab_diag_all	(mo_tot_num,mo_tot_num)
-        double precision, allocatable	:: two_body_dm_diag_core_a_act_b	(n_core_orb_allocate,n_act_orb)
-        double precision, allocatable	:: two_body_dm_diag_core_b_act_a	(n_core_orb_allocate,n_act_orb)
-        double precision, allocatable	:: two_body_dm_diag_core_act	(n_core_orb_allocate,n_act_orb)
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    two_body_dm_ab_diag_all(k,m) = <\Psi | n_(k\alpha) n_(m\beta) | \Psi> two_body_dm_ab_diag_act(k,m) is restricted to the active orbitals : orbital k = list_act(k) two_body_dm_ab_diag_inact(k,m) is restricted to the inactive orbitals : orbital k = list_inact(k) two_body_dm_ab_diag_core(k,m) is restricted to the core orbitals : orbital k = list_core(k) two_body_dm_ab_diag_core_b_act_a(k,m) represents the core beta <-> active alpha part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_a_act_b(k,m) represents the core alpha <-> active beta part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_act(k,m) represents the core<->active part of the diagonal two body dm when we traced on the spin orbital k = list_core(k) orbital m = list_act(m)
-
-
-
-
-.. c:var:: two_body_dm_diag_core_act
-
-    .. code:: text
-
-        double precision, allocatable	:: two_body_dm_ab_diag_act	(n_act_orb,n_act_orb)
-        double precision, allocatable	:: two_body_dm_ab_diag_inact	(n_inact_orb_allocate,n_inact_orb_allocate)
-        double precision, allocatable	:: two_body_dm_ab_diag_core	(n_core_orb_allocate,n_core_orb_allocate)
-        double precision, allocatable	:: two_body_dm_ab_diag_all	(mo_tot_num,mo_tot_num)
-        double precision, allocatable	:: two_body_dm_diag_core_a_act_b	(n_core_orb_allocate,n_act_orb)
-        double precision, allocatable	:: two_body_dm_diag_core_b_act_a	(n_core_orb_allocate,n_act_orb)
-        double precision, allocatable	:: two_body_dm_diag_core_act	(n_core_orb_allocate,n_act_orb)
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    two_body_dm_ab_diag_all(k,m) = <\Psi | n_(k\alpha) n_(m\beta) | \Psi> two_body_dm_ab_diag_act(k,m) is restricted to the active orbitals : orbital k = list_act(k) two_body_dm_ab_diag_inact(k,m) is restricted to the inactive orbitals : orbital k = list_inact(k) two_body_dm_ab_diag_core(k,m) is restricted to the core orbitals : orbital k = list_core(k) two_body_dm_ab_diag_core_b_act_a(k,m) represents the core beta <-> active alpha part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_a_act_b(k,m) represents the core alpha <-> active beta part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_act(k,m) represents the core<->active part of the diagonal two body dm when we traced on the spin orbital k = list_core(k) orbital m = list_act(m)
-
-
-
-
-.. c:var:: two_body_dm_diag_core_b_act_a
-
-    .. code:: text
-
-        double precision, allocatable	:: two_body_dm_ab_diag_act	(n_act_orb,n_act_orb)
-        double precision, allocatable	:: two_body_dm_ab_diag_inact	(n_inact_orb_allocate,n_inact_orb_allocate)
-        double precision, allocatable	:: two_body_dm_ab_diag_core	(n_core_orb_allocate,n_core_orb_allocate)
-        double precision, allocatable	:: two_body_dm_ab_diag_all	(mo_tot_num,mo_tot_num)
-        double precision, allocatable	:: two_body_dm_diag_core_a_act_b	(n_core_orb_allocate,n_act_orb)
-        double precision, allocatable	:: two_body_dm_diag_core_b_act_a	(n_core_orb_allocate,n_act_orb)
-        double precision, allocatable	:: two_body_dm_diag_core_act	(n_core_orb_allocate,n_act_orb)
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    two_body_dm_ab_diag_all(k,m) = <\Psi | n_(k\alpha) n_(m\beta) | \Psi> two_body_dm_ab_diag_act(k,m) is restricted to the active orbitals : orbital k = list_act(k) two_body_dm_ab_diag_inact(k,m) is restricted to the inactive orbitals : orbital k = list_inact(k) two_body_dm_ab_diag_core(k,m) is restricted to the core orbitals : orbital k = list_core(k) two_body_dm_ab_diag_core_b_act_a(k,m) represents the core beta <-> active alpha part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_a_act_b(k,m) represents the core alpha <-> active beta part of the two body dm orbital k = list_core(k) orbital m = list_act(m) two_body_dm_ab_diag_core_act(k,m) represents the core<->active part of the diagonal two body dm when we traced on the spin orbital k = list_core(k) orbital m = list_act(m)
-
-
-
-
-.. c:var:: two_body_dm_in_map
-
-    .. code:: text
-
-        logical	:: two_body_dm_in_map
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    If True, the map of the two body density matrix alpha/beta is provided
-
-
-
-
 .. c:var:: weight_occ_pattern
 
     .. code:: text
@@ -1839,20 +1638,6 @@ Subroutines / functions
     File: :file:`slater_rules.irp.f`
 
     Needed for diag_H_mat_elem
-
-
-
-
-
-.. c:function:: add_values_to_two_body_dm_map
-
-    .. code:: text
-
-        subroutine add_values_to_two_body_dm_map(mask_ijkl)
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    Adds values to the map of two_body_dm according to some bitmask
 
 
 
@@ -1970,27 +1755,13 @@ Subroutines / functions
 
 
 
-.. c:function:: bitstring_to_list_ab_old
-
-    .. code:: text
-
-        subroutine bitstring_to_list_ab_old( string, list, n_elements, Nint)
-
-    File: :file:`slater_rules.irp.f`
-
-    Gives the inidices(+1) of the bits set to 1 in the bit string For alpha/beta determinants
-
-
-
-
-
 .. c:function:: build_fock_tmp
 
     .. code:: text
 
         subroutine build_fock_tmp(fock_diag_tmp,det_ref,Nint)
 
-    File: :file:`Fock_diag.irp.f`
+    File: :file:`fock_diag.irp.f`
 
     Build the diagonal of the Fock matrix corresponding to a generator determinant. F_00 is <i|H|i> = E0.
 
@@ -2007,104 +1778,6 @@ Subroutines / functions
     File: :file:`create_excitations.irp.f`
 
     
-
-
-
-
-
-.. c:function:: compute_diag_two_body_dm_ab
-
-    .. code:: text
-
-        double precision function compute_diag_two_body_dm_ab(r1,r2)
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    
-
-
-
-
-
-.. c:function:: compute_diag_two_body_dm_ab_act
-
-    .. code:: text
-
-        double precision function compute_diag_two_body_dm_ab_act(r1,r2)
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    
-
-
-
-
-
-.. c:function:: compute_diag_two_body_dm_ab_core
-
-    .. code:: text
-
-        double precision function compute_diag_two_body_dm_ab_core(r1,r2)
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    
-
-
-
-
-
-.. c:function:: compute_diag_two_body_dm_ab_core_act
-
-    .. code:: text
-
-        double precision function compute_diag_two_body_dm_ab_core_act(r1,r2)
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    
-
-
-
-
-
-.. c:function:: compute_extra_diag_two_body_dm_ab
-
-    .. code:: text
-
-        double precision function compute_extra_diag_two_body_dm_ab(r1,r2)
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    compute the extra diagonal contribution to the alpha/bet two body density at r1, r2
-
-
-
-
-
-.. c:function:: compute_extra_diag_two_body_dm_ab_act
-
-    .. code:: text
-
-        double precision function compute_extra_diag_two_body_dm_ab_act(r1,r2)
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    compute the extra diagonal contribution to the two body density at r1, r2 involving ONLY THE ACTIVE PART, which means that the four index of the excitations involved in the two body density matrix are ACTIVE
-
-
-
-
-
-.. c:function:: compute_extra_diag_two_body_dm_ab_core_act
-
-    .. code:: text
-
-        double precision function compute_extra_diag_two_body_dm_ab_core_act(r1,r2)
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    compute the extra diagonal contribution to the two body density at r1, r2 involving ONLY THE ACTIVE PART, which means that the four index of the excitations involved in the two body density matrix are ACTIVE
 
 
 
@@ -2144,7 +1817,7 @@ Subroutines / functions
 
         subroutine copy_H_apply_buffer_to_wf
 
-    File: :file:`H_apply.irp.f`
+    File: :file:`h_apply.irp.f`
 
     Copies the H_apply buffer to psi_coef. After calling this subroutine, N_det, psi_det and psi_coef need to be touched
 
@@ -2241,20 +1914,6 @@ Subroutines / functions
     .. code:: text
 
         subroutine decode_exc_spin(exc,h1,p1,h2,p2)
-
-    File: :file:`slater_rules.irp.f`
-
-    Decodes the exc arrays returned by get_excitation. h1,h2 : Holes p1,p2 : Particles
-
-
-
-
-
-.. c:function:: decode_exc_spin_new
-
-    .. code:: text
-
-        subroutine decode_exc_spin_new(exc,h1,p1,h2,p2)
 
     File: :file:`slater_rules.irp.f`
 
@@ -2376,20 +2035,6 @@ Subroutines / functions
 
 
 
-.. c:function:: diagonalize_s2_betweenstates
-
-    .. code:: text
-
-        subroutine diagonalize_s2_betweenstates(keys_tmp,u_0,n,nmax_keys,nmax_coefs,nstates,s2_eigvalues)
-
-    File: :file:`s2.irp.f`
-
-    You enter with nstates vectors in u_0 that may be coupled by S^2 The subroutine diagonalize the S^2 operator in the basis of these states. The vectors that you obtain in output are no more coupled by S^2, which does not necessary mean that they are eigenfunction of S^2. n,nmax,nstates = number of determinants, physical dimension of the arrays and number of states keys_tmp = array of integer(bit_kind) that represents the determinants psi_coefs(i,j) = coeff of the ith determinant in the jth state VECTORS ARE SUPPOSED TO BE ORTHONORMAL IN INPUT
-
-
-
-
-
 .. c:function:: do_mono_excitation
 
     .. code:: text
@@ -2404,55 +2049,13 @@ Subroutines / functions
 
 
 
-.. c:function:: do_spin_flip
-
-    .. code:: text
-
-        subroutine do_spin_flip(key_in,i_flip,ispin,i_ok)
-
-    File: :file:`create_excitations.irp.f`
-
-    flip the spin ispin in the orbital i_flip on key_in ispin = 1  == alpha ispin = 2  == beta i_ok = 1  == the flip is possible i_ok = -1 == the flip is not possible
-
-
-
-
-
-.. c:function:: doubly_occ_empty_in_couple
-
-    .. code:: text
-
-        subroutine doubly_occ_empty_in_couple(det_in,n_couples,couples,couples_out)
-
-    File: :file:`useful_for_ovb.irp.f`
-
-    n_couples is the number of couples of orbitals to be checked couples(i,1) = first orbital of the ith couple couples(i,2) = second orbital of the ith couple returns the array couples_out couples_out(i) = .True. if det_in contains an orbital empty in the ith couple  AND an orbital doubly occupied in the ith couple
-
-
-
-
-
-.. c:function:: doubly_occ_empty_in_couple_and_no_hund_elsewhere
-
-    .. code:: text
-
-        subroutine doubly_occ_empty_in_couple_and_no_hund_elsewhere(det_in,n_couple_no_hund,couple_ion,couple_no_hund,is_ok)
-
-    File: :file:`useful_for_ovb.irp.f`
-
-    n_couples is the number of couples of orbitals to be checked couples(i,1) = first orbital of the ith couple couples(i,2) = second orbital of the ith couple returns the array couples_out couples_out(i) = .True. if det_in contains an orbital empty in the ith couple  AND an orbital doubly occupied in the ith couple
-
-
-
-
-
 .. c:function:: fill_h_apply_buffer_no_selection
 
     .. code:: text
 
         subroutine fill_H_apply_buffer_no_selection(n_selected,det_buffer,Nint,iproc)
 
-    File: :file:`H_apply.irp.f`
+    File: :file:`h_apply.irp.f`
 
     Fill the H_apply buffer with determiants for CISD
 
@@ -2495,24 +2098,6 @@ Subroutines / functions
 
 
 
-.. c:function:: filter_connected_i_h_psi0_sc2
-
-    .. code:: text
-
-        subroutine filter_connected_i_H_psi0_SC2(key1,key2,Nint,sze,idx,idx_repeat)
-
-    File: :file:`filter_connected.irp.f`
-
-    standard filter_connected_i_H_psi but returns in addition 
-    the array of the index of the non connected determinants to key1 
-    in order to know what double excitation can be repeated on key1 
-    idx_repeat(0) is the number of determinants that can be used 
-    to repeat the excitations
-
-
-
-
-
 .. c:function:: filter_not_connected
 
     .. code:: text
@@ -2525,20 +2110,6 @@ Subroutines / functions
     determinants in the array key1 that DO NOT interact 
     via the H operator with key2. 
     idx(0) is the number of determinants that DO NOT interact with key1
-
-
-
-
-
-.. c:function:: flip_generators
-
-    .. code:: text
-
-        subroutine flip_generators()
-
-    File: :file:`determinants.irp.f`
-
-    
 
 
 
@@ -2866,53 +2437,11 @@ Subroutines / functions
 
 
 
-.. c:function:: get_double_excitation_phase
-
-    .. code:: text
-
-        subroutine get_double_excitation_phase(det1,det2,exc,phase,Nint)
-
-    File: :file:`slater_rules.irp.f`
-
-    
-
-
-
-
-
-.. c:function:: get_double_excitation_phase_new
-
-    .. code:: text
-
-        subroutine get_double_excitation_phase_new(det1,det2,exc,phase,Nint)
-
-    File: :file:`slater_rules.irp.f`
-
-    
-
-
-
-
-
 .. c:function:: get_double_excitation_spin
 
     .. code:: text
 
         subroutine get_double_excitation_spin(det1,det2,exc,phase,Nint)
-
-    File: :file:`slater_rules.irp.f`
-
-    Returns the two excitation operators between two doubly excited spin-determinants and the phase
-
-
-
-
-
-.. c:function:: get_double_excitation_spin_new
-
-    .. code:: text
-
-        subroutine get_double_excitation_spin_new(det1,det2,exc,phase,Nint)
 
     File: :file:`slater_rules.irp.f`
 
@@ -2955,20 +2484,6 @@ Subroutines / functions
     .. code:: text
 
         subroutine get_excitation_degree_spin(key1,key2,degree,Nint)
-
-    File: :file:`slater_rules.irp.f`
-
-    Returns the excitation degree between two determinants
-
-
-
-
-
-.. c:function:: get_excitation_degree_spin_new
-
-    .. code:: text
-
-        subroutine get_excitation_degree_spin_new(key1,key2,degree,Nint)
 
     File: :file:`slater_rules.irp.f`
 
@@ -3062,34 +2577,6 @@ Subroutines / functions
 
 
 
-.. c:function:: get_excitation_spin_new
-
-    .. code:: text
-
-        subroutine get_excitation_spin_new(det1,det2,exc,degree,phase,Nint)
-
-    File: :file:`slater_rules.irp.f`
-
-    Returns the excitation operators between two determinants and the phase
-
-
-
-
-
-.. c:function:: get_get_two_body_dm_ab_map_elements
-
-    .. code:: text
-
-        subroutine get_get_two_body_dm_ab_map_elements(j,k,l,sze,out_val,map)
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    Returns multiple elements of the \rho_{ijkl}^{\alpha \beta }, all i for j,k,l fixed.
-
-
-
-
-
 .. c:function:: get_index_in_psi_det_alpha_unique
 
     .. code:: text
@@ -3174,34 +2661,6 @@ Subroutines / functions
 
 
 
-.. c:function:: get_mono_excitation_spin_new
-
-    .. code:: text
-
-        subroutine get_mono_excitation_spin_new(det1,det2,exc,phase,Nint)
-
-    File: :file:`slater_rules.irp.f`
-
-    Returns the excitation operator between two singly excited determinants and the phase
-
-
-
-
-
-.. c:function:: get_occ_from_key
-
-    .. code:: text
-
-        subroutine get_occ_from_key(key,occ,Nint)
-
-    File: :file:`slater_rules.irp.f`
-
-    Returns a list of occupation numbers from a bitstring
-
-
-
-
-
 .. c:function:: get_phase
 
     .. code:: text
@@ -3244,20 +2703,6 @@ Subroutines / functions
 
 
 
-.. c:function:: get_two_body_dm_ab_map_element
-
-    .. code:: text
-
-        double precision function get_two_body_dm_ab_map_element(i,j,k,l,map)
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    Returns one value of the wo body density matrix \rho_{ijkl}^{\alpha \beta} defined as : \rho_{ijkl}^{\alpha \beta  } = <\Psi|a^{\dagger}_{i\alpha} a^{\dagger}_{j\beta} a_{k\beta} a_{l\alpha}|\Psi>
-
-
-
-
-
 .. c:function:: get_uj_s2_ui
 
     .. code:: text
@@ -3281,36 +2726,6 @@ Subroutines / functions
     File: :file:`filter_connected.irp.f`
 
     
-
-
-
-
-
-.. c:function:: give_index_of_doubly_occ_in_active_space
-
-    .. code:: text
-
-        subroutine give_index_of_doubly_occ_in_active_space(det_in,doubly_occupied_array)
-
-    File: :file:`useful_for_ovb.irp.f`
-
-    
-
-
-
-
-
-.. c:function:: h_u_0_stored
-
-    .. code:: text
-
-        subroutine H_u_0_stored(v_0,u_0,hmatrix,sze)
-
-    File: :file:`slater_rules.irp.f`
-
-    Computes v_0 = H|u_0> 
-    n : number of determinants 
-    uses the big_matrix_stored array
 
 
 
@@ -3372,20 +2787,6 @@ Subroutines / functions
 
 
 
-.. c:function:: i_h_j_phase_out
-
-    .. code:: text
-
-        subroutine i_H_j_phase_out(key_i,key_j,Nint,hij,phase,exc,degree)
-
-    File: :file:`slater_rules.irp.f`
-
-    Returns <i|H|j> where i and j are determinants
-
-
-
-
-
 .. c:function:: i_h_j_s2
 
     .. code:: text
@@ -3404,11 +2805,11 @@ Subroutines / functions
 
     .. code:: text
 
-        subroutine i_H_j_verbose(key_i,key_j,Nint,hij,hmono,hdouble)
+        subroutine i_H_j_verbose(key_i,key_j,Nint,hij,hmono,hdouble,phase)
 
     File: :file:`slater_rules.irp.f`
 
-    Returns <i|H|j> where i and j are determinants
+    Returns <i|H|j> where i and j are determinants with
 
 
 
@@ -3422,7 +2823,7 @@ Subroutines / functions
 
     File: :file:`slater_rules.irp.f`
 
-    Computes <i|H|Psi> = \sum_J c_J <i|H|J>. 
+    Computes <i|H|Psi> = :math:`\sum_J c_J \langle i | H | J \rangle`. 
     Uses filter_connected_i_H_psi0 to get all the |J> to which |i> is connected. The i_H_psi_minilist is much faster but requires to build the minilists
 
 
@@ -3444,58 +2845,6 @@ Subroutines / functions
 
 
 
-.. c:function:: i_h_psi_sc2
-
-    .. code:: text
-
-        subroutine i_H_psi_SC2(key,keys,coef,Nint,Ndet,Ndet_max,Nstate,i_H_psi_array,idx_repeat)
-
-    File: :file:`slater_rules.irp.f`
-
-    <key|H|psi> for the various Nstate 
-    returns in addition 
-    the array of the index of the non connected determinants to key1 
-    in order to know what double excitation can be repeated on key1 
-    idx_repeat(0) is the number of determinants that can be used 
-    to repeat the excitations
-
-
-
-
-
-.. c:function:: i_h_psi_sc2_verbose
-
-    .. code:: text
-
-        subroutine i_H_psi_SC2_verbose(key,keys,coef,Nint,Ndet,Ndet_max,Nstate,i_H_psi_array,idx_repeat)
-
-    File: :file:`slater_rules.irp.f`
-
-    <key|H|psi> for the various Nstate 
-    returns in addition 
-    the array of the index of the non connected determinants to key1 
-    in order to know what double excitation can be repeated on key1 
-    idx_repeat(0) is the number of determinants that can be used 
-    to repeat the excitations
-
-
-
-
-
-.. c:function:: i_h_psi_sec_ord
-
-    .. code:: text
-
-        subroutine i_H_psi_sec_ord(key,keys,coef,Nint,Ndet,Ndet_max,Nstate,i_H_psi_array,idx_interaction,interactions)
-
-    File: :file:`slater_rules.irp.f`
-
-    <key|H|psi> for the various Nstates
-
-
-
-
-
 .. c:function:: i_s2_psi_minilist
 
     .. code:: text
@@ -3506,34 +2855,6 @@ Subroutines / functions
 
     Computes <i|S2|Psi> = \sum_J c_J <i|S2|J>. 
     Uses filter_connected_i_H_psi0 to get all the |J> to which |i> is connected. The |J> are searched in short pre-computed lists.
-
-
-
-
-
-.. c:function:: insert_into_two_body_dm_ab_map
-
-    .. code:: text
-
-        subroutine insert_into_two_body_dm_ab_map(n_product,buffer_i, buffer_values, thr)
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    Create new entry into two_body_dm_ab_map, or accumulate in an existing entry
-
-
-
-
-
-.. c:function:: insert_into_two_body_dm_big_array
-
-    .. code:: text
-
-        subroutine insert_into_two_body_dm_big_array(big_array,dim1,dim2,dim3,dim4,contrib,h1,p1,h2,p2)
-
-    File: :file:`two_body_dm_map.irp.f`
-
-    
 
 
 
@@ -3623,62 +2944,6 @@ Subroutines / functions
 
 
 
-.. c:function:: n_closed_shell
-
-    .. code:: text
-
-        integer function n_closed_shell(det_in,nint)
-
-    File: :file:`useful_for_ovb.irp.f`
-
-    
-
-
-
-
-
-.. c:function:: n_closed_shell_cas
-
-    .. code:: text
-
-        integer function n_closed_shell_cas(det_in,nint)
-
-    File: :file:`useful_for_ovb.irp.f`
-
-    
-
-
-
-
-
-.. c:function:: n_open_shell
-
-    .. code:: text
-
-        integer function n_open_shell(det_in,nint)
-
-    File: :file:`useful_for_ovb.irp.f`
-
-    
-
-
-
-
-
-.. c:function:: neutral_no_hund_in_couple
-
-    .. code:: text
-
-        subroutine neutral_no_hund_in_couple(det_in,n_couples,couples,couples_out)
-
-    File: :file:`useful_for_ovb.irp.f`
-
-    n_couples is the number of couples of orbitals to be checked couples(i,1) = first orbital of the ith couple couples(i,2) = second orbital of the ith couple returns the array couples_out couples_out(i) = .True. if det_in contains an orbital empty in the ith couple  AND an orbital doubly occupied in the ith couple
-
-
-
-
-
 .. c:function:: occ_pattern_of_det
 
     .. code:: text
@@ -3744,7 +3009,7 @@ Subroutines / functions
 
         subroutine pull_pt2(zmq_socket_pull,pt2,norm_pert,H_pert_diag,i_generator,N_st,n,task_id)
 
-    File: :file:`H_apply.irp.f`
+    File: :file:`h_apply.irp.f`
 
     Pull PT2 calculation in the collector
 
@@ -3758,7 +3023,7 @@ Subroutines / functions
 
         subroutine push_pt2(zmq_socket_push,pt2,norm_pert,H_pert_diag,i_generator,N_st,task_id)
 
-    File: :file:`H_apply.irp.f`
+    File: :file:`h_apply.irp.f`
 
     Push PT2 calculation to the collector
 
@@ -3786,7 +3051,7 @@ Subroutines / functions
 
         subroutine remove_duplicates_in_psi_det(found_duplicates)
 
-    File: :file:`H_apply.irp.f`
+    File: :file:`h_apply.irp.f`
 
     Removes duplicate determinants in the wave function.
 
@@ -3800,7 +3065,7 @@ Subroutines / functions
 
         subroutine resize_H_apply_buffer(new_size,iproc)
 
-    File: :file:`H_apply.irp.f`
+    File: :file:`h_apply.irp.f`
 
     Resizes the H_apply buffer of proc iproc. The buffer lock should be set before calling this function.
 
@@ -4047,22 +3312,6 @@ Subroutines / functions
     File: :file:`sort_dets_ab.irp.f`
 
     Uncodumented : TODO
-
-
-
-
-
-.. c:function:: u_0_h_u_0_stored
-
-    .. code:: text
-
-        subroutine u_0_H_u_0_stored(e_0,u_0,hmatrix,sze)
-
-    File: :file:`slater_rules.irp.f`
-
-    Computes e_0 = <u_0|H|u_0> 
-    n : number of determinants 
-    uses the big_matrix_stored array
 
 
 

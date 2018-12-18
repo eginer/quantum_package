@@ -18,20 +18,6 @@ Subroutines / functions
 
 
 
-.. c:function:: provide_everything
-
-    .. code:: text
-
-        subroutine provide_everything
-
-    File: :file:`slave_cipsi.irp.f`
-
-    
-
-
-
-
-
 .. c:function:: qp_ao_ints
 
     .. code:: text
@@ -41,20 +27,6 @@ Subroutines / functions
     File: :file:`slave_eri.irp.f`
 
     Slave for electron repulsion integrals
-
-
-
-
-
-.. c:function:: run_wf
-
-    .. code:: text
-
-        subroutine run_wf
-
-    File: :file:`slave_cipsi.irp.f`
-
-    
 
 
 

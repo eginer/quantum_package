@@ -15,7 +15,7 @@ function run_HF() {
   qp_edit -c $1
   ezfio set_file $1
   ezfio set hartree_fock thresh_scf 1.e-10
-  qp_run SCF $1
+  qp_run scf $1
   energy="$(ezfio get hartree_fock energy)"
   eq $energy $2 $thresh
 }

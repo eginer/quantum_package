@@ -104,7 +104,7 @@ Providers
 
     File: :file:`aos.irp.f`
 
-    Coefficients including the AO normalization
+    Coefficients including the |AO| normalization
 
 
 
@@ -117,7 +117,7 @@ Providers
 
     File: :file:`aos.irp.f`
 
-    Coefficients including the AO normalization
+    |AO| normalization for interfacing with libint
 
 
 
@@ -131,7 +131,7 @@ Providers
 
     File: :file:`aos.irp.f`
 
-    Coefficients including the AO normalization
+    Coefficients including the |AO| normalization
 
 
 
@@ -145,7 +145,7 @@ Providers
 
     File: :file:`aos.irp.f`
 
-    Sorted primitives to accelerate 4 index MO transformation
+    Sorted primitives to accelerate 4 index |MO| transformation
 
 
 
@@ -158,7 +158,7 @@ Providers
 
     File: :file:`aos.irp.f`
 
-    Transposed ao_coef_normalized_ordered
+    Transposed :c:var:`ao_coef_normalized_ordered`
 
 
 
@@ -172,7 +172,7 @@ Providers
 
     File: :file:`aos.irp.f`
 
-    Sorted primitives to accelerate 4 index MO transformation
+    Sorted primitives to accelerate 4 index |MO| transformation
 
 
 
@@ -185,7 +185,7 @@ Providers
 
     File: :file:`aos.irp.f`
 
-    Transposed ao_expo_ordered
+    Transposed :c:var:`ao_expo_ordered`
 
 
 
@@ -200,7 +200,7 @@ Providers
 
     File: :file:`aos.irp.f`
 
-    ao_l = l value of the AO: a+b+c in x^a y^b z^c
+    :math:`l` value of the |AO|: :math`a+b+c` in :math:`x^a y^b z^c`
 
 
 
@@ -215,7 +215,7 @@ Providers
 
     File: :file:`aos.irp.f`
 
-    ao_l = l value of the AO: a+b+c in x^a y^b z^c
+    :math:`l` value of the |AO|: :math`a+b+c` in :math:`x^a y^b z^c`
 
 
 
@@ -228,7 +228,7 @@ Providers
 
     File: :file:`aos.irp.f`
 
-    
+    Converts an l value to a string
 
 
 
@@ -243,7 +243,7 @@ Providers
 
     File: :file:`aos.irp.f`
 
-    ao_l = l value of the AO: a+b+c in x^a y^b z^c
+    :math:`l` value of the |AO|: :math`a+b+c` in :math:`x^a y^b z^c`
 
 
 
@@ -256,7 +256,7 @@ Providers
 
     File: :file:`aos.irp.f`
 
-    max number of primitives
+    Max number of primitives.
 
 
 
@@ -399,7 +399,7 @@ Providers
 
     File: :file:`aos.irp.f`
 
-    character corresponding to the "L" value of an AO orbital
+    Character corresponding to the "l" value of an |AO|
 
 
 
@@ -413,7 +413,7 @@ Providers
 
     File: :file:`aos.irp.f`
 
-    Number of AOs per atom
+    Number of |AOs| per atom
 
 
 
@@ -427,7 +427,7 @@ Providers
 
     File: :file:`dimensions_integrals.irp.f`
 
-    
+    Number of points used in the numerical integrations.
 
 
 
@@ -441,7 +441,7 @@ Providers
 
     File: :file:`dimensions_integrals.irp.f`
 
-    
+    Number of points used in the numerical integrations.
 
 
 
@@ -454,7 +454,7 @@ Providers
 
     File: :file:`aos.irp.f`
 
-    List of AOs attached on each atom
+    List of |AOs| centered on each atom
 
 
 
@@ -468,7 +468,7 @@ Providers
 
     File: :file:`aos.irp.f`
 
-    Index of the shell type Aos and of the corresponding Aos Per convention, for P,D,F and G AOs, we take the index of the AO with the the corresponding power in the "X" axis
+    Index of the shell type |AOs| and of the corresponding |AOs| By convention, for p,d,f and g |AOs|, we take the index of the |AO| with the the corresponding power in the x axis
 
 
 
@@ -482,7 +482,7 @@ Providers
 
     File: :file:`aos.irp.f`
 
-    Number of AOs per atom
+    Number of |AOs| per atom
 
 
 
@@ -496,7 +496,7 @@ Providers
 
     File: :file:`aos.irp.f`
 
-    Index of the shell type Aos and of the corresponding Aos Per convention, for P,D,F and G AOs, we take the index of the AO with the the corresponding power in the "X" axis
+    Index of the shell type |AOs| and of the corresponding |AOs| By convention, for p,d,f and g |AOs|, we take the index of the |AO| with the the corresponding power in the x axis
 
 
 
@@ -515,7 +515,7 @@ Subroutines / functions
     File: :file:`aos.irp.f`
 
     Unique index given to a triplet of powers: 
-    1/2 (l-n_x)*(l-n_x+1) + n_z + 1
+    :math:`\frac{1}{2} (l-n_x) (l-n_x+1) + n_z + 1`
 
 
 
@@ -529,7 +529,7 @@ Subroutines / functions
 
     File: :file:`aos_value.irp.f`
 
-    return the value of the ith ao at point r
+    Returns the value of the i-th |AO| at point r
 
 
 
@@ -543,6 +543,6 @@ Subroutines / functions
 
     File: :file:`aos_value.irp.f`
 
-    gives the values of aos at a given point r
+    Gives the values of |AOs| at a given point r
 
 

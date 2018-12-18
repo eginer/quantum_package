@@ -114,3 +114,17 @@ Subroutines / functions
     Broadcast with chunks of ~2GB
 
 
+
+
+
+.. c:function:: mpi_print
+
+    .. code:: text
+
+        subroutine mpi_print(string)
+
+    File: :file:`mpi.irp.f`
+
+    Print string to stdout if the MPI rank is zero.
+
+

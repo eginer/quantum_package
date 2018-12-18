@@ -1,4 +1,4 @@
-program print_mos
+program molden
   implicit none
   BEGIN_DOC
   ! Produce a Molden file

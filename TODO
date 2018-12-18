@@ -1,3 +1,4 @@
+* Molden format
 * Virer tous les modules qui sont dans plugins
 * Permettre aux utilisateurs de facilement deposer des plugins dans plugins via une commande
 * Permettre de descendre plus bas dans l'arborescence de plugins pour permettre des `git clone` dans le repertoire plugins
@@ -43,6 +44,4 @@
 * Config file for Cray
 * Implicit none obligatoire
 
-* Doc des executables
-* Il faut que le programme ait le meme nom que la subroutine
 * EZFIO sans fork

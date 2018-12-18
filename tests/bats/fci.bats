@@ -12,7 +12,7 @@ function run_FCI() {
   ezfio set determinants n_det_max $2
   ezfio set davidson threshold_davidson 1.e-10
 
-  qp_run FCI $1
+  qp_run fci $1
   energy="$(ezfio get FCI energy | tr '[]' ' ')"
   eq $energy $3 $thresh
   energy_pt2="$(ezfio get FCI energy_pt2 | tr '[]' ' ')"

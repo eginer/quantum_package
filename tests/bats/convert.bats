@@ -8,7 +8,7 @@ source $QP_ROOT/tests/bats/common.bats.sh
   qp_convert_output_to_ezfio HBO.out
   qp_edit -c HBO.out.ezfio 
   ezfio set_file HBO.out.ezfio
-  qp_run SCF HBO.out.ezfio 
+  qp_run scf HBO.out.ezfio 
   # Check energy
   energy="$(ezfio get hartree_fock energy)"
   eq $energy -100.0185822590964 1.e-10
@@ -19,7 +19,7 @@ source $QP_ROOT/tests/bats/common.bats.sh
   qp_convert_output_to_ezfio h2o.log
   qp_edit -c h2o.log.ezfio 
   ezfio set_file h2o.log.ezfio
-  qp_run SCF h2o.log.ezfio 
+  qp_run scf h2o.log.ezfio 
   # Check energy
   energy="$(ezfio get hartree_fock energy)"
   eq $energy -76.0270218704265 1E-10

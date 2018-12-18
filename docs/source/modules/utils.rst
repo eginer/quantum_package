@@ -247,98 +247,13 @@ Providers
 
 
 
-.. c:var:: progress_active
-
-    .. code:: text
-
-        real, allocatable	:: progress_bar	(2)
-        integer	:: progress_timeout
-        logical	:: progress_active
-        double precision	:: progress_value
-        character*(20)	:: progress_title
-
-    File: :file:`progress.irp.f`
-
-    Current status for displaying progress bars. Global variable.
-
-
-
-
-.. c:var:: progress_bar
-
-    .. code:: text
-
-        real, allocatable	:: progress_bar	(2)
-        integer	:: progress_timeout
-        logical	:: progress_active
-        double precision	:: progress_value
-        character*(20)	:: progress_title
-
-    File: :file:`progress.irp.f`
-
-    Current status for displaying progress bars. Global variable.
-
-
-
-
-.. c:var:: progress_timeout
-
-    .. code:: text
-
-        real, allocatable	:: progress_bar	(2)
-        integer	:: progress_timeout
-        logical	:: progress_active
-        double precision	:: progress_value
-        character*(20)	:: progress_title
-
-    File: :file:`progress.irp.f`
-
-    Current status for displaying progress bars. Global variable.
-
-
-
-
-.. c:var:: progress_title
-
-    .. code:: text
-
-        real, allocatable	:: progress_bar	(2)
-        integer	:: progress_timeout
-        logical	:: progress_active
-        double precision	:: progress_value
-        character*(20)	:: progress_title
-
-    File: :file:`progress.irp.f`
-
-    Current status for displaying progress bars. Global variable.
-
-
-
-
-.. c:var:: progress_value
-
-    .. code:: text
-
-        real, allocatable	:: progress_bar	(2)
-        integer	:: progress_timeout
-        logical	:: progress_active
-        double precision	:: progress_value
-        character*(20)	:: progress_title
-
-    File: :file:`progress.irp.f`
-
-    Current status for displaying progress bars. Global variable.
-
-
-
-
 .. c:var:: qp_max_mem
 
     .. code:: text
 
         integer	:: qp_max_mem
 
-    File: :file:`util.irp.f`
+    File: :file:`memory.irp.f`
 
     Maximum memory in Gb
 
@@ -406,19 +321,6 @@ Providers
     File: :file:`sort.irp.f_template_261`
 
     
-
-
-
-
-.. c:var:: run_progress
-
-    .. code:: text
-
-        recursive subroutine run_progress
-
-    File: :file:`progress.irp.f`
-
-    Display a progress bar with documentation of what is happening
 
 
 
@@ -519,7 +421,7 @@ Subroutines / functions
 
         subroutine apply_rotation(A,LDA,R,LDR,B,LDB,m,n)
 
-    File: :file:`LinearAlgebra.irp.f`
+    File: :file:`linear_algebra.irp.f`
 
     Apply the rotation found by find_rotation
 
@@ -566,6 +468,20 @@ Subroutines / functions
     .. math                       :: 
     \frac{i!}{j!(i-j)!} 
 
+
+
+
+
+
+.. c:function:: check_mem
+
+    .. code:: text
+
+        subroutine check_mem(rss_in,routine)
+
+    File: :file:`memory.irp.f`
+
+    Checks if n gigabytes can be allocated. If not, exit the run.
 
 
 
@@ -745,7 +661,7 @@ Subroutines / functions
 
         subroutine find_rotation(A,LDA,B,m,C,n)
 
-    File: :file:`LinearAlgebra.irp.f`
+    File: :file:`linear_algebra.irp.f`
 
     Find A.C = B
 
@@ -829,7 +745,7 @@ Subroutines / functions
 
         subroutine get_inverse(A,LDA,m,C,LDC)
 
-    File: :file:`LinearAlgebra.irp.f`
+    File: :file:`linear_algebra.irp.f`
 
     Returns the inverse of the square matrix A
 
@@ -843,7 +759,7 @@ Subroutines / functions
 
         subroutine get_pseudo_inverse(A,LDA,m,n,C,LDC)
 
-    File: :file:`LinearAlgebra.irp.f`
+    File: :file:`linear_algebra.irp.f`
 
     Find C = A^-1
 
@@ -1334,25 +1250,7 @@ Subroutines / functions
 
         subroutine lapack_diag(eigvalues,eigvectors,H,nmax,n)
 
-    File: :file:`LinearAlgebra.irp.f`
-
-    Diagonalize matrix H 
-    H is untouched between input and ouptut 
-    eigevalues(i) = ith lowest eigenvalue of the H matrix 
-    eigvectors(i,j) = <i|psi_j> where i is the basis function and psi_j is the j th eigenvector 
-
-
-
-
-
-
-.. c:function:: lapack_diag_s2
-
-    .. code:: text
-
-        subroutine lapack_diag_s2(eigvalues,eigvectors,H,nmax,n)
-
-    File: :file:`LinearAlgebra.irp.f`
+    File: :file:`linear_algebra.irp.f`
 
     Diagonalize matrix H 
     H is untouched between input and ouptut 
@@ -1370,25 +1268,7 @@ Subroutines / functions
 
         subroutine lapack_diagd(eigvalues,eigvectors,H,nmax,n)
 
-    File: :file:`LinearAlgebra.irp.f`
-
-    Diagonalize matrix H 
-    H is untouched between input and ouptut 
-    eigevalues(i) = ith lowest eigenvalue of the H matrix 
-    eigvectors(i,j) = <i|psi_j> where i is the basis function and psi_j is the j th eigenvector 
-
-
-
-
-
-
-.. c:function:: lapack_partial_diag
-
-    .. code:: text
-
-        subroutine lapack_partial_diag(eigvalues,eigvectors,H,nmax,n,n_st)
-
-    File: :file:`LinearAlgebra.irp.f`
+    File: :file:`linear_algebra.irp.f`
 
     Diagonalize matrix H 
     H is untouched between input and ouptut 
@@ -1456,15 +1336,29 @@ Subroutines / functions
 
 
 
-.. c:function:: matrix_vector_product
+.. c:function:: memory_of_double
 
     .. code:: text
 
-        subroutine matrix_vector_product(u0,u1,matrix,sze,lda)
+        double precision function memory_of_double(n)
 
-    File: :file:`LinearAlgebra.irp.f`
+    File: :file:`memory.irp.f`
 
-    performs u1 =! performs u1 +( u0 * matrix)
+    Computes the memory required for n double precision elements in gigabytes.
+
+
+
+
+
+.. c:function:: memory_of_int
+
+    .. code:: text
+
+        double precision function memory_of_int(n)
+
+    File: :file:`memory.irp.f`
+
+    Computes the memory required for n double precision elements in gigabytes.
 
 
 
@@ -1504,7 +1398,7 @@ Subroutines / functions
 
         subroutine ortho_canonical(overlap,LDA,N,C,LDC,m)
 
-    File: :file:`LinearAlgebra.irp.f`
+    File: :file:`linear_algebra.irp.f`
 
     Compute C_new=C_old.U.s^-1/2 canonical orthogonalization. 
     overlap : overlap matrix 
@@ -1525,7 +1419,7 @@ Subroutines / functions
 
         subroutine ortho_lowdin(overlap,LDA,N,C,LDC,m)
 
-    File: :file:`LinearAlgebra.irp.f`
+    File: :file:`linear_algebra.irp.f`
 
     Compute C_new=C_old.S^-1/2 orthogonalization. 
     overlap : overlap matrix 
@@ -1546,7 +1440,7 @@ Subroutines / functions
 
         subroutine ortho_qr(A,LDA,m,n)
 
-    File: :file:`LinearAlgebra.irp.f`
+    File: :file:`linear_algebra.irp.f`
 
     Orthogonalization using Q.R factorization 
     A : matrix to orthogonalize 
@@ -1565,7 +1459,7 @@ Subroutines / functions
 
         subroutine ortho_qr_unblocked(A,LDA,m,n)
 
-    File: :file:`LinearAlgebra.irp.f`
+    File: :file:`linear_algebra.irp.f`
 
     Orthogonalization using Q.R factorization 
     A : matrix to orthogonalize 
@@ -1573,20 +1467,6 @@ Subroutines / functions
     n : Number of rows of A 
     m : Number of columns of A 
 
-
-
-
-
-
-.. c:function:: overlap_a_b_c
-
-    .. code:: text
-
-        subroutine overlap_A_B_C(dim,alpha,beta,gama,a,b,A_center,B_center,Nucl_center,overlap)
-
-    File: :file:`one_e_integration.irp.f`
-
-    
 
 
 
@@ -1619,6 +1499,20 @@ Subroutines / functions
     .. math                      :: 
     \int_{-infty}^{+infty} (x-A_center)^(power_A) * (x-B_center)^power_B * exp(-alpha(x-A_center)^2) * exp(-beta(x-B_center)^2) dx 
 
+
+
+
+
+
+.. c:function:: print_memory_usage
+
+    .. code:: text
+
+        subroutine print_memory_usage()
+
+    File: :file:`memory.irp.f`
+
+    Prints the memory usage in the output
 
 
 
@@ -1703,6 +1597,20 @@ Subroutines / functions
     File: :file:`integration.irp.f`
 
     Recenter two polynomials
+
+
+
+
+
+.. c:function:: resident_memory
+
+    .. code:: text
+
+        subroutine resident_memory(value)
+
+    File: :file:`memory.irp.f`
+
+    Returns the current used memory in gigabytes used by the current process.
 
 
 
@@ -1836,20 +1744,6 @@ Subroutines / functions
 
 
 
-.. c:function:: set_zero_extra_diag
-
-    .. code:: text
-
-        subroutine set_zero_extra_diag(i1,i2,matrix,lda,m)
-
-    File: :file:`LinearAlgebra.irp.f`
-
-    
-
-
-
-
-
 .. c:function:: sort
 
     .. code:: text
@@ -1934,46 +1828,32 @@ Subroutines / functions
 
 
 
-.. c:function:: start_progress
-
-    .. code:: text
-
-        subroutine start_progress(max,title,progress_init)
-
-    File: :file:`progress.irp.f`
-
-    Starts the progress bar
-
-
-
-
-
-.. c:function:: stop_progress
-
-    .. code:: text
-
-        subroutine stop_progress
-
-    File: :file:`progress.irp.f`
-
-    Stop the progress bar
-
-
-
-
-
 .. c:function:: svd
 
     .. code:: text
 
         subroutine svd(A,LDA,U,LDU,D,Vt,LDVt,m,n)
 
-    File: :file:`LinearAlgebra.irp.f`
+    File: :file:`linear_algebra.irp.f`
 
     Compute A = U.D.Vt 
     LDx : leftmost dimension of x 
     Dimsneion of A is m x n 
 
+
+
+
+
+
+.. c:function:: total_memory
+
+    .. code:: text
+
+        subroutine total_memory(value)
+
+    File: :file:`memory.irp.f`
+
+    Returns the current used memory in gigabytes used by the current process.
 
 
 

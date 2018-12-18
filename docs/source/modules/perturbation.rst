@@ -288,48 +288,6 @@ Subroutines / functions
 
 
 
-.. c:function:: perturb_buffer_by_mono_epstein_nesbet_sc2
-
-    .. code:: text
-
-        subroutine perturb_buffer_by_mono_epstein_nesbet_sc2(i_generator,buffer,buffer_size,e_2_pert_buffer,coef_pert_buffer,sum_e_2_pert,sum_norm_pert,sum_H_pert_diag,N_st,Nint,key_mask,fock_diag_tmp,electronic_energy)
-
-    File: :file:`perturbation.irp.f_shell_13`
-
-    Applly pertubration ``epstein_nesbet_sc2`` to the buffer of determinants generated in the H_apply routine.
-
-
-
-
-
-.. c:function:: perturb_buffer_by_mono_epstein_nesbet_sc2_no_projected
-
-    .. code:: text
-
-        subroutine perturb_buffer_by_mono_epstein_nesbet_sc2_no_projected(i_generator,buffer,buffer_size,e_2_pert_buffer,coef_pert_buffer,sum_e_2_pert,sum_norm_pert,sum_H_pert_diag,N_st,Nint,key_mask,fock_diag_tmp,electronic_energy)
-
-    File: :file:`perturbation.irp.f_shell_13`
-
-    Applly pertubration ``epstein_nesbet_sc2_no_projected`` to the buffer of determinants generated in the H_apply routine.
-
-
-
-
-
-.. c:function:: perturb_buffer_by_mono_epstein_nesbet_sc2_projected
-
-    .. code:: text
-
-        subroutine perturb_buffer_by_mono_epstein_nesbet_sc2_projected(i_generator,buffer,buffer_size,e_2_pert_buffer,coef_pert_buffer,sum_e_2_pert,sum_norm_pert,sum_H_pert_diag,N_st,Nint,key_mask,fock_diag_tmp,electronic_energy)
-
-    File: :file:`perturbation.irp.f_shell_13`
-
-    Applly pertubration ``epstein_nesbet_sc2_projected`` to the buffer of determinants generated in the H_apply routine.
-
-
-
-
-
 .. c:function:: perturb_buffer_by_mono_h_core
 
     .. code:: text
@@ -456,48 +414,6 @@ Subroutines / functions
 
 
 
-.. c:function:: perturb_buffer_epstein_nesbet_sc2
-
-    .. code:: text
-
-        subroutine perturb_buffer_epstein_nesbet_sc2(i_generator,buffer,buffer_size,e_2_pert_buffer,coef_pert_buffer,sum_e_2_pert,sum_norm_pert,sum_H_pert_diag,N_st,Nint,key_mask,fock_diag_tmp,electronic_energy)
-
-    File: :file:`perturbation.irp.f_shell_13`
-
-    Applly pertubration ``epstein_nesbet_sc2`` to the buffer of determinants generated in the H_apply routine.
-
-
-
-
-
-.. c:function:: perturb_buffer_epstein_nesbet_sc2_no_projected
-
-    .. code:: text
-
-        subroutine perturb_buffer_epstein_nesbet_sc2_no_projected(i_generator,buffer,buffer_size,e_2_pert_buffer,coef_pert_buffer,sum_e_2_pert,sum_norm_pert,sum_H_pert_diag,N_st,Nint,key_mask,fock_diag_tmp,electronic_energy)
-
-    File: :file:`perturbation.irp.f_shell_13`
-
-    Applly pertubration ``epstein_nesbet_sc2_no_projected`` to the buffer of determinants generated in the H_apply routine.
-
-
-
-
-
-.. c:function:: perturb_buffer_epstein_nesbet_sc2_projected
-
-    .. code:: text
-
-        subroutine perturb_buffer_epstein_nesbet_sc2_projected(i_generator,buffer,buffer_size,e_2_pert_buffer,coef_pert_buffer,sum_e_2_pert,sum_norm_pert,sum_H_pert_diag,N_st,Nint,key_mask,fock_diag_tmp,electronic_energy)
-
-    File: :file:`perturbation.irp.f_shell_13`
-
-    Applly pertubration ``epstein_nesbet_sc2_projected`` to the buffer of determinants generated in the H_apply routine.
-
-
-
-
-
 .. c:function:: perturb_buffer_h_core
 
     .. code:: text
@@ -560,7 +476,7 @@ Subroutines / functions
 
         subroutine pt2_decontracted (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
 
-    File: :file:`pt2_equations.irp.f_template_606`
+    File: :file:`pt2_equations.irp.f_template_413`
 
     
 
@@ -574,7 +490,7 @@ Subroutines / functions
 
         subroutine pt2_dummy (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
 
-    File: :file:`pt2_equations.irp.f_template_606`
+    File: :file:`pt2_equations.irp.f_template_413`
 
     Dummy perturbation to add all connected determinants.
 
@@ -588,7 +504,7 @@ Subroutines / functions
 
         subroutine pt2_epstein_nesbet (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
 
-    File: :file:`pt2_equations.irp.f_template_606`
+    File: :file:`pt2_equations.irp.f_template_413`
 
     compute the standard Epstein-Nesbet perturbative first order coefficient and second order energetic contribution 
     for the various N_st states. 
@@ -606,7 +522,7 @@ Subroutines / functions
 
         subroutine pt2_epstein_nesbet_2x2 (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
 
-    File: :file:`pt2_equations.irp.f_template_606`
+    File: :file:`pt2_equations.irp.f_template_413`
 
     compute the Epstein-Nesbet 2x2 diagonalization coefficient and energetic contribution 
     for the various N_st states. 
@@ -624,79 +540,13 @@ Subroutines / functions
 
         subroutine pt2_epstein_nesbet_2x2_no_ci_diag(electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
 
-    File: :file:`pt2_equations.irp.f_template_606`
+    File: :file:`pt2_equations.irp.f_template_413`
 
     compute the Epstein-Nesbet 2x2 diagonalization coefficient and energetic contribution 
     for the various N_st states. 
     e_2_pert(i) = 0.5 * (( <det_pert|H|det_pert> -  E(i) )  - sqrt( ( <det_pert|H|det_pert> -  E(i)) ^2 + 4 <psi(i)|H|det_pert>^2  ) 
     c_pert(i) = e_2_pert(i)/ <psi(i)|H|det_pert> 
 
-
-
-
-
-
-.. c:function:: pt2_epstein_nesbet_sc2
-
-    .. code:: text
-
-        subroutine pt2_epstein_nesbet_sc2 (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
-
-    File: :file:`pt2_equations.irp.f_template_606`
-
-    compute the standard Epstein-Nesbet perturbative first order coefficient and second order energetic contribution 
-    for the various N_st states, but with the CISD_SC2 energies and coefficients 
-    c_pert(i) = <psi(i)|H|det_pert>/( E(i) - <det_pert|H|det_pert> ) 
-    e_2_pert(i) = <psi(i)|H|det_pert>^2/( E(i) - <det_pert|H|det_pert> ) 
-
-
-
-
-
-
-.. c:function:: pt2_epstein_nesbet_sc2_no_projected
-
-    .. code:: text
-
-        subroutine pt2_epstein_nesbet_SC2_no_projected (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
-
-    File: :file:`pt2_equations.irp.f_template_606`
-
-    compute the Epstein-Nesbet perturbative first order coefficient and second order energetic contribution 
-    for the various N_st states, 
-    but  with the correction in the denominator 
-    comming from the interaction of that determinant with all the others determinants 
-    that can be repeated by repeating all the double excitations 
-    : you repeat all the correlation energy already taken into account in electronic_energy(1) 
-    that could be repeated to this determinant. 
-    In addition, for the perturbative energetic contribution you have the standard second order 
-    e_2_pert = <psi_i|H|det_pert>^2/(Delta_E) 
-    and also the purely projected contribution 
-    H_pert_diag = <HF|H|det_pert> c_pert
-
-
-
-
-
-.. c:function:: pt2_epstein_nesbet_sc2_projected
-
-    .. code:: text
-
-        subroutine pt2_epstein_nesbet_SC2_projected (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
-
-    File: :file:`pt2_equations.irp.f_template_606`
-
-    compute the Epstein-Nesbet perturbative first order coefficient and second order energetic contribution 
-    for the various N_st states, 
-    but  with the correction in the denominator 
-    comming from the interaction of that determinant with all the others determinants 
-    that can be repeated by repeating all the double excitations 
-    : you repeat all the correlation energy already taken into account in electronic_energy(1) 
-    that could be repeated to this determinant. 
-    In addition, for the perturbative energetic contribution you have the standard second order 
-    e_2_pert = <psi_i|H|det_pert>^2/(Delta_E) 
-    and also the purely projected contribution 
-    H_pert_diag = <HF|H|det_pert> c_pert
 
 
 
@@ -726,7 +576,7 @@ Subroutines / functions
 
         subroutine pt2_moller_plesset (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
 
-    File: :file:`pt2_equations.irp.f_template_606`
+    File: :file:`pt2_equations.irp.f_template_413`
 
     compute the standard Moller-Plesset perturbative first order coefficient and second order energetic contribution 
     for the various n_st states. 
@@ -744,7 +594,7 @@ Subroutines / functions
 
         subroutine pt2_moller_plesset_general (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
 
-    File: :file:`pt2_equations.irp.f_template_606`
+    File: :file:`pt2_equations.irp.f_template_413`
 
     compute the general Moller-Plesset perturbative first order coefficient and second order energetic contribution 
     for the various n_st states. 
@@ -762,7 +612,7 @@ Subroutines / functions
 
         subroutine pt2_qdpt (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
 
-    File: :file:`pt2_equations.irp.f_template_606`
+    File: :file:`pt2_equations.irp.f_template_413`
 
     compute the QDPT first order coefficient and second order energetic contribution 
     for the various N_st states. 

@@ -57,6 +57,12 @@ EZFIO parameters
 
     Default: True
 
+.. option:: only_expected_s2
+
+    If |true|, use filter out all vectors with bad |S^2| values
+
+    Default: True
+
 
 Providers
 ---------
@@ -70,7 +76,7 @@ Providers
         double precision, allocatable	:: ci_eigenvectors	(N_det,N_states_diag)
         double precision, allocatable	:: ci_eigenvectors_s2	(N_states_diag)
 
-    File: :file:`diagonalize_CI.irp.f`
+    File: :file:`diagonalize_ci.irp.f`
 
     Eigenvectors/values of the CI matrix
 
@@ -85,7 +91,7 @@ Providers
         double precision, allocatable	:: ci_eigenvectors	(N_det,N_states_diag)
         double precision, allocatable	:: ci_eigenvectors_s2	(N_states_diag)
 
-    File: :file:`diagonalize_CI.irp.f`
+    File: :file:`diagonalize_ci.irp.f`
 
     Eigenvectors/values of the CI matrix
 
@@ -100,7 +106,7 @@ Providers
         double precision, allocatable	:: ci_eigenvectors	(N_det,N_states_diag)
         double precision, allocatable	:: ci_eigenvectors_s2	(N_states_diag)
 
-    File: :file:`diagonalize_CI.irp.f`
+    File: :file:`diagonalize_ci.irp.f`
 
     Eigenvectors/values of the CI matrix
 
@@ -113,7 +119,7 @@ Providers
 
         double precision, allocatable	:: ci_energy	(N_states_diag)
 
-    File: :file:`diagonalize_CI.irp.f`
+    File: :file:`diagonalize_ci.irp.f`
 
     N_states lowest eigenvalues of the CI matrix
 
@@ -178,7 +184,7 @@ Providers
 
         double precision, allocatable	:: psi_energy	(N_states)
 
-    File: :file:`u0Hu0.irp.f`
+    File: :file:`u0_h_u0.irp.f`
 
     Energy of the current wave function
 
@@ -191,7 +197,7 @@ Providers
 
         double precision, allocatable	:: psi_energy_with_nucl_rep	(N_states)
 
-    File: :file:`u0Hu0.irp.f`
+    File: :file:`u0_h_u0.irp.f`
 
     Energy of the wave function with the nuclear repulsion energy.
 
@@ -258,7 +264,7 @@ Subroutines / functions
 
     .. code:: text
 
-        subroutine davidson_diag_hs2(dets_in,u_in,s2_out,dim_in,energies,sze,N_st,N_st_diag,Nint,dressing_state)
+        subroutine davidson_diag_hs2(dets_in,u_in,s2_out,dim_in,energies,sze,N_st,N_st_diag,Nint,dressing_state,converged)
 
     File: :file:`diagonalization_hs2_dressed.irp.f`
 
@@ -364,23 +370,9 @@ Subroutines / functions
 
         subroutine diagonalize_CI
 
-    File: :file:`diagonalize_CI.irp.f`
+    File: :file:`diagonalize_ci.irp.f`
 
     Replace the coefficients of the CI states by the coefficients of the eigenstates of the CI matrix
-
-
-
-
-
-.. c:function:: find_reference
-
-    .. code:: text
-
-        subroutine find_reference(thresh,n_ref,result)
-
-    File: :file:`find_reference.irp.f`
-
-    
 
 
 
@@ -392,7 +384,7 @@ Subroutines / functions
 
         subroutine H_S2_u_0_nstates_openmp(v_0,s_0,u_0,N_st,sze)
 
-    File: :file:`u0Hu0.irp.f`
+    File: :file:`u0_h_u0.irp.f`
 
     Computes v_0 = H|u_0> and s_0 = S^2 |u_0> 
     Assumes that the determinants are in psi_det 
@@ -408,7 +400,7 @@ Subroutines / functions
 
         subroutine H_S2_u_0_nstates_openmp_work(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
 
-    File: :file:`u0Hu0.irp.f`
+    File: :file:`u0_h_u0.irp.f`
 
     Computes v_t = H|u_t> and s_t = S^2 |u_t> 
     Default should be 1,N_det,0,1
@@ -423,7 +415,7 @@ Subroutines / functions
 
         subroutine H_S2_u_0_nstates_openmp_work_1(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
 
-    File: :file:`u0Hu0.irp.f_template_468`
+    File: :file:`u0_h_u0.irp.f_template_468`
 
     Computes v_t = H|u_t> and s_t = S^2 |u_t> 
     Default should be 1,N_det,0,1
@@ -438,7 +430,7 @@ Subroutines / functions
 
         subroutine H_S2_u_0_nstates_openmp_work_2(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
 
-    File: :file:`u0Hu0.irp.f_template_468`
+    File: :file:`u0_h_u0.irp.f_template_468`
 
     Computes v_t = H|u_t> and s_t = S^2 |u_t> 
     Default should be 1,N_det,0,1
@@ -453,7 +445,7 @@ Subroutines / functions
 
         subroutine H_S2_u_0_nstates_openmp_work_3(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
 
-    File: :file:`u0Hu0.irp.f_template_468`
+    File: :file:`u0_h_u0.irp.f_template_468`
 
     Computes v_t = H|u_t> and s_t = S^2 |u_t> 
     Default should be 1,N_det,0,1
@@ -468,7 +460,7 @@ Subroutines / functions
 
         subroutine H_S2_u_0_nstates_openmp_work_4(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
 
-    File: :file:`u0Hu0.irp.f_template_468`
+    File: :file:`u0_h_u0.irp.f_template_468`
 
     Computes v_t = H|u_t> and s_t = S^2 |u_t> 
     Default should be 1,N_det,0,1
@@ -483,7 +475,7 @@ Subroutines / functions
 
         subroutine H_S2_u_0_nstates_openmp_work_N_int(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
 
-    File: :file:`u0Hu0.irp.f_template_468`
+    File: :file:`u0_h_u0.irp.f_template_468`
 
     Computes v_t = H|u_t> and s_t = S^2 |u_t> 
     Default should be 1,N_det,0,1
@@ -515,7 +507,7 @@ Subroutines / functions
 
         subroutine u_0_H_u_0(e_0,u_0,n,keys_tmp,Nint,N_st,sze)
 
-    File: :file:`u0Hu0.irp.f`
+    File: :file:`u0_h_u0.irp.f`
 
     Computes e_0 = <u_0|H|u_0>/<u_0|u_0> 
     n : number of determinants 

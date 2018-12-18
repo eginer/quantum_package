@@ -890,7 +890,7 @@ Subroutines / functions
 
         subroutine dump_ao_integrals(filename)
 
-    File: :file:`map_integrals.irp.f_template_750`
+    File: :file:`map_integrals.irp.f_template_694`
 
     Save to disk the $ao integrals
 
@@ -904,7 +904,7 @@ Subroutines / functions
 
         subroutine dump_mo_integrals(filename)
 
-    File: :file:`map_integrals.irp.f_template_750`
+    File: :file:`map_integrals.irp.f_template_694`
 
     Save to disk the $ao integrals
 
@@ -1142,7 +1142,7 @@ Subroutines / functions
 
         integer function load_ao_integrals(filename)
 
-    File: :file:`map_integrals.irp.f_template_750`
+    File: :file:`map_integrals.irp.f_template_694`
 
     Read from disk the $ao integrals
 
@@ -1156,7 +1156,7 @@ Subroutines / functions
 
         integer function load_mo_integrals(filename)
 
-    File: :file:`map_integrals.irp.f_template_750`
+    File: :file:`map_integrals.irp.f_template_694`
 
     Read from disk the $ao integrals
 
@@ -1206,20 +1206,6 @@ Subroutines / functions
 
 
 
-.. c:function:: provide_all_mo_integrals
-
-    .. code:: text
-
-        subroutine provide_all_mo_integrals
-
-    File: :file:`mo_bi_integrals.irp.f`
-
-    
-
-
-
-
-
 .. c:function:: push_integrals
 
     .. code:: text
@@ -1229,33 +1215,5 @@ Subroutines / functions
     File: :file:`ao_bielec_integrals_in_map_slave.irp.f`
 
     Push integrals in the push socket
-
-
-
-
-
-.. c:function:: set_integrals_exchange_jj_into_map
-
-    .. code:: text
-
-        subroutine set_integrals_exchange_jj_into_map
-
-    File: :file:`mo_bi_integrals.irp.f`
-
-    
-
-
-
-
-
-.. c:function:: set_integrals_jj_into_map
-
-    .. code:: text
-
-        subroutine set_integrals_jj_into_map
-
-    File: :file:`mo_bi_integrals.irp.f`
-
-    
 
 

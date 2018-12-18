@@ -196,34 +196,6 @@ Subroutines / functions
 
 
 
-.. c:function:: give_all_mos_at_r
-
-    .. code:: text
-
-        subroutine give_all_mos_at_r(r,mos_array)
-
-    File: :file:`utils.irp.f`
-
-    
-
-
-
-
-
-.. c:function:: give_specific_mos_at_r
-
-    .. code:: text
-
-        subroutine give_specific_mos_at_r(r,mos_array, mo_coef_specific)
-
-    File: :file:`utils.irp.f`
-
-    
-
-
-
-
-
 .. c:function:: mix_mo_jk
 
     .. code:: text
@@ -232,7 +204,10 @@ Subroutines / functions
 
     File: :file:`mos.irp.f`
 
-    subroutine that rotates the jth MO with the kth MO to give two new MO's that are '+' = 1/sqrt(2) (|j> + |k>) '-' = 1/sqrt(2) (|j> - |k>) by convention, the '+' MO is in the lower index (min(j,k)) by convention, the '-' MO is in the greater index (max(j,k))
+    Rotates the jth MO with the kth MO to give two new MO's that are 
+    '+' = 1/sqrt(2) (|j> + |k>) 
+    '-' = 1/sqrt(2) (|j> - |k>) 
+    by convention, the '+' MO is in the lower index (min(j,k)) by convention, the '-' MO is in the larger index (max(j,k))
 
 
 
@@ -243,20 +218,6 @@ Subroutines / functions
     .. code:: text
 
         subroutine mo_as_eigvectors_of_mo_matrix(matrix,n,m,label,sign,output)
-
-    File: :file:`utils.irp.f`
-
-    
-
-
-
-
-
-.. c:function:: mo_as_eigvectors_of_mo_matrix_sort_by_observable
-
-    .. code:: text
-
-        subroutine mo_as_eigvectors_of_mo_matrix_sort_by_observable(matrix,observable,n,m,label)
 
     File: :file:`utils.irp.f`
 
@@ -289,34 +250,6 @@ Subroutines / functions
     File: :file:`utils.irp.f`
 
     
-
-
-
-
-
-.. c:function:: mo_sort_by_observable
-
-    .. code:: text
-
-        subroutine mo_sort_by_observable(observable,label)
-
-    File: :file:`utils.irp.f`
-
-    
-
-
-
-
-
-.. c:function:: mo_to_ao_no_overlap
-
-    .. code:: text
-
-        subroutine mo_to_ao_no_overlap(A_mo,LDA_mo,A_ao,LDA_ao)
-
-    File: :file:`mos.irp.f`
-
-    Transform A from the MO basis to the S^-1 AO basis Useful for density matrix
 
 
 

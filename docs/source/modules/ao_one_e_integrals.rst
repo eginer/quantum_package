@@ -56,7 +56,7 @@ Providers
 
     File: :file:`ao_ortho_canonical.irp.f`
 
-    ao_cart_to_sphe coefficients of the current basis set
+    Coefficients to go from cartesian to spherical coordinates in the current basis set
 
 
 
@@ -69,7 +69,7 @@ Providers
 
     File: :file:`ao_ortho_canonical.irp.f`
 
-    AO_cart_to_sphe_coef^(-1)
+    Inverse of :c:var:`ao_cart_to_sphe_coef`
 
 
 
@@ -83,7 +83,7 @@ Providers
 
     File: :file:`ao_ortho_canonical.irp.f`
 
-    ao_cart_to_sphe coefficients of the current basis set
+    Coefficients to go from cartesian to spherical coordinates in the current basis set
 
 
 
@@ -96,7 +96,7 @@ Providers
 
     File: :file:`ao_ortho_canonical.irp.f`
 
-    AO overlap matrix in the spherical basis set
+    |AO| overlap matrix in the spherical basis set
 
 
 
@@ -111,8 +111,8 @@ Providers
 
     File: :file:`kin_ao_ints.irp.f`
 
-    Second derivatives matrix elements in the |AO| basis. 
-    math:`{\tt ao_deriv2_x} = \langle \chi_i(x,y,z) | \frac{\partial^2}{\partial x^2} |\chi_j (x,y,z) \rangle` 
+    Second derivative matrix elements in the |AO| basis. 
+    :math:`{\tt ao_deriv2_x} = \langle \chi_i(x,y,z) | \frac{\partial^2}{\partial x^2} |\chi_j (x,y,z) \rangle` 
 
 
 
@@ -128,8 +128,8 @@ Providers
 
     File: :file:`kin_ao_ints.irp.f`
 
-    Second derivatives matrix elements in the |AO| basis. 
-    math:`{\tt ao_deriv2_x} = \langle \chi_i(x,y,z) | \frac{\partial^2}{\partial x^2} |\chi_j (x,y,z) \rangle` 
+    Second derivative matrix elements in the |AO| basis. 
+    :math:`{\tt ao_deriv2_x} = \langle \chi_i(x,y,z) | \frac{\partial^2}{\partial x^2} |\chi_j (x,y,z) \rangle` 
 
 
 
@@ -145,8 +145,8 @@ Providers
 
     File: :file:`kin_ao_ints.irp.f`
 
-    Second derivatives matrix elements in the |AO| basis. 
-    math:`{\tt ao_deriv2_x} = \langle \chi_i(x,y,z) | \frac{\partial^2}{\partial x^2} |\chi_j (x,y,z) \rangle` 
+    Second derivative matrix elements in the |AO| basis. 
+    :math:`{\tt ao_deriv2_x} = \langle \chi_i(x,y,z) | \frac{\partial^2}{\partial x^2} |\chi_j (x,y,z) \rangle` 
 
 
 
@@ -162,7 +162,9 @@ Providers
 
     File: :file:`spread_dipole_ao.irp.f`
 
-    array of the integrals of AO_i * d/dx  AO_j array of the integrals of AO_i * d/dy  AO_j array of the integrals of AO_i * d/dz  AO_j
+    * array of the integrals of AO_i * d/dx  AO_j 
+    * array of the integrals of AO_i * d/dy  AO_j 
+    * array of the integrals of AO_i * d/dz  AO_j
 
 
 
@@ -177,7 +179,9 @@ Providers
 
     File: :file:`spread_dipole_ao.irp.f`
 
-    array of the integrals of AO_i * d/dx  AO_j array of the integrals of AO_i * d/dy  AO_j array of the integrals of AO_i * d/dz  AO_j
+    * array of the integrals of AO_i * d/dx  AO_j 
+    * array of the integrals of AO_i * d/dy  AO_j 
+    * array of the integrals of AO_i * d/dz  AO_j
 
 
 
@@ -192,7 +196,9 @@ Providers
 
     File: :file:`spread_dipole_ao.irp.f`
 
-    array of the integrals of AO_i * d/dx  AO_j array of the integrals of AO_i * d/dy  AO_j array of the integrals of AO_i * d/dz  AO_j
+    * array of the integrals of AO_i * d/dx  AO_j 
+    * array of the integrals of AO_i * d/dy  AO_j 
+    * array of the integrals of AO_i * d/dz  AO_j
 
 
 
@@ -207,7 +213,9 @@ Providers
 
     File: :file:`spread_dipole_ao.irp.f`
 
-    array of the integrals of AO_i * x AO_j array of the integrals of AO_i * y AO_j array of the integrals of AO_i * z AO_j
+    * array of the integrals of AO_i * x AO_j 
+    * array of the integrals of AO_i * y AO_j 
+    * array of the integrals of AO_i * z AO_j
 
 
 
@@ -222,7 +230,9 @@ Providers
 
     File: :file:`spread_dipole_ao.irp.f`
 
-    array of the integrals of AO_i * x AO_j array of the integrals of AO_i * y AO_j array of the integrals of AO_i * z AO_j
+    * array of the integrals of AO_i * x AO_j 
+    * array of the integrals of AO_i * y AO_j 
+    * array of the integrals of AO_i * z AO_j
 
 
 
@@ -237,7 +247,9 @@ Providers
 
     File: :file:`spread_dipole_ao.irp.f`
 
-    array of the integrals of AO_i * x AO_j array of the integrals of AO_i * y AO_j array of the integrals of AO_i * z AO_j
+    * array of the integrals of AO_i * x AO_j 
+    * array of the integrals of AO_i * y AO_j 
+    * array of the integrals of AO_i * z AO_j
 
 
 
@@ -250,7 +262,7 @@ Providers
 
     File: :file:`kin_ao_ints.irp.f`
 
-    Array of the priminitve basis kinetic integrals. 
+    Kinetic energy integrals in the |AO| basis. 
     :math:`\langle \chi_i |\hat{T}| \chi_j \rangle`
 
 
@@ -265,7 +277,7 @@ Providers
 
     File: :file:`ao_mono_ints.irp.f`
 
-    array of the mono electronic hamiltonian on the AOs basis : sum of the kinetic and nuclear electronic potential
+    Array of the one-electron Hamiltonian on the |AO| basis.
 
 
 
@@ -279,7 +291,7 @@ Providers
 
     File: :file:`ao_mono_ints.irp.f`
 
-    array of the mono electronic hamiltonian on the AOs basis : sum of the kinetic and nuclear electronic potential
+    Array of the one-electron Hamiltonian on the |AO| basis.
 
 
 
@@ -377,7 +389,8 @@ Providers
 
     File: :file:`ao_overlap.irp.f`
 
-    Overlap between atomic basis functions: :math:`\int \chi_i(r) \chi_j(r) dr)`
+    Overlap between atomic basis functions: 
+    :math:`\int \chi_i(r) \chi_j(r) dr`
 
 
 
@@ -390,7 +403,8 @@ Providers
 
     File: :file:`ao_overlap.irp.f`
 
-    Overlap between absolute value of atomic basis functions: :math:`\int |\chi_i(r)| |\chi_j(r)| dr)`
+    Overlap between absolute values of atomic basis functions: 
+    :math:`\int |\chi_i(r)| |\chi_j(r)| dr`
 
 
 
@@ -406,7 +420,8 @@ Providers
 
     File: :file:`ao_overlap.irp.f`
 
-    Overlap between atomic basis functions: :math:`\int \chi_i(r) \chi_j(r) dr)`
+    Overlap between atomic basis functions: 
+    :math:`\int \chi_i(r) \chi_j(r) dr`
 
 
 
@@ -422,7 +437,8 @@ Providers
 
     File: :file:`ao_overlap.irp.f`
 
-    Overlap between atomic basis functions: :math:`\int \chi_i(r) \chi_j(r) dr)`
+    Overlap between atomic basis functions: 
+    :math:`\int \chi_i(r) \chi_j(r) dr`
 
 
 
@@ -438,7 +454,8 @@ Providers
 
     File: :file:`ao_overlap.irp.f`
 
-    Overlap between atomic basis functions: :math:`\int \chi_i(r) \chi_j(r) dr)`
+    Overlap between atomic basis functions: 
+    :math:`\int \chi_i(r) \chi_j(r) dr`
 
 
 
@@ -451,7 +468,7 @@ Providers
 
     File: :file:`pot_ao_pseudo_ints.irp.f`
 
-    Pseudo-potential integrals
+    Pseudo-potential integrals in the |AO| basis set.
 
 
 
@@ -477,7 +494,7 @@ Providers
 
     File: :file:`pot_ao_pseudo_ints.irp.f`
 
-    Local pseudo-potential
+    Non-local pseudo-potential
 
 
 
@@ -492,7 +509,9 @@ Providers
 
     File: :file:`spread_dipole_ao.irp.f`
 
-    array of the integrals of AO_i * x^2 AO_j array of the integrals of AO_i * y^2 AO_j array of the integrals of AO_i * z^2 AO_j
+    * array of the integrals of AO_i * x^2 AO_j 
+    * array of the integrals of AO_i * y^2 AO_j 
+    * array of the integrals of AO_i * z^2 AO_j
 
 
 
@@ -507,7 +526,9 @@ Providers
 
     File: :file:`spread_dipole_ao.irp.f`
 
-    array of the integrals of AO_i * x^2 AO_j array of the integrals of AO_i * y^2 AO_j array of the integrals of AO_i * z^2 AO_j
+    * array of the integrals of AO_i * x^2 AO_j 
+    * array of the integrals of AO_i * y^2 AO_j 
+    * array of the integrals of AO_i * z^2 AO_j
 
 
 
@@ -522,7 +543,9 @@ Providers
 
     File: :file:`spread_dipole_ao.irp.f`
 
-    array of the integrals of AO_i * x^2 AO_j array of the integrals of AO_i * y^2 AO_j array of the integrals of AO_i * z^2 AO_j
+    * array of the integrals of AO_i * x^2 AO_j 
+    * array of the integrals of AO_i * y^2 AO_j 
+    * array of the integrals of AO_i * z^2 AO_j
 
 
 
@@ -652,7 +675,7 @@ Providers
 
     File: :file:`read_write.irp.f`
 
-    One level of abstraction for disk_access_ao_integrals and disk_access_mo_integrals
+    If |true|, read/write one-electrons from/to disk.
 
 
 
@@ -665,7 +688,7 @@ Providers
 
     File: :file:`ao_overlap.irp.f`
 
-    S^{1/2}
+    :math:`S^{1/2}`
 
 
 
@@ -678,7 +701,7 @@ Providers
 
     File: :file:`ao_overlap.irp.f`
 
-    Matrix X = S^{-1/2} obtained by SVD
+    :math:`X = S^{-1/2}` obtained by SVD
 
 
 
@@ -691,7 +714,7 @@ Providers
 
     File: :file:`ao_overlap.irp.f`
 
-    S^-1
+    Inverse of the overlap matrix
 
 
 
@@ -705,7 +728,7 @@ Providers
 
     File: :file:`read_write.irp.f`
 
-    One level of abstraction for disk_access_ao_integrals and disk_access_mo_integrals
+    If |true|, read/write one-electrons from/to disk.
 
 
 
@@ -807,34 +830,6 @@ Subroutines / functions
     .. code:: text
 
         subroutine overlap_bourrin_x(A_center,B_center,alpha,beta,power_A,power_B,overlap_x,lower_exp_val,dx,nx)
-
-    File: :file:`spread_dipole_ao.irp.f`
-
-    
-
-
-
-
-
-.. c:function:: overlap_bourrin_x_abs
-
-    .. code:: text
-
-        subroutine overlap_bourrin_x_abs(A_center,B_center,alpha,beta,power_A,power_B,overlap_x,lower_exp_val,dx,nx)
-
-    File: :file:`spread_dipole_ao.irp.f`
-
-    
-
-
-
-
-
-.. c:function:: power
-
-    .. code:: text
-
-        double precision function power(n,x)
 
     File: :file:`spread_dipole_ao.irp.f`
 
