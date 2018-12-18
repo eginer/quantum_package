@@ -5,7 +5,7 @@
   * dft_utils_one_body
   * dm_for_dft
   * integrals_erf
-* Molden format
+* Molden format : http://cheminf.cmbi.ru.nl/molden/molden_format.html
 * Virer tous les modules qui sont dans plugins
 * Permettre aux utilisateurs de facilement deposer des plugins dans plugins via une commande
 * Permettre de descendre plus bas dans l'arborescence de plugins pour permettre des `git clone` dans le repertoire plugins
