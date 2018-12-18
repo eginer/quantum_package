@@ -2,7 +2,7 @@ BEGIN_SHELL [ /usr/bin/env python2 ]
 from perturbation import perturbations
 import os
 
-filename = os.environ["QP_ROOT"]+"/src/Perturbation/perturbation.template.f"
+filename = os.environ["QP_ROOT"]+"/src/perturbation/perturbation.template.f"
 file = open(filename,'r')
 template = file.read()
 file.close()

@@ -961,7 +961,7 @@ subroutine get_all_spin_singles_and_doubles_1(buffer, idx, spindet, size_buffer,
   integer, intent(out)           :: n_doubles
 
   integer                        :: i
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
   integer                        :: degree
 
 
@@ -1000,7 +1000,7 @@ subroutine get_all_spin_singles_1(buffer, idx, spindet, size_buffer, singles, n_
   integer, intent(out)           :: n_singles
   integer                        :: i
   integer                        :: degree
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
 
   n_singles = 1
   do i=1,size_buffer
@@ -1030,7 +1030,7 @@ subroutine get_all_spin_doubles_1(buffer, idx, spindet, size_buffer, doubles, n_
   integer, intent(out)           :: doubles(size_buffer)
   integer, intent(out)           :: n_doubles
   integer                        :: i
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
   integer                        :: degree
 
   n_doubles = 1
@@ -1123,7 +1123,7 @@ subroutine get_all_spin_singles_$N_int(buffer, idx, spindet, size_buffer, single
   integer, intent(out)           :: n_singles
 
   integer                        :: i,k
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
   integer(bit_kind)              :: xorvec($N_int)
   integer                        :: degree
 
@@ -1173,7 +1173,7 @@ subroutine get_all_spin_doubles_$N_int(buffer, idx, spindet, size_buffer, double
   integer, intent(out)           :: n_doubles
 
   integer                        :: i,k, degree
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
   integer(bit_kind)              :: xorvec($N_int)
 
   n_doubles = 1

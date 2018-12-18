@@ -61,10 +61,10 @@ subroutine
 class H_apply(object):
 
   def read_template(self):
-    file = open(os.environ["QP_ROOT"]+'/src/Determinants/H_apply.template.f','r')
+    file = open(os.environ["QP_ROOT"]+'/src/determinants/h_apply.template.f','r')
     self.template = file.read()
     file.close()
-    file = open(os.environ["QP_ROOT"]+'/src/Determinants/H_apply_nozmq.template.f','r')
+    file = open(os.environ["QP_ROOT"]+'/src/determinants/h_apply_nozmq.template.f','r')
     self.template += file.read()
     file.close()
 
@@ -439,10 +439,10 @@ class H_apply(object):
 class H_apply_zmq(H_apply):
 
   def read_template(self):
-    file = open(os.environ["QP_ROOT"]+'/src/Determinants/H_apply.template.f','r')
+    file = open(os.environ["QP_ROOT"]+'/src/determinants/h_apply.template.f','r')
     self.template = file.read()
     file.close()
-    file = open(os.environ["QP_ROOT"]+'/src/Determinants/H_apply_zmq.template.f','r')
+    file = open(os.environ["QP_ROOT"]+'/src/determinants/h_apply_zmq.template.f','r')
     self.template += file.read()
     file.close()
 

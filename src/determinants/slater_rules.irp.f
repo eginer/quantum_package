@@ -1,6 +1,6 @@
 subroutine get_excitation_degree(key1,key2,degree,Nint)
   use bitmasks
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
   implicit none
   BEGIN_DOC
   ! Returns the excitation degree between two determinants
@@ -1834,7 +1834,7 @@ end
 
 subroutine get_excitation_degree_spin(key1,key2,degree,Nint)
   use bitmasks
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
   implicit none
   BEGIN_DOC
   ! Returns the excitation degree between two determinants

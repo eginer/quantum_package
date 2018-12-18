@@ -169,7 +169,7 @@ double precision function NAI_pol_mult(A_center,B_center,power_A,power_B,alpha,b
   double precision               :: V_e_n,const_factor,dist_integral,tmp
   double precision               :: accu,epsilo,rint
   integer                        :: n_pt_out,lmax
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
   if ( (A_center(1)/=B_center(1)).or.                                &
         (A_center(2)/=B_center(2)).or.                               &
         (A_center(3)/=B_center(3)).or.                               &
@@ -371,7 +371,7 @@ recursive subroutine I_x1_pol_mult_mono_elec(a,c,R1x,R1xp,R2x,d,nd,n_pt_in)
   integer,intent(inout)          :: nd
   integer, intent(in)            :: a,c
   double precision, intent(in)   :: R1x(0:2),R1xp(0:2),R2x(0:2)
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
   double precision               :: X(0:max_dim)
   double precision               :: Y(0:max_dim)
   !DIR$ ATTRIBUTES ALIGN : $IRP_ALIGN :: X, Y
@@ -436,7 +436,7 @@ recursive subroutine I_x2_pol_mult_mono_elec(c,R1x,R1xp,R2x,d,nd,dim)
 !  Recursive routine involved in the electron-nucleus potential
   END_DOC
   integer , intent(in)           :: dim
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
   double precision               :: d(0:max_dim)
   integer,intent(inout)          :: nd
   integer, intent(in)            :: c
@@ -509,7 +509,7 @@ double precision function int_gaus_pol(alpha,n)
   double precision               :: alpha
   integer                        :: n
   double precision               :: dble_fact
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
   
   int_gaus_pol = 0.d0
   if(iand(n,1).eq.0)then
@@ -535,7 +535,7 @@ double precision function V_r(n,alpha)
   END_DOC
   double precision               :: alpha, fact
   integer                        :: n
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
   if(iand(n,1).eq.1)then
     V_r = 0.5d0 * fact(shiftr(n,1)) / (alpha ** (shiftr(n,1) + 1))
   else
@@ -570,7 +570,7 @@ double precision function V_theta(n,m)
   END_DOC
   integer                        :: n,m,i
   double precision               :: Wallis, prod
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
   V_theta = 0.d0
   prod = 1.d0
   do i = 0,shiftr(n,1)-1
@@ -589,7 +589,7 @@ double precision function Wallis(n)
   END_DOC
   double precision               :: fact
   integer                        :: n,p
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
   if(iand(n,1).eq.0)then
     Wallis = fact(shiftr(n,1))
     Wallis = pi * fact(n) / (dble(ibset(0_8,n)) * (Wallis+Wallis)*Wallis)

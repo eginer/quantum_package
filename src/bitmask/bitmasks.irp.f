@@ -2,7 +2,7 @@ use bitmasks
 
 BEGIN_PROVIDER [ integer, N_int ]
   implicit none
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
   BEGIN_DOC
   ! Number of 64-bit integers needed to represent determinants as binary strings
   END_DOC

@@ -1,7 +1,7 @@
 double precision function diag_S_mat_elem(key_i,Nint)
   implicit none
   use bitmasks
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
 
   integer                        :: Nint
   integer(bit_kind), intent(in)  :: key_i(Nint,2)
