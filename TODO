@@ -41,7 +41,6 @@
   * Examples : subroutine example_module
 
 * Config file for Cray
-* Noms des modules et fichiers en minuscule
 * Implicit none obligatoire
 
 * Doc des executables

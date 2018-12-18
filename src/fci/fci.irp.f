@@ -1,5 +1,8 @@
-program fci_zmq
+program fci
   implicit none
+  BEGIN_DOC
+! Selected Full Configuration Interaction.
+  END_DOC
   integer                        :: i,j,k
   double precision, allocatable  :: pt2(:), variance(:), norm(:), rpt2(:)
   integer                        :: n_det_before, to_select

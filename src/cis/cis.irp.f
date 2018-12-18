@@ -1,5 +1,8 @@
 program cis
   implicit none
+  BEGIN_DOC
+! Configuration Interaction with Single excitations.
+  END_DOC
   read_wf = .False.
   SOFT_TOUCH read_wf
   call run

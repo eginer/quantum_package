@@ -1,7 +1,7 @@
-program four_idx
+program four_idx_transform
   implicit none
   BEGIN_DOC
-! 4-index transformation from AO to MO integrals
+! 4-index transformation of two-electron integrals from AO to MO integrals
   END_DOC
   
   disk_access_mo_integrals = 'Write'

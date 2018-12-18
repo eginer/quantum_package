@@ -1,5 +1,9 @@
-program pt2_stoch
+program pt2
   implicit none
+  BEGIN_DOC
+  ! Second order perturbative correction to the wave function contained in the
+  ! EZFIO directory.
+  END_DOC
   read_wf = .True.
   SOFT_TOUCH read_wf
   PROVIDE mo_bielec_integrals_in_map
