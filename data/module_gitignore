@@ -6,6 +6,7 @@ tags
 Makefile
 ao_basis
 ao_one_e_integrals
+becke_numerical_grid
 bitmask
 cis
 cisd

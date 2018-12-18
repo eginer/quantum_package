@@ -1,5 +1,6 @@
 ao_basis
 ao_one_e_integrals
+becke_numerical_grid
 bitmask
 cis
 cisd
@@ -20,6 +21,7 @@ mo_basis
 mo_guess
 mo_one_e_integrals
 mpi
+mrpt_utils
 nuclei
 perturbation
 pseudo
@@ -31,4 +33,3 @@ selectors_utils
 single_ref_method
 utils
 zmq
-mrpt_utils

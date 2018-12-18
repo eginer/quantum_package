@@ -1,3 +1,10 @@
+* Manu : README 
+  * data_energy_and_density
+  * dft_keywords
+  * dft_quantities_on_grid
+  * dft_utils_one_body
+  * dm_for_dft
+  * integrals_erf
 * Molden format
 * Virer tous les modules qui sont dans plugins
 * Permettre aux utilisateurs de facilement deposer des plugins dans plugins via une commande
@@ -7,7 +14,6 @@
 * Creer une page web pas trop degueu et la mettre ici : http://lcpq.github.io/quantum_package
 * Un module pour lire les integrales Moleculaires depuis un FCIDUMP
 * Un module pour lire des integrales Atomiques (voir module de Mimi pour lire les AO Slater)
-* Include la DFT si c'est propre
 
 * Plus de tests:
 
@@ -18,7 +24,7 @@
   * Davidson 
   * Lapack
   * Extrapolation
-  * DFT?
+  * DFT
 
 
 * User doc:
