@@ -37,26 +37,26 @@ end
  implicit none
 
  double precision :: accu
- accu= E_cor_tot_normal_prov-integral_on_top_of_r_tucker(1)
+ !accu= E_cor_tot_normal_prov-integral_on_top_of_r_tucker(1)
 
  double precision :: accu_Manu
- accu_Manu= E_cor_tot_normal_prov-integral_on_top_of_r_approx_svd(1)
+ !accu_Manu= E_cor_tot_normal_prov-integral_on_top_of_r_approx_svd(1)
 
  double precision :: accu_Manu_cor
  accu_Manu_cor=E_cor_tot_normal_prov-integral_on_top_of_r_approx_svd_correlation(1)
 
  print*, '**************'
- print*, 'Absolute error tucker          =', accu
- print*, 'Absolute error manual          =', accu_Manu
- !print*, 'Absolute error manual corre    =', accu_Manu_cor
+ !print*, 'Absolute error tucker          =', accu
+ !print*, 'Absolute error manual          =', accu_Manu
+ print*, 'Absolute error manual corre    =', accu_Manu_cor
  print*, '**************'
 
  print*, '**************'
  print*, 'E_cor_tot_normal_provider         =', E_cor_tot_normal_prov
- print*, 'E_cor_tot_manual_provider         =', integral_on_top_of_r_approx_svd(1)
- print*, 'E_cor_tot_tucker_provider         =', integral_on_top_of_r_tucker(1) 
+ !print*, 'E_cor_tot_manual_provider         =', integral_on_top_of_r_approx_svd(1)
+ !print*, 'E_cor_tot_tucker_provider         =', integral_on_top_of_r_tucker(1) 
  print*, '**************'
- !print*, 'E_cor_tot_approx svd correlation  =',integral_on_top_of_r_approx_svd_correlation(1)
+ print*, 'E_cor_tot_approx svd correlation  =',integral_on_top_of_r_approx_svd_correlation(1)
  end
 
 
