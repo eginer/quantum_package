@@ -16,7 +16,7 @@ subroutine save_erf_bi_elec_integrals_ao
  call ezfio_set_integrals_bielec_disk_access_ao_integrals("Read")
 end
 
-subroutine save_erf_bi_elec_integrals_mo_into_regular_integrals_mo
+subroutine save_erf_bielec_ints_mo_into_ints_mo
  implicit none
  integer :: i,j,k,l
  PROVIDE mo_bielec_integrals_erf_in_map
@@ -25,7 +25,7 @@ subroutine save_erf_bi_elec_integrals_mo_into_regular_integrals_mo
  call ezfio_set_integrals_bielec_disk_access_mo_integrals("Read")
 end
 
-subroutine save_erf_bi_elec_integrals_ao_into_regular_integrals_ao
+subroutine save_erf_bielec_ints_mo_into_ints_ao
  implicit none
  integer :: i,j,k,l
  PROVIDE ao_bielec_integrals_erf_in_map

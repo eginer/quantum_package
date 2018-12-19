@@ -55,7 +55,7 @@ BEGIN_PROVIDER [ logical, mo_bielec_integrals_erf_in_map ]
   if (write_mo_integrals_erf) then
     call ezfio_set_work_empty(.False.)
     call map_save_to_disk(trim(ezfio_filename)//'/work/mo_ints_erf',mo_integrals_erf_map)
-    call ezfio_set_integrals_erf_disk_access_mo_integrals_erf("Read")
+    call ezfio_set_integrals_bielec_erf_disk_access_mo_integrals_erf("Read")
   endif
   
 END_PROVIDER

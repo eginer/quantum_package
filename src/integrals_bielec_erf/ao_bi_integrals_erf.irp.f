@@ -10,7 +10,7 @@ double precision function ao_bielec_integral_erf(i,j,k,l)
   double precision               :: I_center(3),J_center(3),K_center(3),L_center(3)
   integer                        :: num_i,num_j,num_k,num_l,dim1,I_power(3),J_power(3),K_power(3),L_power(3)
   double precision               :: integral
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
   double precision               :: P_new(0:max_dim,3),P_center(3),fact_p,pp
   double precision               :: Q_new(0:max_dim,3),Q_center(3),fact_q,qq
   integer                        :: iorder_p(3), iorder_q(3)
@@ -114,7 +114,7 @@ double precision function ao_bielec_integral_schwartz_accel_erf(i,j,k,l)
   double precision               :: I_center(3),J_center(3),K_center(3),L_center(3)
   integer                        :: num_i,num_j,num_k,num_l,dim1,I_power(3),J_power(3),K_power(3),L_power(3)
   double precision               :: integral
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
   double precision               :: P_new(0:max_dim,3),P_center(3),fact_p,pp
   double precision               :: Q_new(0:max_dim,3),Q_center(3),fact_q,qq
   integer                        :: iorder_p(3), iorder_q(3)
@@ -283,7 +283,7 @@ subroutine compute_ao_bielec_integrals_erf(j,k,l,sze,buffer_value)
   ! Compute AO 1/r12 integrals for all i and fixed j,k,l
   END_DOC
   
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
   integer, intent(in)            :: j,k,l,sze
   real(integral_kind), intent(out) :: buffer_value(sze)
   double precision               :: ao_bielec_integral_erf
@@ -322,7 +322,7 @@ double precision function general_primitive_integral_erf(dim,            &
   ! Computes the integral <pq|rs> where p,q,r,s are Gaussian primitives
   END_DOC
   integer,intent(in)             :: dim
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
   double precision, intent(in)   :: P_new(0:max_dim,3),P_center(3),fact_p,p,p_inv
   double precision, intent(in)   :: Q_new(0:max_dim,3),Q_center(3),fact_q,q,q_inv
   integer, intent(in)            :: iorder_p(3)
@@ -472,7 +472,7 @@ double precision function ERI_erf(alpha,beta,delta,gama,a_x,b_x,c_x,d_x,a_y,b_y,
   double precision               :: p,q,denom,coeff
   double precision               :: I_f
   integer                        :: nx,ny,nz
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
   nx = a_x+b_x+c_x+d_x
   if(iand(nx,1) == 1) then
     ERI_erf = 0.d0
@@ -524,7 +524,7 @@ subroutine integrale_new_erf(I_f,a_x,b_x,c_x,d_x,a_y,b_y,c_y,d_y,a_z,b_z,c_z,d_z
   
   
   implicit none
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
   double precision               :: p,q
   integer                        :: a_x,b_x,c_x,d_x,a_y,b_y,c_y,d_y,a_z,b_z,c_z,d_z
   integer                        :: i, n_iter, n_pt, j

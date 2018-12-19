@@ -64,7 +64,7 @@ double precision :: I_n_special_exact,integrate_bourrin,I_n_bibi
 double precision ::  V_e_n,const_factor,dist_integral,tmp
 double precision :: accu,rint,p_inv,p,rho,p_inv_2
 integer :: n_pt_out,lmax
-include 'Utils/constants.include.F'
+include 'utils/constants.include.F'
   p = alpha + beta
   p_inv = 1.d0/p
   p_inv_2 = 0.5d0 * p_inv 

@@ -11,7 +11,7 @@ BEGIN_PROVIDER [ logical, ao_bielec_integrals_erf_in_map ]
   integer                        :: i,j,k,l
   double precision               :: ao_bielec_integral_erf,cpu_1,cpu_2, wall_1, wall_2
   double precision               :: integral, wall_0
-  include 'Utils/constants.include.F'
+  include 'utils/constants.include.F'
   
   ! For integrals file
   integer(key_kind),allocatable  :: buffer_i(:)
@@ -90,7 +90,7 @@ BEGIN_PROVIDER [ logical, ao_bielec_integrals_erf_in_map ]
   if (write_ao_integrals_erf) then
     call ezfio_set_work_empty(.False.)
     call map_save_to_disk(trim(ezfio_filename)//'/work/ao_ints_erf',ao_integrals_erf_map)
-    call ezfio_set_integrals_erf_disk_access_ao_integrals_erf("Read")
+    call ezfio_set_integrals_bielec_erf_disk_access_ao_integrals_erf("Read")
   endif
   
 END_PROVIDER
