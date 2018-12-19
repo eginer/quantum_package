@@ -4,7 +4,7 @@ source $QP_ROOT/tests/bats/common.bats.sh
 
 function run_FCI() {
   thresh=5.e-5
-  test_exe FCI || skip
+  test_exe fci || skip
   qp_edit -c $1
   ezfio set_file $1
   ezfio set perturbation do_pt2 True
