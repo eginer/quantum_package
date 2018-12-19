@@ -5,12 +5,12 @@ BEGIN_PROVIDER [ integer, qp_max_mem ]
  END_DOC
  character*(128) :: env
 
- qp_max_mem = huge(1)/10
+ qp_max_mem = 2000
  call getenv('QP_MAXMEM',env)
  if (trim(env) /= '') then
     read(env,*) qp_max_mem
-    call write_int(6,qp_max_mem,'Target maximum memory')
  endif
+ call write_int(6,qp_max_mem,'Target maximum memory (GB)')
 
 END_PROVIDER
 

@@ -23,9 +23,9 @@ subroutine write_time(iunit)
   call print_memory_usage()
   call cpu_time(ct)
   call wall_time(wt)
-  write(6,'(A,F15.6,A,F15.6,A)') &
+  write(6,'(A,F14.6,A,F14.6,A)') &
     '.. >>>>> [ WALL TIME: ', wt-output_wall_time_0, &
-        ' s ] [ CPU  TIME: ', ct-output_cpu_time_0, ' s ] <<<<< ..'
+        '  s ] [ CPU  TIME: ', ct-output_cpu_time_0, '  s ] <<<<< ..'
   write(6,*)
 end
  

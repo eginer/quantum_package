@@ -85,6 +85,26 @@ BEGIN_PROVIDER [ double precision, nucl_coord_transp, (3,nucl_num) ]
    enddo
 END_PROVIDER
  
+BEGIN_PROVIDER [ double precision, nucl_dist_inv, (nucl_num,nucl_num) ]
+  implicit none
+  BEGIN_DOC
+  ! Inverse of the distance between nucleus I and nucleus J
+  END_DOC
+  
+  integer                        :: ie1, ie2, l
+  
+  do ie1 = 1, nucl_num
+    do ie2 = 1, nucl_num
+      if(ie1 /= ie2) then
+        nucl_dist_inv(ie2,ie1) = 1.d0/nucl_dist(ie2,ie1)
+      else
+        nucl_dist_inv(ie2,ie1) = 0.d0
+      endif
+    enddo
+  enddo
+  
+END_PROVIDER
+ 
  BEGIN_PROVIDER [ double precision, nucl_dist_2, (nucl_num,nucl_num) ]
 &BEGIN_PROVIDER [ double precision, nucl_dist_vec_x, (nucl_num,nucl_num) ]
 &BEGIN_PROVIDER [ double precision, nucl_dist_vec_y, (nucl_num,nucl_num) ]
@@ -103,15 +123,6 @@ END_PROVIDER
    END_DOC
    
    integer                        :: ie1, ie2, l
-   integer,save                   :: ifirst = 0
-   if (ifirst == 0) then
-     ifirst = 1
-     nucl_dist = 0.d0
-     nucl_dist_2 = 0.d0
-     nucl_dist_vec_x = 0.d0
-     nucl_dist_vec_y = 0.d0
-     nucl_dist_vec_z = 0.d0
-   endif
    
    do ie2 = 1,nucl_num
      do ie1 = 1,nucl_num
@@ -137,22 +148,6 @@ END_PROVIDER
    
 END_PROVIDER
  
-BEGIN_PROVIDER [ double precision, positive_charge_barycentre,(3)]
-  implicit none
-  BEGIN_DOC
-  ! Centroid of the positive charges
-  END_DOC
-  integer                        :: l
-  positive_charge_barycentre(1) = 0.d0
-  positive_charge_barycentre(2) = 0.d0
-  positive_charge_barycentre(3) = 0.d0
-  do l = 1, nucl_num
-    positive_charge_barycentre(1) += nucl_charge(l) * nucl_coord(l,1)
-    positive_charge_barycentre(2) += nucl_charge(l) * nucl_coord(l,2)
-    positive_charge_barycentre(3) += nucl_charge(l) * nucl_coord(l,3)
-  enddo
-END_PROVIDER
-
 BEGIN_PROVIDER [ double precision, nuclear_repulsion ]
    implicit none
    BEGIN_DOC
