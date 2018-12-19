@@ -315,6 +315,7 @@ subroutine select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_d
   integer(bit_kind), allocatable :: minilist(:, :, :), fullminilist(:, :, :)
   logical, allocatable           :: banned(:,:,:), bannedOrb(:,:)
 
+
   double precision, allocatable   :: mat(:,:,:)
   
   logical :: monoAdo, monoBdo
@@ -664,6 +665,9 @@ subroutine fill_buffer_double(i_generator, sp, h1, h2, bannedOrb, banned, fock_d
   double precision :: e_pert, delta_E, val, Hii, sum_e_pert, tmp, alpha_h_psi, coef
   double precision, external :: diag_H_mat_elem_fock
   double precision :: E_shift
+!  double precision, allocatable :: mat_inv(:,:,:)
+!
+!  allocate(mat_inv(N_states,mo_tot_num,mo_tot_num))
   
   logical, external :: detEq
   
@@ -687,6 +691,7 @@ subroutine fill_buffer_double(i_generator, sp, h1, h2, bannedOrb, banned, fock_d
     if(bannedOrb(p1, s1)) cycle
     ib = 1
     if(sp /= 3) ib = p1+1
+!    mat_inv(1:N_states,p1,ib:mo_tot_num) = 1.d0/mat(1:N_states,p1,ib:mo_tot_num) 
     do p2=ib,mo_tot_num
       if(bannedOrb(p2, s2)) cycle
       if(banned(p1,p2)) cycle
@@ -707,7 +712,8 @@ subroutine fill_buffer_double(i_generator, sp, h1, h2, bannedOrb, banned, fock_d
             tmp = -tmp
         endif
         e_pert = 0.5d0 * (tmp - delta_E)
-        coef = alpha_h_psi / delta_E
+        coef = e_pert / alpha_h_psi
+!        coef = e_pert * mat_inv(istate,p1,p2)
         pt2(istate) = pt2(istate) + e_pert
         variance(istate) = variance(istate) + alpha_h_psi * alpha_h_psi 
         norm(istate) = norm(istate) + coef * coef 
@@ -1194,18 +1200,17 @@ subroutine get_d0(gen, phasemask, bannedOrb, banned, mat, mask, h, p, sp, coefs)
   logical :: ok
   
   integer :: bant
-  double precision, allocatable :: hij_cache(:,:)
-  allocate (hij_cache(mo_tot_num,2))
+  double precision, allocatable :: hij_cache1(:), hij_cache2(:)
+  allocate (hij_cache1(mo_tot_num),hij_cache2(mo_tot_num))
   bant = 1
   
 
   if(sp == 3) then ! AB
     h1 = p(1,1)
     h2 = p(1,2)
-
     do p2=1, mo_tot_num
       if(bannedOrb(p2,2)) cycle
-      call get_mo_bielec_integrals(p2,h1,h2,mo_tot_num,hij_cache(1,1),mo_integrals_map)
+      call get_mo_bielec_integrals(p2,h1,h2,mo_tot_num,hij_cache1,mo_integrals_map)
       do p1=1, mo_tot_num
         if(bannedOrb(p1, 1)) cycle
         if(banned(p1, p2, bant)) cycle ! rentable?
@@ -1214,11 +1219,21 @@ subroutine get_d0(gen, phasemask, bannedOrb, banned, mat, mask, h, p, sp, coefs)
           call i_h_j(gen, det, N_int, hij)
         else
           phase = get_phase_bi(phasemask, 1, 2, h1, p1, h2, p2, N_int)
-          hij = hij_cache(p1,1) * phase
+          hij = hij_cache1(p1) * phase
         end if
-        do k=1,N_states
-          mat(k, p1, p2) = mat(k, p1, p2) + coefs(k) * hij  ! HOTSPOT
-        enddo
+  !     if( (bannedOrb(p1, 1)).or.(banned(p1, p2, bant)) ) then 
+  !       hij = 0.d0
+  !     else if(p1 /= h1 .and. p2 /= h2) then
+  !       hij = hij_cache1(p1) * get_phase_bi(phasemask, 1, 2, h1, p1, h2, p2, N_int)
+  !     else
+  !       call apply_particles(mask, 1,p1,2,p2, det, ok, N_int)
+  !       call i_h_j(gen, det, N_int, hij)
+  !     end if
+        if (hij /= 0.d0) then
+          do k=1,N_states
+            mat(k, p1, p2) = mat(k, p1, p2) + coefs(k) * hij  ! HOTSPOT
+          enddo
+        endif
       end do
     end do
 
@@ -1227,8 +1242,8 @@ subroutine get_d0(gen, phasemask, bannedOrb, banned, mat, mask, h, p, sp, coefs)
     p2 = p(2,sp)
     do puti=1, mo_tot_num
       if(bannedOrb(puti, sp)) cycle
-      call get_mo_bielec_integrals(puti,p2,p1,mo_tot_num,hij_cache(1,1),mo_integrals_map)
-      call get_mo_bielec_integrals(puti,p1,p2,mo_tot_num,hij_cache(1,2),mo_integrals_map)
+      call get_mo_bielec_integrals(puti,p2,p1,mo_tot_num,hij_cache1,mo_integrals_map)
+      call get_mo_bielec_integrals(puti,p1,p2,mo_tot_num,hij_cache2,mo_integrals_map)
       do putj=puti+1, mo_tot_num
         if(bannedOrb(putj, sp)) cycle
         if(banned(puti, putj, bant)) cycle ! rentable?
@@ -1241,7 +1256,7 @@ subroutine get_d0(gen, phasemask, bannedOrb, banned, mat, mask, h, p, sp, coefs)
             enddo
           endif
         else
-          hij = hij_cache(putj,1) -  hij_cache(putj,2)
+          hij = hij_cache1(putj) -  hij_cache2(putj)
           if (hij /= 0.d0) then
             hij = hij * get_phase_bi(phasemask, sp, sp, puti, p1 , putj, p2, N_int)
             do k=1,N_states
@@ -1252,7 +1267,8 @@ subroutine get_d0(gen, phasemask, bannedOrb, banned, mat, mask, h, p, sp, coefs)
       end do
     end do
   end if
-  deallocate(hij_cache)
+
+  deallocate(hij_cache1,hij_cache2)
 end 
  
 

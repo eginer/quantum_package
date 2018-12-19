@@ -11,7 +11,7 @@ function run_init() {
 
 function run_HF() {
   thresh=1.e-7
-  test_exe SCF || skip
+  test_exe scf || skip
   qp_edit -c $1
   ezfio set_file $1
   ezfio set hartree_fock thresh_scf 2.e-8
@@ -23,7 +23,7 @@ function run_HF() {
 
 function run_FCI() {
   thresh=5.e-5
-  test_exe FCI || skip
+  test_exe fci || skip
   qp_edit -c $1
   ezfio set_file $1
   ezfio set perturbation do_pt2 True
