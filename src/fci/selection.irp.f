@@ -1212,28 +1212,19 @@ subroutine get_d0(gen, phasemask, bannedOrb, banned, mat, mask, h, p, sp, coefs)
       if(bannedOrb(p2,2)) cycle
       call get_mo_bielec_integrals(p2,h1,h2,mo_tot_num,hij_cache1,mo_integrals_map)
       do p1=1, mo_tot_num
-        if(bannedOrb(p1, 1)) cycle
-        if(banned(p1, p2, bant)) cycle ! rentable?
-        if(p1 == h1 .or. p2 == h2) then
-          call apply_particles(mask, 1,p1,2,p2, det, ok, N_int)
-          call i_h_j(gen, det, N_int, hij)
-        else
+        if(bannedOrb(p1, 1) .or. banned(p1, p2, bant)) cycle
+        if(p1 /= h1 .and. p2 /= h2) then
+          if (hij_cache1(p1) == 0.d0) cycle
           phase = get_phase_bi(phasemask, 1, 2, h1, p1, h2, p2, N_int)
           hij = hij_cache1(p1) * phase
+        else
+          call apply_particles(mask, 1,p1,2,p2, det, ok, N_int)
+          call i_h_j(gen, det, N_int, hij)
+          if (hij == 0.d0) cycle
         end if
-  !     if( (bannedOrb(p1, 1)).or.(banned(p1, p2, bant)) ) then 
-  !       hij = 0.d0
-  !     else if(p1 /= h1 .and. p2 /= h2) then
-  !       hij = hij_cache1(p1) * get_phase_bi(phasemask, 1, 2, h1, p1, h2, p2, N_int)
-  !     else
-  !       call apply_particles(mask, 1,p1,2,p2, det, ok, N_int)
-  !       call i_h_j(gen, det, N_int, hij)
-  !     end if
-        if (hij /= 0.d0) then
-          do k=1,N_states
-            mat(k, p1, p2) = mat(k, p1, p2) + coefs(k) * hij  ! HOTSPOT
-          enddo
-        endif
+        do k=1,N_states
+          mat(k, p1, p2) = mat(k, p1, p2) + coefs(k) * hij  ! HOTSPOT
+        enddo
       end do
     end do
 
@@ -1245,20 +1236,19 @@ subroutine get_d0(gen, phasemask, bannedOrb, banned, mat, mask, h, p, sp, coefs)
       call get_mo_bielec_integrals(puti,p2,p1,mo_tot_num,hij_cache1,mo_integrals_map)
       call get_mo_bielec_integrals(puti,p1,p2,mo_tot_num,hij_cache2,mo_integrals_map)
       do putj=puti+1, mo_tot_num
-        if(bannedOrb(putj, sp)) cycle
-        if(banned(puti, putj, bant)) cycle ! rentable?
-        if(puti == p1 .or. putj == p2 .or. puti == p2 .or. putj == p1) then
-          call apply_particles(mask, sp,puti,sp,putj, det, ok, N_int)
-          call i_h_j(gen, det, N_int, hij)
+        if(bannedOrb(putj, sp) .or. banned(putj, sp, bant)) cycle
+        if(puti /= p1 .and. putj /= p2 .and. puti /= p2 .and. putj /= p1) then
+          hij = hij_cache1(putj) -  hij_cache2(putj)
           if (hij /= 0.d0) then
+            hij = hij * get_phase_bi(phasemask, sp, sp, puti, p1 , putj, p2, N_int)
             do k=1,N_states
               mat(k, puti, putj) = mat(k, puti, putj) + coefs(k) * hij
             enddo
           endif
         else
-          hij = hij_cache1(putj) -  hij_cache2(putj)
+          call apply_particles(mask, sp,puti,sp,putj, det, ok, N_int)
+          call i_h_j(gen, det, N_int, hij)
           if (hij /= 0.d0) then
-            hij = hij * get_phase_bi(phasemask, sp, sp, puti, p1 , putj, p2, N_int)
             do k=1,N_states
               mat(k, puti, putj) = mat(k, puti, putj) + coefs(k) * hij
             enddo

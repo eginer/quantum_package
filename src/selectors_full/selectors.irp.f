@@ -1,5 +1,13 @@
 use bitmasks
 
+BEGIN_PROVIDER [ double precision, threshold_selectors ]
+ implicit none
+ BEGIN_DOC
+ ! Thresholds on selectors (fraction of the square of the norm)
+ END_DOC
+ threshold_selectors = dsqrt(threshold_generators)
+END_PROVIDER
+
 BEGIN_PROVIDER [ integer, N_det_selectors]
   implicit none
   BEGIN_DOC
@@ -10,9 +18,6 @@ BEGIN_PROVIDER [ integer, N_det_selectors]
   double precision               :: norm, norm_max
   call write_time(6)
   N_det_selectors = N_det
-!  if (threshold_selectors == 1.d0) then
-!    return
-!  endif
   norm = 1.d0
   do i=1,N_det
     norm = norm - psi_average_norm_contrib_sorted(i)
