@@ -27,7 +27,7 @@ EOF
     exit
 }
 
-
+export QP_ROOT=${PWD}
 PACKAGES=""
 
 while : ; do

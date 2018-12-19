@@ -123,8 +123,7 @@ BEGIN_PROVIDER [double precision, grid_points_per_atom, (3,n_points_integration_
   enddo
 END_PROVIDER
 
-BEGIN_PROVIDER [double precision, weight_functions_at_grid_points,   &
-      (n_points_integration_angular,n_points_radial_grid,nucl_num) ]
+BEGIN_PROVIDER [double precision, weight_functions_at_grid_points, (n_points_integration_angular,n_points_radial_grid,nucl_num) ]
   BEGIN_DOC
   ! Weight function at grid points : w_n(r) according to the equation (22)
   ! of Becke original paper (JCP, 88, 1988)
@@ -158,7 +157,6 @@ BEGIN_PROVIDER [double precision, weight_functions_at_grid_points,   &
         enddo
         accu = 1.d0/accu
         weight_functions_at_grid_points(l,k,j) = tmp_array(j) * accu
-!       print*,weight_functions_at_grid_points(l,k,j)
       enddo
     enddo
   enddo

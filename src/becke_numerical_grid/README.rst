@@ -2,7 +2,14 @@
 Becke Numerical Grid
 ====================
 
-Lebedev-Laikov grids, using the code distributed through CCL (http://www.ccl.net/).
+This module contains all quantities needed to build the Becke's grid used in general for DFT integration. Note that it can be used for whatever integration in R^3 as long as the functions to be integrated are mostly concentrated near the atomic regions. 
+
+This grid is built as the reunion of a spherical grid around each atom. Each spherical grid contains a certain number of radial and angular points. 
+
+For a simple example of how to use the grid, see example.irp.f. 
+
+The spherical integration uses Lebedev-Laikov grids, which was used from the code distributed through CCL (http://www.ccl.net/). 
+See next section for explanations and citation policies. 
 
 .. code-block:: text
 

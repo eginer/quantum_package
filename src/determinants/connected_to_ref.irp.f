@@ -249,9 +249,21 @@ integer function connected_to_ref(key,keys,Nint,N_past_in,Ndet)
   logical                        :: t
   double precision               :: hij_elec
   
-  ! output :   0 : not connected
-  !            i : connected to determinant i of the past
-  !           -i : is the ith determinant of the reference wf keys
+ BEGIN_DOC 
+  ! input  : key : a given Slater determinant
+  !
+  !        : keys: a list of Slater determinants
+  !
+  !        : Ndet: the number of Slater determinants in keys
+  ! 
+  !        : N_past_in the number of Slater determinants for the connectivity research
+  !
+  ! output :   0 : key not connected to the N_past_in first Slater determinants in keys
+  !
+  !            i : key is connected to determinant i of keys
+  !
+  !           -i : key is the ith determinant of the reference wf keys
+ END_DOC
   
   ASSERT (Nint > 0)
   ASSERT (Nint == N_int)
@@ -349,9 +361,21 @@ integer function connected_to_ref_by_mono(key,keys,Nint,N_past_in,Ndet)
   logical                        :: t
   double precision               :: hij_elec
   
-  ! output :   0 : not connected
-  !            i : connected to determinant i of the past
-  !           -i : is the ith determinant of the refernce wf keys
+ BEGIN_DOC 
+  ! input  : key : a given Slater determinant
+  !
+  !        : keys: a list of Slater determinants
+  !
+  !        : Ndet: the number of Slater determinants in keys
+  ! 
+  !        : N_past_in the number of Slater determinants for the connectivity research
+  !
+  ! output :   0 : key not connected by a MONO EXCITATION to the N_past_in first Slater determinants in keys
+  !
+  !            i : key is connected by a MONO EXCITATION to determinant i of keys
+  !
+  !           -i : key is the ith determinant of the reference wf keys
+ END_DOC
   
   ASSERT (Nint > 0)
   ASSERT (Nint == N_int)
