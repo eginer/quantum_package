@@ -10,6 +10,7 @@ double precision function HF_two_body_dm_aa(r1,r2)
  allocate(mos_array_r2(mo_tot_num), mos_array_r1(mo_tot_num))
  call give_all_mos_at_r(r1,mos_array_r1) 
  call give_all_mos_at_r(r2,mos_array_r2) 
+ HF_two_body_dm_aa = 0.d0
  do i =1, elec_alpha_num
   do j = 1, elec_alpha_num
    HF_two_body_dm_aa += mos_array_r1(j)**2 * mos_array_r2(i)**2 & ! direct term  
