@@ -110,7 +110,6 @@ END_PROVIDER
 &BEGIN_PROVIDER [ double precision, nucl_dist_vec_y, (nucl_num,nucl_num) ]
 &BEGIN_PROVIDER [ double precision, nucl_dist_vec_z, (nucl_num,nucl_num) ]
 &BEGIN_PROVIDER [ double precision, nucl_dist, (nucl_num,nucl_num) ]
-&BEGIN_PROVIDER [ double precision, nucl_dist_inv, (nucl_num,nucl_num) ]
    implicit none
    BEGIN_DOC
    ! nucl_dist     : Nucleus-nucleus distances
@@ -118,8 +117,6 @@ END_PROVIDER
    ! nucl_dist_2   : Nucleus-nucleus distances squared
    
    ! nucl_dist_vec : Nucleus-nucleus distances vectors
-   !
-   ! nucl_dist_inv(I,J) = inverse of the distance between nucleus I and nucleus J
    END_DOC
    
    integer                        :: ie1, ie2, l
