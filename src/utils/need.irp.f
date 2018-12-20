@@ -46,7 +46,6 @@
       double precision function rinteg(n,u)
       implicit double precision(a-h,o-z)
       include 'constants.include.F'
-!     pi=dacos(-1.d0)
       ichange=1
       factor=1.d0
       if(u.lt.0.d0)then
@@ -92,15 +91,6 @@
 
       end
 
-!<function type="double precision function" name="erf0">
-!  <arg name="x"
-!       doc ="" />
-!
-!  <doc>
-!
-!  </doc>
-!
-! <fortran>
       double precision function erf0(x)
       implicit double precision (a-h,o-z)
       if(x.lt.0.d0)then
@@ -111,24 +101,6 @@
       end
 
 
-! </fortran>
-!</function>
-!<function type="double precision function" name="gammp">
-!  <arg name="a"
-!       doc ="" />
-!  <arg name="x"
-!       doc ="" />
-!
-!  <doc>
-!
-!  </doc>
-!
-!  <calls>
-!    gcf
-!    gser
-!  </calls>
-!
-! <fortran>
       double precision function gammp(a,x)
       implicit double precision (a-h,o-z)
       if(x.lt.0..or.a.le.0.)stop 'error in gammp'
@@ -140,29 +112,8 @@
       endif
       return
       end
-! </fortran>
-!</function>
 
 
-!<function type="subroutine" name="gser">
-!  <arg name="gamser"
-!       doc ="" />
-!  <arg name="a"
-!       doc ="" />
-!  <arg name="x"
-!       doc ="" />
-!  <arg name="gln"
-!       doc ="" />
-!
-!  <doc>
-!
-!  </doc>
-!
-!  <calledBy>
-!    gammp
-!  </calledBy>
-!
-! <fortran>
       subroutine gser(gamser,a,x,gln)
       implicit double precision (a-h,o-z)
       parameter (itmax=100,eps=3.e-7)
@@ -185,28 +136,7 @@
 1     gamser=sum*exp(-x+a*log(x)-gln)
       return
       end
-! </fortran>
 
-!</function>
-!<function type="subroutine" name="gcf">
-!  <arg name="gammcf"
-!       doc ="" />
-!  <arg name="a"
-!       doc ="" />
-!  <arg name="x"
-!       doc ="" />
-!  <arg name="gln"
-!       doc ="" />
-!
-!  <doc>
-!
-!  </doc>
-!
-!  <calledBy>
-!    gammp
-!  </calledBy>
-!
-! <fortran>
       subroutine gcf(gammcf,a,x,gln)
       implicit double precision (a-h,o-z)
       parameter (itmax=100,eps=3.e-7)
@@ -237,8 +167,6 @@
       return
       end
 
-! </fortran>
-!</function>
       double precision function ddfact2(n)
       implicit double precision(a-h,o-z)
       if(iand(n,1).eq.0)stop 'error in ddfact2'
@@ -258,15 +186,6 @@
       b_coef=-0.5d0*u**(n+1)*dexp(-u**2)
       end
 
-!<function type="double precision function" name="gammln">
-!  <arg name="xx"
-!       doc ="" />
-!
-!  <doc>
-!
-!  </doc>
-!
-! <fortran>
       double precision function gammln(xx)
       implicit double precision (a-h,o-z)
       real*8 cof(6),stp,half,one,fpf,x,tmp,ser
@@ -284,5 +203,3 @@
       gammln=tmp+log(stp*ser)
       return
       end
-! </fortran>
-!</function>

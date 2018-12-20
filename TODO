@@ -49,7 +49,6 @@
   * Examples : subroutine example_module
 
 * Config file for Cray
-* Implicit none obligatoire
 
 * EZFIO sans fork
 
