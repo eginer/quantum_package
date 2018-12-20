@@ -58,7 +58,7 @@ subroutine reorder_active_orb
     mo_coef(i,i2) = x
   enddo
  enddo
- call loc_cele_routine
+!call loc_cele_routine
 
  deallocate(accu,index_active_orb, iorder)
 end
