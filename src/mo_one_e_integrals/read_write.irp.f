@@ -19,7 +19,7 @@
      write_mo_one_integrals = .False.
      
    else
-     print *, 'bielec_integrals/disk_access_mo_integrals has a wrong type'
+     print *, 'mo_one_e_integrals/disk_access_mo_one_integrals has a wrong type'
      stop 1
      
    endif

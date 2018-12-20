@@ -27,7 +27,7 @@ BEGIN_PROVIDER [double precision, FPS_SPF_Matrix_AO, (AO_num, AO_num)]
   call dgemm('N','N',AO_num,AO_num,AO_num,                           &
       1.d0,                                                          &
       Fock_Matrix_AO,Size(Fock_Matrix_AO,1),                         &
-      HF_Density_Matrix_AO,Size(HF_Density_Matrix_AO,1),             &
+      SCF_Density_Matrix_AO,Size(SCF_Density_Matrix_AO,1),             &
       0.d0,                                                          &
       scratch,Size(scratch,1))
   
@@ -45,7 +45,7 @@ BEGIN_PROVIDER [double precision, FPS_SPF_Matrix_AO, (AO_num, AO_num)]
   call dgemm('N','N',AO_num,AO_num,AO_num,                           &
       1.d0,                                                          &
       AO_Overlap,Size(AO_Overlap,1),                                 &
-      HF_Density_Matrix_AO,Size(HF_Density_Matrix_AO,1),             &
+      SCF_Density_Matrix_AO,Size(SCF_Density_Matrix_AO,1),             &
       0.d0,                                                          &
       scratch,Size(scratch,1))
   

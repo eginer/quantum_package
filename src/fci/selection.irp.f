@@ -1375,3 +1375,4 @@ subroutine bitstring_to_list_in_selection( string, list, n_elements, Nint)
   enddo
   
 end
+

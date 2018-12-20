@@ -135,7 +135,6 @@ END_PROVIDER
        ASSERT (nucl_dist(ie1,ie2) > 0.d0)
      enddo
    enddo
-   
 END_PROVIDER
  
 BEGIN_PROVIDER [ double precision, nuclear_repulsion ]
