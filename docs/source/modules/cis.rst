@@ -34,6 +34,20 @@ Subroutines / functions
 
 
 
+.. c:function:: cis
+
+    .. code:: text
+
+        subroutine cis
+
+    File: :file:`cis.irp.f`
+
+    Configuration Interaction with Single excitations.
+
+
+
+
+
 .. c:function:: h_apply_cis
 
     .. code:: text

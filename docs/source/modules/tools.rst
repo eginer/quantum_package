@@ -25,21 +25,35 @@ Subroutines / functions
 
     File: :file:`fcidump.irp.f`
 
-    
+    Produce a FCIDUMP file
 
 
 
 
 
-.. c:function:: print_mos
+.. c:function:: four_idx_transform
 
     .. code:: text
 
-        subroutine print_mos
+        subroutine four_idx_transform
+
+    File: :file:`four_idx_transform.irp.f`
+
+    4-index transformation of two-electron integrals from AO to MO integrals
+
+
+
+
+
+.. c:function:: molden
+
+    .. code:: text
+
+        subroutine molden
 
     File: :file:`molden.irp.f`
 
-    
+    Produce a Molden file
 
 
 
@@ -53,7 +67,7 @@ Subroutines / functions
 
     File: :file:`save_natorb.irp.f`
 
-    
+    Save natural MOs into the EZFIO
 
 
 
@@ -67,7 +81,7 @@ Subroutines / functions
 
     File: :file:`save_ortho_mos.irp.f`
 
-    
+    Save orthonormalized MOs in the EZFIO.
 
 
 
@@ -96,6 +110,20 @@ Subroutines / functions
     File: :file:`molden.irp.f`
 
     
+
+
+
+
+
+.. c:function:: write_integrals
+
+    .. code:: text
+
+        subroutine write_integrals
+
+    File: :file:`write_integrals_erf.irp.f`
+
+    Saves the bielec erf integrals into the EZFIO
 
 
 

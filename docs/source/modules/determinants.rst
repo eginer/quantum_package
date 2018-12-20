@@ -57,12 +57,6 @@ EZFIO parameters
 
     Default: 0.99
 
-.. option:: threshold_selectors
-
-    Thresholds on selectors (fraction of the square of the norm)
-
-    Default: 0.999
-
 .. option:: n_int
 
     Number of integers required to represent bitstrings (set in module :ref:`bitmask`)
@@ -668,20 +662,6 @@ Providers
 
 
 
-.. c:var:: one_body_dm_mo_alpha_old
-
-    .. code:: text
-
-        double precision, allocatable	:: one_body_dm_mo_alpha_old	(mo_tot_num,mo_tot_num,N_states)
-        double precision, allocatable	:: one_body_dm_mo_beta_old	(mo_tot_num,mo_tot_num,N_states)
-
-    File: :file:`density_matrix.irp.f`
-
-    Alpha and beta one-body density matrix for each state
-
-
-
-
 .. c:var:: one_body_dm_mo_beta
 
     .. code:: text
@@ -702,20 +682,6 @@ Providers
 
         double precision, allocatable	:: one_body_dm_mo_alpha_average	(mo_tot_num,mo_tot_num)
         double precision, allocatable	:: one_body_dm_mo_beta_average	(mo_tot_num,mo_tot_num)
-
-    File: :file:`density_matrix.irp.f`
-
-    Alpha and beta one-body density matrix for each state
-
-
-
-
-.. c:var:: one_body_dm_mo_beta_old
-
-    .. code:: text
-
-        double precision, allocatable	:: one_body_dm_mo_alpha_old	(mo_tot_num,mo_tot_num,N_states)
-        double precision, allocatable	:: one_body_dm_mo_beta_old	(mo_tot_num,mo_tot_num,N_states)
 
     File: :file:`density_matrix.irp.f`
 
@@ -1359,6 +1325,19 @@ Providers
 
 
 
+.. c:var:: psi_energy_h_core
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_energy_h_core	(N_states)
+
+    File: :file:`psi_energy_mono_elec.irp.f`
+
+    psi_energy_h_core                = <Psi| h_{core} |Psi> computed using the one_body_dm_mo_alpha+one_body_dm_mo_beta and mo_mono_elec_integral
+
+
+
+
 .. c:var:: psi_non_cas
 
     .. code:: text
@@ -1685,20 +1664,6 @@ Subroutines / functions
 
 
 
-.. c:function:: apply_mono
-
-    .. code:: text
-
-        subroutine apply_mono(i_hole,i_particle,ispin_excit,key_in,Nint)
-
-    File: :file:`excitations_utils.irp.f`
-
-    
-
-
-
-
-
 .. c:function:: apply_particle
 
     .. code:: text
@@ -1769,20 +1734,6 @@ Subroutines / functions
 
 
 
-.. c:function:: clear_bit_to_integer
-
-    .. code:: text
-
-        subroutine clear_bit_to_integer(i_physical,key,Nint)
-
-    File: :file:`create_excitations.irp.f`
-
-    
-
-
-
-
-
 .. c:function:: connected_to_ref
 
     .. code:: text
@@ -1791,7 +1742,13 @@ Subroutines / functions
 
     File: :file:`connected_to_ref.irp.f`
 
-    
+    input  : key : a given Slater determinant 
+    : keys: a list of Slater determinants 
+    : Ndet: the number of Slater determinants in keys 
+    : N_past_in the number of Slater determinants for the connectivity research 
+    output :   0 : key not connected to the N_past_in first Slater determinants in keys 
+    i : key is connected to determinant i of keys 
+    -i : key is the ith determinant of the reference wf keys
 
 
 
@@ -1805,7 +1762,13 @@ Subroutines / functions
 
     File: :file:`connected_to_ref.irp.f`
 
-    
+    input  : key : a given Slater determinant 
+    : keys: a list of Slater determinants 
+    : Ndet: the number of Slater determinants in keys 
+    : N_past_in the number of Slater determinants for the connectivity research 
+    output :   0 : key not connected by a MONO EXCITATION to the N_past_in first Slater determinants in keys 
+    i : key is connected by a MONO EXCITATION to determinant i of keys 
+    -i : key is the ith determinant of the reference wf keys
 
 
 
@@ -2044,6 +2007,34 @@ Subroutines / functions
     File: :file:`create_excitations.irp.f`
 
     Apply the mono excitation operator : a^{dager}_(i_particle) a_(i_hole) of spin = ispin on key_in ispin = 1  == alpha ispin = 2  == beta i_ok = 1  == the excitation is possible i_ok = -1 == the excitation is not possible
+
+
+
+
+
+.. c:function:: example_determinants
+
+    .. code:: text
+
+        subroutine example_determinants
+
+    File: :file:`example.irp.f`
+
+    subroutine that illustrates the main features available in determinants
+
+
+
+
+
+.. c:function:: example_determinants_psi_det
+
+    .. code:: text
+
+        subroutine example_determinants_psi_det
+
+    File: :file:`example.irp.f`
+
+    subroutine that illustrates the main features available in determinants using the psi_det/psi_coef
 
 
 
@@ -3073,6 +3064,20 @@ Subroutines / functions
 
 
 
+.. c:function:: routine_example_psi_det
+
+    .. code:: text
+
+        subroutine routine_example_psi_det
+
+    File: :file:`example.irp.f`
+
+    subroutine that illustrates the main features available in determinants using many determinants
+
+
+
+
+
 .. c:function:: s2_u_0
 
     .. code:: text
@@ -3198,20 +3203,6 @@ Subroutines / functions
     File: :file:`determinants.irp.f`
 
     Save the wave function into the EZFIO file
-
-
-
-
-
-.. c:function:: set_bit_to_integer
-
-    .. code:: text
-
-        subroutine set_bit_to_integer(i_physical,key,Nint)
-
-    File: :file:`create_excitations.irp.f`
-
-    
 
 
 

@@ -10,7 +10,8 @@
 * Permettre aux utilisateurs de facilement deposer des plugins dans plugins via une commande
 * Permettre de descendre plus bas dans l'arborescence de plugins pour permettre des `git clone` dans le repertoire plugins
 * Mettre les fichiers de test dans le directory source
-* Separer les integrales bielectroniques en AO et MO
+* Mettre le fichier LIB
+* Mettre les fichiers install.sh dans les modules externes
 * Creer une page web pas trop degueu et la mettre ici : http://lcpq.github.io/quantum_package
 * Un module pour lire les integrales Moleculaires depuis un FCIDUMP
 * Un module pour lire des integrales Atomiques (voir module de Mimi pour lire les AO Slater)
@@ -51,3 +52,4 @@
 * Implicit none obligatoire
 
 * EZFIO sans fork
+

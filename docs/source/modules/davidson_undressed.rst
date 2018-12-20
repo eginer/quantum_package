@@ -1,6 +1,6 @@
-.. _davidsonundressed:
+.. _davidson_undressed:
 
-.. program:: davidsonundressed
+.. program:: davidson_undressed
 
 .. default-role:: option
 

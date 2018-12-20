@@ -196,6 +196,19 @@ Providers
 
 
 
+.. c:var:: nucl_dist_inv
+
+    .. code:: text
+
+        double precision, allocatable	:: nucl_dist_inv	(nucl_num,nucl_num)
+
+    File: :file:`nuclei.irp.f`
+
+    Inverse of the distance between nucleus I and nucleus J
+
+
+
+
 .. c:var:: nucl_dist_vec_x
 
     .. code:: text
@@ -256,19 +269,6 @@ Providers
     File: :file:`nuclei.irp.f`
 
     Nuclear repulsion energy
-
-
-
-
-.. c:var:: positive_charge_barycentre
-
-    .. code:: text
-
-        double precision, allocatable	:: positive_charge_barycentre	(3)
-
-    File: :file:`nuclei.irp.f`
-
-    Centroid of the positive charges
 
 
 

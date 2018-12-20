@@ -793,6 +793,20 @@ Subroutines / functions
 
 
 
+.. c:function:: clear_bit_to_integer
+
+    .. code:: text
+
+        subroutine clear_bit_to_integer(i_physical,key,Nint)
+
+    File: :file:`bitmasks_routines.irp.f`
+
+    set to 0 the bit number i_physical in the bitstring key
+
+
+
+
+
 .. c:function:: debug_det
 
     .. code:: text
@@ -816,6 +830,20 @@ Subroutines / functions
     File: :file:`bitmasks_routines.irp.f`
 
     Subroutine to print the content of a determinant in '+-' notation and hexadecimal representation.
+
+
+
+
+
+.. c:function:: example_bitmask
+
+    .. code:: text
+
+        subroutine example_bitmask
+
+    File: :file:`example.irp.f`
+
+    subroutine that illustrates the main features available in bitmask
 
 
 
@@ -1180,6 +1208,20 @@ Subroutines / functions
     File: :file:`bitmasks_routines.irp.f`
 
     Subroutine to print the content of a determinant using the '+-' notation
+
+
+
+
+
+.. c:function:: set_bit_to_integer
+
+    .. code:: text
+
+        subroutine set_bit_to_integer(i_physical,key,Nint)
+
+    File: :file:`bitmasks_routines.irp.f`
+
+    set to 1 the bit number i_physical in the bitstring key
 
 
 
