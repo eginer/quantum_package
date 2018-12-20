@@ -13,8 +13,8 @@ end
 
 subroutine routine
  implicit none
- call save_erf_bi_elec_integrals_ao
- call save_erf_bi_elec_integrals_mo
+ call save_bielec_ints_erf_ao
+ call save_bielec_ints_erf_mo
 
 end
 

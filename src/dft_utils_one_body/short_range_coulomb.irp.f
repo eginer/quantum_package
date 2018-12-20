@@ -37,15 +37,15 @@ END_PROVIDER
 
  BEGIN_PROVIDER [double precision, effective_one_e_potential, (mo_tot_num, mo_tot_num,N_states)]
 &BEGIN_PROVIDER [double precision, effective_one_e_potential_without_kin, (mo_tot_num, mo_tot_num,N_states)]
-&BEGIN_PROVIDER [double precision, shifted_effective_one_e_potential_without_kin, (mo_tot_num, mo_tot_num,N_states)]
  implicit none
  integer :: i,j,istate
  effective_one_e_potential = 0.d0
  BEGIN_DOC 
 ! effective_one_e_potential(i,j) = <i| v_{H}^{sr} |j> + <i| h_{core} |j> + <i|v_{xc} |j> 
+!
 ! Taking the expectation value does not provide any energy
+!
 ! but effective_one_e_potential(i,j) is the potential coupling DFT and WFT part to be used in any WFT calculation
-! shifted_effective_one_e_potential_without_kin  =  effective_one_e_potential_without_kin + shifting_constant on the diagonal 
  END_DOC
  do istate = 1, N_states
   do i = 1, mo_tot_num
@@ -56,63 +56,8 @@ END_PROVIDER
     effective_one_e_potential_without_kin(i,j,istate) = short_range_Hartree_operator(i,j,istate) + mo_nucl_elec_integral(i,j)                   & 
                                    + 0.5d0 * (potential_x_alpha_mo(i,j,istate) + potential_c_alpha_mo(i,j,istate)                               &
                                    +          potential_x_beta_mo(i,j,istate)  + potential_c_beta_mo(i,j,istate)   )
-    shifted_effective_one_e_potential_without_kin(j,i,istate) = effective_one_e_potential_without_kin(j,i,istate)
-   enddo
-  enddo
-  do i = 1, mo_tot_num
-   shifted_effective_one_e_potential_without_kin(i,i,istate) += shifting_constant(istate)
-  enddo
- enddo
-END_PROVIDER 
-
-
-BEGIN_PROVIDER [double precision, Fock_matrix_expectation_value]
- implicit none
- call get_average(effective_one_e_potential,one_body_dm_average_mo_for_dft,Fock_matrix_expectation_value)
-
-END_PROVIDER 
-
- BEGIN_PROVIDER [double precision, Trace_v_xc, (N_states)]
-&BEGIN_PROVIDER [double precision, Trace_v_H, (N_states)]
-&BEGIN_PROVIDER [double precision, Trace_v_Hxc, (N_states)]
- implicit none
- integer :: i,j,istate
- double precision :: dm
- BEGIN_DOC 
-! Trace_v_xc  = \sum_{i,j} (rho_{ij}_\alpha v^{xc}_{ij}^\alpha  + rho_{ij}_\beta v^{xc}_{ij}^\beta)
-! Trace_v_Hxc = \sum_{i,j} v^{H}_{ij} (rho_{ij}_\alpha + rho_{ij}_\beta)
-! Trace_v_Hxc = \sum_{i,j} rho_{ij} v^{Hxc}_{ij} 
- END_DOC
- do istate = 1, N_states
-  Trace_v_xc(istate) = 0.d0
-  Trace_v_H(istate) = 0.d0
-  do i = 1, mo_tot_num
-   do j = 1, mo_tot_num
-     Trace_v_xc(istate) += (potential_x_alpha_mo(j,i,istate) + potential_c_alpha_mo(j,i,istate)) * one_body_dm_mo_alpha_for_dft(j,i,istate) 
-     Trace_v_xc(istate) += (potential_x_beta_mo(j,i,istate)  + potential_c_beta_mo(j,i,istate) ) * one_body_dm_mo_beta_for_dft(j,i,istate)
-     dm = one_body_dm_mo_alpha_for_dft(j,i,istate) + one_body_dm_mo_beta_for_dft(j,i,istate)
-     Trace_v_H(istate) += dm * short_range_Hartree_operator(j,i,istate)
-   enddo
-  enddo
-  Trace_v_Hxc(istate) = Trace_v_xc(istate) + Trace_v_H(istate)
- enddo
-
-END_PROVIDER 
-
-BEGIN_PROVIDER [double precision, DFT_one_e_energy_potential, (mo_tot_num, mo_tot_num,N_states)]
- implicit none
- integer :: i,j,istate
- BEGIN_DOC 
-! one_e_energy_potential(i,j) = <i|h_{core}|j> + \int dr i(r)j(r) \int r' \rho(r') W_{ee}^{sr}
-! If one take the expectation value over Psi, one gets the total one body energy
- END_DOC
- do istate = 1, N_states
-  do i = 1, mo_tot_num
-   do j = 1, mo_tot_num
-    DFT_one_e_energy_potential(j,i,istate) = mo_nucl_elec_integral(j,i) + mo_kinetic_integral(j,i) + short_range_Hartree_operator(j,i,istate) * 0.5d0
    enddo
   enddo
  enddo
-
 END_PROVIDER 
 

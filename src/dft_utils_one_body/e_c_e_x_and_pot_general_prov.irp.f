@@ -5,7 +5,7 @@
 &BEGIN_PROVIDER [double precision, potential_c_beta_ao,(ao_num,ao_num,N_states)]
  implicit none
  BEGIN_DOC
-! alpha/beta exchange/correlation potentials on the AO basis
+! general providers for the alpha/beta exchange/correlation potentials on the AO basis
  END_DOC
 
   if(trim(exchange_functional)=="short_range_LDA")then
@@ -51,7 +51,7 @@ END_PROVIDER
 &BEGIN_PROVIDER [double precision, potential_c_beta_mo,(mo_tot_num,mo_tot_num,N_states)]
  implicit none
  BEGIN_DOC
-! alpha/beta exchange/correlation potentials on the MO basis
+! general providers for the alpha/beta exchange/correlation potentials on the MO basis
  END_DOC
  integer :: istate 
  do istate = 1, N_states
@@ -92,6 +92,9 @@ END_PROVIDER
   BEGIN_PROVIDER [double precision, energy_x, (N_states)]
  &BEGIN_PROVIDER [double precision, energy_c, (N_states)]
  implicit none
+ BEGIN_DOC
+ ! correlation and exchange energies general providers.
+ END_DOC
   if(trim(exchange_functional)=="short_range_LDA")then
    energy_x = energy_x_LDA
    energy_x = energy_x_LDA
@@ -123,3 +126,32 @@ END_PROVIDER
   endif
  
 END_PROVIDER 
+
+
+ BEGIN_PROVIDER [double precision, Trace_v_xc, (N_states)]
+&BEGIN_PROVIDER [double precision, Trace_v_H, (N_states)]
+&BEGIN_PROVIDER [double precision, Trace_v_Hxc, (N_states)]
+ implicit none
+ integer :: i,j,istate
+ double precision :: dm
+ BEGIN_DOC 
+! Trace_v_xc  = \sum_{i,j} (rho_{ij}_\alpha v^{xc}_{ij}^\alpha  + rho_{ij}_\beta v^{xc}_{ij}^\beta)
+! Trace_v_Hxc = \sum_{i,j} v^{H}_{ij} (rho_{ij}_\alpha + rho_{ij}_\beta)
+! Trace_v_Hxc = \sum_{i,j} rho_{ij} v^{Hxc}_{ij} 
+ END_DOC
+ do istate = 1, N_states
+  Trace_v_xc(istate) = 0.d0
+  Trace_v_H(istate) = 0.d0
+  do i = 1, mo_tot_num
+   do j = 1, mo_tot_num
+     Trace_v_xc(istate) += (potential_x_alpha_mo(j,i,istate) + potential_c_alpha_mo(j,i,istate)) * one_body_dm_mo_alpha_for_dft(j,i,istate) 
+     Trace_v_xc(istate) += (potential_x_beta_mo(j,i,istate)  + potential_c_beta_mo(j,i,istate) ) * one_body_dm_mo_beta_for_dft(j,i,istate)
+     dm = one_body_dm_mo_alpha_for_dft(j,i,istate) + one_body_dm_mo_beta_for_dft(j,i,istate)
+     Trace_v_H(istate) += dm * short_range_Hartree_operator(j,i,istate)
+   enddo
+  enddo
+  Trace_v_Hxc(istate) = Trace_v_xc(istate) + Trace_v_H(istate)
+ enddo
+
+END_PROVIDER 
+

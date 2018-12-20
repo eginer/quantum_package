@@ -14,8 +14,8 @@ end
 
 subroutine routine
  implicit none
- call  save_erf_bielec_ints_mo_into_ints_ao
- call  save_erf_bielec_ints_mo_into_ints_mo
+ call  save_bielec_ints_erf_mo_into_ints_ao
+ call  save_bielec_ints_erf_mo_into_ints_mo
 
 end
 

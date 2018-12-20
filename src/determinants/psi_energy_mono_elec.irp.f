@@ -16,6 +16,7 @@
    enddo
   enddo
  double precision :: accu
+ accu = 0.d0
  do i = 1, N_states
   do j = 1, mo_tot_num
    accu += one_body_dm_mo_alpha(j,j,i) + one_body_dm_mo_beta(j,j,i)
