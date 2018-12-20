@@ -290,16 +290,13 @@ subroutine ZMQ_dress(E, dress, delta_out, delta_s2_out, relative_error)
     if (zmq_put_int(zmq_to_qp_run_socket,1,'dress_stoch_istate',dress_stoch_istate) == -1) then
       stop 'Unable to put dress_stoch_istate on ZMQ server'
     endif
-      if (zmq_put_dvector(zmq_to_qp_run_socket,1,'threshold_selectors',threshold_selectors,1) == -1) then
-        stop 'Unable to put threshold_selectors on ZMQ server'
-      endif
-      if (zmq_put_dvector(zmq_to_qp_run_socket,1,'threshold_generators',threshold_generators,1) == -1) then
-        stop 'Unable to put threshold_generators on ZMQ server'
-      endif
+    if (zmq_put_dvector(zmq_to_qp_run_socket,1,'threshold_generators',threshold_generators,1) == -1) then
+      stop 'Unable to put threshold_generators on ZMQ server'
+    endif
 
-      if (zmq_put_int(zmq_to_qp_run_socket, 1, 'ending', (-1)) == -1) then
-        stop 'Unable to put initial ending'
-      endif
+    if (zmq_put_int(zmq_to_qp_run_socket, 1, 'ending', (-1)) == -1) then
+      stop 'Unable to put initial ending'
+    endif
 
 
 

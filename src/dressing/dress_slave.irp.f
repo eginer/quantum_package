@@ -5,10 +5,9 @@ subroutine dress_slave
   END_DOC
   read_wf = .False.
   distributed_davidson = .False.
-  SOFT_TOUCH read_wf distributed_davidson
-  
-  threshold_selectors = 1.d0
   threshold_generators = 1d0 
+  SOFT_TOUCH read_wf distributed_davidson threshold_generators
+  
  
   call provide_everything
   call switch_qp_run_to_master

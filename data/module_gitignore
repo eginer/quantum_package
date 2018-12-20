@@ -6,6 +6,7 @@ tags
 Makefile
 ao_basis
 ao_one_e_integrals
+ao_two_e_integrals
 becke_numerical_grid
 bitmask
 cis
@@ -19,7 +20,6 @@ dummy
 electrons
 ezfio_files
 fci
-four_idx
 generators_cas
 generators_full
 hartree_fock
@@ -28,6 +28,7 @@ iterations
 mo_basis
 mo_guess
 mo_one_e_integrals
+mo_two_e_integrals
 mpi
 mrpt_utils
 nuclei

@@ -154,9 +154,6 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error, variance, norm)
       if (zmq_put_ivector(zmq_to_qp_run_socket,1,'pt2_stoch_istate',pt2_stoch_istate,1) == -1) then
         stop 'Unable to put pt2_stoch_istate on ZMQ server'
       endif
-      if (zmq_put_dvector(zmq_to_qp_run_socket,1,'threshold_selectors',threshold_selectors,1) == -1) then
-        stop 'Unable to put threshold_selectors on ZMQ server'
-      endif
       if (zmq_put_dvector(zmq_to_qp_run_socket,1,'threshold_generators',threshold_generators,1) == -1) then
         stop 'Unable to put threshold_generators on ZMQ server'
       endif

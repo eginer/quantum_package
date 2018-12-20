@@ -28,7 +28,7 @@ function run_FCI() {
 }
 
 @test "FCI H2O cc-pVDZ" {
-  run_FCI h2o.ezfio 2000 -76.1250464119599   -76.1258876912360
+  run_FCI h2o.ezfio 2000 -76.1249493055975   -76.1258779921351
 }
 
 

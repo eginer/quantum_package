@@ -1,4 +1,4 @@
 density_for_dft 
 dft_utils_on_grid 
-integrals_bielec 
-integrals_bielec_erf
+mo_one_e_integrals
+mo_two_e_integrals

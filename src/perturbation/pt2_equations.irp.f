@@ -169,7 +169,6 @@ subroutine pt2_epstein_nesbet_2x2 ($arguments)
       endif
       H_pert_diag(i) = h*c_pert(i)*c_pert(i)
 !     print*, 'N_det,N_det_selectors = ',N_det,N_det_selectors
-!     print*, 'threshold_selectors',threshold_selectors
 !     print*, delta_e,i_H_psi_array(1)
 !     double precision :: hij,accu
 !     accu = 0.d0

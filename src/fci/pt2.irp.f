@@ -5,7 +5,8 @@ program pt2
   ! EZFIO directory.
   END_DOC
   read_wf = .True.
-  SOFT_TOUCH read_wf
+  threshold_generators = 1.d0
+  SOFT_TOUCH read_wf threshold_generators
   PROVIDE mo_bielec_integrals_in_map
   PROVIDE psi_energy
   call run
@@ -26,8 +27,6 @@ subroutine run
   pt2(:) = 0.d0
   
   E_CI_before(:) = psi_energy(:) + nuclear_repulsion
-  threshold_selectors = 1.d0
-  threshold_generators = 1.d0
   relative_error=PT2_relative_error
   
   call ZMQ_pt2(psi_energy_with_nucl_rep,pt2,relative_error,error, variance, norm) ! Stochastic PT2
