@@ -52,8 +52,7 @@ program fci
   n_det_before = 0
 
   double precision :: correlation_energy_ratio
-  double precision :: threshold_selectors_save, threshold_generators_save
-  threshold_selectors_save  = threshold_selectors
+  double precision :: threshold_generators_save
   threshold_generators_save = threshold_generators
   double precision :: error(N_states)
 
@@ -71,13 +70,11 @@ program fci
       pt2 = 0.d0
       variance = 0.d0
       norm = 0.d0
-      threshold_selectors = 1.d0
       threshold_generators = 1.d0 
-      SOFT_TOUCH threshold_selectors threshold_generators
+      SOFT_TOUCH threshold_generators
       call ZMQ_pt2(psi_energy_with_nucl_rep,pt2,relative_error,error, variance, norm) ! Stochastic PT2
-      threshold_selectors = threshold_selectors_save
       threshold_generators = threshold_generators_save
-      SOFT_TOUCH threshold_selectors threshold_generators
+      SOFT_TOUCH threshold_generators
     endif
 
 
@@ -123,13 +120,11 @@ program fci
     pt2 = 0.d0
     variance = 0.d0
     norm = 0.d0
-    threshold_selectors = 1.d0
     threshold_generators = 1d0 
-    SOFT_TOUCH threshold_selectors threshold_generators
+    SOFT_TOUCH threshold_generators
     call ZMQ_pt2(psi_energy_with_nucl_rep, pt2,relative_error,error,variance,norm) ! Stochastic PT2
-    threshold_selectors = threshold_selectors_save
     threshold_generators = threshold_generators_save
-    SOFT_TOUCH threshold_selectors threshold_generators
+    SOFT_TOUCH threshold_generators
     call ezfio_set_fci_energy(psi_energy_with_nucl_rep(1:N_states))
     call ezfio_set_fci_energy_pt2(psi_energy_with_nucl_rep(1:N_states)+pt2)
   endif

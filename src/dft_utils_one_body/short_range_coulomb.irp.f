@@ -42,10 +42,9 @@ END_PROVIDER
  effective_one_e_potential = 0.d0
  BEGIN_DOC 
 ! effective_one_e_potential(i,j) = <i| v_{H}^{sr} |j> + <i| h_{core} |j> + <i|v_{xc} |j> 
-!
 ! Taking the expectation value does not provide any energy
-!
 ! but effective_one_e_potential(i,j) is the potential coupling DFT and WFT part to be used in any WFT calculation
+! shifted_effective_one_e_potential_without_kin  =  effective_one_e_potential_without_kin + shifting_constant on the diagonal 
  END_DOC
  do istate = 1, N_states
   do i = 1, mo_tot_num
@@ -60,4 +59,5 @@ END_PROVIDER
   enddo
  enddo
 END_PROVIDER 
+
 
