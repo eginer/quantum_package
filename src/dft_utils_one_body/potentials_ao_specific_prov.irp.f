@@ -20,8 +20,8 @@
    weight=final_weight_functions_at_final_grid_points(i)
    rhoa(istate) = one_body_dm_alpha_at_r(i,istate)
    rhob(istate) = one_body_dm_beta_at_r(i,istate)
-   call ec_LDA_sr(mu_erf,rhoa(istate),rhob(istate),e_c,vc_a,vc_b)
-   call ex_LDA_sr(mu_erf,rhoa(istate),rhob(istate),e_x,vx_a,vx_b)
+   call ec_LDA_sr(mu_erf_dft,rhoa(istate),rhob(istate),e_c,vc_a,vc_b)
+   call ex_LDA_sr(mu_erf_dft,rhoa(istate),rhob(istate),e_x,vx_a,vx_b)
    do j =1, ao_num
     aos_vc_alpha_LDA_w(i,j,istate) = vc_a * aos_in_r_array(j,i)*weight
     aos_vc_beta_LDA_w(i,j,istate)  = vc_b * aos_in_r_array(j,i)*weight
