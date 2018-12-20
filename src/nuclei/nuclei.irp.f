@@ -117,8 +117,6 @@ END_PROVIDER
    ! nucl_dist_2   : Nucleus-nucleus distances squared
    
    ! nucl_dist_vec : Nucleus-nucleus distances vectors
-   !
-   ! nucl_dist_inv(I,J) = inversed of the distance between nucleus I and nucleus J
    END_DOC
    
    integer                        :: ie1, ie2, l
