@@ -1,3 +1,16 @@
+* Virer tous les modules qui sont dans plugins
+
+# qp_module
+
+* Permettre aux utilisateurs de facilement deposer des plugins dans plugins via une commande
+* Permettre de descendre plus bas dans l'arborescence de plugins pour permettre des `git clone` dans le repertoire plugins
+* Mettre les fichiers de test dans le directory source
+* Mettre le fichier LIB
+* Mettre les fichiers install.sh dans les modules externes
+
+# Web/doc
+
+* Creer une page web pas trop degueu et la mettre ici : http://lcpq.github.io/quantum_package
 * Manu : README 
   * data_energy_and_density
   * dft_keywords
@@ -5,18 +18,17 @@
   * dft_utils_one_body
   * dm_for_dft
   * integrals_erf
+
+
+
+# Exterieur
+
 * Molden format : http://cheminf.cmbi.ru.nl/molden/molden_format.html
-* Virer tous les modules qui sont dans plugins
-* Permettre aux utilisateurs de facilement deposer des plugins dans plugins via une commande
-* Permettre de descendre plus bas dans l'arborescence de plugins pour permettre des `git clone` dans le repertoire plugins
-* Mettre les fichiers de test dans le directory source
-* Mettre le fichier LIB
-* Mettre les fichiers install.sh dans les modules externes
-* Creer une page web pas trop degueu et la mettre ici : http://lcpq.github.io/quantum_package
 * Un module pour lire les integrales Moleculaires depuis un FCIDUMP
 * Un module pour lire des integrales Atomiques (voir module de Mimi pour lire les AO Slater)
 
-* Plus de tests:
+
+# Tests:
 
   * CIS
   * CISD
@@ -28,7 +40,7 @@
   * DFT
 
 
-* User doc:
+# User doc:
 
   * qp_create_ezfio_from_xyz
   * qp_set_frozen_core 
@@ -43,12 +55,12 @@
   * Running in parallel
   * Parameters for selection (Generators/selectors)
 
-* Programmers doc:
+# Programmers doc:
 
   * Example : Simple Hartree-Fock program from scratch
   * Examples : subroutine example_module
 
-* Config file for Cray
+# Config file for Cray
 
-* EZFIO sans fork
+# EZFIO sans fork
 
