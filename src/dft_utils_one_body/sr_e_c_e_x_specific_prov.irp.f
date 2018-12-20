@@ -1,7 +1,7 @@
 
 
- BEGIN_PROVIDER[double precision, energy_x_LDA, (N_states) ]
-&BEGIN_PROVIDER[double precision, energy_c_LDA, (N_states) ]
+ BEGIN_PROVIDER[double precision, energy_sr_x_LDA, (N_states) ]
+&BEGIN_PROVIDER[double precision, energy_sr_c_LDA, (N_states) ]
  implicit none
  BEGIN_DOC
 ! exchange/correlation energy with the short range LDA functional
@@ -12,8 +12,8 @@
  double precision :: e_c,vc_a,vc_b,e_x,vx_a,vx_b
  double precision, allocatable :: rhoa(:),rhob(:)
  allocate(rhoa(N_states), rhob(N_states))
- energy_x_LDA = 0.d0
- energy_c_LDA = 0.d0
+ energy_sr_x_LDA = 0.d0
+ energy_sr_c_LDA = 0.d0
  do istate = 1, N_states
   do i = 1, n_points_final_grid
    r(1) = final_grid_points(1,i)
@@ -22,17 +22,17 @@
    weight=final_weight_functions_at_final_grid_points(i)
    rhoa(istate) = one_body_dm_alpha_at_r(i,istate)
    rhob(istate) = one_body_dm_beta_at_r(i,istate)
-   call ec_LDA(rhoa(istate),rhob(istate),e_c,vc_a,vc_b)
-   call ex_LDA(rhoa(istate),rhob(istate),e_x,vx_a,vx_b)
-   energy_x_LDA(istate) += weight * e_x
-   energy_c_LDA(istate) += weight * e_c
+   call ec_LDA_sr(mu_erf_dft,rhoa(istate),rhob(istate),e_c,vc_a,vc_b)
+   call ex_LDA_sr(mu_erf_dft,rhoa(istate),rhob(istate),e_x,vx_a,vx_b)
+   energy_sr_x_LDA(istate) += weight * e_x
+   energy_sr_c_LDA(istate) += weight * e_c
   enddo
  enddo
 
  END_PROVIDER 
 
- BEGIN_PROVIDER[double precision, energy_x_PBE, (N_states) ]
-&BEGIN_PROVIDER[double precision, energy_c_PBE, (N_states) ]
+ BEGIN_PROVIDER[double precision, energy_sr_x_PBE, (N_states) ]
+&BEGIN_PROVIDER[double precision, energy_sr_c_PBE, (N_states) ]
  implicit none
  BEGIN_DOC
 ! exchange/correlation energy with the short range PBE functional
@@ -51,8 +51,8 @@
 
  allocate(rho_a(N_states), rho_b(N_states),grad_rho_a(3,N_states),grad_rho_b(3,N_states))
  allocate(grad_rho_a_2(N_states),grad_rho_b_2(N_states),grad_rho_a_b(N_states), ex(N_states), ec(N_states))
- energy_x_PBE = 0.d0
- energy_c_PBE = 0.d0
+ energy_sr_x_PBE = 0.d0
+ energy_sr_c_PBE = 0.d0
  do istate = 1, N_states
   do i = 1, n_points_final_grid
    r(1) = final_grid_points(1,i)
@@ -73,11 +73,11 @@
    enddo
 
                              ! inputs 
-   call GGA_type_functionals(r,rho_a,rho_b,grad_rho_a_2,grad_rho_b_2,grad_rho_a_b,                 &  ! outputs exchange
+   call GGA_sr_type_functionals(r,rho_a,rho_b,grad_rho_a_2,grad_rho_b_2,grad_rho_a_b,                 &  ! outputs exchange
                              ex,vx_rho_a,vx_rho_b,vx_grad_rho_a_2,vx_grad_rho_b_2,vx_grad_rho_a_b, &  ! outputs correlation
                              ec,vc_rho_a,vc_rho_b,vc_grad_rho_a_2,vc_grad_rho_b_2,vc_grad_rho_a_b  )
-   energy_x_PBE += ex * weight
-   energy_c_PBE += ec * weight
+   energy_sr_x_PBE += ex * weight
+   energy_sr_c_PBE += ec * weight
   enddo
  enddo
 

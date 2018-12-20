@@ -1,6 +1,6 @@
 program srs_ks_cf
   BEGIN_DOC
-! Produce `Range_separated_Kohn_Sham` MO orbital 
+! Produce `Kohn_Sham` MO orbital 
 ! output: mo_basis.mo_tot_num mo_basis.mo_label mo_basis.ao_md5 mo_basis.mo_coef mo_basis.mo_occ
 ! output: kohn_sham.energy
 ! optional: mo_basis.mo_coef
@@ -45,6 +45,7 @@ subroutine check_coherence_functional
 end
 
 
+
 subroutine create_guess
   implicit none
   BEGIN_DOC
@@ -54,8 +55,6 @@ subroutine create_guess
   PROVIDE ezfio_filename
   call ezfio_has_mo_basis_mo_coef(exists)
   if (.not.exists) then
-    print*,'Creating a guess for the MOs'
-    print*,'mo_guess_type = ',mo_guess_type
     if (mo_guess_type == "HCore") then
       mo_coef = ao_ortho_lowdin_coef
       TOUCH mo_coef
@@ -82,7 +81,7 @@ subroutine run
 
   double precision               :: EHF
    
-  EHF = RS_KS_energy 
+  EHF = KS_energy 
 
   mo_label = "Canonical"
 
@@ -90,13 +89,6 @@ subroutine run
 
 !    call damping_SCF   ! Deprecated routine
   call Roothaan_Hall_SCF
-
- write(*, '(A22,X,F16.10)') 'one_electron_energy = ',one_electron_energy
- write(*, '(A22,X,F16.10)') 'two_electron_energy = ',two_electron_energy
- write(*, '(A22,X,F16.10)') 'e_exchange_dft      = ',e_exchange_dft
- write(*, '(A22,X,F16.10)') 'e_correlation_dft   = ',e_correlation_dft
- write(*, '(A22,X,F16.10)') 'Fock_matrix_energy  = ',Fock_matrix_energy
-
   
 end
 
