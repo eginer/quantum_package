@@ -23,6 +23,7 @@ Options:
     uninstall             Uninstall a plugin
 
     create -n <name>      Create a new plugin named <name>
+
 """                      
 
 import sys
@@ -154,7 +155,7 @@ def main(arguments):
                      )
         os.chdir(QP_PLUGINS)
         if is_repo:
-            os.system("git clone %s"%(url))
+            subprocess.check_call(["git", "clone", url])
         else:
             filename = url.split('/')[-1]
 
@@ -171,7 +172,7 @@ def main(arguments):
                filename.endswith(".tgz") or  \
                filename.endswith(".tar.bz2") or  \
                filename.endswith(".tar"):
-              os.system("tar xf "+filename)    
+              subprocess.check_call(["tar", "xf", filename])
               os.remove(filename)
 
     elif arguments["install"]:
@@ -214,18 +215,13 @@ def main(arguments):
                     des = os.path.join(QP_SRC, module_to_cp)
                     try:
                         os.symlink(src, des)
+                        install = os.path.join(src,"install")
+                        if os.path.isfile(install):
+                            subprocess.check_call([install])
                     except OSError:
-                        print "Your src directory is broken. Please remove %s" % des
+                        print "The src directory is broken. Please remove %s" % des
                         raise
-            try:
-                subprocess.check_call(["qp_create_ninja", "update"])
-            except:
-                raise
-
             print "[ OK ]"
-            print ""
-            print "You can now compile as usual"
-            print "`cd {0} ; ninja` for example".format(QP_ROOT)
 
     elif arguments["uninstall"]:
 
@@ -250,12 +246,14 @@ def main(arguments):
 
         for module in set(l_name_to_remove):
 
-            try:
-                subprocess.check_call(["module_handler.py", "clean", module])
-            except:
-                raise
+            subprocess.check_call(["module_handler.py", "clean", module])
 
         for module in set(l_name_to_remove):
+
+            uninstall = os.path.join(QP_SRC,module,"uninstall")
+            print uninstall
+            if os.path.isfile(uninstall):
+                subprocess.check_call([uninstall])
 
             try:
                 os.unlink(os.path.join(QP_SRC, module))
