@@ -4,6 +4,7 @@ source $QP_ROOT/tests/bats/common.bats.sh
 
 function run_init() {
   cp "${QP_ROOT}/tests/input/$1" .
+  rm -rf -- $3
   qp_create_ezfio_from_xyz $1 -o $3 $2
   qp_edit -c $3
 }
@@ -14,7 +15,7 @@ function run_HF() {
   test_exe scf || skip
   qp_edit -c $1
   ezfio set_file $1
-  ezfio set hartree_fock thresh_scf 1.e-10
+  ezfio set scf_utils thresh_scf 1.e-10
   qp_run scf $1
   energy="$(ezfio get hartree_fock energy)"
   eq $energy $2 $thresh

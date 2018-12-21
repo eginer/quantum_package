@@ -1,0 +1,68 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+
+"""
+Runs all the possible tests using bats.
+
+Usage:
+  qp_test [-av]
+
+Options:
+  -v    verbose output
+  -a    test all installed modules. Default is to test the current directory.
+
+"""
+
+import os
+import subprocess
+
+try:
+    from docopt import docopt
+    from qp_path import QP_SRC, QP_PLUGINS, QP_ROOT, QP_TESTS
+except ImportError:
+    print "Please check if you have sourced the ${QP_ROOT}/quantum_package.rc"
+    print "(`source ${QP_ROOT}/quantum_package.rc`)"
+    print sys.exit(1)
+
+
+def main(arguments):
+    # Fetch all *.bats files
+    l_bats = []
+    def append_bats(dirname, filenames):
+        for f in filenames:
+            if f.endswith(".bats"):
+                l_bats.append( os.path.join(dirname,f) )
+
+    if arguments["-a"]:
+        for (dirname, _, filenames) in os.walk(QP_SRC, followlinks=False) :
+            append_bats(dirname, filenames)
+    else:
+        for (dirname, _, filenames) in os.walk(os.getcwd(), followlinks=False) :
+            append_bats(dirname, filenames)
+    print l_bats
+
+    # Execute tests
+    os.chdir(QP_TESTS)
+
+    for bats_file in l_bats:
+        print ""
+        print "-~-~-~-~-~-~"
+        print ""
+        print "Running tests for %s"%(bats_file)
+        print ""
+        if arguments["-v"]:
+            p1 = subprocess.Popen(["python2", "bats_to_sh.py", bats_file], \
+                    stdout=subprocess.PIPE)
+            p2 = subprocess.Popen(["bash"], stdin=p1.stdout)
+            _, _ = os.waitpid(p2.pid,0)
+            _, _ = os.waitpid(p1.pid,0)
+        else:
+            subprocess.check_call(["bats", bats_file])
+            
+
+
+if __name__ == '__main__':
+    arguments = docopt(__doc__)
+    main(arguments)
+
+

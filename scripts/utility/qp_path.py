@@ -14,3 +14,4 @@ else:
     QP_PLUGINS = os.path.join(QP_ROOT, "plugins")
     QP_EZFIO = os.environ["QP_EZFIO"]
     QP_OCAML = os.path.join(QP_ROOT, "ocaml")
+    QP_TESTS = os.path.join(QP_ROOT, "tests")

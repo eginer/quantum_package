@@ -1,6 +1,3 @@
-* Virer tous les modules qui sont dans plugins
-* Separer integrales ERF
-
 # qp_module
 
 * Mettre les fichiers de test dans le directory source
