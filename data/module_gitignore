@@ -1,19 +1,20 @@
 # Automatically created by $QP_ROOT/scripts/module/module_handler.py 
 .ninja_deps
 .ninja_log
-/home/scemama/quantum_package/src/tools/diagonalize_h
-/home/scemama/quantum_package/src/tools/fcidump
-/home/scemama/quantum_package/src/tools/four_idx_transform
-/home/scemama/quantum_package/src/tools/molden
-/home/scemama/quantum_package/src/tools/save_natorb
-/home/scemama/quantum_package/src/tools/save_ortho_mos
-/home/scemama/quantum_package/src/tools/write_integrals_erf
+/vortex/u/eginer/qp_toto/quantum_package/src/tools/diagonalize_h
+/vortex/u/eginer/qp_toto/quantum_package/src/tools/fcidump
+/vortex/u/eginer/qp_toto/quantum_package/src/tools/four_idx_transform
+/vortex/u/eginer/qp_toto/quantum_package/src/tools/molden
+/vortex/u/eginer/qp_toto/quantum_package/src/tools/save_natorb
+/vortex/u/eginer/qp_toto/quantum_package/src/tools/save_ortho_mos
+/vortex/u/eginer/qp_toto/quantum_package/src/tools/write_integrals_erf
 IRPF90_man
 IRPF90_temp
 Makefile
 Makefile.depend
 ao_basis
 ao_one_e_integrals
+ao_two_e_erf_integrals
 ao_two_e_integrals
 bitmask
 davidson
@@ -31,6 +32,7 @@ iterations
 mo_basis
 mo_guess
 mo_one_e_integrals
+mo_two_e_erf_integrals
 mo_two_e_integrals
 mpi
 mrpt_utils

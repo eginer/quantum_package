@@ -55,15 +55,15 @@ BEGIN_PROVIDER [ logical, mo_bielec_integrals_erf_in_map ]
   if (write_mo_integrals_erf) then
     call ezfio_set_work_empty(.False.)
     call map_save_to_disk(trim(ezfio_filename)//'/work/mo_ints_erf',mo_integrals_erf_map)
-    call ezfio_set_mo_two_e_integrals_disk_access_mo_integrals_erf("Read")
+    call ezfio_set_mo_two_e_erf_integrals_disk_access_mo_integrals_erf("Read")
   endif
   
 END_PROVIDER
 
 
- BEGIN_PROVIDER [ double precision, mo_bielec_integral_erf_jj_from_ao, (mo_tot_num,mo_tot_num) ]
-&BEGIN_PROVIDER [ double precision, mo_bielec_integral_erf_jj_exchange_from_ao, (mo_tot_num,mo_tot_num) ]
-&BEGIN_PROVIDER [ double precision, mo_bielec_integral_erf_jj_anti_from_ao, (mo_tot_num,mo_tot_num) ]
+ BEGIN_PROVIDER [ double precision, mo_two_e_int_erf_jj_from_ao, (mo_tot_num,mo_tot_num) ]
+&BEGIN_PROVIDER [ double precision, mo_two_e_int_erf_jj_exchange_from_ao, (mo_tot_num,mo_tot_num) ]
+&BEGIN_PROVIDER [ double precision, mo_two_e_int_erf_jj_anti_from_ao, (mo_tot_num,mo_tot_num) ]
   BEGIN_DOC
   ! mo_bielec_integral_jj_from_ao(i,j) = J_ij
   ! mo_bielec_integral_jj_exchange_from_ao(i,j) = J_ij
@@ -83,8 +83,8 @@ END_PROVIDER
     PROVIDE ao_bielec_integrals_erf_in_map mo_coef
   endif
   
-  mo_bielec_integral_erf_jj_from_ao = 0.d0
-  mo_bielec_integral_erf_jj_exchange_from_ao = 0.d0
+  mo_two_e_int_erf_jj_from_ao = 0.d0
+  mo_two_e_int_erf_jj_exchange_from_ao = 0.d0
   
   !DIR$ ATTRIBUTES ALIGN : $IRP_ALIGN :: iqrs, iqsr
   
@@ -94,7 +94,7 @@ END_PROVIDER
       !$OMP  iqrs, iqsr,iqri,iqis)                                   &
       !$OMP SHARED(mo_tot_num,mo_coef_transp,ao_num,&
       !$OMP  ao_integrals_threshold,do_direct_integrals)             &
-      !$OMP REDUCTION(+:mo_bielec_integral_erf_jj_from_ao,mo_bielec_integral_erf_jj_exchange_from_ao)
+      !$OMP REDUCTION(+:mo_two_e_int_erf_jj_from_ao,mo_two_e_int_erf_jj_exchange_from_ao)
   
   allocate( int_value(ao_num), int_idx(ao_num),                      &
       iqrs(mo_tot_num,ao_num), iqis(mo_tot_num), iqri(mo_tot_num),&
@@ -177,8 +177,8 @@ END_PROVIDER
         !DIR$ VECTOR ALIGNED
         do j=1,mo_tot_num
           c = mo_coef_transp(j,q)*mo_coef_transp(j,s)
-          mo_bielec_integral_erf_jj_from_ao(j,i) += c * iqis(i)
-          mo_bielec_integral_erf_jj_exchange_from_ao(j,i) += c * iqri(i)
+          mo_two_e_int_erf_jj_from_ao(j,i) += c * iqis(i)
+          mo_two_e_int_erf_jj_exchange_from_ao(j,i) += c * iqri(i)
         enddo
       enddo
       
@@ -188,16 +188,16 @@ END_PROVIDER
   deallocate(iqrs,iqsr,int_value,int_idx)
   !$OMP END PARALLEL
   
-  mo_bielec_integral_erf_jj_anti_from_ao = mo_bielec_integral_erf_jj_from_ao - mo_bielec_integral_erf_jj_exchange_from_ao
+  mo_two_e_int_erf_jj_anti_from_ao = mo_two_e_int_erf_jj_from_ao - mo_two_e_int_erf_jj_exchange_from_ao
   
   
 ! end
 END_PROVIDER 
 
 
- BEGIN_PROVIDER [ double precision, mo_bielec_integral_erf_jj, (mo_tot_num,mo_tot_num) ]
-&BEGIN_PROVIDER [ double precision, mo_bielec_integral_erf_jj_exchange, (mo_tot_num,mo_tot_num) ]
-&BEGIN_PROVIDER [ double precision, mo_bielec_integral_erf_jj_anti, (mo_tot_num,mo_tot_num) ]
+ BEGIN_PROVIDER [ double precision, mo_two_e_int_erf_jj, (mo_tot_num,mo_tot_num) ]
+&BEGIN_PROVIDER [ double precision, mo_two_e_int_erf_jj_exchange, (mo_tot_num,mo_tot_num) ]
+&BEGIN_PROVIDER [ double precision, mo_two_e_int_erf_jj_anti, (mo_tot_num,mo_tot_num) ]
   implicit none
   BEGIN_DOC
   ! mo_bielec_integral_jj(i,j) = J_ij
@@ -209,14 +209,14 @@ END_PROVIDER
   double precision               :: get_mo_bielec_integral_erf
   
   PROVIDE mo_bielec_integrals_erf_in_map
-  mo_bielec_integral_erf_jj = 0.d0
-  mo_bielec_integral_erf_jj_exchange = 0.d0
+  mo_two_e_int_erf_jj = 0.d0
+  mo_two_e_int_erf_jj_exchange = 0.d0
   
   do j=1,mo_tot_num
     do i=1,mo_tot_num
-      mo_bielec_integral_erf_jj(i,j) = get_mo_bielec_integral_erf(i,j,i,j,mo_integrals_erf_map)
-      mo_bielec_integral_erf_jj_exchange(i,j) = get_mo_bielec_integral_erf(i,j,j,i,mo_integrals_erf_map)
-      mo_bielec_integral_erf_jj_anti(i,j) = mo_bielec_integral_erf_jj(i,j) - mo_bielec_integral_erf_jj_exchange(i,j)
+      mo_two_e_int_erf_jj(i,j) = get_mo_bielec_integral_erf(i,j,i,j,mo_integrals_erf_map)
+      mo_two_e_int_erf_jj_exchange(i,j) = get_mo_bielec_integral_erf(i,j,j,i,mo_integrals_erf_map)
+      mo_two_e_int_erf_jj_anti(i,j) = mo_two_e_int_erf_jj(i,j) - mo_two_e_int_erf_jj_exchange(i,j)
     enddo
   enddo
   
@@ -229,16 +229,16 @@ subroutine clear_mo_erf_map
   ! Frees the memory of the MO map
   END_DOC
   call map_deinit(mo_integrals_erf_map)
-  FREE mo_integrals_erf_map mo_bielec_integral_erf_jj mo_bielec_integral_erf_jj_anti
-  FREE mo_bielec_integral_Erf_jj_exchange mo_bielec_integrals_erf_in_map
+  FREE mo_integrals_erf_map mo_two_e_int_erf_jj mo_two_e_int_erf_jj_anti
+  FREE mo_two_e_int_erf_jj_exchange mo_bielec_integrals_erf_in_map
   
   
 end
 
 subroutine provide_all_mo_integrals_erf
   implicit none
-  provide mo_integrals_erf_map mo_bielec_integral_erf_jj mo_bielec_integral_erf_jj_anti
-  provide mo_bielec_integral_erf_jj_exchange mo_bielec_integrals_erf_in_map
+  provide mo_integrals_erf_map mo_two_e_int_erf_jj mo_two_e_int_erf_jj_anti
+  provide mo_two_e_int_erf_jj_exchange mo_bielec_integrals_erf_in_map
   
 end
 

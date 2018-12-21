@@ -61,19 +61,19 @@ END_PROVIDER
   
   do j= 1, elec_alpha_num
     do i = j+1, elec_alpha_num
-      bi_elec_ref_bitmask_energy_erf += mo_bielec_integral_erf_jj_anti(occ(i,1),occ(j,1))
-      ref_bitmask_energy_erf += mo_bielec_integral_erf_jj_anti(occ(i,1),occ(j,1))
+      bi_elec_ref_bitmask_energy_erf += mo_two_e_int_erf_jj_anti(occ(i,1),occ(j,1))
+      ref_bitmask_energy_erf += mo_two_e_int_erf_jj_anti(occ(i,1),occ(j,1))
     enddo
   enddo
   
   do j= 1, elec_beta_num
     do i = j+1, elec_beta_num
-      bi_elec_ref_bitmask_energy_erf += mo_bielec_integral_erf_jj_anti(occ(i,2),occ(j,2))
-      ref_bitmask_energy_erf += mo_bielec_integral_erf_jj_anti(occ(i,2),occ(j,2))
+      bi_elec_ref_bitmask_energy_erf += mo_two_e_int_erf_jj_anti(occ(i,2),occ(j,2))
+      ref_bitmask_energy_erf += mo_two_e_int_erf_jj_anti(occ(i,2),occ(j,2))
     enddo
     do i= 1, elec_alpha_num
-      bi_elec_ref_bitmask_energy_erf += mo_bielec_integral_erf_jj(occ(i,1),occ(j,2))
-      ref_bitmask_energy_erf += mo_bielec_integral_erf_jj(occ(i,1),occ(j,2))
+      bi_elec_ref_bitmask_energy_erf += mo_two_e_int_erf_jj(occ(i,1),occ(j,2))
+      ref_bitmask_energy_erf += mo_two_e_int_erf_jj(occ(i,1),occ(j,2))
     enddo
   enddo
   

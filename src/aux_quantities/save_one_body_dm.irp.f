@@ -1,7 +1,7 @@
 program save_one_body_dm
   implicit none
  BEGIN_DOC 
-! programs that computes the one body density on the mo basis for alpha and beta electrons from the wave function stored in the EZFIO folder, and then save it into the EZFIO folder data_energy_and_density. 
+! programs that computes the one body density on the mo basis for alpha and beta electrons from the wave function stored in the EZFIO folder, and then save it into the EZFIO folder aux_quantities. 
 ! 
 ! Then, the global variable data_one_body_alpha_dm_mo and data_one_body_beta_dm_mo will automatically read the density in a further calculation. 
 !
@@ -15,6 +15,6 @@ end
 
 subroutine routine
  
- call ezfio_set_data_energy_and_density_data_one_body_alpha_dm_mo(one_body_dm_mo_alpha)
- call ezfio_set_data_energy_and_density_data_one_body_beta_dm_mo(one_body_dm_mo_beta)
+ call ezfio_set_aux_quantities_data_one_body_alpha_dm_mo(one_body_dm_mo_alpha)
+ call ezfio_set_aux_quantities_data_one_body_beta_dm_mo(one_body_dm_mo_beta)
 end
