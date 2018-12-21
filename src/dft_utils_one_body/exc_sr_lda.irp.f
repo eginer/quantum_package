@@ -339,84 +339,84 @@ end
 
 
 subroutine ecorrlr(rs,z,mu,eclr)
-!cc Hartree atomic units used
-!cc for given density parameter rs, spin polarization z
-!cc and cutoff parameter mu
-!cc gives the correlation energy of the LR gas
-!cc  => eclr
-      implicit none
-      double precision rs,z,mu,eclr,ec,ecd,ecz
-      double precision pi,alpha,cf,phi
-      double precision g0f,dpol,d2anti,d3anti,Qrpa
-      double precision coe2,coe3,coe4,coe5
-      double precision a1,a2,a3,a4,b0
-      double precision q1a,q2a,q3a,t1a,t2a,t3a,adib
-!SCD
-      double precision ecdd,eczd
-!SCF
-      pi=dacos(-1.d0)
-      alpha=(4.d0/9.d0/pi)**(1.d0/3.d0)
-      cf=1.d0/alpha
-
-      phi=((1.d0+z)**(2.d0/3.d0)+(1.d0-z)**(2.d0/3.d0))/2.d0
-!c parameters from the fit
-      adib   = 0.784949d0
-      q1a    = -0.388d0
-      q2a    = 0.676d0
-      q3a    = 0.547d0
-      t1a    = -4.95d0
-      t2a    = 1.d0
-      t3a    = 0.31d0
-
-      b0=adib*rs
-
-      d2anti=(q1a*rs+q2a*rs**2)*exp(-abs(q3a)*rs)/rs**2
-      d3anti=(t1a*rs+t2a*rs**2)*exp(-abs(t3a)*rs)/rs**3
-
-      coe2=-3.d0/8.d0/rs**3*(1.d0-z**2)*(g0f(rs)-0.5d0)
-
-      coe3=-(1.d0-z**2)*g0f(rs)/(sqrt(2.d0*pi)*rs**3)
-
-      if(abs(z).eq.1.d0) then
-
-        coe4=-9.d0/64.d0/rs**3*(dpol(rs) -cf**2*2d0**(5.d0/3.d0)/5.d0/rs**2)
-        coe5=-9.d0/40.d0/(sqrt(2.d0*pi)*rs**3)*dpol(rs)
-
-      else
-
-         coe4=-9.d0/64.d0/rs**3*(((1.d0+z)/2.d0)**2*  & 
-              dpol(rs*(2d0/(1.d0+z))**(1.d0/3.d0))+((1.d0-z)/2.d0)**2 &
-              *dpol(rs*(2.d0/(1.d0-z))**(1.d0/3.d0))+                 &
-              (1.-z**2)*d2anti-cf**2/10.d0*((1.d0+z)**(8.d0/3.d0)     &
-              +(1.-z)**(8.d0/3.d0))/rs**2)
-
-         coe5=-9.d0/40.d0/(sqrt(2.d0*pi)*rs**3)*(((1.d0+z)/2.d0)**2   &
-              *dpol(rs*(2.d0/(1.d0+z))**(1.d0/3.d0))+((1.d0-z)/2.d0)**2 &
-              *dpol(rs*(2.d0/(1.d0-z))**(1.d0/3.d0))+(1.d0-z**2)* &
-              d3anti)
-      end if
-
-!     call ecPW(rs,z,ec,ecd,ecz)
-!SCD
-      call ecPW(rs,z,ec,ecd,ecz,ecdd,eczd)
-!SCF
-
-      a1=4.d0*b0**6*coe3+b0**8*coe5
-      a2=4.d0*b0**6*coe2+b0**8*coe4+6.d0*b0**4*ec
-      a3=b0**8*coe3
-      a4=b0**6*(b0**2*coe2+4.d0*ec)
-
-      if(mu*sqrt(rs)/phi.lt.0.d0)then
-       print*,'phi',phi
-       print*,'mu ',mu
-       print*,'rs ',rs
-       pause
-      endif
-      eclr=(phi**3*Qrpa(mu*sqrt(rs)/phi)+a1*mu**3+a2*mu**4+a3*mu**5+ &
-           a4*mu**6+b0**8*mu**8*ec)/((1.d0+b0**2*mu**2)**4)
-
-      return
-      end
+  !cc Hartree atomic units used
+  !cc for given density parameter rs, spin polarization z
+  !cc and cutoff parameter mu
+  !cc gives the correlation energy of the LR gas
+  !cc  => eclr
+  implicit none
+  double precision rs,z,mu,eclr,ec,ecd,ecz
+  double precision pi,alpha,cf,phi
+  double precision g0f,dpol,d2anti,d3anti,Qrpa
+  double precision coe2,coe3,coe4,coe5
+  double precision a1,a2,a3,a4,b0
+  double precision q1a,q2a,q3a,t1a,t2a,t3a,adib
+  !SCD
+  double precision ecdd,eczd
+  !SCF
+  pi=dacos(-1.d0)
+  alpha=(4.d0/9.d0/pi)**(1.d0/3.d0)
+  cf=1.d0/alpha
+  
+  phi=((1.d0+z)**(2.d0/3.d0)+(1.d0-z)**(2.d0/3.d0))/2.d0
+  !c parameters from the fit
+  adib   = 0.784949d0
+  q1a    = -0.388d0
+  q2a    = 0.676d0
+  q3a    = 0.547d0
+  t1a    = -4.95d0
+  t2a    = 1.d0
+  t3a    = 0.31d0
+  
+  b0=adib*rs
+  
+  d2anti=(q1a*rs+q2a*rs**2)*exp(-abs(q3a)*rs)/rs**2
+  d3anti=(t1a*rs+t2a*rs**2)*exp(-abs(t3a)*rs)/rs**3
+  
+  coe2=-3.d0/8.d0/rs**3*(1.d0-z**2)*(g0f(rs)-0.5d0)
+  
+  coe3=-(1.d0-z**2)*g0f(rs)/(sqrt(2.d0*pi)*rs**3)
+  
+  if(abs(z).eq.1.d0) then
+    
+    coe4=-9.d0/64.d0/rs**3*(dpol(rs) -cf**2*2d0**(5.d0/3.d0)/5.d0/rs**2)
+    coe5=-9.d0/40.d0/(sqrt(2.d0*pi)*rs**3)*dpol(rs)
+    
+  else
+    
+    coe4=-9.d0/64.d0/rs**3*(((1.d0+z)/2.d0)**2*                      &
+        dpol(rs*(2d0/(1.d0+z))**(1.d0/3.d0))+((1.d0-z)/2.d0)**2      &
+        *dpol(rs*(2.d0/(1.d0-z))**(1.d0/3.d0))+                      &
+        (1.-z**2)*d2anti-cf**2/10.d0*((1.d0+z)**(8.d0/3.d0)          &
+        +(1.-z)**(8.d0/3.d0))/rs**2)
+    
+    coe5=-9.d0/40.d0/(sqrt(2.d0*pi)*rs**3)*(((1.d0+z)/2.d0)**2       &
+        *dpol(rs*(2.d0/(1.d0+z))**(1.d0/3.d0))+((1.d0-z)/2.d0)**2    &
+        *dpol(rs*(2.d0/(1.d0-z))**(1.d0/3.d0))+(1.d0-z**2)*          &
+        d3anti)
+  end if
+  
+  !     call ecPW(rs,z,ec,ecd,ecz)
+  !SCD
+  call ecPW(rs,z,ec,ecd,ecz,ecdd,eczd)
+  !SCF
+  
+  a1=4.d0*b0**6*coe3+b0**8*coe5
+  a2=4.d0*b0**6*coe2+b0**8*coe4+6.d0*b0**4*ec
+  a3=b0**8*coe3
+  a4=b0**6*(b0**2*coe2+4.d0*ec)
+  
+  if(mu*sqrt(rs)/phi.lt.0.d0)then
+    print*,'phi',phi
+    print*,'mu ',mu
+    print*,'rs ',rs
+    stop -1
+  endif
+  eclr=(phi**3*Qrpa(mu*sqrt(rs)/phi)+a1*mu**3+a2*mu**4+a3*mu**5+     &
+      a4*mu**6+b0**8*mu**8*ec)/((1.d0+b0**2*mu**2)**4)
+  
+  return
+end
 
 subroutine vcorrlr(rs,z,mu,vclrup,vclrdown,vclrupd,vclrdownd)
 !SCF
