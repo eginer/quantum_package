@@ -5,13 +5,11 @@ Module utilitary
 
 Usage:
     module_handler.py print_descendant      [<module_name>...]
-    module_handler.py create_png            [<module_name>...]
     module_handler.py clean                 [ --all | <module_name>...]
     module_handler.py create_git_ignore     [<module_name>...]
 
 Options:
     print_descendant        Print the genealogy of the needed modules
-    create_png              Create a png of the file
     NEED                    The path of NEED file.
                             by default try to open the file in the current path
 """
@@ -174,49 +172,6 @@ class ModuleHandler():
 
         return l_module_reduce
 
-    def create_png(self, l_module):
-        """Create the png of the dependency tree for a l_module"""
-
-        # Don't update if we are not in the main repository
-        from is_master_repository import is_master_repository
-        if not is_master_repository:
-            return
-
-        basename = "tree_dependency"
-        path = '{0}.png'.format(basename)
-
-        from graphviz import Digraph
-
-        all_ready_done = []
-
-        def draw_module_edge(module, l_children):
-            "Draw all the module recursifly"
-
-            if module not in all_ready_done:
-                for children in l_children:
-                    # Add Edge
-                    graph.edge(module, children)
-                    # Recurs
-                    draw_module_edge(children, d_ref[children])
-                all_ready_done.append(module)
-
-        graph = Digraph(comment=l_module, format="png", filename=basename)
-        d_ref = self.dict_child
-
-        # Create all the edge
-        for module in l_module:
-            graph.node(module, fontcolor="red")
-            draw_module_edge(module, d_ref[module])
-
-        # Try to render the png
-        # If not just touch it
-        try:
-            graph.render(cleanup=True)
-        except:
-            with open(path, 'a'):
-                os.utime(path, None)
-            return
-
 
 if __name__ == '__main__':
 
@@ -244,15 +199,6 @@ if __name__ == '__main__':
 
         for module in l_module:
             print " ".join(sorted(m.l_descendant_unique([module])))
-
-    if arguments["create_png"]:
-        try:
-            m.create_png(l_module)
-        except RuntimeError:
-            pass
-        except SyntaxError:
-            print "Warning: The graphviz API dropped support for python 2.6."
-            pass
 
     if arguments["clean"] or arguments["create_git_ignore"]:
 
