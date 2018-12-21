@@ -6,7 +6,6 @@ Module utilitary
 Usage:
     module_handler.py print_descendant      [<module_name>...]
     module_handler.py clean                 [ --all | <module_name>...]
-    module_handler.py create_git_ignore     [<module_name>...]
 
 Options:
     print_descendant        Print the genealogy of the needed modules
@@ -225,7 +224,7 @@ if __name__ == '__main__':
         for module in l_module:
             print " ".join(sorted(m.l_descendant_unique([module])))
 
-    if arguments["clean"] or arguments["create_git_ignore"]:
+    if arguments["clean"]:
 
         l_dir = ['IRPF90_temp', 'IRPF90_man']
         l_file = ["irpf90_entities", "tags", "irpf90.make", "Makefile",
@@ -262,15 +261,5 @@ if __name__ == '__main__':
                         os.remove(os.path.join(module_abs, f))
                     except:
                         pass
-
-            if arguments["create_git_ignore"]:
-
-                path = os.path.join(module_abs, ".gitignore")
-
-                with open(path, "w+") as f:
-                    f.write("# Automatically created by {0} \n".format(__file__).replace(QP_ROOT,"$QP_ROOT"))
-                    l_text = l_dir + l_file + l_symlink + l_exe
-                    l_text.sort()
-                    f.write("\n".join(l_text))
 
 

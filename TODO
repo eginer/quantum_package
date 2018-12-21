@@ -1,6 +1,6 @@
 # qp_module
 
-* Mettre les fichiers de test dans le directory source
+* Change travis test
 * Mettre le fichier LIB
 
 # Web/doc
@@ -52,7 +52,7 @@
 
 # Programmers doc:
 
-  * Example : Simple Hartree-Fock program from scratch
+  * Example  : Simple Hartree-Fock program from scratch
   * Examples : subroutine example_module
 
 # Config file for Cray
