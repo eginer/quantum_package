@@ -2,16 +2,29 @@
 # -*- coding: utf-8 -*-
 """
 Usage:
-       qp_module create -n <name> [<children_modules>...]
-       qp_module download -n <name> [<path_folder>...]
-       qp_module install <name>...
-       qp_module list (--installed | --available-local)
-       qp_module uninstall <name>
+       qp_plugins list [ -i | -u ]
+       qp_plugins download <url>
+       qp_plugins install <name>...
+       qp_plugins uninstall <name>
+       qp_plugins create -n <name> [<children_modules>...]
 
 Options:
-    list: List all the modules available
-    create: Create a new module
-"""
+    list                  List all the plugins
+      -i                  List only the installed plugins
+      -u                  List only the uninstalled plugins
+
+    download <url>        Download an external repository.
+                          The URL points to a tar.gz file or a git repository:
+                          http://example.com/site/example.tar.gz
+                          git@gitlab.com:user/example_repository
+
+    install               Install a plugin
+
+    uninstall             Uninstall a plugin
+
+    create -n <name>      Create a new plugin named <name>
+
+"""                      
 
 import sys
 import os
@@ -71,14 +84,31 @@ def save_new_module(path, l_child):
 
 def main(arguments):
     if arguments["list"]:
-        if arguments["--installed"]:            
-            l_repository = [QP_SRC]                
-        elif arguments["--available-local"]:            
-            l_repository = [join(QP_PLUGINS, f) for f in listdir(QP_PLUGINS) if isdir(join(QP_PLUGINS, f))]  
-                                                   
+        # Search in src all directories with a NEED file 
+        l_tmp = [ dirname for (dirname, _, filenames) in os.walk(QP_PLUGINS, followlinks=False) for f in filenames if f == 'NEED']
+
+        # Find directories which contain modules
+        l_tmp = [ os.path.split(f) for f in l_tmp ]
+        d_tmp = {}
+        for (x,_) in l_tmp:
+            d_tmp[x] = 1
+        l_repository = d_tmp.keys()
+        m_all_instances = ModuleHandler(l_repository)   
         m_instance = ModuleHandler(l_repository)   
-                                                   
-        for module in sorted(m_instance.l_module): 
+        l_plugins = [ module for module in m_instance.l_module ]
+        l_result = l_plugins
+
+        if arguments["-i"] or arguments["-u"]:
+            # Search in src all symbolic links that are modules
+            l_installed = [ f for f in os.listdir(QP_SRC) if (os.path.islink(os.path.join(QP_SRC,f)) and f != ".gitignore") ]
+
+        if arguments["-i"]:
+            l_result = [ f for f in l_plugins if f in l_installed ]
+
+        elif arguments["-u"]:
+            l_result = [ f for f in l_plugins if f not in l_installed ]
+
+        for module in sorted(l_result): 
             print "* {0}".format(module)           
                                                    
     if arguments["create"]:                        
@@ -90,18 +120,15 @@ def main(arguments):
       
         path = os.path.join(QP_PLUGINS, name)
 
-        print "Created module:"
+        print "Created plugin:"
         print path, '\n'
 
         for children in l_children:
             if children not in m_instance.dict_descendant:
-                print "This module ({0}) is not a valid module.".format(children)
-                print "Run `list` for the list of available modules."
-                print "Maybe you need to install some other module first."
-                print "Aborting..."
+                print "Error: {0} is not a valid module.".format(children)
                 sys.exit(1)
 
-        print "Needed module:"
+        print "Needed modules:"
         print l_children, '\n'
 
         print "This corresponds to using the following modules:"
@@ -121,8 +148,32 @@ def main(arguments):
         main(arguments)
 
     elif arguments["download"]:
-        print "Not yet implemented"
-        pass
+        url = arguments["<url>"]
+        is_repo = not(  url.endswith(".tar.gz") or \
+                        url.endswith(".tgz")    or \
+                        url.endswith(".zip") \
+                     )
+        os.chdir(QP_PLUGINS)
+        if is_repo:
+            subprocess.check_call(["git", "clone", url])
+        else:
+            filename = url.split('/')[-1]
+
+            import requests, shutil
+            try:
+                r = requests.get(url,verify=True,stream=True)
+            except:
+                r = requests.get(url,verify=False,stream=True)
+            r.raw.decode_content = True
+            with open(filename, 'wb') as f:
+                    shutil.copyfileobj(r.raw, f)      
+
+            if filename.endswith(".tar.gz") or  \
+               filename.endswith(".tgz") or  \
+               filename.endswith(".tar.bz2") or  \
+               filename.endswith(".tar"):
+              subprocess.check_call(["tar", "xf", filename])
+              os.remove(filename)
 
     elif arguments["install"]:
 
@@ -152,7 +203,7 @@ def main(arguments):
 
         if l_module_to_cp:
 
-            print "You will need all these modules"
+            print "Required dependencies:"
             print l_module_to_cp
 
             print "Installation...",
@@ -164,19 +215,13 @@ def main(arguments):
                     des = os.path.join(QP_SRC, module_to_cp)
                     try:
                         os.symlink(src, des)
+                        install = os.path.join(src,"install")
+                        if os.path.isfile(install):
+                            subprocess.check_call([install])
                     except OSError:
-                        print "Your src directory is broken. Please remove %s" % des
+                        print "The src directory is broken. Please remove %s" % des
                         raise
-            try:
-                subprocess.check_call(["qp_create_ninja", "update"])
-            except:
-                raise
-
             print "[ OK ]"
-            print ""
-            print "You can now compile as usual"
-            print "`cd {0} ; ninja` for example".format(QP_ROOT)
-            print " or --in developement mode-- you can cd in a directory and compile here"
 
     elif arguments["uninstall"]:
 
@@ -189,24 +234,26 @@ def main(arguments):
         l_failed = [name for name in l_name if name not in d_local]
 
         if l_failed:
-            print "Modules not installed:"
+            print "Plugins not installed:"
             for name in sorted(l_failed):
                 print "* %s" % name
             sys.exit(1)
 
         l_name_to_remove = l_name + [module for module in m_instance.l_module for name in l_name if name in d_descendant[module]]
 
-        print "You will remove all of:"
+        print "Removing plugins:"
         print l_name_to_remove
 
         for module in set(l_name_to_remove):
 
-            try:
-                subprocess.check_call(["module_handler.py", "clean", module])
-            except:
-                raise
+            subprocess.check_call(["module_handler.py", "clean", module])
 
         for module in set(l_name_to_remove):
+
+            uninstall = os.path.join(QP_SRC,module,"uninstall")
+            print uninstall
+            if os.path.isfile(uninstall):
+                subprocess.check_call([uninstall])
 
             try:
                 os.unlink(os.path.join(QP_SRC, module))

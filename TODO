@@ -1,12 +1,10 @@
 * Virer tous les modules qui sont dans plugins
+* Separer integrales ERF
 
 # qp_module
 
-* Permettre aux utilisateurs de facilement deposer des plugins dans plugins via une commande
-* Permettre de descendre plus bas dans l'arborescence de plugins pour permettre des `git clone` dans le repertoire plugins
 * Mettre les fichiers de test dans le directory source
 * Mettre le fichier LIB
-* Mettre les fichiers install.sh dans les modules externes
 
 # Web/doc
 
