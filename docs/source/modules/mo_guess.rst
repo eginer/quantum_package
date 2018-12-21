@@ -1,6 +1,6 @@
-.. _moguess:
+.. _mo_guess:
 
-.. program:: moguess
+.. program:: mo_guess
 
 .. default-role:: option
 

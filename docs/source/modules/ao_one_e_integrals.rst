@@ -738,6 +738,20 @@ Subroutines / functions
 
 
 
+.. c:function:: give_all_erf_kl_ao
+
+    .. code:: text
+
+        subroutine give_all_erf_kl_ao(integrals_ao,mu_in,C_center)
+
+    File: :file:`pot_ao_erf_ints.irp.f`
+
+    subroutine that returs all integrals over r of type erf(mu_in * |r-C_center|)/|r-C_center|
+
+
+
+
+
 .. c:function:: give_polynom_mult_center_mono_elec
 
     .. code:: text
@@ -748,6 +762,34 @@ Subroutines / functions
 
     Returns the explicit polynomial in terms of the "t" variable of the following 
     :math:`I_x1(a_x, d_x,p,q) * I_x1(a_y, d_y,p,q) * I_x1(a_z, d_z,p,q)`
+
+
+
+
+
+.. c:function:: give_polynom_mult_center_mono_elec_erf
+
+    .. code:: text
+
+        subroutine give_polynom_mult_center_mono_elec_erf(A_center,B_center,alpha,beta,power_A,power_B,C_center,n_pt_in,d,n_pt_out,mu_in)
+
+    File: :file:`pot_ao_erf_ints.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: give_polynom_mult_center_mono_elec_erf_opt
+
+    .. code:: text
+
+        subroutine give_polynom_mult_center_mono_elec_erf_opt(A_center,B_center,alpha,beta,power_A,power_B,C_center,n_pt_in,d,n_pt_out,mu_in,p,p_inv,p_inv_2,p_new,P_center)
+
+    File: :file:`pot_ao_erf_ints.irp.f`
+
+    
 
 
 
@@ -778,6 +820,34 @@ Subroutines / functions
 
     Computes the electron-nucleus attraction with two primitves. 
     :math:`\langle g_i | \frac{1}{|r-R_c|} | g_j \rangle`
+
+
+
+
+
+.. c:function:: nai_pol_mult_erf
+
+    .. code:: text
+
+        double precision function NAI_pol_mult_erf(A_center,B_center,power_A,power_B,alpha,beta,C_center,n_pt_in,mu_in)
+
+    File: :file:`pot_ao_erf_ints.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: nai_pol_mult_erf_ao
+
+    .. code:: text
+
+        double precision function NAI_pol_mult_erf_ao(i_ao,j_ao,mu_in,C_center)
+
+    File: :file:`pot_ao_erf_ints.irp.f`
+
+    computes the following integral : int[-infty;+infty] dr AO_i_ao (r) AO_j_ao(r) erf(mu_in * |r-C_center|)/|r-C_center|
 
 
 

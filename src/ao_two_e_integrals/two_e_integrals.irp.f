@@ -416,7 +416,7 @@ BEGIN_PROVIDER [ logical, ao_bielec_integrals_in_map ]
   if (write_ao_integrals.and.mpi_master) then
     call ezfio_set_work_empty(.False.)
     call map_save_to_disk(trim(ezfio_filename)//'/work/ao_ints',ao_integrals_map)
-    call ezfio_set_integrals_bielec_disk_access_ao_integrals("Read")
+    call ezfio_set_ao_two_e_integrals_disk_access_ao_integrals('Read')
   endif
   
 END_PROVIDER
@@ -585,7 +585,7 @@ end
 double precision function ERI(alpha,beta,delta,gama,a_x,b_x,c_x,d_x,a_y,b_y,c_y,d_y,a_z,b_z,c_z,d_z)
   implicit none
   BEGIN_DOC
-  !  ATOMIC PRIMTIVE bielectronic integral between the 4 primitives :: 
+  !  ATOMIC PRIMTIVE two-electron integral between the 4 primitives :: 
   !         primitive_1 = x1**(a_x) y1**(a_y) z1**(a_z) exp(-alpha * r1**2)
   !         primitive_2 = x1**(b_x) y1**(b_y) z1**(b_z) exp(- beta * r1**2)
   !         primitive_3 = x2**(c_x) y2**(c_y) z2**(c_z) exp(-delta * r2**2)
@@ -712,7 +712,7 @@ end
 
 recursive subroutine I_x1_new(a,c,B_10,B_01,B_00,res,n_pt) 
   BEGIN_DOC
-  !  recursive function involved in the bielectronic integral
+  !  recursive function involved in the two-electron integral
   END_DOC
   implicit none
   include 'utils/constants.include.F'
@@ -746,7 +746,7 @@ end
 recursive subroutine I_x2_new(c,B_10,B_01,B_00,res,n_pt) 
   implicit none
   BEGIN_DOC
-  !  recursive function involved in the bielectronic integral
+  !  recursive function involved in the two-electron integral
   END_DOC
   include 'utils/constants.include.F'
   integer, intent(in)            :: c, n_pt
@@ -851,7 +851,7 @@ end
 subroutine I_x1_pol_mult(a,c,B_10,B_01,B_00,C_00,D_00,d,nd,n_pt_in)
   implicit none
   BEGIN_DOC
-  ! recursive function involved in the bielectronic integral
+  ! recursive function involved in the two-electron integral
   END_DOC
   integer , intent(in)           :: n_pt_in
   include 'utils/constants.include.F'
@@ -885,7 +885,7 @@ end
 recursive subroutine I_x1_pol_mult_recurs(a,c,B_10,B_01,B_00,C_00,D_00,d,nd,n_pt_in)
   implicit none
   BEGIN_DOC
-  ! recursive function involved in the bielectronic integral
+  ! recursive function involved in the two-electron integral
   END_DOC
   integer , intent(in)           :: n_pt_in
   include 'utils/constants.include.F'
@@ -966,7 +966,7 @@ end
 recursive subroutine I_x1_pol_mult_a1(c,B_10,B_01,B_00,C_00,D_00,d,nd,n_pt_in)
   implicit none
   BEGIN_DOC
-  ! recursive function involved in the bielectronic integral
+  ! recursive function involved in the two-electron integral
   END_DOC
   integer , intent(in)           :: n_pt_in
   include 'utils/constants.include.F'
@@ -1017,7 +1017,7 @@ end
 recursive subroutine I_x1_pol_mult_a2(c,B_10,B_01,B_00,C_00,D_00,d,nd,n_pt_in)
   implicit none
   BEGIN_DOC
-  ! recursive function involved in the bielectronic integral
+  ! recursive function involved in the two-electron integral
   END_DOC
   integer , intent(in)           :: n_pt_in
   include 'utils/constants.include.F'
@@ -1075,7 +1075,7 @@ end
 recursive subroutine I_x2_pol_mult(c,B_10,B_01,B_00,C_00,D_00,d,nd,dim)
   implicit none
   BEGIN_DOC
-  ! recursive function involved in the bielectronic integral
+  ! recursive function involved in the two-electron integral
   END_DOC
   integer , intent(in)           :: dim
   include 'utils/constants.include.F'

@@ -30,7 +30,7 @@ BEGIN_PROVIDER [double precision, ao_expo_ordered_transp_per_nucl, (ao_prim_num_
 END_PROVIDER
 
 
-BEGIN_PROVIDER [ double precision, ao_power_ordered_transp_per_nucl, (3,N_AOs_max,nucl_num) ]
+BEGIN_PROVIDER [ integer, ao_power_ordered_transp_per_nucl, (3,N_AOs_max,nucl_num) ]
  implicit none
  integer :: i,j,k,l
  do i = 1, nucl_num

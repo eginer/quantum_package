@@ -34,15 +34,15 @@ Subroutines / functions
 
 
 
-.. c:function:: cis
+.. c:function:: cisd
 
     .. code:: text
 
-        subroutine cis
+        subroutine cisd
 
     File: :file:`cisd.irp.f`
 
-    
+    Configuration Interaction with Single and Double excitations.
 
 
 

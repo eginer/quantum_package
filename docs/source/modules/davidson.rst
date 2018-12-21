@@ -191,6 +191,19 @@ Providers
 
 
 
+.. c:var:: psi_energy_bielec
+
+    .. code:: text
+
+        double precision, allocatable	:: psi_energy_bielec	(N_states)
+
+    File: :file:`u0_h_u0_bielec.irp.f`
+
+    Energy of the current wave function
+
+
+
+
 .. c:var:: psi_energy_with_nucl_rep
 
     .. code:: text
@@ -378,6 +391,112 @@ Subroutines / functions
 
 
 
+.. c:function:: h_s2_u_0_bielec_nstates_openmp
+
+    .. code:: text
+
+        subroutine H_S2_u_0_bielec_nstates_openmp(v_0,s_0,u_0,N_st,sze)
+
+    File: :file:`u0_h_u0_bielec.irp.f`
+
+    Computes v_0 = H|u_0> and s_0 = S^2 |u_0> 
+    Assumes that the determinants are in psi_det 
+    istart, iend, ishift, istep are used in ZMQ parallelization.
+
+
+
+
+
+.. c:function:: h_s2_u_0_bielec_nstates_openmp_work
+
+    .. code:: text
+
+        subroutine H_S2_u_0_bielec_nstates_openmp_work(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
+
+    File: :file:`u0_h_u0_bielec.irp.f`
+
+    Computes v_t = H|u_t> and s_t = S^2 |u_t> 
+    Default should be 1,N_det,0,1
+
+
+
+
+
+.. c:function:: h_s2_u_0_bielec_nstates_openmp_work_1
+
+    .. code:: text
+
+        subroutine H_S2_u_0_bielec_nstates_openmp_work_1(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
+
+    File: :file:`u0_h_u0_bielec.irp.f_template_457`
+
+    Computes v_t = H|u_t> and s_t = S^2 |u_t> 
+    Default should be 1,N_det,0,1
+
+
+
+
+
+.. c:function:: h_s2_u_0_bielec_nstates_openmp_work_2
+
+    .. code:: text
+
+        subroutine H_S2_u_0_bielec_nstates_openmp_work_2(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
+
+    File: :file:`u0_h_u0_bielec.irp.f_template_457`
+
+    Computes v_t = H|u_t> and s_t = S^2 |u_t> 
+    Default should be 1,N_det,0,1
+
+
+
+
+
+.. c:function:: h_s2_u_0_bielec_nstates_openmp_work_3
+
+    .. code:: text
+
+        subroutine H_S2_u_0_bielec_nstates_openmp_work_3(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
+
+    File: :file:`u0_h_u0_bielec.irp.f_template_457`
+
+    Computes v_t = H|u_t> and s_t = S^2 |u_t> 
+    Default should be 1,N_det,0,1
+
+
+
+
+
+.. c:function:: h_s2_u_0_bielec_nstates_openmp_work_4
+
+    .. code:: text
+
+        subroutine H_S2_u_0_bielec_nstates_openmp_work_4(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
+
+    File: :file:`u0_h_u0_bielec.irp.f_template_457`
+
+    Computes v_t = H|u_t> and s_t = S^2 |u_t> 
+    Default should be 1,N_det,0,1
+
+
+
+
+
+.. c:function:: h_s2_u_0_bielec_nstates_openmp_work_n_int
+
+    .. code:: text
+
+        subroutine H_S2_u_0_bielec_nstates_openmp_work_N_int(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
+
+    File: :file:`u0_h_u0_bielec.irp.f_template_457`
+
+    Computes v_t = H|u_t> and s_t = S^2 |u_t> 
+    Default should be 1,N_det,0,1
+
+
+
+
+
 .. c:function:: h_s2_u_0_nstates_openmp
 
     .. code:: text
@@ -508,6 +627,22 @@ Subroutines / functions
         subroutine u_0_H_u_0(e_0,u_0,n,keys_tmp,Nint,N_st,sze)
 
     File: :file:`u0_h_u0.irp.f`
+
+    Computes e_0 = <u_0|H|u_0>/<u_0|u_0> 
+    n : number of determinants 
+
+
+
+
+
+
+.. c:function:: u_0_h_u_0_bielec
+
+    .. code:: text
+
+        subroutine u_0_H_u_0_bielec(e_0,u_0,n,keys_tmp,Nint,N_st,sze)
+
+    File: :file:`u0_h_u0_bielec.irp.f`
 
     Computes e_0 = <u_0|H|u_0>/<u_0|u_0> 
     n : number of determinants 

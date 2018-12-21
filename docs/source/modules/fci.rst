@@ -250,15 +250,15 @@ Subroutines / functions
 
 
 
-.. c:function:: fci_zmq
+.. c:function:: fci
 
     .. code:: text
 
-        subroutine fci_zmq
+        subroutine fci
 
     File: :file:`fci.irp.f`
 
-    
+    Selected Full Configuration Interaction.
 
 
 
@@ -390,6 +390,20 @@ Subroutines / functions
 
 
 
+.. c:function:: pt2
+
+    .. code:: text
+
+        subroutine pt2
+
+    File: :file:`pt2.irp.f`
+
+    Second order perturbative correction to the wave function contained in the EZFIO directory.
+
+
+
+
+
 .. c:function:: pt2_collector
 
     .. code:: text
@@ -439,20 +453,6 @@ Subroutines / functions
         subroutine pt2_slave_inproc(i)
 
     File: :file:`pt2_stoch_routines.irp.f`
-
-    
-
-
-
-
-
-.. c:function:: pt2_stoch
-
-    .. code:: text
-
-        subroutine pt2_stoch
-
-    File: :file:`pt2.irp.f`
 
     
 
