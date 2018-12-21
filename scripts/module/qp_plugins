@@ -193,8 +193,20 @@ def main(arguments):
         d_module_location= dict()
 
         d_local = get_dict_child([QP_SRC])
-        d_plugin = get_dict_child([join(QP_PLUGINS, f) for f in listdir(QP_PLUGINS) if isdir(join(QP_PLUGINS, f))])
+#        d_plugin = get_dict_child([join(QP_PLUGINS, f) for f in listdir(QP_PLUGINS) if isdir(join(QP_PLUGINS, f))])
+        l_tmp = [ dirname for (dirname, _, filenames) in os.walk(QP_PLUGINS, followlinks=False) for f in filenames if f == 'NEED']
+        d_repo_of_plugin = {}
+        d_repo = {}
+        for (x,y) in [ os.path.split(f) for f in l_tmp ]:
+            d_repo_of_plugin[y] = x
+            d_repo[x] = None
+        l_repository = d_repo.keys()
+#        m_all_instances = ModuleHandler(l_repository)   
+#        m_instance = ModuleHandler(l_repository)   
+#        l_plugins = [ module for module in m_instance.l_module ]
+#        print l_plugins
 
+        d_plugin = get_dict_child(l_repository)
 
         d_child = d_local.copy()
         d_child.update(d_plugin)
@@ -221,18 +233,19 @@ def main(arguments):
             print "Installation...",
 
             for module_to_cp in l_module_to_cp:
-                    
-                    # Find the module. This is ugly. Quick fix, we should refactor
-                    src = [ join(QP_PLUGINS, f, module_to_cp) for f in listdir(QP_PLUGINS) if isdir(join(QP_PLUGINS, f,module_to_cp) ) ][0]
-                    des = os.path.join(QP_SRC, module_to_cp)
-                    try:
-                        os.symlink(src, des)
-                        install = os.path.join(src,"install")
-                        if os.path.isfile(install):
-                            subprocess.check_call([install])
-                    except OSError:
-                        print "The src directory is broken. Please remove %s" % des
-                        raise
+                src = os.path.join( d_repo_of_plugin[module_to_cp], module_to_cp )
+                des = os.path.join(QP_SRC, module_to_cp)
+                try:
+                    os.symlink(src, des)
+                    install = os.path.join(src,"install")
+                    if os.path.isfile(install):
+                        wd = os.getcwd()
+                        os.chdir(src)
+                        subprocess.check_call([install])
+                        os.chdir(wd)
+                except OSError:
+                    print "The src directory is broken. Please remove %s" % des
+                    raise
             print "[ OK ]"
 
     elif arguments["uninstall"]:
