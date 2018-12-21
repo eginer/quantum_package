@@ -108,7 +108,7 @@ END_DOC
       TOUCH mo_coef level_shift
       Delta_Energy_SCF = SCF_energy - energy_SCF_previous
       energy_SCF = SCF_energy
-      if (level_shift-level_shift_save > 50.d0) then
+      if (level_shift-level_shift_save > 40.d0) then
         level_shift = level_shift_save
         SOFT_TOUCH level_shift
         exit

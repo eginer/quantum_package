@@ -288,6 +288,20 @@ Subroutines / functions
 
 
 
+.. c:function:: mrcc
+
+    .. code:: text
+
+        subroutine mrcc
+
+    File: :file:`mrcc.irp.f`
+
+    Multi-reference Coulped Cluster
+
+
+
+
+
 .. c:function:: provide_all
 
     .. code:: text
@@ -330,20 +344,6 @@ Subroutines / functions
 
 
 
-.. c:function:: shifted_bk
-
-    .. code:: text
-
-        subroutine shifted_bk
-
-    File: :file:`mrcc.irp.f`
-
-    TODO
-
-
-
-
-
 .. c:function:: shifted_bk_slave
 
     .. code:: text
@@ -352,6 +352,6 @@ Subroutines / functions
 
     File: :file:`mrcc_slave.irp.f`
 
-    Helper program to compute the dress in distributed mode.
+    Helper program to compute the dressing in distributed mode.
 
 

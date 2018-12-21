@@ -206,10 +206,11 @@ END_PROVIDER
 
  BEGIN_PROVIDER [ character*(4), element_name, (0:127)]
 &BEGIN_PROVIDER [ double precision, element_mass, (0:127) ]
+   implicit none
    BEGIN_DOC
    ! Array of the name of element, sorted by nuclear charge (integer)
    END_DOC
-   integer                        :: iunit
+   integer                        :: iunit, i
    integer, external              :: getUnitAndOpen
    character*(128)                :: filename
    if (mpi_master) then

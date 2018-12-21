@@ -121,10 +121,12 @@ end
      r(2) = grid_points_per_atom(2,l,k,j)
      r(3) = grid_points_per_atom(3,l,k,j)
 
-     double precision :: dm_a,dm_b
+     double precision :: dm_a(N_states),dm_b(N_states)
      call dm_dft_alpha_beta_at_r(r,dm_a,dm_b)
-     one_body_dm_mo_alpha_at_grid_points(l,k,j,1) = dm_a
-     one_body_dm_mo_beta_at_grid_points(l,k,j,1) = dm_b
+     do istate=1,N_states
+      one_body_dm_mo_alpha_at_grid_points(l,k,j,istate) = dm_a(istate)
+      one_body_dm_mo_beta_at_grid_points(l,k,j,istate) = dm_b(istate)
+     enddo
 
     enddo
    enddo

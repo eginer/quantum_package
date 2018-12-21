@@ -57,3 +57,16 @@ Providers
     Determinants on which we apply <i|H|psi> for perturbation.
 
 
+
+
+.. c:var:: threshold_selectors
+
+    .. code:: text
+
+        double precision	:: threshold_selectors
+
+    File: :file:`selectors.irp.f`
+
+    Thresholds on selectors (fraction of the square of the norm)
+
+

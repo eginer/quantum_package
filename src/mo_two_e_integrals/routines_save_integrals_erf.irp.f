@@ -4,7 +4,7 @@ subroutine save_erf_bi_elec_integrals_mo
  PROVIDE mo_bielec_integrals_erf_in_map
  call ezfio_set_work_empty(.False.)
  call map_save_to_disk(trim(ezfio_filename)//'/work/mo_ints_erf',mo_integrals_erf_map)
- call ezfio_set_integrals_bielec_disk_access_mo_integrals("Read")
+ call ezfio_set_mo_two_e_integrals_disk_access_mo_integrals('Read')
 end
 
 subroutine save_erf_bielec_ints_mo_into_ints_mo
@@ -13,6 +13,6 @@ subroutine save_erf_bielec_ints_mo_into_ints_mo
  PROVIDE mo_bielec_integrals_erf_in_map
  call ezfio_set_work_empty(.False.)
  call map_save_to_disk(trim(ezfio_filename)//'/work/mo_ints',mo_integrals_erf_map)
- call ezfio_set_integrals_bielec_disk_access_mo_integrals("Read")
+ call ezfio_set_mo_two_e_integrals_disk_access_mo_integrals('Read')
 end
 

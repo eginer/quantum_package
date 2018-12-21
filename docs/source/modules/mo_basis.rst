@@ -196,6 +196,48 @@ Subroutines / functions
 
 
 
+.. c:function:: give_all_mos_and_grad_and_lapl_at_r
+
+    .. code:: text
+
+        subroutine give_all_mos_and_grad_and_lapl_at_r(r,mos_array,mos_grad_array,mos_lapl_array)
+
+    File: :file:`mos_in_r.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: give_all_mos_and_grad_at_r
+
+    .. code:: text
+
+        subroutine give_all_mos_and_grad_at_r(r,mos_array,mos_grad_array)
+
+    File: :file:`mos_in_r.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: give_all_mos_at_r
+
+    .. code:: text
+
+        subroutine give_all_mos_at_r(r,mos_array)
+
+    File: :file:`mos_in_r.irp.f`
+
+    
+
+
+
+
+
 .. c:function:: mix_mo_jk
 
     .. code:: text
