@@ -26,8 +26,8 @@ end
 subroutine routines_compute_energy
  implicit none
  call print_variational_energy_dft
- call ezfio_set_data_energy_and_density_data_one_body_alpha_dm_mo(one_body_dm_mo_alpha)
- call ezfio_set_data_energy_and_density_data_one_body_beta_dm_mo(one_body_dm_mo_beta)
+ call ezfio_set_aux_quantities_data_one_body_alpha_dm_mo(one_body_dm_mo_alpha)
+ call ezfio_set_aux_quantities_data_one_body_beta_dm_mo(one_body_dm_mo_beta)
 
 end
 

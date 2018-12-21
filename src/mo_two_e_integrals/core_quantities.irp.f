@@ -1,5 +1,8 @@
 BEGIN_PROVIDER [double precision, core_energy]
  implicit none
+ BEGIN_DOC 
+! energy from the core : contains all core-core contributions
+ END_DOC
  integer :: i,j,k,l
  core_energy = 0.d0
  do i = 1, n_core_orb

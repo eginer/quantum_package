@@ -152,7 +152,7 @@ BEGIN_PROVIDER [ logical, mo_bielec_integrals_in_map ]
   if (write_mo_integrals.and.mpi_master) then
     call ezfio_set_work_empty(.False.)
     call map_save_to_disk(trim(ezfio_filename)//'/work/mo_ints',mo_integrals_map)
-    call ezfio_set_mo_two_e_integrals_disk_access_mo_integrals_erf('Read')
+    call ezfio_set_mo_two_e_integrals_disk_access_mo_integrals('Read')
   endif
   
 END_PROVIDER
