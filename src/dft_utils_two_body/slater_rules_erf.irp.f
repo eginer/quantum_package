@@ -20,7 +20,7 @@ subroutine i_H_j_erf(key_i,key_j,Nint,hij)
   integer                        :: occ(Nint*bit_kind_size,2)
   double precision               :: diag_H_mat_elem_erf, phase,phase_2
   integer                        :: n_occ_ab(2)
-  PROVIDE mo_bielec_integrals_erf_in_map mo_integrals_erf_map big_array_exchange_integrals_erf
+  PROVIDE mo_bielec_integrals_erf_in_map mo_integrals_erf_map int_erf_3_index_exc
   
   ASSERT (Nint > 0)
   ASSERT (Nint == N_int)
@@ -39,9 +39,9 @@ subroutine i_H_j_erf(key_i,key_j,Nint,hij)
       if (exc(0,1,1) == 1) then
         ! Mono alpha, mono beta
         if(exc(1,1,1) == exc(1,2,2) )then
-         hij = phase * big_array_exchange_integrals_erf(exc(1,1,1),exc(1,1,2),exc(1,2,1))
+         hij = phase * int_erf_3_index_exc(exc(1,1,1),exc(1,1,2),exc(1,2,1))
         else if (exc(1,2,1) ==exc(1,1,2))then
-         hij = phase * big_array_exchange_integrals_erf(exc(1,2,1),exc(1,1,1),exc(1,2,2))
+         hij = phase * int_erf_3_index_exc(exc(1,2,1),exc(1,1,1),exc(1,2,2))
         else
          hij = phase*get_mo_bielec_integral_erf(                          &
              exc(1,1,1),                                              &
@@ -84,10 +84,10 @@ subroutine i_H_j_erf(key_i,key_j,Nint,hij)
         p = exc(1,2,1)
         spin = 1
         do i = 1, n_occ_ab(1)
-         hij += -big_array_exchange_integrals_erf(occ(i,1),m,p) + big_array_coulomb_integrals_erf(occ(i,1),m,p)
+         hij += -int_erf_3_index_exc(occ(i,1),m,p) + int_erf_3_index(occ(i,1),m,p)
         enddo
         do i = 1, n_occ_ab(2)
-         hij += big_array_coulomb_integrals_erf(occ(i,2),m,p)
+         hij += int_erf_3_index(occ(i,2),m,p)
         enddo
       else
         ! Mono beta
@@ -95,10 +95,10 @@ subroutine i_H_j_erf(key_i,key_j,Nint,hij)
         p = exc(1,2,2)
         spin = 2
         do i = 1, n_occ_ab(2)
-         hij += -big_array_exchange_integrals_erf(occ(i,2),m,p) + big_array_coulomb_integrals_erf(occ(i,2),m,p)
+         hij += -int_erf_3_index_exc(occ(i,2),m,p) + int_erf_3_index(occ(i,2),m,p)
         enddo
         do i = 1, n_occ_ab(1)
-         hij += big_array_coulomb_integrals_erf(occ(i,1),m,p)
+         hij += int_erf_3_index(occ(i,1),m,p)
         enddo
       endif
       hij = hij * phase
@@ -124,21 +124,21 @@ double precision function diag_H_mat_elem_erf(key_i,Nint)
  ! alpha - alpha
  do i = 1, n_occ_ab(1)
   do j = i+1, n_occ_ab(1)
-   diag_H_mat_elem_erf += mo_bielec_integral_erf_jj_anti(occ(i,1),occ(j,1))
+   diag_H_mat_elem_erf += mo_two_e_int_erf_jj_anti(occ(i,1),occ(j,1))
   enddo
  enddo
 
  ! beta - beta 
  do i = 1, n_occ_ab(2)
   do j = i+1, n_occ_ab(2)
-   diag_H_mat_elem_erf += mo_bielec_integral_erf_jj_anti(occ(i,2),occ(j,2))
+   diag_H_mat_elem_erf += mo_two_e_int_erf_jj_anti(occ(i,2),occ(j,2))
   enddo
  enddo
 
  ! alpha - beta 
  do i = 1, n_occ_ab(1)
   do j = 1, n_occ_ab(2)
-   diag_H_mat_elem_erf += mo_bielec_integral_erf_jj(occ(i,1),occ(j,2))
+   diag_H_mat_elem_erf += mo_two_e_int_erf_jj(occ(i,1),occ(j,2))
   enddo
  enddo
 end
@@ -155,7 +155,7 @@ subroutine i_H_j_mono_spin_erf(key_i,key_j,Nint,spin,hij)
   integer                        :: exc(0:2,2)
   double precision               :: phase
 
-  PROVIDE big_array_exchange_integrals_erf mo_bielec_integrals_erf_in_map
+  PROVIDE int_erf_3_index_exc mo_bielec_integrals_erf_in_map
 
   call i_H_j_erf(key_i,key_j,Nint,hij)
 end
@@ -176,7 +176,7 @@ subroutine i_H_j_double_spin_erf(key_i,key_j,Nint,hij)
   double precision               :: phase
   double precision, external     :: get_mo_bielec_integral_erf
 
-  PROVIDE big_array_exchange_integrals_erf mo_bielec_integrals_erf_in_map
+  PROVIDE int_erf_3_index_exc mo_bielec_integrals_erf_in_map
 
   call get_double_excitation_spin(key_i,key_j,exc,phase,Nint)
   hij = phase*(get_mo_bielec_integral_erf(                               &
@@ -205,15 +205,15 @@ subroutine i_H_j_double_alpha_beta_erf(key_i,key_j,Nint,hij)
   double precision               :: phase, phase2
   double precision, external     :: get_mo_bielec_integral_erf
 
-  PROVIDE big_array_exchange_integrals_erf mo_bielec_integrals_erf_in_map
+  PROVIDE int_erf_3_index_exc mo_bielec_integrals_erf_in_map
 
   call get_mono_excitation_spin(key_i(1,1),key_j(1,1),exc(0,1,1),phase,Nint)
   call get_mono_excitation_spin(key_i(1,2),key_j(1,2),exc(0,1,2),phase2,Nint)
   phase = phase*phase2
   if (exc(1,1,1) == exc(1,2,2)) then
-    hij = phase * big_array_exchange_integrals_erf(exc(1,1,1),exc(1,1,2),exc(1,2,1))
+    hij = phase * int_erf_3_index_exc(exc(1,1,1),exc(1,1,2),exc(1,2,1))
   else if (exc(1,2,1) == exc(1,1,2)) then
-    hij = phase * big_array_exchange_integrals_erf(exc(1,2,1),exc(1,1,1),exc(1,2,2))
+    hij = phase * int_erf_3_index_exc(exc(1,2,1),exc(1,1,1),exc(1,2,2))
   else
     hij = phase*get_mo_bielec_integral_erf(                              &
         exc(1,1,1),                                                  &

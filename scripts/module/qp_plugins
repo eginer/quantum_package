@@ -6,7 +6,7 @@ Usage:
        qp_plugins download <url>
        qp_plugins install <name>...
        qp_plugins uninstall <name>
-       qp_plugins create -n <name> [<children_modules>...]
+       qp_plugins create -n <name> [<needed_modules>...]
 
 Options:
     list                  List all the plugins
