@@ -27,7 +27,7 @@ default: $(ALL_EXE) .gitignore
 tests: $(ALL_TESTS) 
 
 .gitignore: $(MLFILES) $(MLIFILES)
-	@for i in .gitignore ezfio.ml Qptypes.ml Git.ml qptypes_generator.byte _build $(ALL_EXE) $(ALL_TESTS) \
+	@for i in .gitignore ezfio.ml element_create_db Qptypes.ml Git.ml *.byte *.native _build $(ALL_EXE) $(ALL_TESTS) \
 	$(patsubst %.ml,%,$(wildcard test_*.ml)) $(patsubst %.ml,%,$(wildcard qp_*.ml)) \
 	$(shell grep Input Input_auto_generated.ml | awk '{print $$2 ".ml"}') \
 	qp_edit.ml qp_edit qp_edit.native Input_auto_generated.ml;\
