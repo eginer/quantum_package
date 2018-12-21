@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Usage:
-       qp_plugins list [ -i | -u ]
+       qp_plugins list [ -i | -u | -q ]
        qp_plugins download <url>
        qp_plugins install <name>...
        qp_plugins uninstall <name>
@@ -12,6 +12,7 @@ Options:
     list                  List all the plugins
       -i                  List only the installed plugins
       -u                  List only the uninstalled plugins
+      -q                  List the external repositories
 
     download <url>        Download an external repository.
                           The URL points to a tar.gz file or a git repository:
@@ -85,29 +86,33 @@ def save_new_module(path, l_child):
 
 def main(arguments):
     if arguments["list"]:
-        # Search in src all directories with a NEED file 
-        l_tmp = [ dirname for (dirname, _, filenames) in os.walk(QP_PLUGINS, followlinks=False) for f in filenames if f == 'NEED']
+        if arguments["-q"]:
+            l_result = [ f for f in listdir(QP_PLUGINS) if f not in [ ".gitignore", "local" ] ]
 
-        # Find directories which contain modules
-        l_tmp = [ os.path.split(f) for f in l_tmp ]
-        d_tmp = {}
-        for (x,_) in l_tmp:
-            d_tmp[x] = 1
-        l_repository = d_tmp.keys()
-        m_all_instances = ModuleHandler(l_repository)   
-        m_instance = ModuleHandler(l_repository)   
-        l_plugins = [ module for module in m_instance.l_module ]
-        l_result = l_plugins
+        else:
+            # Search in src all directories with a NEED file 
+            l_tmp = [ dirname for (dirname, _, filenames) in os.walk(QP_PLUGINS, followlinks=False) for f in filenames if f == 'NEED']
 
-        if arguments["-i"] or arguments["-u"]:
-            # Search in src all symbolic links that are modules
-            l_installed = [ f for f in os.listdir(QP_SRC) if (os.path.islink(os.path.join(QP_SRC,f)) and f != ".gitignore") ]
+            # Find directories which contain modules
+            l_tmp = [ os.path.split(f) for f in l_tmp ]
+            d_tmp = {}
+            for (x,_) in l_tmp:
+                d_tmp[x] = 1
+            l_repository = d_tmp.keys()
+            m_all_instances = ModuleHandler(l_repository)   
+            m_instance = ModuleHandler(l_repository)   
+            l_plugins = [ module for module in m_instance.l_module ]
+            l_result = l_plugins
 
-        if arguments["-i"]:
-            l_result = [ f for f in l_plugins if f in l_installed ]
+            if arguments["-i"] or arguments["-u"]:
+                # Search in src all symbolic links that are modules
+                l_installed = [ f for f in listdir(QP_SRC) if (os.path.islink(os.path.join(QP_SRC,f)) and f != ".gitignore") ]
 
-        elif arguments["-u"]:
-            l_result = [ f for f in l_plugins if f not in l_installed ]
+            if arguments["-i"]:
+                l_result = [ f for f in l_plugins if f in l_installed ]
+
+            elif arguments["-u"]:
+                l_result = [ f for f in l_plugins if f not in l_installed ]
 
         for module in sorted(l_result): 
             print "* {0}".format(module)           
