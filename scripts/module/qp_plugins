@@ -6,7 +6,7 @@ Usage:
        qp_plugins download <url>
        qp_plugins install <name>...
        qp_plugins uninstall <name>
-       qp_plugins create -n <name> [<needed_modules>...]
+       qp_plugins create -n <name> [-r <repository>] [<needed_modules>...]
 
 Options:
     list                  List all the plugins
@@ -23,6 +23,7 @@ Options:
     uninstall             Uninstall a plugin
 
     create -n <name>      Create a new plugin named <name>
+      -r <repository>     Name of the repository in which to create the plugin
 
 """                      
 
@@ -119,7 +120,12 @@ def main(arguments):
                                                    
         name = arguments["<name>"][0]              
       
-        path = os.path.join(QP_PLUGINS, "local", name)
+        if arguments["-r"]:
+            repository = arguments["-r"]
+        else:
+            repository = "local"
+
+        path = os.path.join(QP_PLUGINS, repository, name)
 
         print "Created plugin:"
         print path, '\n'
