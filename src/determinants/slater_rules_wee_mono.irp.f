@@ -1,5 +1,5 @@
 
-subroutine i_H_j_mono_spin_bielec(key_i,key_j,Nint,spin,hij)
+subroutine i_Wee_j_mono(key_i,key_j,Nint,spin,hij)
   use bitmasks
   implicit none
   BEGIN_DOC
@@ -15,11 +15,11 @@ subroutine i_H_j_mono_spin_bielec(key_i,key_j,Nint,spin,hij)
   PROVIDE big_array_exchange_integrals mo_bielec_integrals_in_map
 
   call get_mono_excitation_spin(key_i(1,spin),key_j(1,spin),exc,phase,Nint)
-  call get_mono_excitation_from_fock_bielec(key_i,key_j,exc(1,1),exc(1,2),spin,phase,hij)
+  call mono_excitation_wee(key_i,key_j,exc(1,1),exc(1,2),spin,phase,hij)
 end
 
 
-double precision function diag_H_mat_elem_bielec(det_in,Nint)
+double precision function diag_wee_mat_elem(det_in,Nint)
   implicit none
   BEGIN_DOC
   ! Computes <i|H|i>
@@ -52,7 +52,7 @@ double precision function diag_H_mat_elem_bielec(det_in,Nint)
     nexc(2)       = nexc(2) + popcnt(hole(i,2))
   enddo
   
-  diag_H_mat_elem_bielec = bi_elec_ref_bitmask_energy
+  diag_wee_mat_elem = bi_elec_ref_bitmask_energy
   if (nexc(1)+nexc(2) == 0) then
     return
   endif
@@ -74,9 +74,9 @@ double precision function diag_H_mat_elem_bielec(det_in,Nint)
     nb = elec_num_tab(iand(ispin,1)+1)
     do i=1,nexc(ispin)
       !DIR$ FORCEINLINE
-      call ac_operator_bielec( occ_particle(i,ispin), ispin, det_tmp, diag_H_mat_elem_bielec, Nint,na,nb)
+      call ac_operator_bielec( occ_particle(i,ispin), ispin, det_tmp, diag_wee_mat_elem, Nint,na,nb)
       !DIR$ FORCEINLINE
-      call a_operator_bielec ( occ_hole    (i,ispin), ispin, det_tmp, diag_H_mat_elem_bielec, Nint,na,nb)
+      call a_operator_bielec ( occ_hole    (i,ispin), ispin, det_tmp, diag_wee_mat_elem, Nint,na,nb)
     enddo
   enddo
 end
@@ -352,10 +352,10 @@ subroutine i_H_j_bielec(key_i,key_j,Nint,hij)
         p = exc(1,2,2)
         spin = 2
       endif
-      call get_mono_excitation_from_fock_bielec(key_i,key_j,p,m,spin,phase,hij)
+      call mono_excitation_wee(key_i,key_j,p,m,spin,phase,hij)
     case (0)
-      double precision :: diag_H_mat_elem_bielec
-      hij = diag_H_mat_elem_bielec(key_i,Nint)
+      double precision :: diag_wee_mat_elem
+      hij = diag_wee_mat_elem(key_i,Nint)
   end select
 end
 

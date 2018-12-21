@@ -1,5 +1,5 @@
   use bitmasks
-subroutine get_mono_excitation_from_fock_bielec(det_1,det_2,h,p,spin,phase,hij)
+subroutine mono_excitation_wee(det_1,det_2,h,p,spin,phase,hij)
  use bitmasks
  implicit none
  integer,intent(in) :: h,p,spin
@@ -23,7 +23,7 @@ subroutine get_mono_excitation_from_fock_bielec(det_1,det_2,h,p,spin,phase,hij)
  enddo
  call bitstring_to_list_ab(hole, occ_hole, n_occ_ab_hole, N_int)
  call bitstring_to_list_ab(partcl, occ_partcl, n_occ_ab_partcl, N_int)
- hij = fock_operator_bielec_closed_shell_ref_bitmask(h,p)
+ hij = fock_wee_closed_shell(h,p)
  ! holes :: direct terms
  do i0 = 1, n_occ_ab_hole(1)
   i = occ_hole(i0,1)
@@ -60,7 +60,7 @@ subroutine get_mono_excitation_from_fock_bielec(det_1,det_2,h,p,spin,phase,hij)
 end
 
 
-BEGIN_PROVIDER [double precision, fock_operator_bielec_closed_shell_ref_bitmask, (mo_tot_num, mo_tot_num) ]
+BEGIN_PROVIDER [double precision, fock_wee_closed_shell, (mo_tot_num, mo_tot_num) ]
  implicit none
  integer :: i0,j0,i,j,k0,k
  integer :: n_occ_ab(2)
@@ -92,8 +92,8 @@ BEGIN_PROVIDER [double precision, fock_operator_bielec_closed_shell_ref_bitmask,
     k = occ(k0,1)
     accu += 2.d0 * array_coulomb(k) - array_exchange(k)
    enddo
-   fock_operator_bielec_closed_shell_ref_bitmask(i,j) = accu 
-   fock_operator_bielec_closed_shell_ref_bitmask(j,i) = accu 
+   fock_wee_closed_shell(i,j) = accu 
+   fock_wee_closed_shell(j,i) = accu 
   enddo
  enddo
 
@@ -109,8 +109,8 @@ BEGIN_PROVIDER [double precision, fock_operator_bielec_closed_shell_ref_bitmask,
     k = occ(k0,1)
     accu += 2.d0 * array_coulomb(k) - array_exchange(k)
    enddo
-   fock_operator_bielec_closed_shell_ref_bitmask(i,j) = accu 
-   fock_operator_bielec_closed_shell_ref_bitmask(j,i) = accu 
+   fock_wee_closed_shell(i,j) = accu 
+   fock_wee_closed_shell(j,i) = accu 
   enddo
  enddo
 
@@ -126,8 +126,8 @@ BEGIN_PROVIDER [double precision, fock_operator_bielec_closed_shell_ref_bitmask,
     k = occ(k0,1)
     accu += 2.d0 * array_coulomb(k) - array_exchange(k)
    enddo
-   fock_operator_bielec_closed_shell_ref_bitmask(i,j) = accu 
-   fock_operator_bielec_closed_shell_ref_bitmask(j,i) = accu 
+   fock_wee_closed_shell(i,j) = accu 
+   fock_wee_closed_shell(j,i) = accu 
   enddo
  enddo
 

@@ -304,7 +304,7 @@ subroutine H_S2_u_0_bielec_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istar
       ASSERT (lrow <= N_det_alpha_unique)
 
       tmp_det2(1:$N_int,1) = psi_det_alpha_unique(1:$N_int, lrow)
-      call i_H_j_mono_spin_bielec( tmp_det, tmp_det2, $N_int, 1, hij) 
+      call i_Wee_j_mono( tmp_det, tmp_det2, $N_int, 1, hij) 
 
       do l=1,N_st
         v_t(l,k_a) = v_t(l,k_a) + hij * u_t(l,l_a)
@@ -384,7 +384,7 @@ subroutine H_S2_u_0_bielec_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istar
       ASSERT (lcol <= N_det_beta_unique)
 
       tmp_det2(1:$N_int,2) = psi_det_beta_unique (1:$N_int, lcol)
-      call i_H_j_mono_spin_bielec( tmp_det, tmp_det2, $N_int, 2, hij)
+      call i_Wee_j_mono( tmp_det, tmp_det2, $N_int, 2, hij)
       l_a = psi_bilinear_matrix_transp_order(l_b)
       ASSERT (l_a <= N_det)
       do l=1,N_st
@@ -430,9 +430,9 @@ subroutine H_S2_u_0_bielec_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istar
     tmp_det(1:$N_int,1) = psi_det_alpha_unique(1:$N_int, krow)
     tmp_det(1:$N_int,2) = psi_det_beta_unique (1:$N_int, kcol)
     
-    double precision, external :: diag_H_mat_elem_bielec, diag_S_mat_elem
+    double precision, external :: diag_wee_mat_elem, diag_S_mat_elem
   
-    hij = diag_H_mat_elem_bielec(tmp_det,$N_int) 
+    hij = diag_wee_mat_elem(tmp_det,$N_int) 
     sij = diag_S_mat_elem(tmp_det,$N_int)
     do l=1,N_st
       v_t(l,k_a) = v_t(l,k_a) + hij * u_t(l,k_a)

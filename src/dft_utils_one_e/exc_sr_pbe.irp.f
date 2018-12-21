@@ -1,19 +1,42 @@
 subroutine ec_pbe_sr(mu,rhoc,rhoo,sigmacc,sigmaco,sigmaoo,ec,vrhoc,vrhoo,vsigmacc,vsigmaco,vsigmaoo)
-!************************************************************************
-!     Short-range PBE correlation energy functional for erf interaction
+ BEGIN_DOC 
+! Short-range PBE correlation energy functional for erf interaction
 !
+! input : ==========
+! 
+! mu = range separated parameter 
 !
-!************************************************************************
+! rhoc, rhoo = total density and spin density
+!
+! sigmacc    = square of the gradient of the total density 
+!
+! sigmaco    = square of the gradient of the spin density
+!
+! sigmaoo    = scalar product between the gradient of the total density and the one of the spin density
+!
+! output: ==========
+! 
+! ec         = correlation energy 
+!
+! all variables v** are energy derivatives with respect to components of the density 
+! 
+! vrhoc      = derivative with respect to the total density 
+!
+! vrhoo      = derivative with respect to spin density
+!
+! vsigmacc   = derivative with respect to the square of the gradient of the total density
+!
+! vsigmaco   = derivative with respect to scalar product between the gradients of total and spin densities 
+!
+! vsigmaoo   = derivative with respect to the square of the gradient of the psin density
+ END_DOC
 include 'constants.include.F'
       implicit none
-! input
       double precision, intent(in) ::  rhoc,rhoo,mu
       double precision, intent(in) ::  sigmacc,sigmaco,sigmaoo
-! output
       double precision, intent(out) ::  ec
       double precision, intent(out) ::  vrhoc,vrhoo
       double precision, intent(out) ::  vsigmacc,vsigmaco,vsigmaoo
-! local
       double precision tol
       parameter(tol=1d-12)
 
@@ -82,8 +105,6 @@ include 'constants.include.F'
      double precision :: vc_a_lda,vc_b_lda
      call ec_lda(rhoa,rhob,ecclda,vc_a_lda,vc_b_lda)
      eclda = ecclda
-    !decldadrho = 0.5d0 * (vc_a_lda+vc_b_lda)
-    !decldadrho = 0.5d0 * (vc_a_lda-vc_b_lda)
 
      if ((ecerflda/eclda).le.0d0) then
         beta=0d0
@@ -108,7 +129,6 @@ include 'constants.include.F'
 
      ec = ecerfpbe
 
-!     if(ldebug) write(*,*)"ecerfpbe=",ecerfpbe
 
 ! Derive
 
@@ -168,12 +188,13 @@ end
 
 subroutine ex_pbe_sr(mu,rho_a,rho_b,grd_rho_a_2,grd_rho_b_2,grd_rho_a_b,ex,vx_rho_a,vx_rho_b,vx_grd_rho_a_2,vx_grd_rho_b_2,vx_grd_rho_a_b)
 BEGIN_DOC
+!mu    = range separation parameter
 !rho_a = density alpha
 !rho_b = density beta
 !grd_rho_a_2 = (gradient rho_a)^2
 !grd_rho_b_2 = (gradient rho_b)^2
 !grd_rho_a_b = (gradient rho_a).(gradient rho_b)
-!ex = exchange energy density at point r
+!ex = exchange energy density at the density and corresponding gradients of the density
 !vx_rho_a = d ex / d rho_a
 !vx_rho_b = d ex / d rho_b
 !vx_grd_rho_a_2 = d ex / d grd_rho_a_2
@@ -374,11 +395,26 @@ END_DOC
 
 
 subroutine ec_pbe_only(mu,rhoc,rhoo,sigmacc,sigmaco,sigmaoo,ec)
-!************************************************************************
-!     Short-range PBE correlation energy functional for erf interaction
+ BEGIN_DOC 
+! Short-range PBE correlation energy functional for erf interaction
 !
+! input : ==========
+! 
+! mu = range separated parameter 
 !
-!************************************************************************
+! rhoc, rhoo = total density and spin density
+!
+! sigmacc    = square of the gradient of the total density 
+!
+! sigmaco    = square of the gradient of the spin density
+!
+! sigmaoo    = scalar product between the gradient of the total density and the one of the spin density
+!
+! output: ==========
+! 
+! ec         = correlation energy 
+!
+ END_DOC
 include 'constants.include.F'
       implicit none
 ! input
