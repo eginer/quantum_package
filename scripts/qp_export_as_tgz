@@ -46,7 +46,7 @@ function find_libs ()
   for i in $@
   do
       ldd $i
-  done | sort | grep '/' | cut -d ' ' -f 3 | uniq
+  done | sort | grep '/' | cut --delimiter=' ' --fields=3 | uniq
 }
 
 function find_exec ()
@@ -60,8 +60,8 @@ function find_exec ()
 echo "Creating root of static directory"
 #     ---------------------------------
 
-rm -rf -- ${QPACKAGE_STATIC}
-mkdir -p -- ${QPACKAGE_STATIC}/{bin,lib,extra_lib,external}
+rm --recursive --force -- "${QPACKAGE_STATIC}"
+mkdir --parents -- ${QPACKAGE_STATIC}/{bin,lib,extra_lib,external}
 if [[ $? -ne 0 ]] ;
 then
   echo "Error creating ${QPACKAGE_STATIC}/{bin,lib,extra_lib,external}"
@@ -94,21 +94,22 @@ then
   exit 1
 fi
 
+(
 cd ${QPACKAGE_STATIC}/bin
   for i in *.native
   do
     mv "$i" $(basename "$i" .native)
   done
-cd -
+)
 
-cp -r ${QP_ROOT}/data ${QPACKAGE_STATIC}/data
+cp --recursive -- ${QP_ROOT}/data ${QPACKAGE_STATIC}/data
 for i in ${FORTRAN_EXEC}
 do
   i=$(basename $i)
   echo $i \$QP_ROOT/bin/$i
 done > ${QPACKAGE_STATIC}/data/executables
 
-mkdir -p ${QPACKAGE_STATIC}/src/Bitmask
+mkdir --parents -- ${QPACKAGE_STATIC}/src/Bitmask
 cp ${QP_ROOT}/src/Bitmask/bitmasks_module.f90 ${QPACKAGE_STATIC}/src/Bitmask
 
 #
@@ -140,10 +141,10 @@ cp -- ${QPACKAGE_STATIC}/extra_lib/lib{[gi]omp*,mkl*,lapack*,blas*,z*} ${QPACKAG
 echo "Copying scripts directory"
 #     ------------------------- 
 
-cp -r -- ${QP_ROOT}/scripts ${QPACKAGE_STATIC}/
+cp --recursive -- ${QP_ROOT}/scripts ${QPACKAGE_STATIC}/
 if [[ $? -ne 0 ]] ;
 then
-  echo 'cp -r -- ${QP_ROOT}/scripts ${QPACKAGE_STATIC}/'
+  echo 'cp --recursive -- ${QP_ROOT}/scripts ${QPACKAGE_STATIC}/'
   exit 1
 fi
 #
@@ -151,17 +152,17 @@ fi
 echo "Copying external libraries"
 #     --------------------------
 
-cp -r -- ${QP_ROOT}/external/emsl ${QPACKAGE_STATIC}/external
+cp --recursive -- ${QP_ROOT}/external/emsl ${QPACKAGE_STATIC}/external
 if [[ $? -ne 0 ]] ;
 then
-  echo 'cp -r -- ${QP_ROOT}/external/emsl ${QPACKAGE_STATIC}/'
+  echo 'cp --recursive -- ${QP_ROOT}/external/emsl ${QPACKAGE_STATIC}/'
   exit 1
 fi
 
-cp -r ${QP_ROOT}/external/Python ${QPACKAGE_STATIC}/external/
+cp --recursive -- ${QP_ROOT}/external/Python ${QPACKAGE_STATIC}/external/
 mkdir ${QPACKAGE_STATIC}/external/ezfio
-cp -r ${QP_ROOT}/external/ezfio/Python ${QPACKAGE_STATIC}/external/ezfio/
-cp -r ${QP_ROOT}/external/ezfio/Bash   ${QPACKAGE_STATIC}/external/ezfio/
+cp --recursive -- ${QP_ROOT}/external/ezfio/Python ${QPACKAGE_STATIC}/external/ezfio/
+cp --recursive -- ${QP_ROOT}/external/ezfio/Bash   ${QPACKAGE_STATIC}/external/ezfio/
 
 
 #
@@ -175,10 +176,10 @@ sed "s!^export QP_ROOT=.*\$!export QP_ROOT=\$( cd \$(dirname "\${BASH_SOURCE}") 
 echo "Creating the archive"
 #     --------------------
 
-tar -zcf "${QPACKAGE_STATIC}".tar.gz quantum_package_static && rm -rf -- "${QPACKAGE_STATIC}"
+tar --gzip --compress --file "${QPACKAGE_STATIC}".tar.gz quantum_package_static && rm --recursive --force -- "${QPACKAGE_STATIC}"
 if [[ $? -ne 0 ]] ;
 then
-  echo 'tar -zcf "${QPACKAGE_STATIC}".tar.gz "${QPACKAGE_STATIC}" && rm -rf -- "${QPACKAGE_STATIC}"'
+  echo 'tar --gzip --compress --file "${QPACKAGE_STATIC}".tar.gz "${QPACKAGE_STATIC}" && rm --recursive --force -- "${QPACKAGE_STATIC}"'
   exit 1
 fi
 

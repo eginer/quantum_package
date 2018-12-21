@@ -67,7 +67,7 @@ as a single-node job before re-submitting the current job.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 "
 fi
-rm -f $INPUT/work/qp_run_address
+rm --force "${INPUT}"/work/qp_run_address
 set -x
 mpiexec.hydra -n 1 -hosts "$MASTER_NODE" qp_run $PROG $INPUT &
 
