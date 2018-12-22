@@ -5,7 +5,9 @@
 /vortex/u/eginer/qp_toto/quantum_package/src/tools/fcidump
 /vortex/u/eginer/qp_toto/quantum_package/src/tools/four_idx_transform
 /vortex/u/eginer/qp_toto/quantum_package/src/tools/molden
+/vortex/u/eginer/qp_toto/quantum_package/src/tools/print_wf
 /vortex/u/eginer/qp_toto/quantum_package/src/tools/save_natorb
+/vortex/u/eginer/qp_toto/quantum_package/src/tools/save_one_body_dm
 /vortex/u/eginer/qp_toto/quantum_package/src/tools/save_ortho_mos
 /vortex/u/eginer/qp_toto/quantum_package/src/tools/write_integrals_erf
 IRPF90_man
@@ -16,6 +18,7 @@ ao_basis
 ao_one_e_integrals
 ao_two_e_erf_integrals
 ao_two_e_integrals
+aux_quantities
 bitmask
 davidson
 davidson_undressed
