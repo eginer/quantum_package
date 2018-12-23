@@ -7,12 +7,7 @@
 
 * Creer une page web pas trop degueu et la mettre ici : http://lcpq.github.io/quantum_package
 * Manu : README 
-  * data_energy_and_density
-  * dft_keywords
-  * dft_quantities_on_grid
-  * dft_utils_one_body
   * dm_for_dft
-  * integrals_erf
 * prendre des bouts du src/README.rst  et en mettre partout 
 
 
