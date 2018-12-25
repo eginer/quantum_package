@@ -14,6 +14,12 @@
   else if(exchange_functional.EQ."short_range_PBE")then
    potential_x_alpha_ao = potential_sr_x_alpha_ao_PBE
    potential_x_beta_ao = potential_sr_x_beta_ao_PBE
+  else if(trim(exchange_functional)=="LDA")then
+   potential_x_alpha_ao = potential_x_alpha_ao_LDA
+   potential_x_beta_ao = potential_x_beta_ao_LDA
+  else if(exchange_functional.EQ."PBE")then
+   potential_x_alpha_ao = potential_x_alpha_ao_PBE
+   potential_x_beta_ao = potential_x_beta_ao_PBE
   else if(exchange_functional.EQ."None")then
    potential_x_alpha_ao = 0.d0 
    potential_x_beta_ao = 0.d0 
@@ -26,9 +32,15 @@
   if(trim(correlation_functional)=="short_range_LDA")then
    potential_c_alpha_ao = potential_sr_c_alpha_ao_LDA
    potential_c_beta_ao = potential_sr_c_beta_ao_LDA
+  else if(trim(correlation_functional)=="LDA")then
+   potential_c_alpha_ao = potential_c_alpha_ao_LDA
+   potential_c_beta_ao = potential_c_beta_ao_LDA
   else if(correlation_functional.EQ."short_range_PBE")then
    potential_c_alpha_ao = potential_sr_c_alpha_ao_PBE
    potential_c_beta_ao = potential_sr_c_beta_ao_PBE
+  else if(correlation_functional.EQ."PBE")then
+   potential_c_alpha_ao = potential_c_alpha_ao_PBE
+   potential_c_beta_ao = potential_c_beta_ao_PBE
   else if(correlation_functional.EQ."None")then
    potential_c_alpha_ao = 0.d0 
    potential_c_beta_ao = 0.d0 

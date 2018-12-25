@@ -1,6 +1,13 @@
-BEGIN_PROVIDER [double precision, extra_energy_contrib_from_density]
+BEGIN_PROVIDER [double precision, extra_e_contrib_density]
  implicit none
- extra_energy_contrib_from_density = 0.D0
+ BEGIN_DOC
+! Extra contribution to the SCF energy coming from the density. 
+!
+! For a Hartree-Fock calculation: extra_e_contrib_density = 0
+!
+! For a Kohn-Sham or Range-separated Kohn-Sham: the exchange/correlation - trace of the V_xc potential
+ END_DOC
+ extra_e_contrib_density = 0.D0
 
 END_PROVIDER 
 
@@ -8,6 +15,9 @@ END_PROVIDER
 &BEGIN_PROVIDER [ double precision, HF_two_electron_energy]
 &BEGIN_PROVIDER [ double precision, HF_one_electron_energy]
  implicit none
+ BEGIN_DOC
+ ! Hartree-Fock energy containing the nuclear repulsion, and its one- and two-body components. 
+ END_DOC
  integer :: i,j 
  HF_energy = nuclear_repulsion
  do j=1,ao_num
