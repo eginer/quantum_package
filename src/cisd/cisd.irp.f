@@ -21,5 +21,6 @@ subroutine run
   psi_coef = ci_eigenvectors
   SOFT_TOUCH psi_coef
   call save_wavefunction_truncated(1.d-12)
+  call ezfio_set_cisd_energy(CI_energy)
 
 end
