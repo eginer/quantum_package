@@ -9,6 +9,7 @@ function run_FCI() {
   ezfio set_file $1
   ezfio set perturbation do_pt2 True
   ezfio set perturbation pt2_relative_error 0.001
+  ezfio set determinants n_states 1
   ezfio set determinants n_det_max $2
   ezfio set davidson threshold_davidson 1.e-10
 
