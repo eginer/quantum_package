@@ -6,7 +6,7 @@ This module contains all quantities needed to build the Becke's grid used in gen
 
 This grid is built as the reunion of a spherical grid around each atom. Each spherical grid contains a certain number of radial and angular points. 
 
-For a simple example of how to use the grid, see example.irp.f. 
+For a simple example of how to use the grid, see :file:`example.irp.f`. 
 
 The spherical integration uses Lebedev-Laikov grids, which was used from the code distributed through CCL (http://www.ccl.net/). 
 See next section for explanations and citation policies. 

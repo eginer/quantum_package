@@ -1,17 +1,24 @@
 ============
-Hartree-Fock
+Kohn-Sham
 ============
 
 
-The Hartree-Fock module performs *Restricted* Hartree-Fock calculations (the
+The Kohn-Sham module performs *Restricted* Kohn-Sham calculations (the
 spatial part of the |MOs| is common for alpha and beta spinorbitals).
 
-The Hartree-Fock program does the following:
+The Kohn-Sham in an SCF and therefore is based on the ``scf_utils`` structure. 
+It performs the following actions:
 
 #. Compute/Read all the one- and two-electron integrals, and store them in memory
 #. Check in the |EZFIO| database if there is a set of |MOs|. If there is, it
    will read them as initial guess. Otherwise, it will create a guess.
 #. Perform the |SCF| iterations
+
+The definition of the Fock matrix is in :file:`kohn_sham fock_matrix_ks.irp.f` 
+For the keywords related to the |SCF| procedure, see the ``scf_utils`` directory where you will find all options. 
+The main are: 
+# :option:`scf_utils thresh_scf` 
+# :option:`scf_utils level_shift` 
 
 At each iteration, the |MOs| are saved in the |EZFIO| database. Hence, if the calculation
 crashes for any unexpected reason, the calculation can be restarted by running again

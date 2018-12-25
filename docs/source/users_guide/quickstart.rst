@@ -67,13 +67,13 @@ just run
 
 .. code:: bash
 
-    qp_run SCF hcn 
+    qp_run scf hcn 
 
 The expected energy is ``-92.827856698`` au.
 
 .. seealso:: 
 
-    The documentation of the :ref:`Hartree_Fock` module.
+    The documentation of the :ref:`hartree_fock` module.
 
 
 Choose the target |MO| space
@@ -95,7 +95,7 @@ We will now use the |CIPSI| algorithm to estimate the |FCI| energy.
 
 .. code::
 
-    qp_run FCI hcn
+    qp_run fci hcn
 
 
 The program will start with a single determinant and will iteratively:
@@ -116,7 +116,7 @@ The estimated |FCI| energy of HCN is ``-93.0501`` au.
 
 .. seealso:: 
 
-    The documentation of the :ref:`FCI` module.
+    The documentation of the :ref:`fci` module.
 
 
 .. important:: TODO
