@@ -222,7 +222,6 @@ subroutine make_selection_buffer_s2(b)
         endif
       enddo
       if (dup) then
-!        val(i) = val(i) + val(j)
         val(i) = max(val(i), val(j))
         duplicate(j) = .True.
       endif
@@ -295,7 +294,7 @@ subroutine make_selection_buffer_s2(b)
     if (k > n_d) exit
   enddo
   deallocate(o)
-  b%N = 2*n_d
+  b%N = n_d
   b%cur = n_d
 end
 

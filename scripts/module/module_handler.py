@@ -6,6 +6,7 @@ Module utilitary
 Usage:
     module_handler.py print_descendant      [<module_name>...]
     module_handler.py clean                 [ --all | <module_name>...]
+    module_handler.py create_git_ignore     [<module_name>...]
 
 Options:
     print_descendant        Print the genealogy of the needed modules
@@ -262,4 +263,5 @@ if __name__ == '__main__':
                     except:
                         pass
 
-
+            if arguments["create_git_ignore"]:
+               pass
