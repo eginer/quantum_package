@@ -8,9 +8,14 @@
 DFT Keywords
 ============
 
-This module contains all keywords which are related to a DFT calculation
+This module contains the main keywords related to a DFT calculation or RS-DFT calculation, such as:
 
+# :option:exchange_functional
+# :option:correlation_functional
+# :option:HF_exchange  : only relevent for the :ref:`ks_scf` program
+# :option:density_for_dft : mainly relevent for multi-determinant range separated DFT, see the plugins of eginer. 
 
+The keyword for the range separation parameter :math:`\mu` is the :option:`ao_two_e_erf_integrals mu_erf` keyword. 
 
 
 
@@ -35,14 +40,19 @@ EZFIO parameters
 
     Default: 0.
 
-.. option:: density_for_dft
 
-    Type of density used for DFT calculation. If WFT it uses the density of the WFT stored in terms of determinants. If input_density it uses the one-body dm stored in data_.../ . If damping_rs_dft it uses the damping density between WFT and input_density
+Providers
+---------
 
-    Default: WFT
 
-.. option:: damping_for_rs_dft
+.. c:var:: dft_type
 
-    damping factor for the density used in RSFT.
+    .. code:: text
 
-    Default: 0.5
+        character*(32)	:: dft_type
+
+    File: :file:`keywords.irp.f`
+
+    defines the type of DFT applied: LDA, GGA etc ...
+
+

@@ -25,7 +25,7 @@ EZFIO parameters
 
 .. option:: energy
 
-    Variational CISD energy
+    Variational |CISD| energy
 
 
 

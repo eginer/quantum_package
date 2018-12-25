@@ -25,7 +25,7 @@ EZFIO parameters
 
 .. option:: energy
 
-    Variational CIS energy
+    Variational |CIS| energy
 
 
 

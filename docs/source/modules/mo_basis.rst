@@ -82,6 +82,20 @@ Providers
 
 
 
+.. c:var:: mo_coef_begin_iteration
+
+    .. code:: text
+
+        double precision, allocatable	:: mo_coef_begin_iteration	(ao_num,mo_tot_num)
+
+    File: :file:`track_orb.irp.f`
+
+    Void provider to store the coefficients of the |MO| basis at the beginning of the SCF iteration 
+    Usefull to track some orbitals
+
+
+
+
 .. c:var:: mo_coef_in_ao_ortho_basis
 
     .. code:: text
@@ -238,6 +252,21 @@ Subroutines / functions
 
 
 
+.. c:function:: initialize_mo_coef_begin_iteration
+
+    .. code:: text
+
+        subroutine initialize_mo_coef_begin_iteration
+
+    File: :file:`track_orb.irp.f`
+
+    
+    Initialize :c:data:`mo_coef_begin_iteration` to the current :c:data:`mo_coef`
+
+
+
+
+
 .. c:function:: mix_mo_jk
 
     .. code:: text
@@ -292,6 +321,20 @@ Subroutines / functions
     File: :file:`utils.irp.f`
 
     
+
+
+
+
+
+.. c:function:: reorder_active_orb
+
+    .. code:: text
+
+        subroutine reorder_active_orb
+
+    File: :file:`track_orb.irp.f`
+
+    routines that takes the current :c:data:`mo_coef` and reorder the active orbitals (see :c:data:`list_act` and :c:data:`n_act_orb`) according to the overlap with :c:data:`mo_coef_begin_iteration`
 
 
 

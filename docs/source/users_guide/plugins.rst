@@ -1,5 +1,6 @@
-External plugins
-----------------
+=============================
+Working with external plugins
+=============================
 
 .. TODO
 

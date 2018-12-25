@@ -8,7 +8,7 @@
 Determinants
 ============
 
-Contains everything for the computation of the Hamiltonian in the basis of Slater determinants.
+Contains everything for the computation of the Hamiltonian matrix elements in the basis of orthogonal Slater determinants built on a restricted spin-orbitals basis.
 
 
 
@@ -285,6 +285,19 @@ Providers
         double precision, allocatable	:: fock_operator_closed_shell_ref_bitmask	(mo_tot_num,mo_tot_num)
 
     File: :file:`mono_excitations.irp.f`
+
+    
+
+
+
+
+.. c:var:: fock_wee_closed_shell
+
+    .. code:: text
+
+        double precision, allocatable	:: fock_wee_closed_shell	(mo_tot_num,mo_tot_num)
+
+    File: :file:`mono_excitations_bielec.irp.f`
 
     
 
@@ -1608,6 +1621,20 @@ Subroutines / functions
 
 
 
+.. c:function:: a_operator_bielec
+
+    .. code:: text
+
+        subroutine a_operator_bielec(iorb,ispin,key,hjj,Nint,na,nb)
+
+    File: :file:`slater_rules_wee_mono.irp.f`
+
+    Needed for diag_H_mat_elem
+
+
+
+
+
 .. c:function:: ac_operator
 
     .. code:: text
@@ -1615,6 +1642,20 @@ Subroutines / functions
         subroutine ac_operator(iorb,ispin,key,hjj,Nint,na,nb)
 
     File: :file:`slater_rules.irp.f`
+
+    Needed for diag_H_mat_elem
+
+
+
+
+
+.. c:function:: ac_operator_bielec
+
+    .. code:: text
+
+        subroutine ac_operator_bielec(iorb,ispin,key,hjj,Nint,na,nb)
+
+    File: :file:`slater_rules_wee_mono.irp.f`
 
     Needed for diag_H_mat_elem
 
@@ -1984,6 +2025,20 @@ Subroutines / functions
 
 
 
+.. c:function:: diag_h_mat_elem_monoelec
+
+    .. code:: text
+
+        double precision function diag_H_mat_elem_monoelec(det_in,Nint)
+
+    File: :file:`slater_rules_wee_mono.irp.f`
+
+    Computes <i|H|i>
+
+
+
+
+
 .. c:function:: diag_s_mat_elem
 
     .. code:: text
@@ -1993,6 +2048,20 @@ Subroutines / functions
     File: :file:`s2.irp.f`
 
     Returns <i|S^2|i>
+
+
+
+
+
+.. c:function:: diag_wee_mat_elem
+
+    .. code:: text
+
+        double precision function diag_wee_mat_elem(det_in,Nint)
+
+    File: :file:`slater_rules_wee_mono.irp.f`
+
+    Computes <i|H|i>
 
 
 
@@ -2736,6 +2805,20 @@ Subroutines / functions
 
 
 
+.. c:function:: i_h_j_bielec
+
+    .. code:: text
+
+        subroutine i_H_j_bielec(key_i,key_j,Nint,hij)
+
+    File: :file:`slater_rules_wee_mono.irp.f`
+
+    Returns <i|H|j> where i and j are determinants
+
+
+
+
+
 .. c:function:: i_h_j_double_alpha_beta
 
     .. code:: text
@@ -2773,6 +2856,34 @@ Subroutines / functions
     File: :file:`slater_rules.irp.f`
 
     Returns <i|H|j> where i and j are determinants differing by a single excitation
+
+
+
+
+
+.. c:function:: i_h_j_mono_spin_monoelec
+
+    .. code:: text
+
+        subroutine i_H_j_mono_spin_monoelec(key_i,key_j,Nint,spin,hij)
+
+    File: :file:`slater_rules_wee_mono.irp.f`
+
+    Returns <i|H|j> where i and j are determinants differing by a single excitation
+
+
+
+
+
+.. c:function:: i_h_j_monoelec
+
+    .. code:: text
+
+        subroutine i_H_j_monoelec(key_i,key_j,Nint,hij)
+
+    File: :file:`slater_rules_wee_mono.irp.f`
+
+    Returns <i|H|j> where i and j are determinants
 
 
 
@@ -2846,6 +2957,20 @@ Subroutines / functions
 
     Computes <i|S2|Psi> = \sum_J c_J <i|S2|J>. 
     Uses filter_connected_i_H_psi0 to get all the |J> to which |i> is connected. The |J> are searched in short pre-computed lists.
+
+
+
+
+
+.. c:function:: i_wee_j_mono
+
+    .. code:: text
+
+        subroutine i_Wee_j_mono(key_i,key_j,Nint,spin,hij)
+
+    File: :file:`slater_rules_wee_mono.irp.f`
+
+    Returns <i|H|j> where i and j are determinants differing by a single excitation
 
 
 
@@ -2928,6 +3053,20 @@ Subroutines / functions
         subroutine make_s2_eigenfunction
 
     File: :file:`occ_pattern.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: mono_excitation_wee
+
+    .. code:: text
+
+        subroutine mono_excitation_wee(det_1,det_2,h,p,spin,phase,hij)
+
+    File: :file:`mono_excitations_bielec.irp.f`
 
     
 

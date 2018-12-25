@@ -163,6 +163,19 @@ Providers
 
 
 
+.. c:var:: ao_coef_normalized_ordered_transp_per_nucl
+
+    .. code:: text
+
+        double precision, allocatable	:: ao_coef_normalized_ordered_transp_per_nucl	(ao_prim_num_max,N_AOs_max,nucl_num)
+
+    File: :file:`aos_transp.irp.f`
+
+    
+
+
+
+
 .. c:var:: ao_expo_ordered
 
     .. code:: text
@@ -186,6 +199,19 @@ Providers
     File: :file:`aos.irp.f`
 
     Transposed :c:var:`ao_expo_ordered`
+
+
+
+
+.. c:var:: ao_expo_ordered_transp_per_nucl
+
+    .. code:: text
+
+        double precision, allocatable	:: ao_expo_ordered_transp_per_nucl	(ao_prim_num_max,N_AOs_max,nucl_num)
+
+    File: :file:`aos_transp.irp.f`
+
+    
 
 
 
@@ -244,6 +270,19 @@ Providers
     File: :file:`aos.irp.f`
 
     :math:`l` value of the |AO|: :math`a+b+c` in :math:`x^a y^b z^c`
+
+
+
+
+.. c:var:: ao_power_ordered_transp_per_nucl
+
+    .. code:: text
+
+        integer, allocatable	:: ao_power_ordered_transp_per_nucl	(3,N_AOs_max,nucl_num)
+
+    File: :file:`aos_transp.irp.f`
+
+    
 
 
 
@@ -459,6 +498,19 @@ Providers
 
 
 
+.. c:var:: nucl_aos_transposed
+
+    .. code:: text
+
+        integer, allocatable	:: nucl_aos_transposed	(N_AOs_max,nucl_num)
+
+    File: :file:`aos_transp.irp.f`
+
+    List of AOs attached on each atom
+
+
+
+
 .. c:var:: nucl_list_shell_aos
 
     .. code:: text
@@ -529,7 +581,35 @@ Subroutines / functions
 
     File: :file:`aos_value.irp.f`
 
-    Returns the value of the i-th |AO| at point r
+    return the value of the ith ao at point r
+
+
+
+
+
+.. c:function:: give_all_aos_and_grad_and_lapl_at_r
+
+    .. code:: text
+
+        subroutine give_all_aos_and_grad_and_lapl_at_r(r,aos_array,aos_grad_array,aos_lapl_array)
+
+    File: :file:`aos_value.irp.f`
+
+    input      : r(1) ==> r(1) = x, r(2) = y, r(3) = z output     : aos_array(i) = ao(i) evaluated at r : aos_grad_array(1,i) = gradient X of the ao(i) evaluated at r
+
+
+
+
+
+.. c:function:: give_all_aos_and_grad_at_r
+
+    .. code:: text
+
+        subroutine give_all_aos_and_grad_at_r(r,aos_array,aos_grad_array)
+
+    File: :file:`aos_value.irp.f`
+
+    input      : r(1) ==> r(1) = x, r(2) = y, r(3) = z output     : aos_array(i) = ao(i) evaluated at r : aos_grad_array(1,i) = gradient X of the ao(i) evaluated at r
 
 
 
@@ -543,6 +623,34 @@ Subroutines / functions
 
     File: :file:`aos_value.irp.f`
 
-    Gives the values of |AOs| at a given point r
+    input : r == r(1) = x and so on aos_array(i) = aos(i) evaluated in r
+
+
+
+
+
+.. c:function:: give_all_aos_at_r_old
+
+    .. code:: text
+
+        subroutine give_all_aos_at_r_old(r,aos_array)
+
+    File: :file:`aos_value.irp.f`
+
+    gives the values of aos at a given point r
+
+
+
+
+
+.. c:function:: primitive_value
+
+    .. code:: text
+
+        double precision function primitive_value(i,j,r)
+
+    File: :file:`aos_value.irp.f`
+
+    return the value of the jth primitive of ith ao at point r WITHOUT THE COEF
 
 

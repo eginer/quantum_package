@@ -37,12 +37,6 @@ EZFIO parameters
 
     Default: None
 
-.. option:: disk_access_mo_integrals_erf
-
-    Read/Write MO integrals with the long range interaction from/to disk [    Write | Read | None ]
-
-    Default: None
-
 .. option:: mo_integrals_threshold
 
     If | <ij|kl> | < `mo_integrals_threshold` then <ij|kl> is zero
@@ -81,21 +75,8 @@ Providers
 
     File: :file:`integrals_3_index.irp.f`
 
-    
-
-
-
-
-.. c:var:: big_array_coulomb_integrals_erf
-
-    .. code:: text
-
-        double precision, allocatable	:: big_array_coulomb_integrals_erf	(mo_tot_num,mo_tot_num,mo_tot_num)
-        double precision, allocatable	:: big_array_exchange_integrals_erf	(mo_tot_num,mo_tot_num,mo_tot_num)
-
-    File: :file:`integrals_3_index.irp.f`
-
-    
+    big_array_coulomb_integrals(i,j)  = <ij|ij> = (ii|jj) 
+    big_array_exchange_integrals(i,j) = <ij|ji> = (ij|ij)
 
 
 
@@ -109,21 +90,8 @@ Providers
 
     File: :file:`integrals_3_index.irp.f`
 
-    
-
-
-
-
-.. c:var:: big_array_exchange_integrals_erf
-
-    .. code:: text
-
-        double precision, allocatable	:: big_array_coulomb_integrals_erf	(mo_tot_num,mo_tot_num,mo_tot_num)
-        double precision, allocatable	:: big_array_exchange_integrals_erf	(mo_tot_num,mo_tot_num,mo_tot_num)
-
-    File: :file:`integrals_3_index.irp.f`
-
-    
+    big_array_coulomb_integrals(i,j)  = <ij|ij> = (ii|jj) 
+    big_array_exchange_integrals(i,j) = <ij|ji> = (ij|ij)
 
 
 
@@ -136,7 +104,7 @@ Providers
 
     File: :file:`core_quantities.irp.f`
 
-    
+    energy from the core : contains all core-core contributions
 
 
 
@@ -154,20 +122,6 @@ Providers
 
 
 
-.. c:var:: insert_into_mo_integrals_erf_map
-
-    .. code:: text
-
-        subroutine insert_into_mo_integrals_erf_map(n_integrals,                 &
-        buffer_i, buffer_values, thr)
-
-    File: :file:`map_integrals_erf.irp.f`
-
-    Create new entry into MO map, or accumulate in an existing entry
-
-
-
-
 .. c:var:: insert_into_mo_integrals_map
 
     .. code:: text
@@ -178,96 +132,6 @@ Providers
     File: :file:`map_integrals.irp.f`
 
     Create new entry into MO map, or accumulate in an existing entry
-
-
-
-
-.. c:var:: mo_bielec_integral_erf_jj
-
-    .. code:: text
-
-        double precision, allocatable	:: mo_bielec_integral_erf_jj	(mo_tot_num,mo_tot_num)
-        double precision, allocatable	:: mo_bielec_integral_erf_jj_exchange	(mo_tot_num,mo_tot_num)
-        double precision, allocatable	:: mo_bielec_integral_erf_jj_anti	(mo_tot_num,mo_tot_num)
-
-    File: :file:`mo_bi_integrals_erf.irp.f`
-
-    mo_bielec_integral_jj(i,j) = J_ij mo_bielec_integral_jj_exchange(i,j) = K_ij mo_bielec_integral_jj_anti(i,j) = J_ij - K_ij
-
-
-
-
-.. c:var:: mo_bielec_integral_erf_jj_anti
-
-    .. code:: text
-
-        double precision, allocatable	:: mo_bielec_integral_erf_jj	(mo_tot_num,mo_tot_num)
-        double precision, allocatable	:: mo_bielec_integral_erf_jj_exchange	(mo_tot_num,mo_tot_num)
-        double precision, allocatable	:: mo_bielec_integral_erf_jj_anti	(mo_tot_num,mo_tot_num)
-
-    File: :file:`mo_bi_integrals_erf.irp.f`
-
-    mo_bielec_integral_jj(i,j) = J_ij mo_bielec_integral_jj_exchange(i,j) = K_ij mo_bielec_integral_jj_anti(i,j) = J_ij - K_ij
-
-
-
-
-.. c:var:: mo_bielec_integral_erf_jj_anti_from_ao
-
-    .. code:: text
-
-        double precision, allocatable	:: mo_bielec_integral_erf_jj_from_ao	(mo_tot_num,mo_tot_num)
-        double precision, allocatable	:: mo_bielec_integral_erf_jj_exchange_from_ao	(mo_tot_num,mo_tot_num)
-        double precision, allocatable	:: mo_bielec_integral_erf_jj_anti_from_ao	(mo_tot_num,mo_tot_num)
-
-    File: :file:`mo_bi_integrals_erf.irp.f`
-
-    mo_bielec_integral_jj_from_ao(i,j) = J_ij mo_bielec_integral_jj_exchange_from_ao(i,j) = J_ij mo_bielec_integral_jj_anti_from_ao(i,j) = J_ij - K_ij
-
-
-
-
-.. c:var:: mo_bielec_integral_erf_jj_exchange
-
-    .. code:: text
-
-        double precision, allocatable	:: mo_bielec_integral_erf_jj	(mo_tot_num,mo_tot_num)
-        double precision, allocatable	:: mo_bielec_integral_erf_jj_exchange	(mo_tot_num,mo_tot_num)
-        double precision, allocatable	:: mo_bielec_integral_erf_jj_anti	(mo_tot_num,mo_tot_num)
-
-    File: :file:`mo_bi_integrals_erf.irp.f`
-
-    mo_bielec_integral_jj(i,j) = J_ij mo_bielec_integral_jj_exchange(i,j) = K_ij mo_bielec_integral_jj_anti(i,j) = J_ij - K_ij
-
-
-
-
-.. c:var:: mo_bielec_integral_erf_jj_exchange_from_ao
-
-    .. code:: text
-
-        double precision, allocatable	:: mo_bielec_integral_erf_jj_from_ao	(mo_tot_num,mo_tot_num)
-        double precision, allocatable	:: mo_bielec_integral_erf_jj_exchange_from_ao	(mo_tot_num,mo_tot_num)
-        double precision, allocatable	:: mo_bielec_integral_erf_jj_anti_from_ao	(mo_tot_num,mo_tot_num)
-
-    File: :file:`mo_bi_integrals_erf.irp.f`
-
-    mo_bielec_integral_jj_from_ao(i,j) = J_ij mo_bielec_integral_jj_exchange_from_ao(i,j) = J_ij mo_bielec_integral_jj_anti_from_ao(i,j) = J_ij - K_ij
-
-
-
-
-.. c:var:: mo_bielec_integral_erf_jj_from_ao
-
-    .. code:: text
-
-        double precision, allocatable	:: mo_bielec_integral_erf_jj_from_ao	(mo_tot_num,mo_tot_num)
-        double precision, allocatable	:: mo_bielec_integral_erf_jj_exchange_from_ao	(mo_tot_num,mo_tot_num)
-        double precision, allocatable	:: mo_bielec_integral_erf_jj_anti_from_ao	(mo_tot_num,mo_tot_num)
-
-    File: :file:`mo_bi_integrals_erf.irp.f`
-
-    mo_bielec_integral_jj_from_ao(i,j) = J_ij mo_bielec_integral_jj_exchange_from_ao(i,j) = J_ij mo_bielec_integral_jj_anti_from_ao(i,j) = J_ij - K_ij
 
 
 
@@ -407,19 +271,6 @@ Providers
 
 
 
-.. c:var:: mo_bielec_integrals_erf_in_map
-
-    .. code:: text
-
-        logical	:: mo_bielec_integrals_erf_in_map
-
-    File: :file:`mo_bi_integrals_erf.irp.f`
-
-    If True, the map of MO bielectronic integrals is provided
-
-
-
-
 .. c:var:: mo_bielec_integrals_in_map
 
     .. code:: text
@@ -510,60 +361,6 @@ Providers
 
 
 
-.. c:var:: mo_integrals_erf_cache
-
-    .. code:: text
-
-        double precision, allocatable	:: mo_integrals_erf_cache	(0:64*64*64*64)
-
-    File: :file:`map_integrals_erf.irp.f`
-
-    Cache of MO integrals for fast access
-
-
-
-
-.. c:var:: mo_integrals_erf_cache_max
-
-    .. code:: text
-
-        integer	:: mo_integrals_erf_cache_min
-        integer	:: mo_integrals_erf_cache_max
-
-    File: :file:`map_integrals_erf.irp.f`
-
-    Min and max values of the MOs for which the integrals are in the cache
-
-
-
-
-.. c:var:: mo_integrals_erf_cache_min
-
-    .. code:: text
-
-        integer	:: mo_integrals_erf_cache_min
-        integer	:: mo_integrals_erf_cache_max
-
-    File: :file:`map_integrals_erf.irp.f`
-
-    Min and max values of the MOs for which the integrals are in the cache
-
-
-
-
-.. c:var:: mo_integrals_erf_map
-
-    .. code:: text
-
-        type(map_type)	:: mo_integrals_erf_map
-
-    File: :file:`map_integrals_erf.irp.f`
-
-    MO integrals
-
-
-
-
 .. c:var:: mo_integrals_map
 
     .. code:: text
@@ -591,20 +388,6 @@ Providers
 
 
 
-.. c:var:: read_mo_integrals_erf
-
-    .. code:: text
-
-        logical	:: read_mo_integrals_erf
-        logical	:: write_mo_integrals_erf
-
-    File: :file:`read_write.irp.f`
-
-    Flag to read or write the |MO| erf integrals
-
-
-
-
 .. c:var:: write_mo_integrals
 
     .. code:: text
@@ -615,20 +398,6 @@ Providers
     File: :file:`read_write.irp.f`
 
     Flag to read or write the |MO| integrals
-
-
-
-
-.. c:var:: write_mo_integrals_erf
-
-    .. code:: text
-
-        logical	:: read_mo_integrals_erf
-        logical	:: write_mo_integrals_erf
-
-    File: :file:`read_write.irp.f`
-
-    Flag to read or write the |MO| erf integrals
 
 
 
@@ -645,20 +414,6 @@ Subroutines / functions
         subroutine add_integrals_to_map(mask_ijkl)
 
     File: :file:`mo_bi_integrals.irp.f`
-
-    Adds integrals to tha MO map according to some bitmask
-
-
-
-
-
-.. c:function:: add_integrals_to_map_erf
-
-    .. code:: text
-
-        subroutine add_integrals_to_map_erf(mask_ijkl)
-
-    File: :file:`mo_bi_integrals_erf.irp.f`
 
     Adds integrals to tha MO map according to some bitmask
 
@@ -689,20 +444,6 @@ Subroutines / functions
     File: :file:`mo_bi_integrals.irp.f`
 
     Adds integrals to tha MO map according to some bitmask
-
-
-
-
-
-.. c:function:: clear_mo_erf_map
-
-    .. code:: text
-
-        subroutine clear_mo_erf_map
-
-    File: :file:`mo_bi_integrals_erf.irp.f`
-
-    Frees the memory of the MO map
 
 
 
@@ -750,20 +491,6 @@ Subroutines / functions
 
 
 
-.. c:function:: get_mo_bielec_integral_erf
-
-    .. code:: text
-
-        double precision function get_mo_bielec_integral_erf(i,j,k,l,map)
-
-    File: :file:`map_integrals_erf.irp.f`
-
-    Returns one integral <ij|kl> in the MO basis
-
-
-
-
-
 .. c:function:: get_mo_bielec_integrals
 
     .. code:: text
@@ -792,76 +519,6 @@ Subroutines / functions
 
 
 
-.. c:function:: get_mo_bielec_integrals_erf
-
-    .. code:: text
-
-        subroutine get_mo_bielec_integrals_erf(j,k,l,sze,out_val,map)
-
-    File: :file:`map_integrals_erf.irp.f`
-
-    Returns multiple integrals <ij|kl> in the MO basis, all i for j,k,l fixed.
-
-
-
-
-
-.. c:function:: get_mo_bielec_integrals_erf_coulomb_ii
-
-    .. code:: text
-
-        subroutine get_mo_bielec_integrals_erf_coulomb_ii(k,l,sze,out_val,map)
-
-    File: :file:`map_integrals_erf.irp.f`
-
-    Returns multiple integrals <ki|li> k(1)i(2) 1/r12 l(1)i(2) :: out_val(i1) for k,l fixed.
-
-
-
-
-
-.. c:function:: get_mo_bielec_integrals_erf_exch_ii
-
-    .. code:: text
-
-        subroutine get_mo_bielec_integrals_erf_exch_ii(k,l,sze,out_val,map)
-
-    File: :file:`map_integrals_erf.irp.f`
-
-    Returns multiple integrals <ki|il> k(1)i(2) 1/r12 i(1)l(2) :: out_val(i1) for k,l fixed.
-
-
-
-
-
-.. c:function:: get_mo_bielec_integrals_erf_i1j1
-
-    .. code:: text
-
-        subroutine get_mo_bielec_integrals_erf_i1j1(k,l,sze,out_array,map)
-
-    File: :file:`map_integrals_erf.irp.f`
-
-    Returns multiple integrals <ik|jl> in the MO basis, all i(1)j(1) erf(mu_erf * r12) /r12 k(2)l(2) i, j for k,l fixed.
-
-
-
-
-
-.. c:function:: get_mo_bielec_integrals_erf_ij
-
-    .. code:: text
-
-        subroutine get_mo_bielec_integrals_erf_ij(k,l,sze,out_array,map)
-
-    File: :file:`map_integrals_erf.irp.f`
-
-    Returns multiple integrals <ij|kl> in the MO basis, all i(1)j(2) 1/r12 k(1)l(2) i, j for k,l fixed.
-
-
-
-
-
 .. c:function:: get_mo_bielec_integrals_exch_ii
 
     .. code:: text
@@ -876,6 +533,20 @@ Subroutines / functions
 
 
 
+.. c:function:: get_mo_bielec_integrals_i1j1
+
+    .. code:: text
+
+        subroutine get_mo_bielec_integrals_i1j1(k,l,sze,out_array,map)
+
+    File: :file:`map_integrals.irp.f`
+
+    Returns multiple integrals <ik|jl> in the MO basis, all i(1)j(1) 1/r12 k(2)l(2) i, j for k,l fixed.
+
+
+
+
+
 .. c:function:: get_mo_bielec_integrals_ij
 
     .. code:: text
@@ -885,20 +556,6 @@ Subroutines / functions
     File: :file:`map_integrals.irp.f`
 
     Returns multiple integrals <ij|kl> in the MO basis, all i(1)j(2) 1/r12 k(1)l(2) i, j for k,l fixed.
-
-
-
-
-
-.. c:function:: get_mo_erf_map_size
-
-    .. code:: text
-
-        integer*8 function get_mo_erf_map_size()
-
-    File: :file:`map_integrals_erf.irp.f`
-
-    Return the number of elements in the MO map
 
 
 
@@ -932,20 +589,6 @@ Subroutines / functions
 
 
 
-.. c:function:: load_mo_integrals_erf
-
-    .. code:: text
-
-        integer function load_mo_integrals_erf(filename)
-
-    File: :file:`map_integrals_erf.irp.f`
-
-    Read from disk the $ao integrals
-
-
-
-
-
 .. c:function:: mo_bielec_integral
 
     .. code:: text
@@ -960,34 +603,6 @@ Subroutines / functions
 
 
 
-.. c:function:: mo_bielec_integral_erf
-
-    .. code:: text
-
-        double precision function mo_bielec_integral_erf(i,j,k,l)
-
-    File: :file:`map_integrals_erf.irp.f`
-
-    Returns one integral <ij|kl> in the MO basis
-
-
-
-
-
-.. c:function:: mo_bielec_integrals_erf_index
-
-    .. code:: text
-
-        subroutine mo_bielec_integrals_erf_index(i,j,k,l,i1)
-
-    File: :file:`mo_bi_integrals_erf.irp.f`
-
-    Computes an unique index for i,j,k,l integrals
-
-
-
-
-
 .. c:function:: mo_bielec_integrals_index
 
     .. code:: text
@@ -997,47 +612,5 @@ Subroutines / functions
     File: :file:`mo_bi_integrals.irp.f`
 
     Computes an unique index for i,j,k,l integrals
-
-
-
-
-
-.. c:function:: provide_all_mo_integrals_erf
-
-    .. code:: text
-
-        subroutine provide_all_mo_integrals_erf
-
-    File: :file:`mo_bi_integrals_erf.irp.f`
-
-    
-
-
-
-
-
-.. c:function:: save_erf_bi_elec_integrals_mo
-
-    .. code:: text
-
-        subroutine save_erf_bi_elec_integrals_mo
-
-    File: :file:`routines_save_integrals_erf.irp.f`
-
-    
-
-
-
-
-
-.. c:function:: save_erf_bielec_ints_mo_into_ints_mo
-
-    .. code:: text
-
-        subroutine save_erf_bielec_ints_mo_into_ints_mo
-
-    File: :file:`routines_save_integrals_erf.irp.f`
-
-    
 
 

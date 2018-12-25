@@ -150,6 +150,23 @@ Providers
 
 
 
+.. c:var:: pt2_cw
+
+    .. code:: text
+
+        double precision, allocatable	:: pt2_w	(N_det_generators)
+        double precision, allocatable	:: pt2_cw	(0:N_det_generators)
+        double precision	:: pt2_w_t
+        double precision	:: pt2_u_0
+        integer, allocatable	:: pt2_n_0	(pt2_N_teeth+1)
+
+    File: :file:`pt2_stoch_routines.irp.f`
+
+    
+
+
+
+
 .. c:var:: pt2_e0_denominator
 
     .. code:: text
@@ -163,6 +180,65 @@ Providers
 
 
 
+.. c:var:: pt2_f
+
+    .. code:: text
+
+        integer, allocatable	:: pt2_f	(N_det_generators)
+        integer	:: pt2_n_tasks_max
+
+    File: :file:`pt2_stoch_routines.irp.f`
+
+    
+
+
+
+
+.. c:var:: pt2_j
+
+    .. code:: text
+
+        integer, allocatable	:: pt2_j	(N_det_generators)
+        integer, allocatable	:: pt2_r	(N_det_generators)
+
+    File: :file:`pt2_stoch_routines.irp.f`
+
+    
+
+
+
+
+.. c:var:: pt2_mindetinfirstteeth
+
+    .. code:: text
+
+        integer	:: pt2_n_teeth
+        integer	:: pt2_mindetinfirstteeth
+
+    File: :file:`pt2_stoch_routines.irp.f`
+
+    
+
+
+
+
+.. c:var:: pt2_n_0
+
+    .. code:: text
+
+        double precision, allocatable	:: pt2_w	(N_det_generators)
+        double precision, allocatable	:: pt2_cw	(0:N_det_generators)
+        double precision	:: pt2_w_t
+        double precision	:: pt2_u_0
+        integer, allocatable	:: pt2_n_0	(pt2_N_teeth+1)
+
+    File: :file:`pt2_stoch_routines.irp.f`
+
+    
+
+
+
+
 .. c:var:: pt2_n_tasks
 
     .. code:: text
@@ -172,6 +248,34 @@ Providers
     File: :file:`pt2_stoch_routines.irp.f`
 
     Number of parallel tasks for the Monte Carlo
+
+
+
+
+.. c:var:: pt2_n_tasks_max
+
+    .. code:: text
+
+        integer, allocatable	:: pt2_f	(N_det_generators)
+        integer	:: pt2_n_tasks_max
+
+    File: :file:`pt2_stoch_routines.irp.f`
+
+    
+
+
+
+
+.. c:var:: pt2_n_teeth
+
+    .. code:: text
+
+        integer	:: pt2_n_teeth
+        integer	:: pt2_mindetinfirstteeth
+
+    File: :file:`pt2_stoch_routines.irp.f`
+
+    
 
 
 
@@ -203,6 +307,70 @@ Providers
 
 
 
+.. c:var:: pt2_u
+
+    .. code:: text
+
+        double precision, allocatable	:: pt2_u	(N_det_generators)
+
+    File: :file:`pt2_stoch_routines.irp.f`
+
+    
+
+
+
+
+.. c:var:: pt2_u_0
+
+    .. code:: text
+
+        double precision, allocatable	:: pt2_w	(N_det_generators)
+        double precision, allocatable	:: pt2_cw	(0:N_det_generators)
+        double precision	:: pt2_w_t
+        double precision	:: pt2_u_0
+        integer, allocatable	:: pt2_n_0	(pt2_N_teeth+1)
+
+    File: :file:`pt2_stoch_routines.irp.f`
+
+    
+
+
+
+
+.. c:var:: pt2_w
+
+    .. code:: text
+
+        double precision, allocatable	:: pt2_w	(N_det_generators)
+        double precision, allocatable	:: pt2_cw	(0:N_det_generators)
+        double precision	:: pt2_w_t
+        double precision	:: pt2_u_0
+        integer, allocatable	:: pt2_n_0	(pt2_N_teeth+1)
+
+    File: :file:`pt2_stoch_routines.irp.f`
+
+    
+
+
+
+
+.. c:var:: pt2_w_t
+
+    .. code:: text
+
+        double precision, allocatable	:: pt2_w	(N_det_generators)
+        double precision, allocatable	:: pt2_cw	(0:N_det_generators)
+        double precision	:: pt2_w_t
+        double precision	:: pt2_u_0
+        integer, allocatable	:: pt2_n_0	(pt2_N_teeth+1)
+
+    File: :file:`pt2_stoch_routines.irp.f`
+
+    
+
+
+
+
 Subroutines / functions
 -----------------------
 
@@ -217,6 +385,20 @@ Subroutines / functions
     File: :file:`selection_buffer.irp.f`
 
     
+
+
+
+
+
+.. c:function:: bitstring_to_list_in_selection
+
+    .. code:: text
+
+        subroutine bitstring_to_list_in_selection( string, list, n_elements, Nint)
+
+    File: :file:`selection.irp.f`
+
+    Gives the inidices(+1) of the bits set to 1 in the bit string
 
 
 
@@ -283,6 +465,34 @@ Subroutines / functions
     .. code:: text
 
         subroutine get_d0(gen, phasemask, bannedOrb, banned, mat, mask, h, p, sp, coefs)
+
+    File: :file:`selection.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: get_d1
+
+    .. code:: text
+
+        subroutine get_d1(gen, phasemask, bannedOrb, banned, mat, mask, h, p, sp, coefs)
+
+    File: :file:`selection.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: get_d2
+
+    .. code:: text
+
+        subroutine get_d2(gen, phasemask, bannedOrb, banned, mat, mask, h, p, sp, coefs)
 
     File: :file:`selection.irp.f`
 
@@ -385,6 +595,34 @@ Subroutines / functions
     File: :file:`selection_buffer.irp.f`
 
     Merges the selection buffers b1 and b2 into b2
+
+
+
+
+
+.. c:function:: past_d1
+
+    .. code:: text
+
+        subroutine past_d1(bannedOrb, p)
+
+    File: :file:`selection.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: past_d2
+
+    .. code:: text
+
+        subroutine past_d2(banned, p, sp)
+
+    File: :file:`selection.irp.f`
+
+    
 
 
 
@@ -607,6 +845,48 @@ Subroutines / functions
         subroutine sort_selection_buffer(b)
 
     File: :file:`selection_buffer.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: splash_pq
+
+    .. code:: text
+
+        subroutine splash_pq(mask, sp, det, i_gen, N_sel, bannedOrb, banned, mat, interesting)
+
+    File: :file:`selection.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: spot_isinwf
+
+    .. code:: text
+
+        subroutine spot_isinwf(mask, det, i_gen, N, banned, fullMatch, interesting)
+
+    File: :file:`selection.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: testteethbuilding
+
+    .. code:: text
+
+        logical function testTeethBuilding(minF, N)
+
+    File: :file:`pt2_stoch_routines.irp.f`
 
     
 
