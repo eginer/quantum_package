@@ -225,7 +225,6 @@ Index of Providers
 * :c:data:`exchange_functional`
 * :c:data:`expected_s2`
 * :c:data:`extra_e_contrib_density`
-* :c:data:`extra_energy_contrib_from_density`
 * :c:data:`extrapolate_fock_matrix`
 * :c:data:`extrapolated_energy`
 * :c:data:`ezfio_filename`
