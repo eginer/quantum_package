@@ -31,15 +31,18 @@ def main(arguments):
     def append_bats(dirname, filenames):
         for f in filenames:
             if f.endswith(".bats"):
-                l_bats.append( os.path.join(dirname,f) )
+                number, _ = f.split('.',1)
+                l_bats.append( (int(number), os.path.join(dirname,f)) )
 
     if arguments["-a"]:
         for (dirname, _, filenames) in os.walk(QP_SRC, followlinks=False) :
-            append_bats(dirname, filenames)
+            if "IRPF90_temp" not in dirname:
+                append_bats(dirname, filenames)
     else:
         for (dirname, _, filenames) in os.walk(os.getcwd(), followlinks=False) :
-            append_bats(dirname, filenames)
-    print l_bats
+            if "IRPF90_temp" not in dirname:
+                append_bats(dirname, filenames)
+    l_bats = [ y for x,y in sorted(l_bats) ]
 
     # Execute tests
     os.chdir(QP_TESTS)

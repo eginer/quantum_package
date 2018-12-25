@@ -2,31 +2,13 @@
 
 source $QP_ROOT/tests/bats/common.bats.sh
 
-function run_init() {
-  cp "${QP_ROOT}/tests/input/$1" .
-  qp_create_ezfio_from_xyz $1 -o $3 $2
-  qp_edit -c $3
-}
-
-
-function run_HF() {
-  thresh=1.e-7
-  test_exe scf || skip
-  qp_edit -c $1
-  ezfio set_file $1
-  ezfio set hartree_fock thresh_scf 2.e-8
-  qp_run scf $1
-  energy="$(ezfio get hartree_fock energy)"
-  eq $energy $2 $thresh
-}
-
-
 function run_FCI() {
   thresh=5.e-5
   test_exe fci || skip
   qp_edit -c $1
   ezfio set_file $1
   ezfio set perturbation do_pt2 True
+  ezfio set perturbation pt2_relative_error 0.001
   ezfio set determinants n_det_max $2
   ezfio set davidson threshold_davidson 1.e-10
 
@@ -37,13 +19,16 @@ function run_FCI() {
   eq $energy_pt2 $4 $thresh
 }
 
-#=== H2O Pseudo
-@test "init H2O VDZ pseudo" {
-  run_init h2o.xyz "-p bfd -b vdz-bfd" h2o_pseudo.ezfio
+
+
+#=== H2O
+
+@test "qp_set_mo_class H2O cc-pVDZ" {
+  qp_set_mo_class h2o.ezfio -core "[1]" -act "[2-12]" -del "[13-24]"
 }
 
-@test "SCF H2O VDZ pseudo" {
-  run_HF  h2o_pseudo.ezfio  -16.9483703905461
+@test "FCI H2O cc-pVDZ" {
+  run_FCI h2o.ezfio 2000 -76.1249493055975   -76.1258779921351
 }
 
 @test "FCI H2O VDZ pseudo" {

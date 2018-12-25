@@ -51,3 +51,12 @@ function run_HF() {
   run_HF  h2o.ezfio  -0.760270218692179E+02
 }
 
+#=== H2O Pseudo
+@test "init H2O VDZ pseudo" {
+  run_init h2o.xyz "-p bfd -b vdz-bfd" h2o_pseudo.ezfio
+}
+
+@test "SCF H2O VDZ pseudo" {
+  run_HF  h2o_pseudo.ezfio  -16.9483703905461
+}
+
