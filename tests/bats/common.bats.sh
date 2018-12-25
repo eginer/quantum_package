@@ -11,10 +11,12 @@ function eq() {
     then
        return 0
     else
+       echo "#~-~-~-~-~- Test Failed -~-~-~-~-~-#"
        echo "Test      : " ${BATS_TEST_DESCRIPTION}
        echo "Error     : " ${diff[1]}
        echo "Reference : " ${diff[3]}
        echo "Computed  : " ${diff[2]}
+       echo "#~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-#"
        exit 1
     fi
 }

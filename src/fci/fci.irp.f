@@ -97,7 +97,7 @@ program fci
     n_det_before = N_det
     to_select = N_det
     to_select = max(N_states_diag, to_select)
-    to_select = min(to_select, N_det_max-n_det_before)
+!    to_select = min(to_select, N_det_max-n_det_before)
     call ZMQ_selection(to_select, pt2, variance, norm)
     
     PROVIDE  psi_coef

@@ -28,11 +28,11 @@ function run_FCI() {
 }
 
 @test "FCI H2O cc-pVDZ" {
-  run_FCI h2o.ezfio 2000 -76.1249493055975   -76.1258779921351
+  run_FCI h2o.ezfio 2000 -76.1254558901689   -76.1258820944775
 }
 
 @test "FCI H2O VDZ pseudo" {
   qp_set_mo_class h2o_pseudo.ezfio -core "[1]" -act "[2-12]" -del "[13-23]"
-  run_FCI h2o_pseudo.ezfio 2000    -17.0399259074535 -17.0400550838545
+  run_FCI h2o_pseudo.ezfio 2000    -17.0399798017510 -17.0400546596391
 }
 
