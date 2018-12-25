@@ -4,7 +4,7 @@
 qp_test
 =======
 
-This command runs the consistency test of |qp|. The tests are run with the |bats| shell testing environment.
+This command runs the consistency test of |qp|. The tests are run with the |Bats| shell testing environment.
 
 Usage
 -----

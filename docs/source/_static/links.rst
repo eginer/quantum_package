@@ -1,4 +1,5 @@
 .. _Autoconf: http://www.gnu.org/software/autoconf
+.. _Bats: https://github.com/sstephenson/bats
 .. _BLAS: http://www.netlib.org/blas/
 .. _Core: https://opensource.janestreet.com/core/
 .. _Dice: https://sanshar.github.io/Dice/
@@ -21,12 +22,13 @@
 .. _Python:  http://www.python.org
 .. _QMC=Chem: https://gitlab.com/scemama/qmcchem
 .. _QMCPack: https://qmcpack.org
-.. _SLURM: https://slurm.schedmd.com/
 .. _resultsFile: http://gitlab.com/scemama/resultsFile
+.. _SLURM: https://slurm.schedmd.com/
 .. _ZeroMQ: http://zeromq.org/
 .. _Zlib: http://zlib.net
 
 
+.. |Bats| replace:: `Bats`_
 .. |BLAS| replace:: `BLAS`_
 .. |EZFIO| replace:: `EZFIO`_
 .. |GAMESS| replace:: `GAMESS`_

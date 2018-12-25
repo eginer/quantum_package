@@ -90,20 +90,6 @@ Subroutines / functions
 
 
 
-.. c:function:: routine
-
-    .. code:: text
-
-        subroutine routine
-
-    File: :file:`write_integrals_erf.irp.f`
-
-    
-
-
-
-
-
 .. c:function:: save_natorb
 
     .. code:: text
@@ -113,22 +99,6 @@ Subroutines / functions
     File: :file:`save_natorb.irp.f`
 
     Save natural MOs into the EZFIO
-
-
-
-
-
-.. c:function:: save_one_body_dm
-
-    .. code:: text
-
-        subroutine save_one_body_dm
-
-    File: :file:`save_one_body_dm.irp.f`
-
-    programs that computes the one body density on the mo basis for alpha and beta electrons from the wave function stored in the EZFIO folder, and then save it into the EZFIO folder aux_quantities. 
-    Then, the global variable data_one_body_alpha_dm_mo and data_one_body_beta_dm_mo will automatically read the density in a further calculation. 
-    This can be used to perform dampin on the density in RS-DFT calculation (see the density_for_dft module).
 
 
 
