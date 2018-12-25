@@ -119,7 +119,7 @@
    ao_bi_elec_integral_alpha_tmp = 0.d0
    ao_bi_elec_integral_beta_tmp  = 0.d0
 
-   !$OMP DO SCHEDULE(dynamic,64)
+   !$OMP DO SCHEDULE(static,1)
    !DIR$ NOVECTOR
    do i8=0_8,ao_integrals_map%map_size
      n_elements = n_elements_max

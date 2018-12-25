@@ -103,7 +103,7 @@ END_DOC
     do while (Delta_energy_SCF .ge. 0.d0)
       mo_coef(1:ao_num,1:mo_tot_num) = mo_coef_save
       TOUCH mo_coef
-      level_shift = level_shift + 0.1d0
+      level_shift = level_shift * 2.0d0
       mo_coef(1:ao_num,1:mo_tot_num) = eigenvectors_Fock_matrix_MO(1:ao_num,1:mo_tot_num)
       TOUCH mo_coef level_shift
       Delta_Energy_SCF = SCF_energy - energy_SCF_previous
