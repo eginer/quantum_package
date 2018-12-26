@@ -35,7 +35,7 @@ subroutine example_becke_numerical_grid
   r(1) = final_grid_points(1,i)
   r(2) = final_grid_points(2,i)
   r(3) = final_grid_points(3,i)
-  weight = final_weight_functions_at_final_grid_points(i)
+  weight = final_weight_at_r_vector(i)
   double precision :: distance, f_r
   ! you compute the function to be integrated 
   distance = dsqrt( (r(1) - center(1))**2 +  (r(2) - center(2))**2 + (r(3) - center(3))**2 )
@@ -58,7 +58,7 @@ subroutine example_becke_numerical_grid
     r(1) = grid_points_per_atom(1,k,j,i)
     r(2) = grid_points_per_atom(2,k,j,i)
     r(3) = grid_points_per_atom(3,k,j,i)
-    weight = final_weight_functions_at_grid_points(k,j,i)
+    weight = final_weight_at_r(k,j,i)
     distance = dsqrt( (r(1) - center(1))**2 +  (r(2) - center(2))**2 + (r(3) - center(3))**2 )
     f_r = dexp(-alpha * distance)
     integral_2 += f_r * weight

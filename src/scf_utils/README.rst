@@ -4,11 +4,11 @@ scf_utils
 
 
 
-The scf_utils module performs *Restricted* SCF calculations (the
+The scf_utils module is an abstract module which contains the basics to perform *Restricted* SCF calculations (the
 spatial part of the |MOs| is common for alpha and beta spinorbitals) based on a single-determinant wave function.
 
 This module does not produce any executable *and must not do*, but instead it contains everything one needs to perform an orbital optimization based on an Fock matrix. 
-The ``scf_utils`` module is included in the :file:`NEED` of the various single determinant SCF procedures, such as ``hartree_fock`` or ``kohn_sham``, where a specific definition of the Fock matrix is given (see :file:`hartree_fock fock_matrix_hf.irp.f` for an example). 
+The ``scf_utils`` module is meant to be included in the :file:`NEED` of the various single determinant SCF procedures, such as ``hartree_fock`` or ``kohn_sham``, where a specific definition of the Fock matrix is given (see :file:`hartree_fock fock_matrix_hf.irp.f` for an example). 
 
 All SCF programs perform the following actions:
 

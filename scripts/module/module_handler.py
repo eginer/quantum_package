@@ -84,6 +84,7 @@ def get_dict_child(l_root_abs=None):
             except IOError:
                 pass
             else:
+#               print module_rel
                 if module_rel not in d_ref:
                     d_ref[module_rel] = l_children
                 else:

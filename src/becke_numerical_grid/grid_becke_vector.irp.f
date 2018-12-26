@@ -24,14 +24,14 @@ BEGIN_PROVIDER [integer, n_points_final_grid]
 END_PROVIDER
 
  BEGIN_PROVIDER [double precision, final_grid_points, (3,n_points_final_grid)]
-&BEGIN_PROVIDER [double precision, final_weight_functions_at_final_grid_points, (n_points_final_grid) ]
+&BEGIN_PROVIDER [double precision, final_weight_at_r_vector, (n_points_final_grid) ]
 &BEGIN_PROVIDER [integer, index_final_points, (3,n_points_final_grid) ]
 &BEGIN_PROVIDER [integer, index_final_points_reverse, (n_points_integration_angular,n_points_radial_grid,nucl_num) ]
   implicit none
   BEGIN_DOC
 !  final_grid_points(1:3,j) = (/ x, y, z /) of the jth grid point 
 ! 
-! final_weight_functions_at_final_grid_points(i) = Total weight function of the ith grid point which contains the Lebedev, Voronoi and radial weights contributions
+! final_weight_at_r_vector(i) = Total weight function of the ith grid point which contains the Lebedev, Voronoi and radial weights contributions
 !
 ! index_final_points(1:3,i) = gives the angular, radial and atomic indices associated to the ith grid point
 !
@@ -52,7 +52,7 @@ END_PROVIDER
           final_grid_points(1,i_count) = grid_points_per_atom(1,k,i,j)
           final_grid_points(2,i_count) = grid_points_per_atom(2,k,i,j)
           final_grid_points(3,i_count) = grid_points_per_atom(3,k,i,j)
-          final_weight_functions_at_final_grid_points(i_count) = final_weight_functions_at_grid_points(k,i,j)
+          final_weight_at_r_vector(i_count) = final_weight_at_r(k,i,j)
           index_final_points(1,i_count) = k
           index_final_points(2,i_count) = i
           index_final_points(3,i_count) = j
