@@ -17,7 +17,7 @@
    r(1) = final_grid_points(1,i)
    r(2) = final_grid_points(2,i)
    r(3) = final_grid_points(3,i)
-   weight=final_weight_functions_at_final_grid_points(i)
+   weight=final_weight_at_r_vector(i)
    rhoa(istate) = one_body_dm_alpha_at_r(i,istate)
    rhob(istate) = one_body_dm_beta_at_r(i,istate)
    call ec_LDA_sr(mu_erf_dft,rhoa(istate),rhob(istate),e_c,sr_vc_a,sr_vc_b)
@@ -92,11 +92,11 @@
    r(1) = final_grid_points(1,i)
    r(2) = final_grid_points(2,i)
    r(3) = final_grid_points(3,i)
-   weight=final_weight_functions_at_final_grid_points(i)
-   rho_a(istate) =  one_body_dm_alpha_and_grad_at_r(4,i,istate)
-   rho_b(istate) =  one_body_dm_beta_and_grad_at_r(4,i,istate)
-   grad_rho_a(1:3,istate) =  one_body_dm_alpha_and_grad_at_r(1:3,i,istate)
-   grad_rho_b(1:3,istate) =  one_body_dm_beta_and_grad_at_r(1:3,i,istate)
+   weight = final_weight_at_r_vector(i)
+   rho_a(istate) =  one_dm_and_grad_alpha_in_r(4,i,istate)
+   rho_b(istate) =  one_dm_and_grad_beta_in_r(4,i,istate)
+   grad_rho_a(1:3,istate) =  one_dm_and_grad_alpha_in_r(1:3,i,istate)
+   grad_rho_b(1:3,istate) =  one_dm_and_grad_beta_in_r(1:3,i,istate)
    grad_rho_a_2 = 0.d0
    grad_rho_b_2 = 0.d0
    grad_rho_a_b = 0.d0

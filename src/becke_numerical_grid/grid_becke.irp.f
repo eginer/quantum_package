@@ -123,7 +123,7 @@ BEGIN_PROVIDER [double precision, grid_points_per_atom, (3,n_points_integration_
   enddo
 END_PROVIDER
 
-BEGIN_PROVIDER [double precision, weight_functions_at_grid_points, (n_points_integration_angular,n_points_radial_grid,nucl_num) ]
+BEGIN_PROVIDER [double precision, weight_at_r, (n_points_integration_angular,n_points_radial_grid,nucl_num) ]
   BEGIN_DOC
   ! Weight function at grid points : w_n(r) according to the equation (22)
   ! of Becke original paper (JCP, 88, 1988)
@@ -156,7 +156,7 @@ BEGIN_PROVIDER [double precision, weight_functions_at_grid_points, (n_points_int
           accu += tmp_array(i)
         enddo
         accu = 1.d0/accu
-        weight_functions_at_grid_points(l,k,j) = tmp_array(j) * accu
+        weight_at_r(l,k,j) = tmp_array(j) * accu
       enddo
     enddo
   enddo
@@ -164,7 +164,7 @@ BEGIN_PROVIDER [double precision, weight_functions_at_grid_points, (n_points_int
 END_PROVIDER
 
 
-BEGIN_PROVIDER [double precision, final_weight_functions_at_grid_points, (n_points_integration_angular,n_points_radial_grid,nucl_num) ]
+BEGIN_PROVIDER [double precision, final_weight_at_r, (n_points_integration_angular,n_points_radial_grid,nucl_num) ]
   BEGIN_DOC
    ! Total weight on each grid point which takes into account all Lebedev, Voronoi and radial weights.
   END_DOC
@@ -182,7 +182,7 @@ BEGIN_PROVIDER [double precision, final_weight_functions_at_grid_points, (n_poin
       do k = 1, n_points_integration_angular  ! for each angular point attached to the "jth" atom
         contrib_integration = derivative_knowles_function(alpha_knowles(int(nucl_charge(j))),m_knowles,x)&
             *knowles_function(alpha_knowles(int(nucl_charge(j))),m_knowles,x)**2
-        final_weight_functions_at_grid_points(k,i,j) = weights_angular_points(k)  * weight_functions_at_grid_points(k,i,j) * contrib_integration * dr_radial_integral
+        final_weight_at_r(k,i,j) = weights_angular_points(k)  * weight_at_r(k,i,j) * contrib_integration * dr_radial_integral
       enddo
     enddo
   enddo

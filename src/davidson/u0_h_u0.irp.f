@@ -1,7 +1,7 @@
 BEGIN_PROVIDER [ double precision, psi_energy, (N_states) ]
   implicit none
   BEGIN_DOC
-! Energy of the current wave function
+! Electronic energy of the current wave function
   END_DOC
   call u_0_H_u_0(psi_energy,psi_coef,N_det,psi_det,N_int,N_states,psi_det_size)
   integer :: i
