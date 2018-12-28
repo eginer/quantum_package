@@ -5,6 +5,7 @@ source $QP_ROOT/tests/bats/common.bats.sh
 function run {
   INPUT=$1
   EZ=${INPUT/.xyz/.ezfio}
+  EZ=${EZ/.zmt/.ezfio}
   MULT=$2
   CHARGE=$3
   BASIS=$4
@@ -24,10 +25,6 @@ function run {
 
 @test "qp_create clo.xyz" {
   run clo.xyz 2 0 cc-pvdz
-}
-
-@test "qp_create dhno.xyz" {
-  run dhno.xyz 2 0 chipman-dzp
 }
 
 @test "qp_create h3coh.xyz" {
@@ -58,12 +55,8 @@ function run {
   run co2.xyz 1 0 cc-pvdz
 }
 
-@test "qp_create f2.xyz" {
-  run f2.xyz 1 0 "Def2-TZVP"
-}
-
-@test "qp_create h2o.xyz" {
-  run h2o.xyz 1 0 cc-pvdz
+@test "qp_create f2.zmt" {
+  run f2.zmt 1 0 "Def2-TZVP"
 }
 
 @test "qp_create hco.xyz" {
@@ -82,20 +75,16 @@ function run {
   run clf.xyz 1 0 cc-pvdz
 }
 
-@test "qp_create h2o2.xyz" {
-  run h2o2.xyz 1 0 cc-pvdz
+@test "qp_create h2o2.zmt" {
+  run h2o2.zmt 1 0 cc-pvdz
 }
 
 @test "qp_create h2s.xyz" {
   run h2s.xyz 1 0 cc-pvdz
 }
 
-@test "qp_create hbo.xyz" {
-  run hbo.xyz 1 0 cc-pvtz
-}
-
-@test "qp_create n2h4.xyz" {
-  run n2h4.xyz 1 0 cc-pvdz
+@test "qp_create n2h4.zmt" {
+  run n2h4.zmt 1 0 cc-pvdz
 }
 
 @test "qp_create oh.xyz" {
