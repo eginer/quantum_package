@@ -5,7 +5,7 @@
 .. default-role:: option
 
 ===============
-Selectors_Utils
+selectors_utils
 ===============
 
 Helper functions for selectors.

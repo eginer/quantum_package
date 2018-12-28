@@ -4,9 +4,9 @@
 
 .. default-role:: option
 
-=========================
-Range-separated Kohn-Sham
-=========================
+============
+kohn_sham_rs
+============
 
 
 The Range-separated Kohn-Sham module performs *Restricted* Kohn-Sham calculations (the

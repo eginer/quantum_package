@@ -5,7 +5,7 @@
 .. default-role:: option
 
 ===
-ZMQ
+zmq
 ===
 
 Definition of |ZeroMQ| sockets and messages.

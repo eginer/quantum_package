@@ -4,9 +4,9 @@
 
 .. default-role:: option
 
-================
-Integrals_Bielec
-================
+==================
+mo_two_e_integrals
+==================
 
 Here, all two-electron integrals (:math:`1/r_{12}`) are computed.
 As they have 4 indices and many are zero, they are stored in a map, as defined

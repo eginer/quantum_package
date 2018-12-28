@@ -5,7 +5,7 @@
 .. default-role:: option
 
 ==============
-Selectors_full
+selectors_full
 ==============
 
 All the determinants are possible selectors. Only the largest contributions are kept, where

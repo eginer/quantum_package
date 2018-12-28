@@ -5,7 +5,7 @@
 .. default-role:: option
 
 ============
-Hartree-Fock
+hartree_fock
 ============
 
 

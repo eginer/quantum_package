@@ -5,7 +5,7 @@
 .. default-role:: option
 
 ===============
-Selectors_CASSD
+selectors_cassd
 ===============
 
 Selectors for |CAS-SD| calculations. The selectors are defined as first the

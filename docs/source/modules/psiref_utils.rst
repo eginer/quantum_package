@@ -5,7 +5,7 @@
 .. default-role:: option
 
 ============
-Psiref_Utils
+psiref_utils
 ============
 
 
