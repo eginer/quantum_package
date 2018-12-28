@@ -85,6 +85,8 @@ def save_new_module(path, l_child):
 """)
 
 def main(arguments):
+    arguments["<name>"] = [ os.path.normpath(name) for name in arguments["<name>"] ]
+
     if arguments["list"]:
         if arguments["-q"]:
             l_result = [ f for f in listdir(QP_PLUGINS) if f not in [ ".gitignore", "local" ] ]
@@ -218,6 +220,8 @@ def main(arguments):
         l_name = [ normalize_case[name.lower()] for name in arguments["<name>"] ]
 
         for name in l_name:
+
+            print name
             if name in d_local:
                 print "{0} Is already installed".format(name)
 

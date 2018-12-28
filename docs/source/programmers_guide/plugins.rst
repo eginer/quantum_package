@@ -6,6 +6,9 @@ Developing plugins
 Creating a repository of plugins
 --------------------------------
 
+The purpose of :file:`$QP_ROOT/plugins` is to contain local copies of
+external repositories of plugins.
+
 Create a repository, for example :file:`qp_plugins_user`, hosted somewhere
 (GitLab, GitHub, etc...), and clone the repository in the
 :file:`$QP_ROOT/plugins` directory.

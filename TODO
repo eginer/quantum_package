@@ -1,6 +1,5 @@
 # qp_module
 
-* Change travis test
 * Mettre le fichier LIB
 
 # Web/doc
@@ -14,16 +13,13 @@
 
 # Exterieur
 
-* Molden format : http://cheminf.cmbi.ru.nl/molden/molden_format.html
+* Molden format : http://cheminf.cmbi.ru.nl/molden/molden_format.html : read+write
 * Un module pour lire les integrales Moleculaires depuis un FCIDUMP
 * Un module pour lire des integrales Atomiques (voir module de Mimi pour lire les AO Slater)
 
 
 # Tests:
 
-  * CIS
-  * CISD
-  * Multi-state
   * >1000 dets
   * Davidson 
   * Lapack
