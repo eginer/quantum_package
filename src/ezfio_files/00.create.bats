@@ -14,8 +14,10 @@ function run {
   fi
   cp ${QP_ROOT}/tests/input/$INPUT .
   rm -rf $EZ
-  qp_create_ezfio_from_xyz $INPUT -b "$BASIS" -m $MULT -c $CHARGE $PSEUDO -o $EZ
+  qp_create_ezfio_from_xyz \
+     $INPUT -b "$BASIS" -m $MULT -c $CHARGE $PSEUDO -o $EZ
   qp_edit -c $EZ
+  echo "Write" > ${EZ}/ao_two_e_integrals/disk_access_ao_integrals
 }
 
 
@@ -28,7 +30,7 @@ function run {
 }
 
 @test "qp_create dhno.xyz" {
-  run dhno.xyz 2 0 "Chipman DZP + Diffuse"
+  run dhno.xyz 2 0 chipman-dzp
 }
 
 @test "qp_create h3coh.xyz" {
