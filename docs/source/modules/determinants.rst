@@ -3149,6 +3149,20 @@ Subroutines / functions
 
 
 
+.. c:function:: pouet
+
+    .. code:: text
+
+        subroutine pouet
+
+    File: :file:`test.irp.f`
+
+    
+
+
+
+
+
 .. c:function:: pull_pt2
 
     .. code:: text

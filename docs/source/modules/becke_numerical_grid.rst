@@ -139,48 +139,48 @@ Providers
     .. code:: text
 
         double precision, allocatable	:: final_grid_points	(3,n_points_final_grid)
-        double precision, allocatable	:: final_weight_functions_at_final_grid_points	(n_points_final_grid)
+        double precision, allocatable	:: final_weight_at_r_vector	(n_points_final_grid)
         integer, allocatable	:: index_final_points	(3,n_points_final_grid)
         integer, allocatable	:: index_final_points_reverse	(n_points_integration_angular,n_points_radial_grid,nucl_num)
 
     File: :file:`grid_becke_vector.irp.f`
 
     final_grid_points(1:3,j) = (/ x, y, z /) of the jth grid point 
-    final_weight_functions_at_final_grid_points(i) = Total weight function of the ith grid point which contains the Lebedev, Voronoi and radial weights contributions 
+    final_weight_at_r_vector(i) = Total weight function of the ith grid point which contains the Lebedev, Voronoi and radial weights contributions 
     index_final_points(1:3,i) = gives the angular, radial and atomic indices associated to the ith grid point 
     index_final_points_reverse(i,j,k) = index of the grid point having i as angular, j as radial and l as atomic indices
 
 
 
 
-.. c:var:: final_weight_functions_at_final_grid_points
+.. c:var:: final_weight_at_r
 
     .. code:: text
 
-        double precision, allocatable	:: final_grid_points	(3,n_points_final_grid)
-        double precision, allocatable	:: final_weight_functions_at_final_grid_points	(n_points_final_grid)
-        integer, allocatable	:: index_final_points	(3,n_points_final_grid)
-        integer, allocatable	:: index_final_points_reverse	(n_points_integration_angular,n_points_radial_grid,nucl_num)
-
-    File: :file:`grid_becke_vector.irp.f`
-
-    final_grid_points(1:3,j) = (/ x, y, z /) of the jth grid point 
-    final_weight_functions_at_final_grid_points(i) = Total weight function of the ith grid point which contains the Lebedev, Voronoi and radial weights contributions 
-    index_final_points(1:3,i) = gives the angular, radial and atomic indices associated to the ith grid point 
-    index_final_points_reverse(i,j,k) = index of the grid point having i as angular, j as radial and l as atomic indices
-
-
-
-
-.. c:var:: final_weight_functions_at_grid_points
-
-    .. code:: text
-
-        double precision, allocatable	:: final_weight_functions_at_grid_points	(n_points_integration_angular,n_points_radial_grid,nucl_num)
+        double precision, allocatable	:: final_weight_at_r	(n_points_integration_angular,n_points_radial_grid,nucl_num)
 
     File: :file:`grid_becke.irp.f`
 
     Total weight on each grid point which takes into account all Lebedev, Voronoi and radial weights.
+
+
+
+
+.. c:var:: final_weight_at_r_vector
+
+    .. code:: text
+
+        double precision, allocatable	:: final_grid_points	(3,n_points_final_grid)
+        double precision, allocatable	:: final_weight_at_r_vector	(n_points_final_grid)
+        integer, allocatable	:: index_final_points	(3,n_points_final_grid)
+        integer, allocatable	:: index_final_points_reverse	(n_points_integration_angular,n_points_radial_grid,nucl_num)
+
+    File: :file:`grid_becke_vector.irp.f`
+
+    final_grid_points(1:3,j) = (/ x, y, z /) of the jth grid point 
+    final_weight_at_r_vector(i) = Total weight function of the ith grid point which contains the Lebedev, Voronoi and radial weights contributions 
+    index_final_points(1:3,i) = gives the angular, radial and atomic indices associated to the ith grid point 
+    index_final_points_reverse(i,j,k) = index of the grid point having i as angular, j as radial and l as atomic indices
 
 
 
@@ -217,14 +217,14 @@ Providers
     .. code:: text
 
         double precision, allocatable	:: final_grid_points	(3,n_points_final_grid)
-        double precision, allocatable	:: final_weight_functions_at_final_grid_points	(n_points_final_grid)
+        double precision, allocatable	:: final_weight_at_r_vector	(n_points_final_grid)
         integer, allocatable	:: index_final_points	(3,n_points_final_grid)
         integer, allocatable	:: index_final_points_reverse	(n_points_integration_angular,n_points_radial_grid,nucl_num)
 
     File: :file:`grid_becke_vector.irp.f`
 
     final_grid_points(1:3,j) = (/ x, y, z /) of the jth grid point 
-    final_weight_functions_at_final_grid_points(i) = Total weight function of the ith grid point which contains the Lebedev, Voronoi and radial weights contributions 
+    final_weight_at_r_vector(i) = Total weight function of the ith grid point which contains the Lebedev, Voronoi and radial weights contributions 
     index_final_points(1:3,i) = gives the angular, radial and atomic indices associated to the ith grid point 
     index_final_points_reverse(i,j,k) = index of the grid point having i as angular, j as radial and l as atomic indices
 
@@ -236,14 +236,14 @@ Providers
     .. code:: text
 
         double precision, allocatable	:: final_grid_points	(3,n_points_final_grid)
-        double precision, allocatable	:: final_weight_functions_at_final_grid_points	(n_points_final_grid)
+        double precision, allocatable	:: final_weight_at_r_vector	(n_points_final_grid)
         integer, allocatable	:: index_final_points	(3,n_points_final_grid)
         integer, allocatable	:: index_final_points_reverse	(n_points_integration_angular,n_points_radial_grid,nucl_num)
 
     File: :file:`grid_becke_vector.irp.f`
 
     final_grid_points(1:3,j) = (/ x, y, z /) of the jth grid point 
-    final_weight_functions_at_final_grid_points(i) = Total weight function of the ith grid point which contains the Lebedev, Voronoi and radial weights contributions 
+    final_weight_at_r_vector(i) = Total weight function of the ith grid point which contains the Lebedev, Voronoi and radial weights contributions 
     index_final_points(1:3,i) = gives the angular, radial and atomic indices associated to the ith grid point 
     index_final_points_reverse(i,j,k) = index of the grid point having i as angular, j as radial and l as atomic indices
 
@@ -289,11 +289,11 @@ Providers
 
 
 
-.. c:var:: weight_functions_at_grid_points
+.. c:var:: weight_at_r
 
     .. code:: text
 
-        double precision, allocatable	:: weight_functions_at_grid_points	(n_points_integration_angular,n_points_radial_grid,nucl_num)
+        double precision, allocatable	:: weight_at_r	(n_points_integration_angular,n_points_radial_grid,nucl_num)
 
     File: :file:`grid_becke.irp.f`
 

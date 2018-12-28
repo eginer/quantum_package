@@ -12,13 +12,15 @@ What it is
 ==========
 
 The |qp| is an open-source programming environment for quantum chemistry,
-especially for `wave function methods <https://en.wikipedia.org/wiki/Ab_initio_quantum_chemistry_methods>`_.
-The main goal is the development of selected configuration interaction (sCI)
-methods and multi-reference perturbation theory (MR-PT) in the
-determinant-driven paradigm.  The determinant-driven framework allows the
-programmer to include any arbitrary set of determinants in the variational
-space, and thus gives a complete freedom in the methodological development. All
-the programs are developed with the `IRPF90`_ code generator, which simplifies
+especially for `wave function theory <https://en.wikipedia.org/wiki/Ab_initio_quantum_chemistry_methods>`_ (WFT).
+The main goal is the development of selected configuration interaction |sCI|
+methods and multi-reference perturbation theory |MRPT| in the
+determinant-driven paradigm. It also contains the very basics of Kohn-Sham `density functional theory <https://en.wikipedia.org/wiki/Density_functional_theory>`_ |KS-DFT| and `range-separated hybrids <https://aip.scitation.org/doi/10.1063/1.1383587>`_ |RSH|.  
+
+Regarding the The determinant-driven framework allows the programmer to include any arbitrary set of 
+determinants in the variational space, and thus gives a complete freedom in the methodological 
+development. The basics of RSH together with the WFT framework also allow a simple coupling between DFT and WFT calculations (see the plugins of `<https://gitlab.com/eginer/qp_plugins_eginer>`_)
+All the programs are developed with the `IRPF90`_ code generator, which simplifies
 the collaborative development, and the development of new features.
 
 
