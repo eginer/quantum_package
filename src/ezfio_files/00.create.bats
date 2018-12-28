@@ -27,6 +27,10 @@ function run {
   run clo.xyz 2 0 cc-pvdz
 }
 
+@test "qp_create dhno.xyz" {
+  run dhno.xyz 2 0 "Chipman DZP + Diffuse"
+}
+
 @test "qp_create h3coh.xyz" {
   run h3coh.xyz 1 0 6-31g
 }

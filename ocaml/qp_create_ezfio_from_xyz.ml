@@ -79,7 +79,7 @@ let dummy_centers ~threshold ~molecule ~nuclei =
 (** Returns the list of available basis sets *)
 let list_basis () =
   let basis_list = 
-    Qpackage.root ^ "/install/emsl/EMSL_api.py list_basis" 
+    "python2 "^ Qpackage.root ^ "/external/emsl/EMSL_api.py list_basis" 
     |> Unix.open_process_in 
     |> In_channel.input_lines
     |> List.map ~f:(fun x -> 

@@ -20,12 +20,12 @@ function run() {
   run  dhno.ezfio  -130.4278777822   
 }
 
-@test "SCF HBO STO-3G" {
-  run  hbo.ezfio  -98.8251985678084 
-}
-
-@test "SCF H2O cc-pVDZ" {
-  run  h2o.ezfio  -0.760270218692179E+02
-}
+#@test "SCF HBO STO-3G" {
+#  run  hbo.ezfio  -98.8251985678084 
+#}
+#
+#@test "SCF H2O cc-pVDZ" {
+#  run  h2o.ezfio  -0.760270218692179E+02
+#}
 
 
