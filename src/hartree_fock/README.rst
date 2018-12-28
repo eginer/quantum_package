@@ -1,5 +1,5 @@
 ============
-Hartree-Fock
+hartree_fock
 ============
 
 

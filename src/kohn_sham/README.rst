@@ -1,6 +1,6 @@
-============
-Kohn-Sham
-============
+=========
+kohn_sham
+=========
 
 
 The Kohn-Sham module performs *Restricted* Kohn-Sham calculations (the

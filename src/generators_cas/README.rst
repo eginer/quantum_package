@@ -1,5 +1,5 @@
 ==============
-Generators_CAS
+generators_cas
 ==============
 
 Module defining the generator determinants as those belonging to a |CAS|.

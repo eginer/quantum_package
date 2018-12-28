@@ -43,7 +43,7 @@ The file :file:`hcn.xyz` contains::
    N    0.0    0.0    -1.156
 
 
-This xyz file is now used with the :command:`qp_create_ezfio_from_xyz` command to
+This xyz file is now used with the :ref:`qp_create_ezfio_from_xyz` command to
 create an |EZFIO| database with the 6-31G basis set:
 
 .. code:: bash
