@@ -23,7 +23,7 @@ in :file:`$QP_ROOT/plugins`.
 
 The list of available uninstalled plugins can be seen using:
 
-.. code-block::
+.. code-block:: bash
 
       qp_plugins list -u
 
@@ -31,7 +31,7 @@ The list of available uninstalled plugins can be seen using:
 Now, the specific plugin :file:`ext_module` contained in the repository
 :file:`ext_repo` can be installed using:
 
-.. code-block::
+.. code-block:: bash
 
         qp_plugins install ext_module
 
@@ -42,7 +42,7 @@ and can be compiled as any module, running |Ninja|.
 
 To remove the module, run
 
-.. code-block::
+.. code-block:: bash
 
         qp_plugins uninstall ext_module
 
