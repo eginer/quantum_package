@@ -86,10 +86,10 @@ def get_dict_child(l_root_abs=None):
             else:
                 if module_rel not in d_ref:
                     d_ref[module_rel] = l_children
-                else:
-                    print "Module {0} alredy defined"
-                    print "Abort"
-                    sys.exit(1)
+               #else:
+               #    print "Module {0} alredy defined"
+               #    print "Abort"
+               #    sys.exit(1)
 
     return d_ref
 
