@@ -1,5 +1,5 @@
 ============
-Hartree-Fock
+hartree_fock
 ============
 
 
@@ -17,6 +17,7 @@ It performs the following actions:
 The definition of the Fock matrix is in :file:`hartree_fock fock_matrix_hf.irp.f` 
 For the keywords related to the |SCF| procedure, see the ``scf_utils`` directory where you will find all options. 
 The main are: 
+
 # :option:`scf_utils thresh_scf` 
 # :option:`scf_utils level_shift` 
 

@@ -5,7 +5,7 @@
 .. default-role:: option
 
 ===
-CIS
+cis
 ===
 
 This module contains a CIS program, built by setting the following rules:

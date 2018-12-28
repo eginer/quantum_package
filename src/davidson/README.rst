@@ -1,6 +1,6 @@
-==============
-Davidson_Utils
-==============
+========
+davidson
+========
 
 Abstract module for Davidson's diagonalization.
 It contains everything required for the Davidson algorithm, dressed or not. If

@@ -5,7 +5,7 @@
 .. default-role:: option
 
 ==========
-Psiref_CAS
+psiref_cas
 ==========
 
 Reference wave function is defined as a |CAS| wave function. 

@@ -5,7 +5,7 @@
 .. default-role:: option
 
 ====
-CISD
+cisd
 ====
 
 This module contains a CISD program, built by setting the following rules:

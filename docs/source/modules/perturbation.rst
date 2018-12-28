@@ -5,7 +5,7 @@
 .. default-role:: option
 
 ============
-Perturbation
+perturbation
 ============
 
 

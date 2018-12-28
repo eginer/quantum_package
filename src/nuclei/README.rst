@@ -1,5 +1,5 @@
 ======
-Nuclei
+nuclei
 ======
 
 This module contains data relative to the nuclei (coordinates, charge,

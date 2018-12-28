@@ -4,9 +4,9 @@
 
 .. default-role:: option
 
-=======
-MOGuess
-=======
+========
+mo_guess
+========
 
 Guess for |MOs|.
 

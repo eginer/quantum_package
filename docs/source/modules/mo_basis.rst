@@ -5,7 +5,7 @@
 .. default-role:: option
 
 ========
-MO_Basis
+mo_basis
 ========
 
 Molecular orbitals are expressed as 

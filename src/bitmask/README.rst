@@ -1,5 +1,5 @@
 ==============
-Bitmask Module
+bitmask module
 ==============
 
 The central part of this module is the :file:`bitmasks_module.f90` file. It contains

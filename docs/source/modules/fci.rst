@@ -5,7 +5,7 @@
 .. default-role:: option
 
 ===
-FCI
+fci
 ===
 
 Selected Full Configuration Interaction.

@@ -1,9 +1,9 @@
 =========
-Electrons
+electrons
 =========
 
-Describes the electrons. For the moment, only the number of alpha and beta electrons
-are provided by this module.
+Describes the electrons. For the moment, only the number of alpha
+and beta electrons are provided by this module.
 
 
 Assumptions

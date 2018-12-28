@@ -1,5 +1,5 @@
 ===============
-Generators_full
+generators_full
 ===============
 
 Module defining the generator determinants as all the determinants of the

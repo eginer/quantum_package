@@ -5,7 +5,7 @@
 .. default-role:: option
 
 ========
-AO_Basis
+ao_basis
 ========
 
 This module describes the atomic orbitals basis set.

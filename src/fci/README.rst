@@ -1,5 +1,5 @@
 ===
-FCI
+fci
 ===
 
 Selected Full Configuration Interaction.

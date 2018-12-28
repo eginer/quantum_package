@@ -374,6 +374,12 @@ echo "          \  (oo)\_______      "
 echo "             (__)\       )\/\. "
 echo "                 ||----w |     "
 echo "                 ||     ||     "
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+echo ""
+echo "Now:"
+echo ""
+echo "  source $QP_ROOT/quantum_package.rc"
+echo ""
    
     
 

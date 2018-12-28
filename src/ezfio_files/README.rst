@@ -1,5 +1,5 @@
 ===========
-Ezfio_files
+ezfio_files
 ===========
 
 This modules essentially contains the name of the |EZFIO| directory in the

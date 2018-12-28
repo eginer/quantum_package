@@ -5,7 +5,7 @@
 .. default-role:: option
 
 =====
-Slave
+slave
 =====
 
 Slave processes for distributed parallelism.

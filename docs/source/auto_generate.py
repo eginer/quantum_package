@@ -212,6 +212,8 @@ def main():
 
   entities = {}
   for abs_module in os.listdir(SRC):
+    if os.path.islink(os.path.join(SRC,abs_module)):
+      continue
     abs_module = os.path.join(SRC,abs_module)
     if os.path.exists( os.path.join(abs_module, "README.rst") ):
       read_entities = generate_providers(abs_module)
@@ -221,6 +223,8 @@ def main():
 
   for abs_module in os.listdir(SRC):
     abs_module = os.path.join(SRC,abs_module)
+    if os.path.islink(os.path.join(SRC,abs_module)):
+      continue
     if os.path.exists( os.path.join(abs_module, "README.rst") ):
         generate_modules(abs_module,entities)
 
