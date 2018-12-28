@@ -48,6 +48,9 @@ END_DOC
 ! Increment cycle number
 
     iteration_SCF += 1
+    if(no_oa_or_av_opt)then
+     call initialize_mo_coef_begin_iteration
+    endif
 
 ! Current size of the DIIS space
 
@@ -79,6 +82,10 @@ END_DOC
     endif
 
     MO_coef = eigenvectors_Fock_matrix_MO
+    if(no_oa_or_av_opt)then
+     call reorder_active_orb
+     call initialize_mo_coef_begin_iteration
+    endif
 
     TOUCH MO_coef
 
@@ -105,6 +112,10 @@ END_DOC
       TOUCH mo_coef
       level_shift = level_shift * 2.0d0
       mo_coef(1:ao_num,1:mo_tot_num) = eigenvectors_Fock_matrix_MO(1:ao_num,1:mo_tot_num)
+      if(no_oa_or_av_opt)then
+        call reorder_active_orb
+        call initialize_mo_coef_begin_iteration
+      endif
       TOUCH mo_coef level_shift
       Delta_Energy_SCF = SCF_energy - energy_SCF_previous
       energy_SCF = SCF_energy
