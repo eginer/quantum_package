@@ -24,7 +24,7 @@ function run() {
   run  h2o.ezfio  -0.760270218692179E+02
 }
 
-@test "SCF H2O" {
+@test "SCF [Cu(NH3)4]2+" {
   run  cu_nh3_4_2plus.ezfio -1862.97590388214
 }
 

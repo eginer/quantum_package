@@ -3,8 +3,8 @@
 source $QP_ROOT/tests/bats/common.bats.sh
 
 function run {
-  INPUT=$1
-  EZ=$2
+  local INPUT=$1
+  local EZ=$2
   cp ${QP_ROOT}/tests/input/$INPUT .
   qp_convert_output_to_ezfio $INPUT -o $EZ
   qp_edit -c $EZ

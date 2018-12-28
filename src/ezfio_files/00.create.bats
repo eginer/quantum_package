@@ -3,14 +3,15 @@
 source $QP_ROOT/tests/bats/common.bats.sh
 
 function run {
-  INPUT=$1
-  EZ=${INPUT/.xyz/.ezfio}
-  EZ=${EZ/.zmt/.ezfio}
-  MULT=$2
-  CHARGE=$3
-  BASIS=$4
+  set -x
+  local INPUT=$1
+  local EZ=${INPUT/.xyz/.ezfio}
+  local EZ=${EZ/.zmt/.ezfio}
+  local MULT=$2
+  local CHARGE=$3
+  local BASIS=$4
   if [[ -n $5 ]] ; then 
-    PSEUDO="-p $5"
+    local PSEUDO="-p $5"
   fi
   cp ${QP_ROOT}/tests/input/$INPUT .
   rm -rf $EZ
@@ -18,6 +19,7 @@ function run {
      $INPUT -b "$BASIS" -m $MULT -c $CHARGE $PSEUDO -o $EZ
   qp_edit -c $EZ
   echo "Write" > ${EZ}/ao_two_e_integrals/disk_access_ao_integrals
+  set +x
 }
 
 
@@ -30,7 +32,7 @@ function run {
 }
 
 @test "qp_create dhno.xyz" {
-  run dhno.xyz 2 0 chipman-dzp
+  run dhno.xyz 2 0 "chipman-dzp"
 }
 
 @test "qp_create h3coh.xyz" {
