@@ -32,6 +32,20 @@ Subroutines / functions
 
 
 
+.. c:function:: qp_ao_ints
+
+    .. code:: text
+
+        subroutine qp_ao_ints
+
+    File: :file:`slave_eri.irp.f`
+
+    Slave for electron repulsion integrals
+
+
+
+
+
 .. c:function:: run_wf
 
     .. code:: text

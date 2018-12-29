@@ -68,9 +68,11 @@
 .. |QMC| replace:: :abbr:`QMC (Quantum Monte Carlo)`
 .. |rst| replace:: :abbr:`RST (ReStructured Text)`
 .. |SCF| replace:: :abbr:`SCF (Self Consistent Field)`
-.. |RSH| replace:: :abbr:`RSH (Range-Separated-Hybrids)`
+.. |RSH| replace:: :abbr:`RSH (Range Separated Hybrids)`
+.. |RSDFT| replace:: :abbr:`RSDFT (Range Separated Density Functional Theory)`
 .. |KS-DFT| replace:: :abbr:`KS-DFT (Kohn-Sham Density Functional Theory)`
 .. |sCI| replace:: :abbr:`sCI (Selected-CI)`
+.. |WFT| replace:: :abbr:`WFT (Wave Function Theory)`
 .. |CASSCF| replace:: |CAS| - |SCF|
 .. |FCIQMC| replace:: |FCI| - |QMC|
 

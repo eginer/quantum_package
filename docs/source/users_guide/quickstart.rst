@@ -75,17 +75,27 @@ The expected energy is ``-92.827856698`` au.
 
     The documentation of the :ref:`hartree_fock` module.
 
+This creates the |MOs| in the |EZFIO| database that will be used to perform any other post-SCF method. 
+The |qp| does not handle symmetry and the |MOs| are stored by increasing order of Fock energies. 
 
 Choose the target |MO| space
 ----------------------------
 
 Now, modify to |EZFIO| database to make |CIPSI| calculation in the
 full set of valence |MOs|, keeping the core |MOs| frozen. The simple
-command :command:`qp_set_frozen_core` does this automatically:
+command :ref:`qp_set_frozen_core` does this automatically:
 
 .. code:: bash
 
     qp_set_frozen_core hcn
+
+
+The general command to specify core and active orbitals is :ref:`qp_set_frozen_core`. In the case of HCN molecule in the 631G basis, one has 20 |MOs| in total and the two first orbitals to freeze:
+
+.. code::
+
+    qp_set_mo_class -core "[1-2]" -act "[3-20]" hcn
+
 
 
 Run the |CIPSI| calculation
@@ -117,6 +127,45 @@ The estimated |FCI| energy of HCN is ``-93.0501`` au.
 .. seealso:: 
 
     The documentation of the :ref:`fci` module.
+
+Extracting natural orbitals
+---------------------------
+
+Once obtained the near |FCI| wave function, one can obtain many quantities related to it. One of these quantities are the natural orbitals which have the properties of making diagonal the one-body density matrix: 
+
+   .. math::
+
+       \rho_{ij} = \delta_{ij}
+
+where the element of the one-body density matrix :math:`\rho_{ij}` is define as:
+
+
+   .. math::
+
+       \rho_{ij} = \langle \Psi | \left( a^{\dagger}_{j,\alpha} a_{i,\alpha} + a^{\dagger}_{j,\beta} a_{i,\beta} \right) | \Psi \rangle
+
+
+These orbitals are in general known to be better than the usual |RHF| |MOs| as they are obtained from a correlated wave function. To use these orbitals for future calculations, one has to replace the current |MOs| by the natural orbitals. To do so, just run: 
+
+.. code::
+
+    qp_run save_natorb hcn
+
+
+
+Printing the near |FCI| wave function 
+-------------------------------------
+
+Once obtained the near |FCI| energy, one can also take a closer look at the wave function stored in the |EZFIO| database. 
+If the wave function contains less than :math:`10^4` determinants, you can directly read it with the :ref:`qp_edit` command. Just run 
+
+
+
+
+The Range Separated Hybrids
+---------------------------
+
+One can also starts the |FCI| calculation with another type of |MOs|, for instance the 
 
 
 .. important:: TODO

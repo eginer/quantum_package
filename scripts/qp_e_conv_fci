@@ -1,0 +1,65 @@
+#!/bin/bash
+file=$1
+out=${file}.conv
+
+ Ndet=`grep "N_det             =" $file | cut -d "=" -f 2` 
+ Evar=`grep "E               =" $file | cut -d "=" -f 2` 
+ EPT2=`grep "E+rPT2           =" $file | cut -d "=" -f 2 | cut -d "+" -f 1` 
+ err=`grep "E+rPT2           =" $file | cut -d "=" -f 2 | cut -d "+" -f 2 | cut -d "/" -f 2 | cut -d " " -f 5`
+
+Ndetarray=[]
+j=0
+for i in $Ndet
+ do 
+  Ndetarray[$j]=$i
+  let "j=j+1"
+done
+Nmax=${#Ndetarray[*]} 
+let "Nmax-=1"
+
+
+Evararray=[]
+j=0
+for i in $Evar
+ do 
+  Evararray[$j]=$i
+  let "j=j+1"
+done
+
+
+EPT2array=[]
+j=0
+for i in $EPT2
+ do 
+  EPT2array[$j]=$i
+  let "j=j+1"
+done
+
+
+errarray=[]
+j=0
+for i in $err
+ do 
+  errarray[$j]=$i
+  let "j=j+1"
+done
+
+
+
+
+echo "#Ndet        E_var         E+PT2      statistical error  " > $out
+for i in `seq 0 $Nmax`
+do
+ echo ${Ndetarray[$i]}  ${Evararray[$i]}  ${EPT2array[$i]} ${errarray[$i]} >> $out
+done
+
+cat << EOF > ${out}.plt
+set term eps
+set output "$out.eps"
+set log x
+set xlabel "Number of determinants"
+set ylabel "Total Energy (a.u.)"
+
+plot "$out" w lp title "E_{var}", "$out" u 1:3:4 w errorlines title "E_{var} + PT2"
+
+EOF
