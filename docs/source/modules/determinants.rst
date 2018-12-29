@@ -37,6 +37,12 @@ EZFIO parameters
 
     Default: 1000000
 
+.. option:: n_det_print_wf
+
+    Maximum number of determinants to be printed with the program print_wf
+
+    Default: 10000
+
 .. option:: n_det_max_full
 
     Maximum number of determinants where |H| is fully diagonalized

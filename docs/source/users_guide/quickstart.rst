@@ -105,7 +105,7 @@ We will now use the |CIPSI| algorithm to estimate the |FCI| energy.
 
 .. code::
 
-    qp_run fci hcn
+    qp_run fci hcn | tee hcn.fci.out 
 
 
 The program will start with a single determinant and will iteratively:
@@ -121,6 +121,15 @@ The program will start with a single determinant and will iteratively:
 
 By default, the program will stop when more than one million determinants have
 entered in the internal space, or when the |PT2| energy is below :math:`10^{-4}`.
+
+To have a pictural illustration of the convergence of the |CIPSI| algorithm, just run 
+
+.. code::
+
+    qp_e_conv_fci hcn.fci.out
+
+This will create the files "hcn.fci.out.conv" containing the data of the convergence of the energy, together with "hcn.fci.out.conv.eps" which is obtained from the gnuplot plot file "hcn.fci.out.conv.plt". 
+
 
 The estimated |FCI| energy of HCN is ``-93.0501`` au.
 
@@ -152,27 +161,62 @@ These orbitals are in general known to be better than the usual |RHF| |MOs| as t
     qp_run save_natorb hcn
 
 
+Hands on
+========
+
+.. important::
+
+   As the |MOs| are changed, for the sake of coherence of future calculations, the save_natorb program 
+   automatically removes the current wave function stored in the |EZFIO| database and replace 
+   it by a single Slater determinant. 
+
+
+Then, you can run another |CIPSI| calculation to see how the use of natural orbital affect the convergence of the algorithm. For instance: 
+
+.. code::
+
+    qp_run fci hcn | tee hcn.fci_natorb.out 
+
+and then
+
+.. code::
+
+    qp_e_conv_fci hcn.fci_natorb.out
+
 
 Printing the near |FCI| wave function 
 -------------------------------------
 
 Once obtained the near |FCI| energy, one can also take a closer look at the wave function stored in the |EZFIO| database. 
-If the wave function contains less than :math:`10^4` determinants, you can directly read it with the :ref:`qp_edit` command. Just run 
+If the wave function contains less than :math:`10^4` determinants, you can directly read it with the 
+:ref:`qp_edit` command. Just run 
+
+.. code::
+
+    qp_edit hcn
 
 
+and then look for "hand" when you are in the :ref:`qp_edit` mode. If the research is negative, 
+then it means that the wave function stored in the |EZFIO| database is too large to be edited in :ref:`qp_edit` mode. 
+An alternative is to use the :command:`print_wf` command: 
+
+.. code::
+
+    qp_run print_wf hcn | tee hcn.fci_natorb.wf
+
+This program will, by default, print out the first :math:`10^4` determinants whatever the size of the wave function stored in the |EZFIO| folder. If you want to change the number of printed Slater determinants, just change the :option:`determinants n_det_print_wf` keyword. 
 
 
 The Range Separated Hybrids
 ---------------------------
 
-One can also starts the |FCI| calculation with another type of |MOs|, for instance the 
+TODO 
 
 
 .. important:: TODO
 
   .. include:: /work.rst
 
-  * Natural orbitals
   * Parameters for Hartree-Fock
   * Parameters for Davidson
   * Running in parallel

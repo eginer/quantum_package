@@ -402,6 +402,7 @@ Index of Providers
 * :c:data:`n_det_max`
 * :c:data:`n_det_max_full`
 * :c:data:`n_det_non_cas`
+* :c:data:`n_det_print_wf`
 * :c:data:`n_det_selectors`
 * :c:data:`n_double_exc_bitmasks`
 * :c:data:`n_double_selectors`
