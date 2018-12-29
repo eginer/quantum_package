@@ -102,6 +102,8 @@ The determinants in |SetDI| will be characterized as **internal**.
    the wave function, low |EPT|, ...).
 
 
+Of course, such a procedure can be applied on any state and therefore can allow to treat both ground and excited states. 
+
 
 Approximations to accelerate the selection
 ------------------------------------------

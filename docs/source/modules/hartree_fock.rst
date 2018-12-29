@@ -197,6 +197,20 @@ Subroutines / functions
 
 
 
+.. c:function:: run
+
+    .. code:: text
+
+        subroutine run
+
+    File: :file:`scf_old.irp.f`
+
+    Run SCF calculation
+
+
+
+
+
 .. c:function:: scf
 
     .. code:: text
