@@ -16,6 +16,7 @@ The Hartree-Fock in an SCF and therefore is based on the ``scf_utils`` structure
 It performs the following actions:
 
 #. Compute/Read all the one- and two-electron integrals, and store them in memory
+
 #. Check in the |EZFIO| database if there is a set of |MOs|. If there is, it
    will read them as initial guess. Otherwise, it will create a guess.
 #. Perform the |SCF| iterations
@@ -25,6 +26,7 @@ For the keywords related to the |SCF| procedure, see the ``scf_utils`` directory
 The main are: 
 
 # :option:`scf_utils thresh_scf` 
+
 # :option:`scf_utils level_shift` 
 
 At each iteration, the |MOs| are saved in the |EZFIO| database. Hence, if the calculation
@@ -55,7 +57,6 @@ EZFIO parameters
 
     Energy HF
 
-    Default: 0.
 
 
 Providers

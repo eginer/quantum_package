@@ -90,7 +90,8 @@ command :ref:`qp_set_frozen_core` does this automatically:
     qp_set_frozen_core hcn
 
 
-The general command to specify core and active orbitals is :ref:`qp_set_frozen_core`. In the case of HCN molecule in the 631G basis, one has 20 |MOs| in total and the two first orbitals to freeze:
+The general command to specify core and active orbitals is :ref:`qp_set_mo_class`. 
+In the case of HCN molecule in the 631G basis, one has 20 |MOs| in total and the two first orbitals are frozen:
 
 .. code::
 
@@ -128,7 +129,7 @@ To have a pictural illustration of the convergence of the |CIPSI| algorithm, jus
 
     qp_e_conv_fci hcn.fci.out
 
-This will create the files "hcn.fci.out.conv" containing the data of the convergence of the energy, together with "hcn.fci.out.conv.eps" which is obtained from the gnuplot plot file "hcn.fci.out.conv.plt". 
+This will create the files "hcn.fci.out.conv" containing the data of the convergence of the energy that can be plotted, together with the file "hcn.fci.out.conv.eps" which is obtained from the gnuplot plot file "hcn.fci.out.conv.plt". 
 
 
 The estimated |FCI| energy of HCN is ``-93.0501`` au.
@@ -140,7 +141,8 @@ The estimated |FCI| energy of HCN is ``-93.0501`` au.
 Extracting natural orbitals
 ---------------------------
 
-Once obtained the near |FCI| wave function, one can obtain many quantities related to it. One of these quantities are the natural orbitals which have the properties of making diagonal the one-body density matrix: 
+Once obtained the near |FCI| wave function, one can obtain many quantities related to it. 
+One of these quantities are the natural orbitals which have the properties of diagonalizing the one-body density matrix: 
 
    .. math::
 
@@ -154,7 +156,7 @@ where the element of the one-body density matrix :math:`\rho_{ij}` is define as:
        \rho_{ij} = \langle \Psi | \left( a^{\dagger}_{j,\alpha} a_{i,\alpha} + a^{\dagger}_{j,\beta} a_{i,\beta} \right) | \Psi \rangle
 
 
-These orbitals are in general known to be better than the usual |RHF| |MOs| as they are obtained from a correlated wave function. To use these orbitals for future calculations, one has to replace the current |MOs| by the natural orbitals. To do so, just run: 
+These orbitals are in general known to be better than the usual |HF| |MOs| as they are obtained from a correlated wave function. To use these orbitals for future calculations, one has to replace the current |MOs| by the natural orbitals. To do so, just run: 
 
 .. code::
 
@@ -167,7 +169,7 @@ Hands on
 .. important::
 
    As the |MOs| are changed, for the sake of coherence of future calculations, the save_natorb program 
-   automatically removes the current wave function stored in the |EZFIO| database and replace 
+   *automatically removes the current wave function* stored in the |EZFIO| database and replace 
    it by a single Slater determinant. 
 
 
@@ -196,7 +198,13 @@ If the wave function contains less than :math:`10^4` determinants, you can direc
     qp_edit hcn
 
 
-and then look for "hand" when you are in the :ref:`qp_edit` mode. If the research is negative, 
+.. important::
+
+        The :ref:`qp_edit` mode virtually makes human-friendly the architecture of the |EZFIO| database 
+        through *vim*-like editor.  
+
+
+Then, look for "hand" when you are in the :ref:`qp_edit` mode. If the research is negative, 
 then it means that the wave function stored in the |EZFIO| database is too large to be edited in :ref:`qp_edit` mode. 
 An alternative is to use the :command:`print_wf` command: 
 
@@ -204,7 +212,7 @@ An alternative is to use the :command:`print_wf` command:
 
     qp_run print_wf hcn | tee hcn.fci_natorb.wf
 
-This program will, by default, print out the first :math:`10^4` determinants whatever the size of the wave function stored in the |EZFIO| folder. If you want to change the number of printed Slater determinants, just change the :option:`determinants n_det_print_wf` keyword. 
+This program will, by default, print out the first :math:`10^4` determinants whatever the size of the wave function stored in the |EZFIO| folder. If you want to change the number of printed Slater determinants, just change the :option:`determinants n_det_print_wf` keyword using the :ref:`qp_edit` tool. 
 
 
 The Range Separated Hybrids
