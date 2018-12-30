@@ -20,7 +20,7 @@
  if (do_direct_integrals) then
 
    !$OMP PARALLEL DEFAULT(NONE)                                      &
-       !$OMP PRIVATE(i,j,l,k1,k,integral,ii,jj,kk,ll,i8,keys,values,p,q,r,s,i0,j0,k0,l0, &
+       !$OMP PRIVATE(i,j,l,k1,k,integral,ii,jj,kk,ll,keys,values,p,q,r,s,i0,j0,k0,l0, &
        !$OMP ao_bi_elec_integral_alpha_tmp,ao_bi_elec_integral_beta_tmp, c0, c1, c2, &
        !$OMP local_threshold)&
        !$OMP SHARED(ao_num,SCF_density_matrix_ao_alpha,SCF_density_matrix_ao_beta,&
@@ -34,7 +34,7 @@
    ao_bi_elec_integral_beta_tmp  = 0.d0
 
    q = ao_num*ao_num*ao_num*ao_num
-   !$OMP DO SCHEDULE(dynamic)
+   !$OMP DO SCHEDULE(static,1)
    do p=1_8,q
            call bielec_integrals_index_reverse(kk,ii,ll,jj,p)
            if ( (kk(1)>ao_num).or. &
@@ -100,7 +100,7 @@
    PROVIDE ao_bielec_integrals_in_map 
            
    integer(omp_lock_kind) :: lck(ao_num)
-   integer*8                      :: i8
+   integer(map_size_kind)     :: i8
    integer                        :: ii(8), jj(8), kk(8), ll(8), k2
    integer(cache_map_size_kind)   :: n_elements_max, n_elements
    integer(key_kind), allocatable :: keys(:)
@@ -120,7 +120,6 @@
    ao_bi_elec_integral_beta_tmp  = 0.d0
 
    !$OMP DO SCHEDULE(static,1)
-   !DIR$ NOVECTOR
    do i8=0_8,ao_integrals_map%map_size
      n_elements = n_elements_max
      call get_cache_map(ao_integrals_map,i8,keys,values,n_elements)
@@ -144,10 +143,12 @@
        enddo
      enddo
    enddo
-   !$OMP END DO NOWAIT
+   !$OMP END DO 
+   !$OMP BARRIER
    !$OMP CRITICAL
    ao_bi_elec_integral_alpha += ao_bi_elec_integral_alpha_tmp
    !$OMP END CRITICAL
+   !$OMP BARRIER
    !$OMP CRITICAL
    ao_bi_elec_integral_beta  += ao_bi_elec_integral_beta_tmp
    !$OMP END CRITICAL

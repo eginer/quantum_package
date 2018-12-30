@@ -110,7 +110,11 @@ END_DOC
     do while (Delta_energy_SCF .ge. 0.d0)
       mo_coef(1:ao_num,1:mo_tot_num) = mo_coef_save
       TOUCH mo_coef
-      level_shift = level_shift * 2.0d0
+      if (level_shift <= 0.d0) then
+        level_shift = 1.d0
+      else
+        level_shift = level_shift * 2.0d0
+      endif
       mo_coef(1:ao_num,1:mo_tot_num) = eigenvectors_Fock_matrix_MO(1:ao_num,1:mo_tot_num)
       if(no_oa_or_av_opt)then
         call reorder_active_orb
