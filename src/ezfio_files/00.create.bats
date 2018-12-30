@@ -3,7 +3,6 @@
 source $QP_ROOT/tests/bats/common.bats.sh
 
 function run {
-  set -x
   local INPUT=$1
   local EZ=${INPUT/.xyz/.ezfio}
   local EZ=${EZ/.zmt/.ezfio}
@@ -19,7 +18,6 @@ function run {
      $INPUT -b "$BASIS" -m $MULT -c $CHARGE $PSEUDO -o $EZ
   qp_edit -c $EZ
   echo "Write" > ${EZ}/ao_two_e_integrals/disk_access_ao_integrals
-  set +x
 }
 
 
