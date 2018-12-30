@@ -16,95 +16,95 @@ function run() {
 
 
 
-@test "SCF HBO" {
+@test "HBO" {
   run  hbo.ezfio  -100.018582259096 
 }
 
-@test "SCF H2O" {
+@test "H2O" {
   run  h2o.ezfio  -0.760270218692179E+02
 }
 
-@test "SCF [Cu(NH3)4]2+" {
+@test "[Cu(NH3)4]2+" {
   run  cu_nh3_4_2plus.ezfio -1862.97590388214
 }
 
-@test "SCF C2H2" {
+@test "C2H2" {
   run c2h2.ezfio -12.12144019495306
 }
 
-@test "SCF ClO" {
+@test "ClO" {
   run clo.ezfio -534.2496714154559
 }
 
-@test "SCF DHNO" {
+@test "DHNO" {
   run  dhno.ezfio  -130.4278777822   
 }
 
-@test "SCF H3COH" {
+@test "H3COH" {
   run h3coh.ezfio  -114.9865030596373
 }
 
-@test "SCF HCN" {
+@test "HCN" {
   run hcn.ezfio -92.88717500035233
 }
 
-@test "SCF N2" {
+@test "N2" {
   run n2.ezfio  -108.9834897852979
 }
 
-@test "SCF SIH2_3B1" {
+@test "SiH2_3B1" {
   run sih2_3b1.ezfio -289.9529166224221
 }
 
-@test "SCF SO" {
+@test "SO" {
   run so.ezfio -25.71752633718843
 }
 
-@test "SCF CH4" {
-  run ch4.ezfio -40.21363716169098
+@test "CH4" {
+  run ch4.ezfio -40.19961807784367
 }
 
-@test "SCF CO2" {
+@test "CO2" {
   run co2.ezfio -187.6507108861204
 }
 
-@test "SCF F2" {
+@test "F2" {
   run f2.ezfio  -198.7643578233773
 }
 
-@test "SCF HCO" {
+@test "HCO" {
   run hco.ezfio -113.0862778269114
 }
 
-@test "SCF NH3" {
-  run nh3.ezfio -56.19561966890940
+@test "NH3" {
+  run nh3.ezfio -56.21783428976567
 }
 
-@test "SCF SiH3" {
+@test "SiH3" {
   run sih3.ezfio -5.455398769158780
 }
 
-@test "SCF ClF" {
+@test "ClF" {
   run clf.ezfio -558.8442570663570
 }
 
-@test "SCF H2O2" {
+@test "H2O2" {
   run h2o2.ezfio -150.7806608469964
 }
 
-@test "SCF H2S" {
+@test "H2S" {
   run h2s.ezfio -398.6944130421982
 }
 
-@test "SCF N2H4" {
+@test "N2H4" {
   run n2h4.ezfio -111.1799916679009
 }
 
-@test "SCF OH" {
+@test "OH" {
   run oh.ezfio -75.42025413469165
 }
 
-@test "SCF SO2" {
+@test "SO2" {
   run so2.ezfio -41.55800190733211
 }
 

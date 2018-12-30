@@ -17,87 +17,87 @@ function run {
   qp_create_ezfio_from_xyz \
      $INPUT -b "$BASIS" -m $MULT -c $CHARGE $PSEUDO -o $EZ
   qp_edit -c $EZ
-  echo "Write" > ${EZ}/ao_two_e_integrals/disk_access_ao_integrals
+#  echo "Write" > ${EZ}/ao_two_e_integrals/disk_access_ao_integrals
 }
 
 
-@test "qp_create c2h2.xyz" {
+@test "C2H2" {
   run c2h2.xyz 1 0 vdz-bfd bfd
 }
 
-@test "qp_create clo.xyz" {
+@test "ClO" {
   run clo.xyz 2 0 cc-pvdz
 }
 
-@test "qp_create dhno.xyz" {
+@test "DHNO" {
   run dhno.xyz 2 0 "chipman-dzp"
 }
 
-@test "qp_create h3coh.xyz" {
+@test "H3COH" {
   run h3coh.xyz 1 0 6-31g
 }
 
-@test "qp_create hcn.xyz" {
+@test "HCN" {
   run hcn.xyz 1 0 aug-cc-pvdz
 }
 
-@test "qp_create n2.xyz" {
+@test "N2" {
   run n2.xyz 1 0 cc-pvtz
 }
 
-@test "qp_create sih2_3b1.xyz" {
+@test "SiH2_3B1" {
   run sih2_3b1.xyz 1 0 6-31g
 }
 
-@test "qp_create so.xyz" {
+@test "SO" {
   run so.xyz 3 0 vdz-bfd bfd
 }
 
-@test "qp_create ch4.xyz" {
-  run ch4.xyz 1 0 aug-cc-pvtz
+@test "CH4" {
+  run ch4.xyz 1 0 aug-cc-pvdz
 }
 
-@test "qp_create co2.xyz" {
+@test "CO2" {
   run co2.xyz 1 0 cc-pvdz
 }
 
-@test "qp_create f2.zmt" {
+@test "F2" {
   run f2.zmt 1 0 "Def2-TZVP"
 }
 
-@test "qp_create hco.xyz" {
+@test "HCO" {
   run hco.xyz 2 0 "Ahlrichs VDZ"
 }
 
-@test "qp_create nh3.xyz" {
-  run nh3.xyz 1 0 cc-pvdz
+@test "NH3" {
+  run nh3.xyz 1 0 cc-pvtz
 }
 
-@test "qp_create sih3.xyz" {
+@test "SiH3" {
   run sih3.xyz 2 0 vdz-bfd bfd
 }
 
-@test "qp_create clf.xyz" {
+@test "ClF" {
   run clf.xyz 1 0 cc-pvdz
 }
 
-@test "qp_create h2o2.zmt" {
+@test "H2O2" {
   run h2o2.zmt 1 0 cc-pvdz
 }
 
-@test "qp_create h2s.xyz" {
+@test "H2S" {
   run h2s.xyz 1 0 cc-pvdz
 }
 
-@test "qp_create n2h4.zmt" {
+@test "N2H4" {
   run n2h4.zmt 1 0 cc-pvdz
 }
 
-@test "qp_create oh.xyz" {
+@test "OH" {
   run oh.xyz 2 0 "Roos Augmented Double Zeta ANO"
 }
 
-@test "qp_create so2.xyz" {
+@test "SO2" {
   run so2.xyz 1 0 vtz-bfd bfd
 }
 
