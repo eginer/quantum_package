@@ -23,8 +23,9 @@ It performs the following actions:
 The definition of the Fock matrix is in :file:`kohn_sham fock_matrix_ks.irp.f` 
 For the keywords related to the |SCF| procedure, see the ``scf_utils`` directory where you will find all options. 
 The main are: 
-# :option:`scf_utils thresh_scf` 
-# :option:`scf_utils level_shift` 
+
+#. :option:`scf_utils thresh_scf` 
+#. :option:`scf_utils level_shift` 
 
 At each iteration, the |MOs| are saved in the |EZFIO| database. Hence, if the calculation
 crashes for any unexpected reason, the calculation can be restarted by running again

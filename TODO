@@ -1,3 +1,4 @@
+!!!!!!!!!! ENLEVER CETTE SALOPERIE DE TRUC DANS VI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # qp_module
 
 * Mettre le fichier LIB
@@ -5,8 +6,7 @@
 # Web/doc
 
 * Creer une page web pas trop degueu et la mettre ici : http://lcpq.github.io/quantum_package
-* Manu : README 
-  * dm_for_dft
+* Pour les README.rst des modules, mettre un deuxième saut à la ligne pour la doc en ligne.
 * prendre des bouts du src/README.rst  et en mettre partout 
 
 

@@ -12,12 +12,14 @@ This module contains all quantities needed to build the Becke's grid used in gen
 
 This grid is built as the reunion of a spherical grid around each atom. Each spherical grid contains a certain number of radial and angular points. 
 
+
 The main providers of that module are:
 
-# :option:`becke_numerical_grid n_points_integration_angular` which is the number of angular integration points. WARNING: it obeys to specific rules so it cannot be any integer number. Some of the possible values are [ 50 | 74 | 266 | 590 | 1202 | 2030 | 5810 ] for instance. See :file:`angular.f` for more details.  
-# :option:`becke_numerical_grid n_points_radial_grid` which is the number of radial angular points. This can be any strictly positive integer. Nevertheless, a minimum of 50 is in general necessary. 
-# `final_grid_points` which are the (x,y,z) coordinates of the grid points.
-# `final_weight_at_r_vector` which are the weights at each grid point
+* :option:`becke_numerical_grid n_points_integration_angular` which is the number of angular integration points. WARNING: it obeys to specific rules so it cannot be any integer number. Some of the possible values are [ 50 | 74 | 266 | 590 | 1202 | 2030 | 5810 ] for instance. See :file:`angular.f` for more details.  
+* :option:`becke_numerical_grid n_points_radial_grid` which is the number of radial angular points. This can be any strictly positive integer. Nevertheless, a minimum of 50 is in general necessary. 
+* `final_grid_points` which are the (x,y,z) coordinates of the grid points.
+* `final_weight_at_r_vector` which are the weights at each grid point
+
 
 For a simple example of how to use the grid, see :file:`example.irp.f`. 
 
