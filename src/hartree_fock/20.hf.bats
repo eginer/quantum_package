@@ -5,6 +5,7 @@ source $QP_ROOT/tests/bats/common.bats.sh
 
 function run() {
   thresh=1.e-8
+  test_exe scf || skip
   qp_edit -c $1
   ezfio set_file $1
   ezfio set scf_utils thresh_scf 1.e-10
