@@ -1,5 +1,4 @@
-!!!!!!!!!! ENLEVER CETTE SALOPERIE DE TRUC DANS VI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# qp_module
+# qp_plugins 
 
 * Mettre le fichier LIB
 
@@ -7,8 +6,7 @@
 
 * Creer une page web pas trop degueu et la mettre ici : http://lcpq.github.io/quantum_package
 * Pour les README.rst des modules, mettre un deuxième saut à la ligne pour la doc en ligne.
-* prendre des bouts du src/README.rst  et en mettre partout 
-
+* Changer irpf90 pour creer de la doc en format rst
 
 
 # Exterieur
@@ -20,27 +18,21 @@
 
 # Tests:
 
-  * >1000 dets
-  * Davidson 
-  * Lapack
   * Extrapolation
   * DFT
 
 
 # User doc:
 
-  * qp_create_ezfio_from_xyz
-  * qp_set_frozen_core 
-  * qp_set_mo_class
-  * qp_edit
-  * qp_convert
+  * Renvoyer a la doc des modules : c'est pour les programmeurs au depart!
+  * Mettre le mp2 comme exercice
+
   * Interfaces : molden/fcidump
   * Natural orbitals
-  * Excited states
   * Parameters for Hartree-Fock
   * Parameters for Davidson
   * Running in parallel
-  * Parameters for selection (Generators/selectors)
+  * Parameters for selection (Generators)
 
 # Programmers doc:
 
@@ -53,3 +45,5 @@
 
 /home/scemama/quantum_package/docs/source/modules/perturbation.rst:216: WARNING
 : script pour mettre des :math: dans les commentaires
+
+# Selection stochastique
