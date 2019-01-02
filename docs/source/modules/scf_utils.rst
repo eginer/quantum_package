@@ -154,9 +154,9 @@ Providers
     .. code:: text
 
         subroutine extrapolate_Fock_matrix(      &
-        error_matrix_DIIS,Fock_matrix_DIIS,    &
-        Fock_matrix_AO_,size_Fock_matrix_AO,   &
-        iteration_SCF,dim_DIIS                 &
+          error_matrix_DIIS,Fock_matrix_DIIS,    &
+          Fock_matrix_AO_,size_Fock_matrix_AO,   &
+          iteration_SCF,dim_DIIS                 &
         )
 
     File: :file:`roothaan_hall_scf.irp.f`
@@ -188,10 +188,16 @@ Providers
 
     File: :file:`fock_matrix.irp.f`
 
-    Fock matrix on the MO basis. For open shells, the ROHF Fock Matrix is 
+    Fock matrix on the MO basis. For open shells, the ROHF Fock Matrix is :: 
+
     |   F-K    |  F + K/2  |    F     | |---------------------------------| | F + K/2  |     F     |  F - K/2 | |---------------------------------| |    F     |  F - K/2  |  F + K   | 
+
+    
+
     F = 1/2 (Fa + Fb) 
+
     K = Fb - Fa 
+
 
 
 
@@ -206,10 +212,16 @@ Providers
 
     File: :file:`fock_matrix.irp.f`
 
-    Fock matrix on the MO basis. For open shells, the ROHF Fock Matrix is 
+    Fock matrix on the MO basis. For open shells, the ROHF Fock Matrix is :: 
+
     |   F-K    |  F + K/2  |    F     | |---------------------------------| | F + K/2  |     F     |  F - K/2 | |---------------------------------| |    F     |  F - K/2  |  F + K   | 
+
+    
+
     F = 1/2 (Fa + Fb) 
+
     K = Fb - Fa 
+
 
 
 

@@ -51,3 +51,5 @@
 
 # EZFIO sans fork
 
+/home/scemama/quantum_package/docs/source/modules/perturbation.rst:216: WARNING
+: script pour mettre des :math: dans les commentaires

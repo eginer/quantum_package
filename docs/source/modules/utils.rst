@@ -221,12 +221,14 @@ Providers
     .. code:: text
 
         subroutine overlap_gaussian_xyz(A_center,B_center,alpha,beta,power_A,&
-        power_B,overlap_x,overlap_y,overlap_z,overlap,dim)
+              power_B,overlap_x,overlap_y,overlap_z,overlap,dim)
 
     File: :file:`one_e_integration.irp.f`
 
     .. math:: 
+
     S_x = \int (x-A_x)^{a_x} exp(-\alpha(x-A_x)^2)  (x-B_x)^{b_x} exp(-beta(x-B_x)^2) dx \\ S = S_x S_y S_z 
+
 
 
 
@@ -466,7 +468,9 @@ Subroutines / functions
     File: :file:`util.irp.f`
 
     .. math                       :: 
+
     \frac{i!}{j!(i-j)!} 
+
 
 
 
@@ -790,6 +794,7 @@ Subroutines / functions
     File: :file:`integration.irp.f`
 
     Transforms the product of (x-x_A)^a(1) (x-x_B)^b(1) (x-x_A)^a(2) (y-y_B)^b(2) (z-z_A)^a(3) (z-z_B)^b(3) exp(-(r-A)^2 alpha) exp(-(r-B)^2 beta) exp(-(r-Nucl_center)^2 gama 
+
     into fact_k * [ sum (l_x = 0,i_order(1)) P_new(l_x,1) * (x-P_center(1))^l_x ] exp (- p (x-P_center(1))^2 ) * [ sum (l_y = 0,i_order(2)) P_new(l_y,2) * (y-P_center(2))^l_y ] exp (- p (y-P_center(2))^2 ) * [ sum (l_z = 0,i_order(3)) P_new(l_z,3) * (z-P_center(3))^l_z ] exp (- p (z-P_center(3))^2 )
 
 
@@ -1253,9 +1258,13 @@ Subroutines / functions
     File: :file:`linear_algebra.irp.f`
 
     Diagonalize matrix H 
+
     H is untouched between input and ouptut 
+
     eigevalues(i) = ith lowest eigenvalue of the H matrix 
+
     eigvectors(i,j) = <i|psi_j> where i is the basis function and psi_j is the j th eigenvector 
+
 
 
 
@@ -1271,9 +1280,13 @@ Subroutines / functions
     File: :file:`linear_algebra.irp.f`
 
     Diagonalize matrix H 
+
     H is untouched between input and ouptut 
+
     eigevalues(i) = ith lowest eigenvalue of the H matrix 
+
     eigvectors(i,j) = <i|psi_j> where i is the basis function and psi_j is the j th eigenvector 
+
 
 
 
@@ -1401,12 +1414,19 @@ Subroutines / functions
     File: :file:`linear_algebra.irp.f`
 
     Compute C_new=C_old.U.s^-1/2 canonical orthogonalization. 
+
     overlap : overlap matrix 
+
     LDA : leftmost dimension of overlap array 
+
     N : Overlap matrix is NxN (array is (LDA,N) ) 
+
     C : Coefficients of the vectors to orthogonalize. On exit, orthogonal vectors 
+
     LDC : leftmost dimension of C 
+
     m : Coefficients matrix is MxN, ( array is (LDC,N) ) 
+
 
 
 
@@ -1422,12 +1442,19 @@ Subroutines / functions
     File: :file:`linear_algebra.irp.f`
 
     Compute C_new=C_old.S^-1/2 orthogonalization. 
+
     overlap : overlap matrix 
+
     LDA : leftmost dimension of overlap array 
+
     N : Overlap matrix is NxN (array is (LDA,N) ) 
+
     C : Coefficients of the vectors to orthogonalize. On exit, orthogonal vectors 
+
     LDC : leftmost dimension of C 
+
     M : Coefficients matrix is MxN, ( array is (LDC,N) ) 
+
 
 
 
@@ -1443,10 +1470,15 @@ Subroutines / functions
     File: :file:`linear_algebra.irp.f`
 
     Orthogonalization using Q.R factorization 
+
     A : matrix to orthogonalize 
+
     LDA : leftmost dimension of A 
+
     n : Number of rows of A 
+
     m : Number of columns of A 
+
 
 
 
@@ -1462,10 +1494,15 @@ Subroutines / functions
     File: :file:`linear_algebra.irp.f`
 
     Orthogonalization using Q.R factorization 
+
     A : matrix to orthogonalize 
+
     LDA : leftmost dimension of A 
+
     n : Number of rows of A 
+
     m : Number of columns of A 
+
 
 
 
@@ -1481,7 +1518,9 @@ Subroutines / functions
     File: :file:`one_e_integration.irp.f`
 
     .. math:: 
+
     \sum_{-infty}^{+infty} (x-A_x)^ax (x-B_x)^bx exp(-alpha(x-A_x)^2) exp(-beta(x-B_X)^2) dx 
+
 
 
 
@@ -1497,7 +1536,9 @@ Subroutines / functions
     File: :file:`one_e_integration.irp.f`
 
     .. math                      :: 
+
     \int_{-infty}^{+infty} (x-A_center)^(power_A) * (x-B_center)^power_B * exp(-alpha(x-A_center)^2) * exp(-beta(x-B_center)^2) dx 
+
 
 
 
@@ -1625,7 +1666,9 @@ Subroutines / functions
     File: :file:`integration.irp.f`
 
     .. math:: 
+
     \int_0^1 dx \exp(-p x^2) x^n 
+
 
 
 
@@ -1837,8 +1880,11 @@ Subroutines / functions
     File: :file:`linear_algebra.irp.f`
 
     Compute A = U.D.Vt 
+
     LDx : leftmost dimension of x 
+
     Dimsneion of A is m x n 
+
 
 
 

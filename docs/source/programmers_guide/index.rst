@@ -10,6 +10,7 @@ Index of Modules
    :glob:
 
    /modules/*
+   /programmers_guide/plugins
 
 
 .. Auto-generated file

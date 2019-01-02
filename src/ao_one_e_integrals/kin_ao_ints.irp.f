@@ -5,7 +5,7 @@
   BEGIN_DOC
   ! Second derivative matrix elements in the |AO| basis.
   !
-  ! :math:`{\tt ao_deriv2_x} =
+  ! :math:`{\tt ao\_deriv2\_x} =
   !  \langle \chi_i(x,y,z) | \frac{\partial^2}{\partial x^2} |\chi_j (x,y,z) \rangle`
   !
   END_DOC

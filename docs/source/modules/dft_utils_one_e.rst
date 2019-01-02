@@ -720,8 +720,8 @@ Providers
     .. code:: text
 
         subroutine GGA_sr_type_functionals(r,rho_a,rho_b,grad_rho_a_2,grad_rho_b_2,grad_rho_a_b, &
-        ex,vx_rho_a,vx_rho_b,vx_grad_rho_a_2,vx_grad_rho_b_2,vx_grad_rho_a_b, &
-        ec,vc_rho_a,vc_rho_b,vc_grad_rho_a_2,vc_grad_rho_b_2,vc_grad_rho_a_b )
+                                        ex,vx_rho_a,vx_rho_b,vx_grad_rho_a_2,vx_grad_rho_b_2,vx_grad_rho_a_b, &
+                                        ec,vc_rho_a,vc_rho_b,vc_grad_rho_a_2,vc_grad_rho_b_2,vc_grad_rho_a_b )
 
     File: :file:`utils.irp.f`
 
@@ -735,8 +735,8 @@ Providers
     .. code:: text
 
         subroutine GGA_type_functionals(r,rho_a,rho_b,grad_rho_a_2,grad_rho_b_2,grad_rho_a_b, &
-        ex,vx_rho_a,vx_rho_b,vx_grad_rho_a_2,vx_grad_rho_b_2,vx_grad_rho_a_b, &
-        ec,vc_rho_a,vc_rho_b,vc_grad_rho_a_2,vc_grad_rho_b_2,vc_grad_rho_a_b )
+                                        ex,vx_rho_a,vx_rho_b,vx_grad_rho_a_2,vx_grad_rho_b_2,vx_grad_rho_a_b, &
+                                        ec,vc_rho_a,vc_rho_b,vc_grad_rho_a_2,vc_grad_rho_b_2,vc_grad_rho_a_b )
 
     File: :file:`utils.irp.f`
 
@@ -1591,14 +1591,23 @@ Subroutines / functions
     File: :file:`exc_sr_pbe.irp.f`
 
     Short-range PBE correlation energy functional for erf interaction 
+
     input : ========== 
+
     mu = range separated parameter 
+
     rhoc, rhoo = total density and spin density 
+
     sigmacc    = square of the gradient of the total density 
+
     sigmaco    = square of the gradient of the spin density 
+
     sigmaoo    = scalar product between the gradient of the total density and the one of the spin density 
+
     output: ========== 
+
     ec         = correlation energy 
+
 
 
 
@@ -1614,19 +1623,33 @@ Subroutines / functions
     File: :file:`exc_sr_pbe.irp.f`
 
     Short-range PBE correlation energy functional for erf interaction 
+
     input : ========== 
+
     mu = range separated parameter 
+
     rhoc, rhoo = total density and spin density 
+
     sigmacc    = square of the gradient of the total density 
+
     sigmaco    = square of the gradient of the spin density 
+
     sigmaoo    = scalar product between the gradient of the total density and the one of the spin density 
+
     output: ========== 
+
     ec         = correlation energy 
+
     all variables v** are energy derivatives with respect to components of the density 
+
     vrhoc      = derivative with respect to the total density 
+
     vrhoo      = derivative with respect to spin density 
+
     vsigmacc   = derivative with respect to the square of the gradient of the total density 
+
     vsigmaco   = derivative with respect to scalar product between the gradients of total and spin densities 
+
     vsigmaoo   = derivative with respect to the square of the gradient of the psin density
 
 

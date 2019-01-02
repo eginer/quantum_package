@@ -47,6 +47,15 @@ To start a calculation from scratch, the simplest way is to remove the
 
 
 
+EZFIO parameters
+----------------
+
+.. option:: energy
+
+    SCF energy
+
+
+
 Providers
 ---------
 
@@ -64,5 +73,23 @@ Providers
     File: :file:`rs_ks_energy.irp.f`
 
     Range-separated Kohn-Sham energy containing the nuclear repulsion energy, and the various components of this quantity.
+
+
+
+
+Subroutines / functions
+-----------------------
+
+
+
+.. c:function:: rs_ks_scf
+
+    .. code:: text
+
+        subroutine rs_ks_scf
+
+    File: :file:`rs_ks_scf.irp.f`
+
+    Produce `Range_separated_Kohn_Sham` MO orbital output: mo_basis.mo_tot_num mo_basis.mo_label mo_basis.ao_md5 mo_basis.mo_coef mo_basis.mo_occ output: kohn_sham.energy optional: mo_basis.mo_coef
 
 

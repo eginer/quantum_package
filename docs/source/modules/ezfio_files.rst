@@ -87,7 +87,9 @@ Subroutines / functions
     File: :file:`get_unit_and_open.irp.f`
 
     :f: file name 
+
     :mode: 'R' : READ, UNFORMATTED 'W' : WRITE, UNFORMATTED 'r' : READ, FORMATTED 'w' : WRITE, FORMATTED 'a' : APPEND, FORMATTED 'x' : READ/WRITE, FORMATTED 
+
 
 
 

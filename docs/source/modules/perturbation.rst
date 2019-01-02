@@ -118,7 +118,7 @@ Providers
     .. code:: text
 
         subroutine fill_H_apply_buffer_selection(n_selected,det_buffer,e_2_pert_buffer,coef_pert_buffer, &
-        N_st,Nint,iproc,select_max_out)
+           N_st,Nint,iproc,select_max_out)
 
     File: :file:`selection.irp.f`
 
@@ -200,6 +200,22 @@ Providers
 
 Subroutines / functions
 -----------------------
+
+
+
+.. c:function:: i_h_psi_pert_new_minilist
+
+    .. code:: text
+
+        subroutine i_H_psi_pert_new_minilist(key,keys,idx_key,N_minilist,coef,Nint,Ndet,Ndet_max,Nstate,i_H_psi_array,coef_pert)
+
+    File: :file:`pt2_new.irp.f`
+
+    Computes <i|H|Psi> = \sum_J c_J <i|H|J>. 
+
+    Uses filter_connected_i_H_psi0 to get all the |J> to which |i> is connected. The |J> are searched in short pre-computed lists.
+
+
 
 
 
@@ -492,9 +508,13 @@ Subroutines / functions
     File: :file:`pt2_equations.irp.f_template_412`
 
     compute the standard Epstein-Nesbet perturbative first order coefficient and second order energetic contribution 
+
     for the various N_st states. 
+
     c_pert(i) = <psi(i)|H|det_pert>/( E(i) - <det_pert|H|det_pert> ) 
+
     e_2_pert(i) = <psi(i)|H|det_pert>^2/( E(i) - <det_pert|H|det_pert> ) 
+
 
 
 
@@ -510,9 +530,13 @@ Subroutines / functions
     File: :file:`pt2_equations.irp.f_template_412`
 
     compute the Epstein-Nesbet 2x2 diagonalization coefficient and energetic contribution 
+
     for the various N_st states. 
+
     e_2_pert(i) = 0.5 * (( <det_pert|H|det_pert> -  E(i) )  - sqrt( ( <det_pert|H|det_pert> -  E(i)) ^2 + 4 <psi(i)|H|det_pert>^2  ) 
+
     c_pert(i) = e_2_pert(i)/ <psi(i)|H|det_pert> 
+
 
 
 
@@ -528,9 +552,13 @@ Subroutines / functions
     File: :file:`pt2_equations.irp.f_template_412`
 
     compute the Epstein-Nesbet 2x2 diagonalization coefficient and energetic contribution 
+
     for the various N_st states. 
+
     e_2_pert(i) = 0.5 * (( <det_pert|H|det_pert> -  E(i) )  - sqrt( ( <det_pert|H|det_pert> -  E(i)) ^2 + 4 <psi(i)|H|det_pert>^2  ) 
+
     c_pert(i) = e_2_pert(i)/ <psi(i)|H|det_pert> 
+
 
 
 
@@ -546,9 +574,13 @@ Subroutines / functions
     File: :file:`pert_single.irp.f`
 
     compute the standard Epstein-Nesbet perturbative first order coefficient and second order energetic contribution 
+
     for the various N_st states. 
+
     c_pert(i) = <psi(i)|H|det_pert>/( E(i) - <det_pert|H|det_pert> ) 
+
     e_2_pert(i) = <psi(i)|H|det_pert>^2/( E(i) - <det_pert|H|det_pert> ) 
+
 
 
 
@@ -564,9 +596,13 @@ Subroutines / functions
     File: :file:`pt2_equations.irp.f_template_412`
 
     compute the standard Moller-Plesset perturbative first order coefficient and second order energetic contribution 
+
     for the various n_st states. 
+
     c_pert(i) = <psi(i)|H|det_pert>/(difference of orbital energies) 
+
     e_2_pert(i) = <psi(i)|H|det_pert>^2/(difference of orbital energies) 
+
 
 
 
@@ -582,9 +618,13 @@ Subroutines / functions
     File: :file:`pt2_equations.irp.f_template_412`
 
     compute the general Moller-Plesset perturbative first order coefficient and second order energetic contribution 
+
     for the various n_st states. 
+
     c_pert(i) = <psi(i)|H|det_pert>/(difference of orbital energies) 
+
     e_2_pert(i) = <psi(i)|H|det_pert>^2/(difference of orbital energies) 
+
 
 
 
@@ -600,8 +640,11 @@ Subroutines / functions
     File: :file:`pt2_equations.irp.f_template_412`
 
     compute the QDPT first order coefficient and second order energetic contribution 
+
     for the various N_st states. 
+
     c_pert(i) = <psi(i)|H|det_pert>/( <psi(i)|H|psi(i)> - <det_pert|H|det_pert> ) 
+
 
 
 
