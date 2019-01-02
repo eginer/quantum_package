@@ -258,6 +258,7 @@ Index of Providers
 * :c:data:`grad_aos_dvx_beta_pbe_w`
 * :c:data:`grid_points_per_atom`
 * :c:data:`grid_points_radial`
+* :c:data:`grid_type_sgn`
 * :c:data:`h0_type`
 * :c:data:`h_apply_buffer_allocated`
 * :c:data:`h_apply_buffer_lock`
@@ -1156,6 +1157,7 @@ Index of Subroutines/Functions
 * :c:func:`print_generators_bitmasks_particles`
 * :c:func:`print_generators_bitmasks_particles_for_one_generator`
 * :c:func:`print_memory_usage`
+* :c:func:`print_r2`
 * :c:func:`print_spindet`
 * :c:func:`print_summary`
 * :c:func:`print_wf`

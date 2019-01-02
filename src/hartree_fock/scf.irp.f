@@ -58,6 +58,7 @@ subroutine run
 ! Choose SCF algorithm
 
   call Roothaan_Hall_SCF
+  call ezfio_set_hartree_fock_energy(SCF_energy)
   
 end
 

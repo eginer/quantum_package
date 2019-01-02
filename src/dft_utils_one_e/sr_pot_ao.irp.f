@@ -52,7 +52,6 @@
   call dgemm('N','N',ao_num,ao_num,n_points_final_grid,1.d0,aos_in_r_array,ao_num,aos_sr_vx_beta_LDA_w(1,1,istate) ,n_points_final_grid,0.d0,potential_sr_x_beta_ao_LDA(1,1,istate),ao_num)
  enddo
  call wall_time(wall_2)
- print*,'time to provide potential_sr_x/c_alpha/beta_ao_LDA = ',wall_2 - wall_1
 
  END_PROVIDER 
 

@@ -92,10 +92,8 @@ subroutine run
 
   mo_label = "Canonical"
 
-! Choose SCF algorithm
-
-!    call damping_SCF   ! Deprecated routine
   call Roothaan_Hall_SCF
+  call ezfio_set_kohn_sham_rs_energy(SCF_energy)
 
  write(*, '(A22,X,F16.10)') 'one_electron_energy = ',one_electron_energy
  write(*, '(A22,X,F16.10)') 'two_electron_energy = ',two_electron_energy
