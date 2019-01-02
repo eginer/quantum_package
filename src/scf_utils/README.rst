@@ -12,15 +12,18 @@ The ``scf_utils`` module is meant to be included in the :file:`NEED` of the vari
 
 All SCF programs perform the following actions:
 
+
 #. Compute/Read all the one- and two-electron integrals, and store them in memory
+
 #. Check in the |EZFIO| database if there is a set of |MOs|. If there is, it
    will read them as initial guess. Otherwise, it will create a guess.
 #. Perform the |SCF| iterations based on the definition of the Fock matrix 
 
 
 The main keywords/options are: 
-# :option:`scf_utils thresh_scf` 
-# :option:`scf_utils level_shift` 
+
+* :option:`scf_utils thresh_scf` 
+* :option:`scf_utils level_shift` 
 
 At each iteration, the |MOs| are saved in the |EZFIO| database. Hence, if the calculation
 crashes for any unexpected reason, the calculation can be restarted by running again

@@ -5,6 +5,10 @@ program scf
 ! output: hartree_fock.energy
 ! optional: mo_basis.mo_coef
   END_DOC
+  disk_access_mo_one_integrals = "None" 
+  touch disk_access_mo_one_integrals 
+  disk_access_ao_one_integrals = "None" 
+  touch disk_access_ao_one_integrals 
   call create_guess
   call orthonormalize_mos
   call run
@@ -54,6 +58,7 @@ subroutine run
 ! Choose SCF algorithm
 
   call Roothaan_Hall_SCF
+  call ezfio_set_hartree_fock_energy(SCF_energy)
   
 end
 

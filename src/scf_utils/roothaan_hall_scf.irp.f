@@ -158,8 +158,8 @@ END_DOC
    call save_mos
   endif
 
-  call write_double(6, Energy_SCF, 'Hartree-Fock energy')
-  call ezfio_set_hartree_fock_energy(Energy_SCF)
+  call write_double(6, Energy_SCF, 'SCF energy ')
+! call ezfio_set_hartree_fock_energy(Energy_SCF)
 
   call write_time(6)
 

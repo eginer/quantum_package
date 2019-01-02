@@ -13,7 +13,7 @@ This module contains some global variables (such as densities and energies) whic
 
 The main providers of that module are:
 
-# `data_one_body_alpha_dm_mo` and `data_one_body_beta_dm_mo` which are the one-body alpha and beta densities which are necessary read from the EZFIO folder.
+* `data_one_body_alpha_dm_mo` and `data_one_body_beta_dm_mo` which are the one-body alpha and beta densities which are necessary read from the EZFIO folder.
 
 
 Thanks to these providers you can use any density matrix that does not necessary corresponds to that of the current wave function. 

@@ -189,7 +189,7 @@ Providers
 
     File: :file:`u0_h_u0.irp.f`
 
-    Energy of the current wave function
+    Electronic energy of the current wave function
 
 
 

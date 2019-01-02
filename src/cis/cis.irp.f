@@ -18,6 +18,12 @@ subroutine run
   do i = 1,N_states
    print *,  i, CI_energy(i) 
   enddo
+  print*,'******************************'
+  print*,'Excitation energy '
+  do i = 2, N_states
+   print*, i ,CI_energy(i) - CI_energy(1)
+  enddo
+
   call ezfio_set_cis_energy(CI_energy)
   psi_coef = ci_eigenvectors
   SOFT_TOUCH psi_coef

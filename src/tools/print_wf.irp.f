@@ -39,7 +39,7 @@ subroutine routine
  norm_mono_b_pert = 0.d0
  norm_mono_a_pert_2 = 0.d0
  norm_mono_b_pert_2 = 0.d0
- do i = 1, min(10000,N_det)
+ do i = 1, min(N_det_print_wf,N_det)
   print*,''
   print*,'i = ',i
   call debug_det(psi_det(1,1,i),N_int)

@@ -5,6 +5,12 @@ program srs_ks_cf
 ! output: kohn_sham.energy
 ! optional: mo_basis.mo_coef
   END_DOC
+
+  disk_access_mo_one_integrals = "None"
+  touch disk_access_mo_one_integrals
+  disk_access_ao_one_integrals = "None"
+  touch disk_access_ao_one_integrals
+
   read_wf = .False.
   density_for_dft ="WFT"
   touch density_for_dft
@@ -86,10 +92,8 @@ subroutine run
 
   mo_label = "Canonical"
 
-! Choose SCF algorithm
-
-!    call damping_SCF   ! Deprecated routine
   call Roothaan_Hall_SCF
+  call ezfio_set_kohn_sham_rs_energy(SCF_energy)
 
  write(*, '(A22,X,F16.10)') 'one_electron_energy = ',one_electron_energy
  write(*, '(A22,X,F16.10)') 'two_electron_energy = ',two_electron_energy

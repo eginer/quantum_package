@@ -16,6 +16,7 @@ The Hartree-Fock in an SCF and therefore is based on the ``scf_utils`` structure
 It performs the following actions:
 
 #. Compute/Read all the one- and two-electron integrals, and store them in memory
+
 #. Check in the |EZFIO| database if there is a set of |MOs|. If there is, it
    will read them as initial guess. Otherwise, it will create a guess.
 #. Perform the |SCF| iterations
@@ -25,6 +26,7 @@ For the keywords related to the |SCF| procedure, see the ``scf_utils`` directory
 The main are: 
 
 # :option:`scf_utils thresh_scf` 
+
 # :option:`scf_utils level_shift` 
 
 At each iteration, the |MOs| are saved in the |EZFIO| database. Hence, if the calculation
@@ -55,11 +57,81 @@ EZFIO parameters
 
     Energy HF
 
-    Default: 0.
 
 
 Providers
 ---------
+
+
+.. c:var:: ao_bi_elec_integral_alpha
+
+    .. code:: text
+
+        double precision, allocatable	:: ao_bi_elec_integral_alpha	(ao_num,ao_num)
+        double precision, allocatable	:: ao_bi_elec_integral_beta	(ao_num,ao_num)
+
+    File: :file:`fock_matrix_hf.irp.f`
+
+    Alpha Fock matrix in AO basis set
+
+
+
+
+.. c:var:: ao_bi_elec_integral_beta
+
+    .. code:: text
+
+        double precision, allocatable	:: ao_bi_elec_integral_alpha	(ao_num,ao_num)
+        double precision, allocatable	:: ao_bi_elec_integral_beta	(ao_num,ao_num)
+
+    File: :file:`fock_matrix_hf.irp.f`
+
+    Alpha Fock matrix in AO basis set
+
+
+
+
+.. c:var:: extra_e_contrib_density
+
+    .. code:: text
+
+        double precision	:: extra_e_contrib_density
+
+    File: :file:`hf_energy.irp.f`
+
+    Extra contribution to the SCF energy coming from the density. 
+    For a Hartree-Fock calculation: extra_e_contrib_density = 0 
+    For a Kohn-Sham or Range-separated Kohn-Sham: the exchange/correlation - trace of the V_xc potential
+
+
+
+
+.. c:var:: fock_matrix_ao_alpha
+
+    .. code:: text
+
+        double precision, allocatable	:: fock_matrix_ao_alpha	(ao_num,ao_num)
+        double precision, allocatable	:: fock_matrix_ao_beta	(ao_num,ao_num)
+
+    File: :file:`fock_matrix_hf.irp.f`
+
+    Alpha Fock matrix in AO basis set
+
+
+
+
+.. c:var:: fock_matrix_ao_beta
+
+    .. code:: text
+
+        double precision, allocatable	:: fock_matrix_ao_alpha	(ao_num,ao_num)
+        double precision, allocatable	:: fock_matrix_ao_beta	(ao_num,ao_num)
+
+    File: :file:`fock_matrix_hf.irp.f`
+
+    Alpha Fock matrix in AO basis set
+
+
 
 
 .. c:var:: hf_energy
@@ -109,6 +181,34 @@ Providers
 
 Subroutines / functions
 -----------------------
+
+
+
+.. c:function:: create_guess
+
+    .. code:: text
+
+        subroutine create_guess
+
+    File: :file:`scf_old.irp.f`
+
+    Create a MO guess if no MOs are present in the EZFIO directory
+
+
+
+
+
+.. c:function:: run
+
+    .. code:: text
+
+        subroutine run
+
+    File: :file:`scf_old.irp.f`
+
+    Run SCF calculation
+
+
 
 
 
