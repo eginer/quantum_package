@@ -15,8 +15,8 @@ subroutine run
   call H_apply_cisd
   print *,  'N_det = ', N_det
   do i = 1,N_states
-   print *,  'energy  = ',CI_energy(i) 
-   print *,  'E_corr  = ',CI_electronic_energy(i) - ref_bitmask_energy
+   print *,  'energy  = ',CI_energy(i), &
+             'E_corr  = ',CI_electronic_energy(i) - ref_bitmask_energy
   enddo
   psi_coef = ci_eigenvectors
   SOFT_TOUCH psi_coef

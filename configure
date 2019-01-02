@@ -148,7 +148,7 @@ for PACKAGE in ${PACKAGES} ; do
     elif [[ ${PACKAGE} = irpf90 ]] ; then
 
             download \
-              "https://github.com/scemama/irpf90/archive/v1.7.2.tar.gz" \
+              "https://gitlab.com/scemama/irpf90/-/archive/v1.7.3/irpf90-v1.7.3.tar.gz" \
               "${QP_ROOT}"/external/irpf90.tar.gz
             (
               cd "${QP_ROOT}"/external
