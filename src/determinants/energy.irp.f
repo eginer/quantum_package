@@ -15,7 +15,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, barycentric_electronic_energy, (N_states) ]
  implicit none
  BEGIN_DOC
- ! TODO : ASCII Elephant
+ ! $E_n = \sum_i {c_i^{(n)}}^2 H_{ii}$
  END_DOC
  integer :: istate,i
 

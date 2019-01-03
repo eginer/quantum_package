@@ -127,7 +127,7 @@ def generate_providers(abs_module):
                 text_old = None
                 while text_old != text:
                     text_old = text
-                    text = text.replace("$"," :math:`",1).replace("$","` ")
+                    text = text.replace("$"," :math:`",1).replace("$","` ",1)
                 for line in text.splitlines():
                     line = line.rstrip()
                     if line.startswith(".SH Declaration"):

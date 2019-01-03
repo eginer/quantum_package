@@ -335,7 +335,7 @@ end subroutine
 subroutine filter_connected_i_H_psi0(key1,key2,Nint,sze,idx)
   use bitmasks
   BEGIN_DOC
-  ! returns the array idx which contains the index of the 
+  ! Returns the array idx which contains the index of the 
   !
   ! determinants in the array key1 that interact 
   !

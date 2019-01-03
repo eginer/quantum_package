@@ -27,7 +27,7 @@ end
 BEGIN_PROVIDER [ integer(bit_kind), psi_det_alpha, (N_int,psi_det_size) ]
  implicit none
  BEGIN_DOC
-! List of alpha determinants of psi_det
+! List of $\alpha$ determinants of psi_det
  END_DOC
  integer :: i,k
 
@@ -42,7 +42,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ integer(bit_kind), psi_det_beta, (N_int,psi_det_size) ]
  implicit none
  BEGIN_DOC
-! List of beta determinants of psi_det
+! List of $\beta$ determinants of psi_det
  END_DOC
  integer :: i,k
 
@@ -60,7 +60,7 @@ BEGIN_TEMPLATE
 &BEGIN_PROVIDER [ integer, N_det_$alpha_unique ]
  implicit none
  BEGIN_DOC
- ! Unique $alpha determinants
+ ! Unique $\\$alpha$ determinants
  END_DOC
 
  integer                        :: i,j,k
@@ -357,7 +357,7 @@ end
 &BEGIN_PROVIDER [ double precision, det_beta_norm, (N_det_beta_unique) ]
  implicit none
  BEGIN_DOC
- ! Norm of the alpha and beta spin determinants in the wave function:
+ ! Norm of the $\alpha$ and $\beta$ spin determinants in the wave function:
  !
  ! ||Da||_i \sum_j C_{ij}**2
  END_DOC
@@ -399,7 +399,7 @@ BEGIN_PROVIDER  [ double precision, psi_bilinear_matrix_values, (N_det,N_states)
 ! Sparse coefficient matrix if the wave function is expressed in a bilinear form :
 !  D_a^t C D_b
 !
-! Rows are alpha determinants and columns are beta.
+! Rows are $\alpha$ determinants and columns are $\beta.$
 !
 ! Order refers to psi_det
   END_DOC
@@ -481,9 +481,10 @@ BEGIN_PROVIDER [ integer, psi_bilinear_matrix_columns_loc, (N_det_beta_unique+1)
   implicit none
   BEGIN_DOC
 ! Sparse coefficient matrix if the wave function is expressed in a bilinear form :
-!  D_a^t C D_b
 !
-! Rows are alpha determinants and columns are beta.
+! $D_\alpha^\dagger.C.D_\beta$
+!
+! Rows are $\alpha$ determinants and columns are $\beta.$
 !
 ! Order refers to psi_det
   END_DOC
@@ -518,9 +519,10 @@ BEGIN_PROVIDER  [ double precision, psi_bilinear_matrix_transp_values, (N_det,N_
   implicit none
   BEGIN_DOC
 ! Transpose of psi_bilinear_matrix
-!  D_b^t C^t D_a
 !
-! Rows are Alpha determinants and columns are beta, but the matrix is stored in row major
+! $D_\beta^\dagger.C^\dagger.D_\alpha$
+!
+! Rows are $\alpha$ determinants and columns are $\beta$, but the matrix is stored in row major
 ! format
   END_DOC
   integer                        :: i,j,k,l
@@ -621,7 +623,8 @@ BEGIN_PROVIDER [ double precision, psi_bilinear_matrix, (N_det_alpha_unique,N_de
   implicit none
   BEGIN_DOC
 ! Coefficient matrix if the wave function is expressed in a bilinear form :
-!  D_a^t C D_b
+!
+! $D_\alpha^\dagger.C.D_\beta$
   END_DOC
   integer :: i,j,k,istate
   psi_bilinear_matrix = 0.d0
@@ -639,7 +642,7 @@ subroutine create_wf_of_psi_bilinear_matrix(truncate)
   implicit none
   BEGIN_DOC
 ! Generate a wave function containing all possible products 
-! of alpha and beta determinants
+! of $\alpha$ and $\beta$ determinants
   END_DOC
   logical, intent(in)            :: truncate
   integer                        :: i,j,k
@@ -708,7 +711,7 @@ end
 subroutine generate_all_alpha_beta_det_products
   implicit none
   BEGIN_DOC
-!  Create a wave function from all possible alpha x beta determinants
+!  Create a wave function from all possible $\alpha \times \beta$ determinants
   END_DOC
   integer                        :: i,j,k,l
   integer                        :: iproc
@@ -753,7 +756,7 @@ subroutine get_all_spin_singles_and_doubles(buffer, idx, spindet, Nint, size_buf
   BEGIN_DOC
 !
 ! Returns the indices of all the single and double excitations in the list of
-! unique alpha determinants.
+! unique $\alpha$ determinants.
 !
 ! /!\ : The buffer is transposed !
 !
@@ -788,7 +791,7 @@ subroutine get_all_spin_singles(buffer, idx, spindet, Nint, size_buffer, singles
   BEGIN_DOC
 !
 ! Returns the indices of all the single excitations in the list of
-! unique alpha determinants.
+! unique $\alpha$ determinants.
 !
   END_DOC
   integer, intent(in)            :: Nint, size_buffer, idx(size_buffer)
@@ -820,7 +823,7 @@ subroutine get_all_spin_doubles(buffer, idx, spindet, Nint, size_buffer, doubles
   BEGIN_DOC
 !
 ! Returns the indices of all the double excitations in the list of
-! unique alpha determinants.
+! unique $\alpha$ determinants.
 !
   END_DOC
   integer, intent(in)            :: Nint, size_buffer, idx(size_buffer)
@@ -947,7 +950,7 @@ subroutine get_all_spin_singles_and_doubles_1(buffer, idx, spindet, size_buffer,
   BEGIN_DOC
 !
 ! Returns the indices of all the single and double excitations in the list of
-! unique alpha determinants.
+! unique $\alpha$ determinants.
 !
 ! /!\ : The buffer is transposed !
 !
@@ -990,7 +993,7 @@ subroutine get_all_spin_singles_1(buffer, idx, spindet, size_buffer, singles, n_
   BEGIN_DOC
 !
 ! Returns the indices of all the single excitations in the list of
-! unique alpha determinants.
+! unique $\alpha$ determinants.
 !
   END_DOC
   integer, intent(in)            :: size_buffer, idx(size_buffer)
@@ -1021,7 +1024,7 @@ subroutine get_all_spin_doubles_1(buffer, idx, spindet, size_buffer, doubles, n_
   BEGIN_DOC
 !
 ! Returns the indices of all the double excitations in the list of
-! unique alpha determinants.
+! unique $\alpha$ determinants.
 !
   END_DOC
   integer, intent(in)            :: size_buffer, idx(size_buffer)
@@ -1055,7 +1058,7 @@ subroutine get_all_spin_singles_and_doubles_$N_int(buffer, idx, spindet, size_bu
   BEGIN_DOC
 !
 ! Returns the indices of all the single and double excitations in the list of
-! unique alpha determinants.
+! unique $\alpha$ determinants.
 !
 ! /!\ : The buffer is transposed !
 !
@@ -1113,7 +1116,7 @@ subroutine get_all_spin_singles_$N_int(buffer, idx, spindet, size_buffer, single
   BEGIN_DOC
 !
 ! Returns the indices of all the single excitations in the list of
-! unique alpha determinants.
+! unique $\alpha$ determinants.
 !
   END_DOC
   integer, intent(in)            :: size_buffer, idx(size_buffer)
@@ -1163,7 +1166,7 @@ subroutine get_all_spin_doubles_$N_int(buffer, idx, spindet, size_buffer, double
   BEGIN_DOC
 !
 ! Returns the indices of all the double excitations in the list of
-! unique alpha determinants.
+! unique $\alpha$ determinants.
 !
   END_DOC
   integer, intent(in)            :: size_buffer, idx(size_buffer)
@@ -1220,7 +1223,7 @@ subroutine wf_of_psi_bilinear_matrix(truncate)
   implicit none
   BEGIN_DOC
 ! Generate a wave function containing all possible products 
-! of alpha and beta determinants
+! of $\alpha$ and $\beta$ determinants
   END_DOC
   logical, intent(in)            :: truncate
   integer                        :: i,j,k

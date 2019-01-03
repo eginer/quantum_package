@@ -4,8 +4,8 @@
   integer :: j,k
   double precision :: tmp(mo_tot_num,mo_tot_num),mono_ints(mo_tot_num,mo_tot_num)
   BEGIN_DOC
-! psi_energy_h_core                = <Psi| h_{core} |Psi>
-! computed using the one_body_dm_mo_alpha+one_body_dm_mo_beta and mo_mono_elec_integral
+! psi_energy_h_core = $\langle \Psi | h_{core} |\Psi \rangle$
+! computed using the `one_body_dm_mo_alpha` + `one_body_dm_mo_beta` and `mo_mono_elec_integral`
   END_DOC
   psi_energy_h_core = 0.d0
   do i = 1, N_states

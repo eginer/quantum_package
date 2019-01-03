@@ -1,7 +1,7 @@
 BEGIN_PROVIDER [double precision, mo_nucl_elec_integral, (mo_tot_num,mo_tot_num)]
  implicit none
  BEGIN_DOC
-! interaction nuclear electron on the MO basis
+! Nucleus-electron interaction on the |MO| basis
  END_DOC
 
   if (read_mo_one_integrals) then
@@ -26,8 +26,9 @@ END_PROVIDER
 BEGIN_PROVIDER [double precision, mo_nucl_elec_integral_per_atom, (mo_tot_num,mo_tot_num,nucl_num)]
  implicit none
  BEGIN_DOC
-! mo_nucl_elec_integral_per_atom(i,j,k) = -<MO(i)|1/|r-Rk|MO(j)> 
-! where Rk is the geometry of the kth atom
+! mo_nucl_elec_integral_per_atom(i,j,k) =
+! $\langle \phi_i| -\frac{1}{|r-R_k|} | \phi_j \rangle$.
+! where R_k is the coordinate of the k-th nucleus.
  END_DOC
 
  integer :: k

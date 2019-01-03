@@ -25,7 +25,7 @@ BEGIN_PROVIDER [ double precision, S2_matrix_all_dets,(N_det,N_det) ]
   use bitmasks
  implicit none
  BEGIN_DOC
- ! H matrix on the basis of the Slater determinants defined by psi_det
+ ! |S^2| matrix on the basis of the Slater determinants defined by psi_det
  END_DOC
  integer :: i,j,k
  double precision :: sij

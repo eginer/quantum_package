@@ -6,13 +6,12 @@ subroutine pt2_epstein_nesbet ($arguments)
   $declarations
   
   BEGIN_DOC
-  ! compute the standard Epstein-Nesbet perturbative first order coefficient and second order energetic contribution
+  ! Compute the standard Epstein-Nesbet perturbative first order coefficient and
+  ! second order energetic contribution for the various N_st states.
   !
-  ! for the various N_st states.
+  ! `c_pert(i)` = $\\frac{\langle i|H|\\alpha \\rangle}{ E_n - \\langle \\alpha|H|\\alpha \\rangle }$.
   !
-  ! c_pert(i) = <psi(i)|H|det_pert>/( E(i) - <det_pert|H|det_pert> )
-  !
-  ! e_2_pert(i) = <psi(i)|H|det_pert>^2/( E(i) - <det_pert|H|det_pert> )
+  ! `e_2_pert(i)` = $\\frac{\\langle i|H|\\alpha \\rangle^2}{ E_n - \\langle \\alpha|H|\\alpha \\rangle }$.
   !
   END_DOC
   
@@ -51,11 +50,10 @@ subroutine pt2_qdpt ($arguments)
   $declarations
   
   BEGIN_DOC
-  ! compute the QDPT first order coefficient and second order energetic contribution
-  !
+  ! Computes the QDPT first order coefficient and second order energetic contribution
   ! for the various N_st states.
   !
-  ! c_pert(i) = <psi(i)|H|det_pert>/( <psi(i)|H|psi(i)> - <det_pert|H|det_pert> )
+  ! `c_pert(i)` = $\\frac{\\langle i|H|\\alpha \\rangle}{\\langle i|H|i \\rangle - \\langle \\alpha|H|\\alpha \\rangle}$.
   !
   END_DOC
   
@@ -104,13 +102,12 @@ subroutine pt2_epstein_nesbet_2x2 ($arguments)
   $declarations
   
   BEGIN_DOC
-  ! compute the Epstein-Nesbet 2x2 diagonalization coefficient and energetic contribution
-  !
+  ! Computes the Epstein-Nesbet 2x2 diagonalization coefficient and energetic contribution
   ! for the various N_st states.
   !
-  ! e_2_pert(i) = 0.5 * (( <det_pert|H|det_pert> -  E(i) )  - sqrt( ( <det_pert|H|det_pert> -  E(i)) ^2 + 4 <psi(i)|H|det_pert>^2  )
+  ! `e_2_pert(i)` = $\\frac{1}{2} ( \\langle \\alpha|H|\\alpha \\rangle -  E_n) - \\sqrt{ (\\langle \\alpha|H|\\alpha \\rangle -  E_n)^2 + 4 \\langle i|H|\\alpha \\rangle^2 }$.
   !
-  ! c_pert(i) = e_2_pert(i)/ <psi(i)|H|det_pert>
+  ! `c_pert(i)` = `e_2_pert(i)` $\\times \\frac{1}{ \\langle i|H|\\alpha \\rangle}$.
   !
   END_DOC
   
@@ -149,70 +146,18 @@ end
 
 
 
-subroutine pt2_epstein_nesbet_2x2_no_ci_diag($arguments)
-  use bitmasks
-  implicit none
-  $declarations
-  
-  BEGIN_DOC
-  ! compute the Epstein-Nesbet 2x2 diagonalization coefficient and energetic contribution
-  !
-  ! for the various N_st states.
-  !
-  ! e_2_pert(i) = 0.5 * (( <det_pert|H|det_pert> -  E(i) )  - sqrt( ( <det_pert|H|det_pert> -  E(i)) ^2 + 4 <psi(i)|H|det_pert>^2  )
-  !
-  ! c_pert(i) = e_2_pert(i)/ <psi(i)|H|det_pert>
-  !
-  END_DOC
-  
-  integer                        :: i,j
-  double precision               :: diag_H_mat_elem_fock,delta_e, h
-  double precision               :: i_H_psi_array(N_st)
-  ASSERT (Nint == N_int)
-  ASSERT (Nint > 0)
-  PROVIDE psi_energy
-
-   call i_H_psi(det_pert,psi_selectors,psi_selectors_coef,Nint,N_det_selectors,psi_selectors_size,N_st,i_H_psi_array)
-  
-  h = diag_H_mat_elem_fock(det_ref,det_pert,fock_diag_tmp,Nint)
-  do i =1,N_st
-    if (i_H_psi_array(i) /= 0.d0) then
-      delta_e = h - psi_energy(i)
-      if (delta_e > 0.d0) then
-        e_2_pert(i) = 0.5d0 * (delta_e - dsqrt(delta_e * delta_e + 4.d0 * i_H_psi_array(i) * i_H_psi_array(i)))
-      else
-        e_2_pert(i) = 0.5d0 * (delta_e + dsqrt(delta_e * delta_e + 4.d0 * i_H_psi_array(i) * i_H_psi_array(i)))
-      endif
-      if (dabs(i_H_psi_array(i)) > 1.d-6) then
-        c_pert(i) = e_2_pert(i)/i_H_psi_array(i)
-      else
-        c_pert(i) = 0.d0
-      endif
-      H_pert_diag(i) = h*c_pert(i)*c_pert(i)
-    else
-      e_2_pert(i) = 0.d0
-      c_pert(i) = 0.d0
-      H_pert_diag(i) = 0.d0
-    endif
-  enddo
-
-end
-
-
-
 subroutine pt2_moller_plesset ($arguments)
   use bitmasks
   implicit none
   $declarations
   
   BEGIN_DOC
-  ! compute the standard Moller-Plesset perturbative first order coefficient and second order energetic contribution
+  ! Computes the standard Moller-Plesset perturbative first order coefficient and second 
+  ! order energetic contribution for the various N_st states.
   !
-  ! for the various n_st states.
+  ! `c_pert(i)` = $\\frac{\\langle i|H|\\alpha \\rangle}{\\text{difference of orbital energies}}$.
   !
-  ! c_pert(i) = <psi(i)|H|det_pert>/(difference of orbital energies) 
-  !
-  ! e_2_pert(i) = <psi(i)|H|det_pert>^2/(difference of orbital energies) 
+  ! `e_2_pert(i)` = $\\frac{\\langle i|H|\\alpha \\rangle^2}{\\text{difference of orbital energies}}$.
   !
   END_DOC
   
@@ -259,13 +204,12 @@ subroutine pt2_moller_plesset_general ($arguments)
   $declarations
   
   BEGIN_DOC
-  ! compute the general Moller-Plesset perturbative first order coefficient and second order energetic contribution
+  ! Computes the standard Moller-Plesset perturbative first order coefficient and second 
+  ! order energetic contribution for the various N_st states.
   !
-  ! for the various n_st states.
+  ! `c_pert(i)` = $\\frac{\\langle i|H|\\alpha \\rangle}{\\text{difference of orbital energies}}$.
   !
-  ! c_pert(i) = <psi(i)|H|det_pert>/(difference of orbital energies) 
-  !
-  ! e_2_pert(i) = <psi(i)|H|det_pert>^2/(difference of orbital energies) 
+  ! `e_2_pert(i)` = $\\frac{\\langle i|H|\\alpha \\rangle^2}{\\text{difference of orbital energies}}$.
   !
   END_DOC
   

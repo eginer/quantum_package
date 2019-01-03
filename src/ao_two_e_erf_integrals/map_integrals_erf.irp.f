@@ -6,7 +6,7 @@ use map_module
 BEGIN_PROVIDER [ type(map_type), ao_integrals_erf_map ]
   implicit none
   BEGIN_DOC
-  ! AO integrals
+  ! |AO| integrals
   END_DOC
   integer(key_kind)              :: key_max
   integer(map_size_kind)         :: sze
@@ -31,7 +31,7 @@ BEGIN_PROVIDER [ double precision, ao_integrals_erf_cache, (0:64*64*64*64) ]
   use map_module
  implicit none
  BEGIN_DOC
- ! Cache of AO integrals for fast access
+ ! Cache of |AO| integrals for fast access
  END_DOC
  PROVIDE ao_bielec_integrals_erf_in_map
  integer                        :: i,j,k,l,ii
@@ -64,7 +64,7 @@ subroutine insert_into_ao_integrals_erf_map(n_integrals,buffer_i, buffer_values)
   use map_module
   implicit none
   BEGIN_DOC
-  ! Create new entry into AO map
+  ! Create new entry into |AO| map
   END_DOC
   
   integer, intent(in)                :: n_integrals
@@ -78,7 +78,7 @@ double precision function get_ao_bielec_integral_erf(i,j,k,l,map) result(result)
   use map_module
   implicit none
   BEGIN_DOC
-  ! Gets one AO bi-electronic integral from the AO map
+  ! Gets one |AO| two-electron integral from the |AO| map
   END_DOC
   integer, intent(in)            :: i,j,k,l
   integer(key_kind)              :: idx
@@ -117,7 +117,7 @@ end
 subroutine get_ao_bielec_integrals_erf(j,k,l,sze,out_val)
   use map_module
   BEGIN_DOC
-  ! Gets multiple AO bi-electronic integral from the AO map .
+  ! Gets multiple |AO| two-electron integral from the |AO| map .
   ! All i are retrieved for j,k,l fixed.
   END_DOC
   implicit none
@@ -146,7 +146,7 @@ subroutine get_ao_bielec_integrals_erf_non_zero(j,k,l,sze,out_val,out_val_index,
   use map_module
   implicit none
   BEGIN_DOC
-  ! Gets multiple AO bi-electronic integral from the AO map .
+  ! Gets multiple |AO| two-electron integrals from the |AO| map .
   ! All non-zero i are retrieved for j,k,l fixed.
   END_DOC
   integer, intent(in)            :: j,k,l, sze
@@ -188,7 +188,7 @@ function get_ao_erf_map_size()
   implicit none
   integer (map_size_kind) :: get_ao_erf_map_size
   BEGIN_DOC
-  ! Returns the number of elements in the AO map
+  ! Returns the number of elements in the |AO| map
   END_DOC
   get_ao_erf_map_size = ao_integrals_erf_map % n_elements
 end
@@ -196,7 +196,7 @@ end
 subroutine clear_ao_erf_map
   implicit none
   BEGIN_DOC
-  ! Frees the memory of the AO map
+  ! Frees the memory of the |AO| map
   END_DOC
   call map_deinit(ao_integrals_erf_map)
   FREE ao_integrals_erf_map
@@ -208,7 +208,7 @@ subroutine dump_ao_integrals_erf(filename)
   use map_module
   implicit none
   BEGIN_DOC
-  ! Save to disk the $ao integrals
+  ! Save to disk the |AO| erf integrals
   END_DOC
   character*(*), intent(in)      :: filename
   integer(cache_key_kind), pointer :: key(:)
@@ -238,7 +238,7 @@ end
 integer function load_ao_integrals_erf(filename)
   implicit none
   BEGIN_DOC
-  ! Read from disk the $ao integrals
+  ! Read from disk the |AO| erf integrals
   END_DOC
   character*(*), intent(in)      :: filename
   integer*8                      :: i

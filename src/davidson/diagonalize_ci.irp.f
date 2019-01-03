@@ -2,7 +2,7 @@
 BEGIN_PROVIDER [ double precision, CI_energy, (N_states_diag) ]
   implicit none
   BEGIN_DOC
-  ! N_states lowest eigenvalues of the CI matrix
+  ! :c:data:`n_states` lowest eigenvalues of the |CI| matrix
   END_DOC
   
   integer                        :: j
@@ -23,7 +23,7 @@ END_PROVIDER
 &BEGIN_PROVIDER [ double precision, CI_eigenvectors, (N_det,N_states_diag) ]
 &BEGIN_PROVIDER [ double precision, CI_eigenvectors_s2, (N_states_diag) ]
    BEGIN_DOC
-   ! Eigenvectors/values of the CI matrix
+   ! Eigenvectors/values of the |CI| matrix
    END_DOC
    implicit none
    double precision               :: ovrlp,u_dot_v
@@ -42,7 +42,7 @@ END_PROVIDER
    logical                        :: converged
    
    PROVIDE threshold_davidson nthreads_davidson
-   ! Guess values for the "N_states" states of the CI_eigenvectors
+   ! Guess values for the "N_states" states of the |CI| eigenvectors
    do j=1,min(N_states,N_det)
      do i=1,N_det
        CI_eigenvectors(i,j) = psi_coef(i,j)
@@ -193,8 +193,8 @@ END_PROVIDER
 subroutine diagonalize_CI
   implicit none
   BEGIN_DOC
-!  Replace the coefficients of the CI states by the coefficients of the 
-!  eigenstates of the CI matrix
+!  Replace the coefficients of the |CI| states by the coefficients of the 
+!  eigenstates of the |CI| matrix.
   END_DOC
   integer :: i,j
   do j=1,N_states

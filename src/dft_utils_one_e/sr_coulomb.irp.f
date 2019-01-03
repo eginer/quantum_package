@@ -2,9 +2,11 @@
 &BEGIN_PROVIDER [double precision, short_range_Hartree, (N_states)]
  implicit none
  BEGIN_DOC
-! short_range_Hartree_operator(i,j) = \int dr i(r)j(r) \int r' \rho(r') W_{ee}^{sr}
-! short_range_Hartree = 0.5 * \sum_{i,j} \rho_{ij} short_range_Hartree_operator(i,j) 
-!                     = 0.5 * \int dr \int r' \rho(r) \rho(r') W_{ee}^{sr}
+! short_range_Hartree_operator(i,j) = $\int dr i(r)j(r) \int r' \rho(r') W_{ee}^{sr}$
+!
+! short_range_Hartree = $1/2  \sum_{i,j} \rho_{ij} \mathtt{short_range_Hartree_operator}(i,j)$
+!
+!                     = $1/2  \int dr \int r' \rho(r) \rho(r') W_{ee}^{sr}$
  END_DOC
  integer :: i,j,k,l,m,n,istate
  double precision :: get_mo_bielec_integral,get_mo_bielec_integral_erf
@@ -40,11 +42,14 @@ END_PROVIDER
  implicit none
  integer :: i,j,istate
  effective_one_e_potential = 0.d0
- BEGIN_DOC 
-! effective_one_e_potential(i,j) = <i| v_{H}^{sr} |j> + <i| h_{core} |j> + <i|v_{xc} |j> 
-! Taking the expectation value does not provide any energy
-! but effective_one_e_potential(i,j) is the potential coupling DFT and WFT part to be used in any WFT calculation
-! shifted_effective_one_e_potential_without_kin  =  effective_one_e_potential_without_kin + shifting_constant on the diagonal 
+ BEGIN_DOC
+! Effective_one_e_potential(i,j) = $\rangle i| v_{H}^{sr} |j\rangle  + \rangle i| h_{core} |j\rangle  + \rangle i|v_{xc} |j\rangle$
+!
+! Taking the expectation value does not provide any energy, but
+! effective_one_e_potential(i,j) is the potential coupling DFT and WFT part to
+! be used in any WFT calculation.
+!
+! shifted_effective_one_e_potential_without_kin = effective_one_e_potential_without_kin + shifting_constant on the diagonal
  END_DOC
  do istate = 1, N_states
   do i = 1, mo_tot_num
