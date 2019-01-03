@@ -203,22 +203,6 @@ Subroutines / functions
 
 
 
-.. c:function:: i_h_psi_pert_new_minilist
-
-    .. code:: text
-
-        subroutine i_H_psi_pert_new_minilist(key,keys,idx_key,N_minilist,coef,Nint,Ndet,Ndet_max,Nstate,i_H_psi_array,coef_pert)
-
-    File: :file:`pt2_new.irp.f`
-
-    Computes <i|H|Psi> = \sum_J c_J <i|H|J>. 
-
-    Uses filter_connected_i_H_psi0 to get all the |J> to which |i> is connected. The |J> are searched in short pre-computed lists.
-
-
-
-
-
 .. c:function:: perturb_buffer_by_mono_decontracted
 
     .. code:: text

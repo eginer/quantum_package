@@ -52,34 +52,6 @@ Providers
 ---------
 
 
-.. c:var:: ao_bi_elec_integral_alpha
-
-    .. code:: text
-
-        double precision, allocatable	:: ao_bi_elec_integral_alpha	(ao_num,ao_num)
-        double precision, allocatable	:: ao_bi_elec_integral_beta	(ao_num,ao_num)
-
-    File: :file:`fock_matrix_ks.irp.f`
-
-    Alpha Fock matrix in ao basis set
-
-
-
-
-.. c:var:: ao_bi_elec_integral_beta
-
-    .. code:: text
-
-        double precision, allocatable	:: ao_bi_elec_integral_alpha	(ao_num,ao_num)
-        double precision, allocatable	:: ao_bi_elec_integral_beta	(ao_num,ao_num)
-
-    File: :file:`fock_matrix_ks.irp.f`
-
-    Alpha Fock matrix in ao basis set
-
-
-
-
 .. c:var:: ao_potential_alpha_xc
 
     .. code:: text
@@ -161,34 +133,6 @@ Providers
     File: :file:`fock_matrix_ks.irp.f`
 
     Mono electronic an Coulomb matrix in ao basis set
-
-
-
-
-.. c:var:: fock_matrix_ao_alpha
-
-    .. code:: text
-
-        double precision, allocatable	:: fock_matrix_ao_alpha	(ao_num,ao_num)
-        double precision, allocatable	:: fock_matrix_ao_beta	(ao_num,ao_num)
-
-    File: :file:`fock_matrix_ks.irp.f`
-
-    Alpha Fock matrix in ao basis set
-
-
-
-
-.. c:var:: fock_matrix_ao_beta
-
-    .. code:: text
-
-        double precision, allocatable	:: fock_matrix_ao_alpha	(ao_num,ao_num)
-        double precision, allocatable	:: fock_matrix_ao_beta	(ao_num,ao_num)
-
-    File: :file:`fock_matrix_ks.irp.f`
-
-    Alpha Fock matrix in ao basis set
 
 
 
@@ -306,34 +250,6 @@ Subroutines / functions
     File: :file:`ks_scf.irp.f`
 
     
-
-
-
-
-
-.. c:function:: create_guess
-
-    .. code:: text
-
-        subroutine create_guess
-
-    File: :file:`ks_scf.irp.f`
-
-    Create a MO guess if no MOs are present in the EZFIO directory
-
-
-
-
-
-.. c:function:: run
-
-    .. code:: text
-
-        subroutine run
-
-    File: :file:`ks_scf.irp.f`
-
-    Run SCF calculation
 
 
 

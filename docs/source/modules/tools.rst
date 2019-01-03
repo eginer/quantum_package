@@ -73,6 +73,20 @@ Subroutines / functions
 
 
 
+.. c:function:: print_r2
+
+    .. code:: text
+
+        subroutine print_r2
+
+    File: :file:`print_r2.irp.f`
+
+    
+
+
+
+
+
 .. c:function:: print_wf
 
     .. code:: text
