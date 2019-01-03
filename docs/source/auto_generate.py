@@ -123,7 +123,12 @@ def generate_providers(abs_module):
                 state = 0
                 entity = { "decl": [], "doc": [] ,
                     "name": name , "module": module }
-                for line in f.readlines():
+                text=f.read()
+                text_old = None
+                while text_old != text:
+                    text_old = text
+                    text = text.replace("$"," :math:`",1).replace("$","` ")
+                for line in text.splitlines():
                     line = line.rstrip()
                     if line.startswith(".SH Declaration"):
                         state = 1

@@ -62,7 +62,9 @@ BEGIN_PROVIDER [ double precision, mo_coef, (ao_num,mo_tot_num) ]
   implicit none
   BEGIN_DOC
   ! Molecular orbital coefficients on AO basis set
+  !
   ! mo_coef(i,j) = coefficient of the ith ao on the jth mo
+  !
   ! mo_label : Label characterizing the MOS (local, canonical, natural, etc)
   END_DOC
   integer                        :: i, j
@@ -115,7 +117,7 @@ BEGIN_PROVIDER [ double precision, mo_coef_in_ao_ortho_basis, (ao_num, mo_tot_nu
  BEGIN_DOC
  ! MO coefficients in orthogonalized AO basis
  !
- ! C^(-1).C_mo
+ ! $C^(-1).C_mo$
  END_DOC
  call dgemm('N','N',ao_num,mo_tot_num,ao_num,1.d0,                   &
      ao_ortho_canonical_coef_inv, size(ao_ortho_canonical_coef_inv,1),&

@@ -237,9 +237,9 @@ end
 subroutine give_polynom_mult_center_mono_elec(A_center,B_center,alpha,beta,power_A,power_B,C_center,n_pt_in,d,n_pt_out)
   implicit none
   BEGIN_DOC
-! Returns the explicit polynomial in terms of the "t" variable of the following
-!
-! :math:`I_x1(a_x, d_x,p,q) * I_x1(a_y, d_y,p,q) * I_x1(a_z, d_z,p,q)`
+  ! Returns the explicit polynomial in terms of the "t" variable of the following
+  !
+  ! $I_{x1}(a_x, d_x,p,q) \times I_{x1}(a_y, d_y,p,q) \times I_{x1}(a_z, d_z,p,q)$.
   END_DOC
   integer, intent(in)            :: n_pt_in
   integer,intent(out)            :: n_pt_out
@@ -481,9 +481,9 @@ double precision function V_e_n(a_x,a_y,a_z,b_x,b_y,b_z,alpha,beta)
   BEGIN_DOC
 ! Primitve nuclear attraction between the two primitves centered on the same atom.
 !
-!         primitive_1 = x**(a_x) y**(a_y) z**(a_z) exp(-alpha * r**2)
+! $p_1 = x^{a_x} y^{a_y} z^{a_z} \exp(-\alpha r^2)$
 !
-!         primitive_2 = x**(b_x) y**(b_y) z**(b_z) exp(- beta * r**2)
+! $p_2 = x^{b_x} y^{b_y} z^{b_z} \exp(-\beta  r^2)$
   END_DOC
   integer                        :: a_x,a_y,a_z,b_x,b_y,b_z
   double precision               :: alpha,beta
@@ -504,7 +504,7 @@ double precision function int_gaus_pol(alpha,n)
   BEGIN_DOC
 ! Computes the integral:
 !
-! :math:`\int_{-\infty}^{\infty} x^n \exp(-\alpha x^2) dx`
+! $\int_{-\infty}^{\infty} x^n \exp(-\alpha x^2) dx$.
   END_DOC
   double precision               :: alpha
   integer                        :: n
@@ -530,7 +530,7 @@ double precision function V_r(n,alpha)
   BEGIN_DOC
   ! Computes the radial part of the nuclear attraction integral:
   !
-  ! :math:`\int_{0}^{\infty} r^n  \exp(-\alpha  r^2)  dr`
+  ! $\int_{0}^{\infty} r^n  \exp(-\alpha  r^2)  dr$
   !
   END_DOC
   double precision               :: alpha, fact
@@ -547,9 +547,9 @@ end
 double precision function V_phi(n,m)
   implicit none
   BEGIN_DOC
-  ! Computes the angular "phi" part of the nuclear attraction integral:
+  ! Computes the angular $\phi$ part of the nuclear attraction integral:
   !
-  ! :math:`\int_{0}^{2 \pi} \cos(\phi)^n \sin(\phi)^m d\phi`
+  ! $\int_{0}^{2 \pi} \cos(\phi)^n \sin(\phi)^m d\phi$.
   END_DOC
   integer                        :: n,m, i
   double precision               :: prod, Wallis
@@ -564,9 +564,9 @@ end
 double precision function V_theta(n,m)
   implicit none
   BEGIN_DOC
-  ! Computes the angular "theta" part of the nuclear attraction integral:
+  ! Computes the angular $\theta$ part of the nuclear attraction integral:
   !
-  ! :math:`\int_{0}^{\pi} \cos(\theta)^n \sin(\theta)^m d\theta`
+  ! $\int_{0}^{\pi} \cos(\theta)^n \sin(\theta)^m d\theta$
   END_DOC
   integer                        :: n,m,i
   double precision               :: Wallis, prod
@@ -585,7 +585,7 @@ double precision function Wallis(n)
   BEGIN_DOC
   ! Wallis integral:
   !
-  ! :math:`\int_{0}^{\pi} \cos(\theta)^n d\theta`
+  ! $\int_{0}^{\pi} \cos(\theta)^n d\theta$.
   END_DOC
   double precision               :: fact
   integer                        :: n,p
