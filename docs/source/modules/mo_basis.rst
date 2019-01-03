@@ -91,6 +91,7 @@ Providers
     File: :file:`track_orb.irp.f`
 
     Void provider to store the coefficients of the |MO| basis at the beginning of the SCF iteration 
+
     Usefull to track some orbitals
 
 
@@ -105,6 +106,7 @@ Providers
     File: :file:`mos.irp.f`
 
     MO coefficients in orthogonalized AO basis 
+
     C^(-1).C_mo
 
 
@@ -189,6 +191,7 @@ Subroutines / functions
     File: :file:`mos.irp.f`
 
     Transform A from the AO basis to the orthogonal AO basis 
+
     C^(-1).A_ao.Ct^(-1)
 
 
@@ -204,6 +207,7 @@ Subroutines / functions
     File: :file:`mos.irp.f`
 
     Transform A from the AO basis to the MO basis 
+
     Ct.A_ao.C
 
 
@@ -261,6 +265,7 @@ Subroutines / functions
     File: :file:`track_orb.irp.f`
 
     
+
     Initialize :c:data:`mo_coef_begin_iteration` to the current :c:data:`mo_coef`
 
 
@@ -276,8 +281,11 @@ Subroutines / functions
     File: :file:`mos.irp.f`
 
     Rotates the jth MO with the kth MO to give two new MO's that are 
+
     '+' = 1/sqrt(2) (|j> + |k>) 
+
     '-' = 1/sqrt(2) (|j> - |k>) 
+
     by convention, the '+' MO is in the lower index (min(j,k)) by convention, the '-' MO is in the larger index (max(j,k))
 
 

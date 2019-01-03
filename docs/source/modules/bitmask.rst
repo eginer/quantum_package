@@ -141,13 +141,21 @@ Providers
     File: :file:`bitmasks.irp.f`
 
     Bitmasks for generator determinants. (N_int, alpha/beta, hole/particle, generator). 
+
     3rd index is : 
+
     * 1 : hole     for single exc 
+
     * 2 : particle for single exc 
+
     * 3 : hole     for 1st exc of double 
+
     * 4 : particle for 1st exc of double 
+
     * 5 : hole     for 2nd exc of double 
+
     * 6 : particle for 2nd exc of double 
+
 
 
 
@@ -162,13 +170,21 @@ Providers
     File: :file:`bitmasks.irp.f`
 
     Bitmasks for generator determinants. (N_int, alpha/beta, hole/particle, generator). 
+
     3rd index is : 
+
     * 1 : hole     for single exc 
+
     * 2 : particle for single exc 
+
     * 3 : hole     for 1st exc of double 
+
     * 4 : particle for 1st exc of double 
+
     * 5 : hole     for 2nd exc of double 
+
     * 6 : particle for 2nd exc of double 
+
 
 
 
@@ -266,6 +282,7 @@ Providers
     File: :file:`bitmasks.irp.f`
 
     list_act(i) = index of the ith active orbital 
+
     list_act_reverse : reverse list of active orbitals list_act_reverse(i) = 0 ::> not an active list_act_reverse(i) = k ::> IS the kth active orbital
 
 
@@ -281,6 +298,7 @@ Providers
     File: :file:`bitmasks.irp.f`
 
     list_act(i) = index of the ith active orbital 
+
     list_act_reverse : reverse list of active orbitals list_act_reverse(i) = 0 ::> not an active list_act_reverse(i) = k ::> IS the kth active orbital
 
 

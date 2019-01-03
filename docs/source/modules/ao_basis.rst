@@ -158,7 +158,7 @@ Providers
 
     File: :file:`aos.irp.f`
 
-    Transposed :c:var:`ao_coef_normalized_ordered`
+    Transposed :c:data:`ao_coef_normalized_ordered`
 
 
 
@@ -198,7 +198,7 @@ Providers
 
     File: :file:`aos.irp.f`
 
-    Transposed :c:var:`ao_expo_ordered`
+    Transposed :c:data:`ao_expo_ordered`
 
 
 
@@ -567,6 +567,7 @@ Subroutines / functions
     File: :file:`aos.irp.f`
 
     Unique index given to a triplet of powers: 
+
     :math:`\frac{1}{2} (l-n_x) (l-n_x+1) + n_z + 1`
 
 

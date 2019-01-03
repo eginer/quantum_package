@@ -6,7 +6,7 @@ This module contains the main keywords related to a DFT calculation or RS-DFT ca
 
 * :option:`dft_keywords exchange_functional`
 * :option:`dft_keywords correlation_functional`
-* :option:`dft_keywords HF_exchange`  : only relevent for the :ref:`ks_scf` program
+* :option:`dft_keywords HF_exchange`  : only relevent for the :c:func:`rs_ks_scf` program
 
 The keyword for the **range separation parameter**  :math:`\mu` is the :option:`ao_two_e_erf_integrals mu_erf` keyword. 
 

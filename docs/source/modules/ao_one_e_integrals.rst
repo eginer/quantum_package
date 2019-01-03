@@ -77,7 +77,7 @@ Providers
 
     File: :file:`ao_ortho_canonical.irp.f`
 
-    Inverse of :c:var:`ao_cart_to_sphe_coef`
+    Inverse of :c:data:`ao_cart_to_sphe_coef`
 
 
 
@@ -120,7 +120,9 @@ Providers
     File: :file:`kin_ao_ints.irp.f`
 
     Second derivative matrix elements in the |AO| basis. 
-    :math:`{\tt ao_deriv2_x} = \langle \chi_i(x,y,z) | \frac{\partial^2}{\partial x^2} |\chi_j (x,y,z) \rangle` 
+
+    :math:`{\tt ao\_deriv2\_x} = \langle \chi_i(x,y,z) | \frac{\partial^2}{\partial x^2} |\chi_j (x,y,z) \rangle` 
+
 
 
 
@@ -137,7 +139,9 @@ Providers
     File: :file:`kin_ao_ints.irp.f`
 
     Second derivative matrix elements in the |AO| basis. 
-    :math:`{\tt ao_deriv2_x} = \langle \chi_i(x,y,z) | \frac{\partial^2}{\partial x^2} |\chi_j (x,y,z) \rangle` 
+
+    :math:`{\tt ao\_deriv2\_x} = \langle \chi_i(x,y,z) | \frac{\partial^2}{\partial x^2} |\chi_j (x,y,z) \rangle` 
+
 
 
 
@@ -154,7 +158,9 @@ Providers
     File: :file:`kin_ao_ints.irp.f`
 
     Second derivative matrix elements in the |AO| basis. 
-    :math:`{\tt ao_deriv2_x} = \langle \chi_i(x,y,z) | \frac{\partial^2}{\partial x^2} |\chi_j (x,y,z) \rangle` 
+
+    :math:`{\tt ao\_deriv2\_x} = \langle \chi_i(x,y,z) | \frac{\partial^2}{\partial x^2} |\chi_j (x,y,z) \rangle` 
+
 
 
 
@@ -171,7 +177,9 @@ Providers
     File: :file:`spread_dipole_ao.irp.f`
 
     * array of the integrals of AO_i * d/dx  AO_j 
+
     * array of the integrals of AO_i * d/dy  AO_j 
+
     * array of the integrals of AO_i * d/dz  AO_j
 
 
@@ -188,7 +196,9 @@ Providers
     File: :file:`spread_dipole_ao.irp.f`
 
     * array of the integrals of AO_i * d/dx  AO_j 
+
     * array of the integrals of AO_i * d/dy  AO_j 
+
     * array of the integrals of AO_i * d/dz  AO_j
 
 
@@ -205,7 +215,9 @@ Providers
     File: :file:`spread_dipole_ao.irp.f`
 
     * array of the integrals of AO_i * d/dx  AO_j 
+
     * array of the integrals of AO_i * d/dy  AO_j 
+
     * array of the integrals of AO_i * d/dz  AO_j
 
 
@@ -222,7 +234,9 @@ Providers
     File: :file:`spread_dipole_ao.irp.f`
 
     * array of the integrals of AO_i * x AO_j 
+
     * array of the integrals of AO_i * y AO_j 
+
     * array of the integrals of AO_i * z AO_j
 
 
@@ -239,7 +253,9 @@ Providers
     File: :file:`spread_dipole_ao.irp.f`
 
     * array of the integrals of AO_i * x AO_j 
+
     * array of the integrals of AO_i * y AO_j 
+
     * array of the integrals of AO_i * z AO_j
 
 
@@ -256,7 +272,9 @@ Providers
     File: :file:`spread_dipole_ao.irp.f`
 
     * array of the integrals of AO_i * x AO_j 
+
     * array of the integrals of AO_i * y AO_j 
+
     * array of the integrals of AO_i * z AO_j
 
 
@@ -271,6 +289,7 @@ Providers
     File: :file:`kin_ao_ints.irp.f`
 
     Kinetic energy integrals in the |AO| basis. 
+
     :math:`\langle \chi_i |\hat{T}| \chi_j \rangle`
 
 
@@ -313,6 +332,7 @@ Providers
     File: :file:`pot_ao_ints.irp.f`
 
     Nucleus-electron interaction, in the |AO| basis set. 
+
     :math:`\langle \chi_i | -\sum_A \frac{1}{|r-R_A|} | \chi_j \rangle`
 
 
@@ -327,6 +347,7 @@ Providers
     File: :file:`pot_ao_ints.irp.f`
 
     Nucleus-electron interaction in the |AO| basis set, per atom A. 
+
     :math:`\langle \chi_i | -\frac{1}{|r-R_A|} | \chi_j \rangle`
 
 
@@ -398,6 +419,7 @@ Providers
     File: :file:`ao_overlap.irp.f`
 
     Overlap between atomic basis functions: 
+
     :math:`\int \chi_i(r) \chi_j(r) dr`
 
 
@@ -412,6 +434,7 @@ Providers
     File: :file:`ao_overlap.irp.f`
 
     Overlap between absolute values of atomic basis functions: 
+
     :math:`\int |\chi_i(r)| |\chi_j(r)| dr`
 
 
@@ -429,6 +452,7 @@ Providers
     File: :file:`ao_overlap.irp.f`
 
     Overlap between atomic basis functions: 
+
     :math:`\int \chi_i(r) \chi_j(r) dr`
 
 
@@ -446,6 +470,7 @@ Providers
     File: :file:`ao_overlap.irp.f`
 
     Overlap between atomic basis functions: 
+
     :math:`\int \chi_i(r) \chi_j(r) dr`
 
 
@@ -463,6 +488,7 @@ Providers
     File: :file:`ao_overlap.irp.f`
 
     Overlap between atomic basis functions: 
+
     :math:`\int \chi_i(r) \chi_j(r) dr`
 
 
@@ -518,7 +544,9 @@ Providers
     File: :file:`spread_dipole_ao.irp.f`
 
     * array of the integrals of AO_i * x^2 AO_j 
+
     * array of the integrals of AO_i * y^2 AO_j 
+
     * array of the integrals of AO_i * z^2 AO_j
 
 
@@ -535,7 +563,9 @@ Providers
     File: :file:`spread_dipole_ao.irp.f`
 
     * array of the integrals of AO_i * x^2 AO_j 
+
     * array of the integrals of AO_i * y^2 AO_j 
+
     * array of the integrals of AO_i * z^2 AO_j
 
 
@@ -552,7 +582,9 @@ Providers
     File: :file:`spread_dipole_ao.irp.f`
 
     * array of the integrals of AO_i * x^2 AO_j 
+
     * array of the integrals of AO_i * y^2 AO_j 
+
     * array of the integrals of AO_i * z^2 AO_j
 
 
@@ -754,7 +786,7 @@ Subroutines / functions
 
     File: :file:`pot_ao_erf_ints.irp.f`
 
-    subroutine that returs all integrals over r of type erf(mu_in * |r-C_center|)/|r-C_center|
+    subroutine that returs all integrals over r of type erf(mu_in * | r-C_center |)/| r-C_center |
 
 
 
@@ -769,6 +801,7 @@ Subroutines / functions
     File: :file:`pot_ao_ints.irp.f`
 
     Returns the explicit polynomial in terms of the "t" variable of the following 
+
     :math:`I_x1(a_x, d_x,p,q) * I_x1(a_y, d_y,p,q) * I_x1(a_z, d_z,p,q)`
 
 
@@ -812,6 +845,7 @@ Subroutines / functions
     File: :file:`pot_ao_ints.irp.f`
 
     Computes the integral: 
+
     :math:`\int_{-\infty}^{\infty} x^n \exp(-\alpha x^2) dx`
 
 
@@ -827,6 +861,7 @@ Subroutines / functions
     File: :file:`pot_ao_ints.irp.f`
 
     Computes the electron-nucleus attraction with two primitves. 
+
     :math:`\langle g_i | \frac{1}{|r-R_c|} | g_j \rangle`
 
 
@@ -855,7 +890,7 @@ Subroutines / functions
 
     File: :file:`pot_ao_erf_ints.irp.f`
 
-    computes the following integral : int[-infty;+infty] dr AO_i_ao (r) AO_j_ao(r) erf(mu_in * |r-C_center|)/|r-C_center|
+    computes the following integral : int[-infty;+infty] dr AO_i_ao (r) AO_j_ao(r) erf(mu_in * | r-C_center |)/| r-C_center |
 
 
 
@@ -926,7 +961,9 @@ Subroutines / functions
     File: :file:`pot_ao_ints.irp.f`
 
     Primitve nuclear attraction between the two primitves centered on the same atom. 
+
     primitive_1 = x**(a_x) y**(a_y) z**(a_z) exp(-alpha * r**2) 
+
     primitive_2 = x**(b_x) y**(b_y) z**(b_z) exp(- beta * r**2)
 
 
@@ -942,6 +979,7 @@ Subroutines / functions
     File: :file:`pot_ao_ints.irp.f`
 
     Computes the angular "phi" part of the nuclear attraction integral: 
+
     :math:`\int_{0}^{2 \pi} \cos(\phi)^n \sin(\phi)^m d\phi`
 
 
@@ -957,7 +995,9 @@ Subroutines / functions
     File: :file:`pot_ao_ints.irp.f`
 
     Computes the radial part of the nuclear attraction integral: 
+
     :math:`\int_{0}^{\infty} r^n  \exp(-\alpha  r^2)  dr` 
+
 
 
 
@@ -973,6 +1013,7 @@ Subroutines / functions
     File: :file:`pot_ao_ints.irp.f`
 
     Computes the angular "theta" part of the nuclear attraction integral: 
+
     :math:`\int_{0}^{\pi} \cos(\theta)^n \sin(\theta)^m d\theta`
 
 
@@ -988,6 +1029,7 @@ Subroutines / functions
     File: :file:`pot_ao_ints.irp.f`
 
     Wallis integral: 
+
     :math:`\int_{0}^{\pi} \cos(\theta)^n d\theta`
 
 

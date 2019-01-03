@@ -105,7 +105,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, ao_coef_normalized_ordered_transp, (ao_prim_num_max,ao_num) ]
   implicit none
   BEGIN_DOC
-  ! Transposed :c:var:`ao_coef_normalized_ordered`
+  ! Transposed :c:data:`ao_coef_normalized_ordered`
   END_DOC
   integer                        :: i,j
   do j=1, ao_num
@@ -119,7 +119,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, ao_expo_ordered_transp, (ao_prim_num_max,ao_num) ]
   implicit none
   BEGIN_DOC
-  ! Transposed :c:var:`ao_expo_ordered`
+  ! Transposed :c:data:`ao_expo_ordered`
   END_DOC
   integer                        :: i,j
   do j=1, ao_num

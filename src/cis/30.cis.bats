@@ -3,13 +3,19 @@
 source $QP_ROOT/tests/bats/common.bats.sh
 
 function run() {
-  thresh=5.e-7
+  if [[ -z $5 ]] ; then
+    S2=1
+  else
+    S2=0
+  fi
+  thresh=1.e-6
   test_exe cis || skip
   qp_edit -c $1
   ezfio set_file $1
   ezfio set determinants n_states  3
+  ezfio set determinants s2_eig $S2
   ezfio set davidson threshold_davidson 1.e-12
-#  echo "Write" > $1/mo_two_e_integrals/disk_access_mo_integrals
+  echo "Write" > $1/mo_two_e_integrals/disk_access_mo_integrals
   qp_set_frozen_core $1
   qp_run cis $1
   energy1="$(ezfio get cis energy | tr '[]' ' ' | cut -d ',' -f 1)"
@@ -23,11 +29,11 @@ function run() {
 
 
 @test "HBO" {
-  run  hbo.ezfio  -100.018582307658  -99.6982685747284 -99.6982685747283
+  run  hbo.ezfio  -100.018582307658  -99.77695116779833 -99.74105601962573 x
 }
 
 @test "H2O" {
-  run  h2o.ezfio  -76.0270218681105 -75.6854407469221 -75.6196755733432
+  run  h2o.ezfio  -76.02702187043107 -75.6854407466997  -75.61967556334928
 }
 
 @test "[Cu(NH3)4]2+" {
@@ -35,7 +41,7 @@ function run() {
 }
 
 @test "C2H2" {
-  run c2h2.ezfio -12.1214401949631 -11.86823108084437 -11.86823108084389
+  run c2h2.ezfio -12.1214401949631 -11.95227840126497 -11.91537223579299 x
 }
 
 @test "ClO" {
@@ -43,7 +49,7 @@ function run() {
 }
 
 @test "DHNO" {
-  run dhno.ezfio -130.447228845699 -130.357180876975 -130.219625729558
+  run dhno.ezfio -130.4472288472718 -130.3571808164850 -130.2196257046987
 }
 
 @test "H3COH" {
@@ -51,11 +57,11 @@ function run() {
 }
 
 @test "HCN" {
-  run hcn.ezfio -92.8871750003801 -92.6089719727410 -92.6089719727409
+  run hcn.ezfio -92.88717500038086 -92.69765690338815 -92.66095614790936 x
 }
 
 @test "N2" {
-  run n2.ezfio  -108.9834897853049 -108.6496539410780 -108.6496539410771
+  run n2.ezfio  -108.9834897853052 -108.7538426008862 -108.7142633124650 x
 }
 
 @test "SiH2_3B1" {
@@ -71,7 +77,7 @@ function run() {
 }
 
 @test "CO2" {
-  run co2.ezfio -187.650710886151 -187.291641391714 -187.291641391713
+  run co2.ezfio -187.6507108861505 -187.3564970712329 -187.3277981565893 x
 }
 
 @test "F2" {
@@ -79,11 +85,11 @@ function run() {
 }
 
 @test "HCO" {
-  run hco.ezfio -113.094024225042 -113.002362525915 -112.894730863318
+  run hco.ezfio -113.0940242141341 -113.0023623703527 -112.8947302999338
 }
 
 @test "NH3" {
-  run nh3.ezfio -56.2178342898186 -55.9199930723028 -55.8475617160862
+  run nh3.ezfio -56.21783428981829 -55.91997684191139 -55.84753645754046
 }
 
 @test "SiH3" {
@@ -111,6 +117,6 @@ function run() {
 }
 
 @test "SO2" {
-  run so2.ezfio -41.5580019075504 -41.3823293845389 -41.3551232664878
+  run so2.ezfio -41.5580019075645  -41.38232986913486 -41.35512503680323
 }
 

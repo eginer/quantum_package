@@ -96,8 +96,11 @@ Subroutines / functions
     File: :file:`print_wf.irp.f`
 
     print the wave function stored in the EZFIO folder in the intermediate normalization 
+
     it also prints a lot of information regarding the excitation operators from the reference determinant 
+
     and a first-order perturbative analysis of the wave function. 
+
     If the wave function strongly deviates from the first-order analysis, something funny is going on :)
 
 
@@ -141,7 +144,9 @@ Subroutines / functions
     File: :file:`save_one_body_dm.irp.f`
 
     programs that computes the one body density on the mo basis for alpha and beta electrons from the wave function stored in the EZFIO folder, and then save it into the EZFIO folder aux_quantities. 
+
     Then, the global variable data_one_body_alpha_dm_mo and data_one_body_beta_dm_mo will automatically read the density in a further calculation. 
+
     This can be used to perform dampin on the density in RS-DFT calculation (see the density_for_dft module).
 
 

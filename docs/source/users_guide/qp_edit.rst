@@ -12,6 +12,10 @@ document, where each section corresponds to the corresponding |qp| module.
 The content of the file can be modified to change the input parameters. When
 the text editor is closed, the updated data is saved into the |EZFIO| directory.
 
+.. note::
+   The text editor which will be opened is defined by the :envvar:`EDITOR`
+   environment variable.
+   
 .. warning::
    When the wave function is too large (more than 10 000 determinants), the
    determinants are not displayed.

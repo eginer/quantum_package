@@ -72,7 +72,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, ao_cart_to_sphe_inv, (ao_cart_to_sphe_num,ao_num) ]
  implicit none
  BEGIN_DOC
- ! Inverse of :c:var:`ao_cart_to_sphe_coef`
+ ! Inverse of :c:data:`ao_cart_to_sphe_coef`
  END_DOC
 
  call get_pseudo_inverse(ao_cart_to_sphe_coef,size(ao_cart_to_sphe_coef,1),&

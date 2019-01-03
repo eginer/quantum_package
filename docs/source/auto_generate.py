@@ -124,7 +124,7 @@ def generate_providers(abs_module):
                 entity = { "decl": [], "doc": [] ,
                     "name": name , "module": module }
                 for line in f.readlines():
-                    line = line.strip()
+                    line = line.rstrip()
                     if line.startswith(".SH Declaration"):
                         state = 1
                         continue
@@ -157,7 +157,7 @@ def generate_providers(abs_module):
                             entity["type"] = 'p'
                     elif state == 2:
                         if line.startswith(".br"):
-                          line = "\n"
+                          line = "\n\n"
                         entity["doc"] += [ line ]
                     elif state == 3:
                         if line.startswith(".br"):

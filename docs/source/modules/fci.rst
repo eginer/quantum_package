@@ -33,7 +33,7 @@ By default, the program will stop when more than one million determinants have
 been selected, or when the |PT2| energy is below :math:`10^{-4}`.
 
 The variational and |PT2| energies of the iterations are stored in the
-|EZFIO| database, in the :ref:`IterativeSave` module.
+|EZFIO| database, in the :ref:`iterations` module.
 
 
 
