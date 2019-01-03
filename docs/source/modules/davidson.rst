@@ -11,7 +11,7 @@ davidson
 Abstract module for Davidson's diagonalization.
 It contains everything required for the Davidson algorithm, dressed or not. If
 a dressing is used, the dressing column should be defined and the
-:ref:`davidsondressed` module should be used. If no dressing is required,
+:ref:`davidson_dressed` module should be used. If no dressing is required,
 the :ref:`davidson` module should be used, and it has a default zero dressing vector.
 
 The important providers for that module are:
@@ -262,14 +262,23 @@ Subroutines / functions
     File: :file:`diagonalization_hs2_dressed.irp.f`
 
     Davidson diagonalization with specific diagonal elements of the H matrix 
+
     H_jj : specific diagonal H matrix elements to diagonalize de Davidson 
+
     S2_out : Output : s^2 
+
     dets_in : bitmasks corresponding to determinants 
+
     u_in : guess coefficients on the various states. Overwritten on exit 
+
     dim_in : leftmost dimension of u_in 
+
     sze : Number of determinants 
+
     N_st : Number of eigenstates 
+
     N_st_diag : Number of states in which H is diagonalized. Assumed > sze 
+
     Initial guess vectors are not necessarily orthonormal
 
 
@@ -285,11 +294,17 @@ Subroutines / functions
     File: :file:`diagonalization_hs2_dressed.irp.f`
 
     Davidson diagonalization. 
+
     dets_in : bitmasks corresponding to determinants 
+
     u_in : guess coefficients on the various states. Overwritten on exit 
+
     dim_in : leftmost dimension of u_in 
+
     sze : Number of determinants 
+
     N_st : Number of eigenstates 
+
     Initial guess vectors are not necessarily orthonormal
 
 
@@ -403,7 +418,9 @@ Subroutines / functions
     File: :file:`u0_wee_u0.irp.f`
 
     Computes v_0 = H|u_0> and s_0 = S^2 |u_0> 
+
     Assumes that the determinants are in psi_det 
+
     istart, iend, ishift, istep are used in ZMQ parallelization.
 
 
@@ -419,6 +436,7 @@ Subroutines / functions
     File: :file:`u0_wee_u0.irp.f`
 
     Computes v_t = H|u_t> and s_t = S^2 |u_t> 
+
     Default should be 1,N_det,0,1
 
 
@@ -434,6 +452,7 @@ Subroutines / functions
     File: :file:`u0_wee_u0.irp.f_template_457`
 
     Computes v_t = H|u_t> and s_t = S^2 |u_t> 
+
     Default should be 1,N_det,0,1
 
 
@@ -449,6 +468,7 @@ Subroutines / functions
     File: :file:`u0_wee_u0.irp.f_template_457`
 
     Computes v_t = H|u_t> and s_t = S^2 |u_t> 
+
     Default should be 1,N_det,0,1
 
 
@@ -464,6 +484,7 @@ Subroutines / functions
     File: :file:`u0_wee_u0.irp.f_template_457`
 
     Computes v_t = H|u_t> and s_t = S^2 |u_t> 
+
     Default should be 1,N_det,0,1
 
 
@@ -479,6 +500,7 @@ Subroutines / functions
     File: :file:`u0_wee_u0.irp.f_template_457`
 
     Computes v_t = H|u_t> and s_t = S^2 |u_t> 
+
     Default should be 1,N_det,0,1
 
 
@@ -494,6 +516,7 @@ Subroutines / functions
     File: :file:`u0_wee_u0.irp.f_template_457`
 
     Computes v_t = H|u_t> and s_t = S^2 |u_t> 
+
     Default should be 1,N_det,0,1
 
 
@@ -509,7 +532,9 @@ Subroutines / functions
     File: :file:`u0_h_u0.irp.f`
 
     Computes v_0 = H|u_0> and s_0 = S^2 |u_0> 
+
     Assumes that the determinants are in psi_det 
+
     istart, iend, ishift, istep are used in ZMQ parallelization.
 
 
@@ -525,6 +550,7 @@ Subroutines / functions
     File: :file:`u0_h_u0.irp.f`
 
     Computes v_t = H|u_t> and s_t = S^2 |u_t> 
+
     Default should be 1,N_det,0,1
 
 
@@ -540,6 +566,7 @@ Subroutines / functions
     File: :file:`u0_h_u0.irp.f_template_468`
 
     Computes v_t = H|u_t> and s_t = S^2 |u_t> 
+
     Default should be 1,N_det,0,1
 
 
@@ -555,6 +582,7 @@ Subroutines / functions
     File: :file:`u0_h_u0.irp.f_template_468`
 
     Computes v_t = H|u_t> and s_t = S^2 |u_t> 
+
     Default should be 1,N_det,0,1
 
 
@@ -570,6 +598,7 @@ Subroutines / functions
     File: :file:`u0_h_u0.irp.f_template_468`
 
     Computes v_t = H|u_t> and s_t = S^2 |u_t> 
+
     Default should be 1,N_det,0,1
 
 
@@ -585,6 +614,7 @@ Subroutines / functions
     File: :file:`u0_h_u0.irp.f_template_468`
 
     Computes v_t = H|u_t> and s_t = S^2 |u_t> 
+
     Default should be 1,N_det,0,1
 
 
@@ -600,6 +630,7 @@ Subroutines / functions
     File: :file:`u0_h_u0.irp.f_template_468`
 
     Computes v_t = H|u_t> and s_t = S^2 |u_t> 
+
     Default should be 1,N_det,0,1
 
 
@@ -615,8 +646,11 @@ Subroutines / functions
     File: :file:`davidson_parallel.irp.f`
 
     Computes v_0 = H|u_0> and s_0 = S^2 |u_0> 
+
     n : number of determinants 
+
     H_jj : array of <j|H|j> 
+
     S2_jj : array of <j|S^2|j>
 
 
@@ -632,7 +666,9 @@ Subroutines / functions
     File: :file:`u0_h_u0.irp.f`
 
     Computes e_0 = <u_0|H|u_0>/<u_0|u_0> 
+
     n : number of determinants 
+
 
 
 
@@ -648,7 +684,9 @@ Subroutines / functions
     File: :file:`u0_wee_u0.irp.f`
 
     Computes e_0 = <u_0|H|u_0>/<u_0|u_0> 
+
     n : number of determinants 
+
 
 
 

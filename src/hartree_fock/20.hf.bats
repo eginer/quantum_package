@@ -5,9 +5,10 @@ source $QP_ROOT/tests/bats/common.bats.sh
 
 function run() {
   thresh=1.e-8
+  test_exe scf || skip
   qp_edit -c $1
   ezfio set_file $1
-  ezfio set scf_utils thresh_scf 1.e-10
+  ezfio set scf_utils thresh_scf 1.e-12
   qp_run scf $1
   qp_set_frozen_core $1
   energy="$(ezfio get hartree_fock energy)"
@@ -25,6 +26,8 @@ function run() {
 }
 
 @test "[Cu(NH3)4]2+" {
+  ezfio set_file cu_nh3_4_2plus.ezfio
+  ezfio set scf_utils thresh_scf 1.e-10
   run  cu_nh3_4_2plus.ezfio -1862.97590388214
 }
 

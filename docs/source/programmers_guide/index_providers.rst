@@ -404,6 +404,9 @@ Index of Providers
 * :c:data:`n_det_max_full`
 * :c:data:`n_det_non_cas`
 * :c:data:`n_det_print_wf`
+* :c:data:`n_det_non_ref`
+* :c:data:`n_det_print_wf`
+* :c:data:`n_det_ref`
 * :c:data:`n_det_selectors`
 * :c:data:`n_double_exc_bitmasks`
 * :c:data:`n_double_selectors`
@@ -1213,6 +1216,7 @@ Index of Subroutines/Functions
 * :c:func:`roothaan_hall_scf`
 * :c:func:`routine`
 * :c:func:`routine_example_psi_det`
+* :c:func:`rs_ks_scf`
 * :c:func:`run`
 * :c:func:`run_pt2_slave`
 * :c:func:`run_selection_slave`

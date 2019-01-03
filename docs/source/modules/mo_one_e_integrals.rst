@@ -272,6 +272,7 @@ Subroutines / functions
     File: :file:`ao_to_mo.irp.f`
 
     Transform A from the MO basis to the AO basis 
+
     (S.C).A_mo.(S.C)t
 
 

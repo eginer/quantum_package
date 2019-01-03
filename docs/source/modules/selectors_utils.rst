@@ -32,10 +32,12 @@ Providers
 
     File: :file:`e_corr_selectors.irp.f`
 
-    energy of correlation per determinant respect to the Hartree Fock determinant 
-    for the all the double excitations in the selectors determinants 
-    E_corr_per_selectors(i) = <D_i|H|HF> * c(D_i)/c(HF) if |D_i> is a double excitation 
+    Correlation energy per determinant with respect to the Hartree-Fock determinant for the all the double excitations in the selectors determinants. 
+
+    E_corr_per_selectors(i) = :math:`\langle D_i | H | \text{HF}\rangle  c(D_i)/c(HF)` if :math:`| D_i \rangle` is a double excitation. 
+
     E_corr_per_selectors(i) = -1000.d0 if it is not a double excitation 
+
     coef_hf_selector = coefficient of the Hartree Fock determinant in the selectors determinants
 
 
@@ -56,10 +58,12 @@ Providers
 
     File: :file:`e_corr_selectors.irp.f`
 
-    energy of correlation per determinant respect to the Hartree Fock determinant 
-    for the all the double excitations in the selectors determinants 
-    E_corr_per_selectors(i) = <D_i|H|HF> * c(D_i)/c(HF) if |D_i> is a double excitation 
+    Correlation energy per determinant with respect to the Hartree-Fock determinant for the all the double excitations in the selectors determinants. 
+
+    E_corr_per_selectors(i) = :math:`\langle D_i | H | \text{HF}\rangle  c(D_i)/c(HF)` if :math:`| D_i \rangle` is a double excitation. 
+
     E_corr_per_selectors(i) = -1000.d0 if it is not a double excitation 
+
     coef_hf_selector = coefficient of the Hartree Fock determinant in the selectors determinants
 
 
@@ -75,9 +79,10 @@ Providers
 
     File: :file:`e_corr_selectors.irp.f`
 
-    degree of excitation respect to Hartree Fock for the wave function 
-    for the all the selectors determinants 
+    Degree of excitation respect to Hartree Fock for the wave function for the all the selectors determinants. 
+
     double_index_selectors = list of the index of the double excitations 
+
     n_double_selectors = number of double excitations in the selectors determinants
 
 
@@ -98,10 +103,12 @@ Providers
 
     File: :file:`e_corr_selectors.irp.f`
 
-    energy of correlation per determinant respect to the Hartree Fock determinant 
-    for the all the double excitations in the selectors determinants 
-    E_corr_per_selectors(i) = <D_i|H|HF> * c(D_i)/c(HF) if |D_i> is a double excitation 
+    Correlation energy per determinant with respect to the Hartree-Fock determinant for the all the double excitations in the selectors determinants. 
+
+    E_corr_per_selectors(i) = :math:`\langle D_i | H | \text{HF}\rangle  c(D_i)/c(HF)` if :math:`| D_i \rangle` is a double excitation. 
+
     E_corr_per_selectors(i) = -1000.d0 if it is not a double excitation 
+
     coef_hf_selector = coefficient of the Hartree Fock determinant in the selectors determinants
 
 
@@ -122,10 +129,12 @@ Providers
 
     File: :file:`e_corr_selectors.irp.f`
 
-    energy of correlation per determinant respect to the Hartree Fock determinant 
-    for the all the double excitations in the selectors determinants 
-    E_corr_per_selectors(i) = <D_i|H|HF> * c(D_i)/c(HF) if |D_i> is a double excitation 
+    Correlation energy per determinant with respect to the Hartree-Fock determinant for the all the double excitations in the selectors determinants. 
+
+    E_corr_per_selectors(i) = :math:`\langle D_i | H | \text{HF}\rangle  c(D_i)/c(HF)` if :math:`| D_i \rangle` is a double excitation. 
+
     E_corr_per_selectors(i) = -1000.d0 if it is not a double excitation 
+
     coef_hf_selector = coefficient of the Hartree Fock determinant in the selectors determinants
 
 
@@ -146,10 +155,12 @@ Providers
 
     File: :file:`e_corr_selectors.irp.f`
 
-    energy of correlation per determinant respect to the Hartree Fock determinant 
-    for the all the double excitations in the selectors determinants 
-    E_corr_per_selectors(i) = <D_i|H|HF> * c(D_i)/c(HF) if |D_i> is a double excitation 
+    Correlation energy per determinant with respect to the Hartree-Fock determinant for the all the double excitations in the selectors determinants. 
+
+    E_corr_per_selectors(i) = :math:`\langle D_i | H | \text{HF}\rangle  c(D_i)/c(HF)` if :math:`| D_i \rangle` is a double excitation. 
+
     E_corr_per_selectors(i) = -1000.d0 if it is not a double excitation 
+
     coef_hf_selector = coefficient of the Hartree Fock determinant in the selectors determinants
 
 
@@ -165,9 +176,10 @@ Providers
 
     File: :file:`e_corr_selectors.irp.f`
 
-    degree of excitation respect to Hartree Fock for the wave function 
-    for the all the selectors determinants 
+    Degree of excitation respect to Hartree Fock for the wave function for the all the selectors determinants. 
+
     double_index_selectors = list of the index of the double excitations 
+
     n_double_selectors = number of double excitations in the selectors determinants
 
 
@@ -188,10 +200,12 @@ Providers
 
     File: :file:`e_corr_selectors.irp.f`
 
-    energy of correlation per determinant respect to the Hartree Fock determinant 
-    for the all the double excitations in the selectors determinants 
-    E_corr_per_selectors(i) = <D_i|H|HF> * c(D_i)/c(HF) if |D_i> is a double excitation 
+    Correlation energy per determinant with respect to the Hartree-Fock determinant for the all the double excitations in the selectors determinants. 
+
+    E_corr_per_selectors(i) = :math:`\langle D_i | H | \text{HF}\rangle  c(D_i)/c(HF)` if :math:`| D_i \rangle` is a double excitation. 
+
     E_corr_per_selectors(i) = -1000.d0 if it is not a double excitation 
+
     coef_hf_selector = coefficient of the Hartree Fock determinant in the selectors determinants
 
 
@@ -212,10 +226,12 @@ Providers
 
     File: :file:`e_corr_selectors.irp.f`
 
-    energy of correlation per determinant respect to the Hartree Fock determinant 
-    for the all the double excitations in the selectors determinants 
-    E_corr_per_selectors(i) = <D_i|H|HF> * c(D_i)/c(HF) if |D_i> is a double excitation 
+    Correlation energy per determinant with respect to the Hartree-Fock determinant for the all the double excitations in the selectors determinants. 
+
+    E_corr_per_selectors(i) = :math:`\langle D_i | H | \text{HF}\rangle  c(D_i)/c(HF)` if :math:`| D_i \rangle` is a double excitation. 
+
     E_corr_per_selectors(i) = -1000.d0 if it is not a double excitation 
+
     coef_hf_selector = coefficient of the Hartree Fock determinant in the selectors determinants
 
 
@@ -236,10 +252,12 @@ Providers
 
     File: :file:`e_corr_selectors.irp.f`
 
-    energy of correlation per determinant respect to the Hartree Fock determinant 
-    for the all the double excitations in the selectors determinants 
-    E_corr_per_selectors(i) = <D_i|H|HF> * c(D_i)/c(HF) if |D_i> is a double excitation 
+    Correlation energy per determinant with respect to the Hartree-Fock determinant for the all the double excitations in the selectors determinants. 
+
+    E_corr_per_selectors(i) = :math:`\langle D_i | H | \text{HF}\rangle  c(D_i)/c(HF)` if :math:`| D_i \rangle` is a double excitation. 
+
     E_corr_per_selectors(i) = -1000.d0 if it is not a double excitation 
+
     coef_hf_selector = coefficient of the Hartree Fock determinant in the selectors determinants
 
 
@@ -255,9 +273,10 @@ Providers
 
     File: :file:`e_corr_selectors.irp.f`
 
-    degree of excitation respect to Hartree Fock for the wave function 
-    for the all the selectors determinants 
+    Degree of excitation respect to Hartree Fock for the wave function for the all the selectors determinants. 
+
     double_index_selectors = list of the index of the double excitations 
+
     n_double_selectors = number of double excitations in the selectors determinants
 
 

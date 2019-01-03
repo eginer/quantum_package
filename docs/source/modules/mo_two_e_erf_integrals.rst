@@ -72,7 +72,7 @@ Providers
     .. code:: text
 
         subroutine insert_into_mo_integrals_erf_map(n_integrals,                 &
-        buffer_i, buffer_values, thr)
+              buffer_i, buffer_values, thr)
 
     File: :file:`map_integrals_erf.irp.f`
 
@@ -91,6 +91,7 @@ Providers
     File: :file:`ints_erf_3_index.irp.f`
 
     int_erf_3_index(i,j)     = <ij|ij> = (ii|jj) with the erf interaction 
+
     int_erf_3_index_exc(i,j) = <ij|ji> = (ij|ij) with the erf interaction
 
 
@@ -106,6 +107,7 @@ Providers
     File: :file:`ints_erf_3_index.irp.f`
 
     int_erf_3_index(i,j)     = <ij|ij> = (ii|jj) with the erf interaction 
+
     int_erf_3_index_exc(i,j) = <ij|ji> = (ij|ij) with the erf interaction
 
 

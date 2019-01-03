@@ -14,9 +14,9 @@ subroutine run
 
   call H_apply_cis
   print *,  'N_det = ', N_det
+  print *,  'Energies  of the states:'
   do i = 1,N_states
-   print *,  'energy  = ',CI_energy(i) 
-   print *,  'E_corr  = ',CI_electronic_energy(i) - ref_bitmask_energy
+   print *,  i, CI_energy(i) 
   enddo
   print*,'******************************'
   print*,'Excitation energy '

@@ -4,9 +4,8 @@ use bitmasks
 &BEGIN_PROVIDER [integer, n_double_selectors]
  implicit none
  BEGIN_DOC
- ! degree of excitation respect to Hartree Fock for the wave function
- !
- ! for the all the selectors determinants
+ ! Degree of excitation respect to Hartree Fock for the wave function
+ ! for the all the selectors determinants.
  !
  ! double_index_selectors = list of the index of the double excitations
  ! 
@@ -34,11 +33,10 @@ END_PROVIDER
  &BEGIN_PROVIDER[double precision, E_corr_second_order ]
  implicit none
  BEGIN_DOC
- ! energy of correlation per determinant respect to the Hartree Fock determinant
+ ! Correlation energy per determinant with respect to the Hartree-Fock determinant
+ ! for the all the double excitations in the selectors determinants.
  !
- ! for the all the double excitations in the selectors determinants
- !
- ! E_corr_per_selectors(i) = <D_i|H|HF> * c(D_i)/c(HF) if |D_i> is a double excitation
+ ! E_corr_per_selectors(i) = :math:`\langle D_i | H | \text{HF}\rangle  c(D_i)/c(HF)` if :math:`| D_i \rangle` is a double excitation.
  ! 
  ! E_corr_per_selectors(i) = -1000.d0 if it is not a double excitation 
  !

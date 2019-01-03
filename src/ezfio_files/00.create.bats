@@ -17,7 +17,7 @@ function run {
   qp_create_ezfio_from_xyz \
      $INPUT -b "$BASIS" -m $MULT -c $CHARGE $PSEUDO -o $EZ
   qp_edit -c $EZ
-#  echo "Write" > ${EZ}/ao_two_e_integrals/disk_access_ao_integrals
+  echo "Write" > ${EZ}/ao_two_e_integrals/disk_access_ao_integrals
 }
 
 

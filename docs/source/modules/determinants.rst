@@ -215,6 +215,7 @@ Providers
     File: :file:`spindeterminants.irp.f`
 
     Norm of the alpha and beta spin determinants in the wave function: 
+
     ||Da||_i \sum_j C_{ij}**2
 
 
@@ -230,6 +231,7 @@ Providers
     File: :file:`spindeterminants.irp.f`
 
     Norm of the alpha and beta spin determinants in the wave function: 
+
     ||Da||_i \sum_j C_{ij}**2
 
 
@@ -830,6 +832,7 @@ Providers
     File: :file:`determinants.irp.f`
 
     Wave function sorted by determinants contribution to the norm (state-averaged) 
+
     psi_det_sorted_order(i) -> k : index in psi_det
 
 
@@ -860,7 +863,9 @@ Providers
     File: :file:`spindeterminants.irp.f`
 
     Sparse coefficient matrix if the wave function is expressed in a bilinear form : D_a^t C D_b 
+
     Rows are alpha determinants and columns are beta. 
+
     Order refers to psi_det
 
 
@@ -875,7 +880,9 @@ Providers
     File: :file:`spindeterminants.irp.f`
 
     Sparse coefficient matrix if the wave function is expressed in a bilinear form : D_a^t C D_b 
+
     Rows are alpha determinants and columns are beta. 
+
     Order refers to psi_det
 
 
@@ -893,7 +900,9 @@ Providers
     File: :file:`spindeterminants.irp.f`
 
     Sparse coefficient matrix if the wave function is expressed in a bilinear form : D_a^t C D_b 
+
     Rows are alpha determinants and columns are beta. 
+
     Order refers to psi_det
 
 
@@ -937,7 +946,9 @@ Providers
     File: :file:`spindeterminants.irp.f`
 
     Sparse coefficient matrix if the wave function is expressed in a bilinear form : D_a^t C D_b 
+
     Rows are alpha determinants and columns are beta. 
+
     Order refers to psi_det
 
 
@@ -955,6 +966,7 @@ Providers
     File: :file:`spindeterminants.irp.f`
 
     Transpose of psi_bilinear_matrix D_b^t C^t D_a 
+
     Rows are Alpha determinants and columns are beta, but the matrix is stored in row major format
 
 
@@ -972,6 +984,7 @@ Providers
     File: :file:`spindeterminants.irp.f`
 
     Transpose of psi_bilinear_matrix D_b^t C^t D_a 
+
     Rows are Alpha determinants and columns are beta, but the matrix is stored in row major format
 
 
@@ -989,6 +1002,7 @@ Providers
     File: :file:`spindeterminants.irp.f`
 
     Transpose of psi_bilinear_matrix D_b^t C^t D_a 
+
     Rows are Alpha determinants and columns are beta, but the matrix is stored in row major format
 
 
@@ -1019,6 +1033,7 @@ Providers
     File: :file:`spindeterminants.irp.f`
 
     Transpose of psi_bilinear_matrix D_b^t C^t D_a 
+
     Rows are Alpha determinants and columns are beta, but the matrix is stored in row major format
 
 
@@ -1036,7 +1051,9 @@ Providers
     File: :file:`spindeterminants.irp.f`
 
     Sparse coefficient matrix if the wave function is expressed in a bilinear form : D_a^t C D_b 
+
     Rows are alpha determinants and columns are beta. 
+
     Order refers to psi_det
 
 
@@ -1200,6 +1217,7 @@ Providers
     File: :file:`determinants.irp.f`
 
     Wave function sorted by determinants contribution to the norm (state-averaged) 
+
     psi_det_sorted_order(i) -> k : index in psi_det
 
 
@@ -1324,6 +1342,7 @@ Providers
     File: :file:`determinants.irp.f`
 
     Wave function sorted by determinants contribution to the norm (state-averaged) 
+
     psi_det_sorted_order(i) -> k : index in psi_det
 
 
@@ -1355,6 +1374,7 @@ Providers
     File: :file:`determinants.irp.f`
 
     Wave function sorted by determinants contribution to the norm (state-averaged) 
+
     psi_det_sorted_order(i) -> k : index in psi_det
 
 
@@ -1806,11 +1826,17 @@ Subroutines / functions
     File: :file:`connected_to_ref.irp.f`
 
     input  : key : a given Slater determinant 
+
     : keys: a list of Slater determinants 
+
     : Ndet: the number of Slater determinants in keys 
+
     : N_past_in the number of Slater determinants for the connectivity research 
+
     output :   0 : key not connected to the N_past_in first Slater determinants in keys 
+
     i : key is connected to determinant i of keys 
+
     -i : key is the ith determinant of the reference wf keys
 
 
@@ -1826,11 +1852,17 @@ Subroutines / functions
     File: :file:`connected_to_ref.irp.f`
 
     input  : key : a given Slater determinant 
+
     : keys: a list of Slater determinants 
+
     : Ndet: the number of Slater determinants in keys 
+
     : N_past_in the number of Slater determinants for the connectivity research 
+
     output :   0 : key not connected by a MONO EXCITATION to the N_past_in first Slater determinants in keys 
+
     i : key is connected by a MONO EXCITATION to determinant i of keys 
+
     -i : key is the ith determinant of the reference wf keys
 
 
@@ -2154,9 +2186,13 @@ Subroutines / functions
     File: :file:`filter_connected.irp.f`
 
     Filters out the determinants that are not connected by H 
+
     returns the array idx which contains the index of the 
+
     determinants in the array key1 that interact 
+
     via the H operator with key2. 
+
     idx(0) is the number of determinants that interact with key1
 
 
@@ -2172,8 +2208,11 @@ Subroutines / functions
     File: :file:`filter_connected.irp.f`
 
     returns the array idx which contains the index of the 
+
     determinants in the array key1 that interact 
+
     via the H operator with key2. 
+
     idx(0) is the number of determinants that interact with key1
 
 
@@ -2189,8 +2228,11 @@ Subroutines / functions
     File: :file:`filter_connected.irp.f`
 
     Returns the array idx which contains the index of the 
+
     determinants in the array key1 that DO NOT interact 
+
     via the H operator with key2. 
+
     idx(0) is the number of determinants that DO NOT interact with key1
 
 
@@ -2220,7 +2262,9 @@ Subroutines / functions
     File: :file:`spindeterminants.irp.f`
 
     
+
     Returns the indices of all the double excitations in the list of unique alpha determinants. 
+
 
 
 
@@ -2236,7 +2280,9 @@ Subroutines / functions
     File: :file:`spindeterminants.irp.f`
 
     
+
     Returns the indices of all the double excitations in the list of unique alpha determinants. 
+
 
 
 
@@ -2252,7 +2298,9 @@ Subroutines / functions
     File: :file:`spindeterminants.irp.f_template_1215`
 
     
+
     Returns the indices of all the double excitations in the list of unique alpha determinants. 
+
 
 
 
@@ -2268,7 +2316,9 @@ Subroutines / functions
     File: :file:`spindeterminants.irp.f_template_1215`
 
     
+
     Returns the indices of all the double excitations in the list of unique alpha determinants. 
+
 
 
 
@@ -2284,7 +2334,9 @@ Subroutines / functions
     File: :file:`spindeterminants.irp.f_template_1215`
 
     
+
     Returns the indices of all the double excitations in the list of unique alpha determinants. 
+
 
 
 
@@ -2300,7 +2352,9 @@ Subroutines / functions
     File: :file:`spindeterminants.irp.f_template_1215`
 
     
+
     Returns the indices of all the double excitations in the list of unique alpha determinants. 
+
 
 
 
@@ -2316,7 +2370,9 @@ Subroutines / functions
     File: :file:`spindeterminants.irp.f`
 
     
+
     Returns the indices of all the single excitations in the list of unique alpha determinants. 
+
 
 
 
@@ -2332,7 +2388,9 @@ Subroutines / functions
     File: :file:`spindeterminants.irp.f`
 
     
+
     Returns the indices of all the single excitations in the list of unique alpha determinants. 
+
 
 
 
@@ -2348,7 +2406,9 @@ Subroutines / functions
     File: :file:`spindeterminants.irp.f_template_1215`
 
     
+
     Returns the indices of all the single excitations in the list of unique alpha determinants. 
+
 
 
 
@@ -2364,7 +2424,9 @@ Subroutines / functions
     File: :file:`spindeterminants.irp.f_template_1215`
 
     
+
     Returns the indices of all the single excitations in the list of unique alpha determinants. 
+
 
 
 
@@ -2380,7 +2442,9 @@ Subroutines / functions
     File: :file:`spindeterminants.irp.f_template_1215`
 
     
+
     Returns the indices of all the single excitations in the list of unique alpha determinants. 
+
 
 
 
@@ -2396,8 +2460,11 @@ Subroutines / functions
     File: :file:`spindeterminants.irp.f`
 
     
+
     Returns the indices of all the single and double excitations in the list of unique alpha determinants. 
+
     /!\ : The buffer is transposed ! 
+
 
 
 
@@ -2413,8 +2480,11 @@ Subroutines / functions
     File: :file:`spindeterminants.irp.f`
 
     
+
     Returns the indices of all the single and double excitations in the list of unique alpha determinants. 
+
     /!\ : The buffer is transposed ! 
+
 
 
 
@@ -2430,8 +2500,11 @@ Subroutines / functions
     File: :file:`spindeterminants.irp.f_template_1215`
 
     
+
     Returns the indices of all the single and double excitations in the list of unique alpha determinants. 
+
     /!\ : The buffer is transposed ! 
+
 
 
 
@@ -2447,8 +2520,11 @@ Subroutines / functions
     File: :file:`spindeterminants.irp.f_template_1215`
 
     
+
     Returns the indices of all the single and double excitations in the list of unique alpha determinants. 
+
     /!\ : The buffer is transposed ! 
+
 
 
 
@@ -2464,8 +2540,11 @@ Subroutines / functions
     File: :file:`spindeterminants.irp.f_template_1215`
 
     
+
     Returns the indices of all the single and double excitations in the list of unique alpha determinants. 
+
     /!\ : The buffer is transposed ! 
+
 
 
 
@@ -2481,8 +2560,11 @@ Subroutines / functions
     File: :file:`spindeterminants.irp.f_template_1215`
 
     
+
     Returns the indices of all the single and double excitations in the list of unique alpha determinants. 
+
     /!\ : The buffer is transposed ! 
+
 
 
 
@@ -2498,7 +2580,9 @@ Subroutines / functions
     File: :file:`spindeterminants.irp.f_template_1215`
 
     
+
     Returns the indices of all the single excitations in the list of unique alpha determinants. 
+
 
 
 
@@ -2948,6 +3032,7 @@ Subroutines / functions
     File: :file:`slater_rules.irp.f`
 
     Computes <i|H|Psi> = :math:`\sum_J c_J \langle i | H | J \rangle`. 
+
     Uses filter_connected_i_H_psi0 to get all the |J> to which |i> is connected. The i_H_psi_minilist is much faster but requires to build the minilists
 
 
@@ -2963,6 +3048,7 @@ Subroutines / functions
     File: :file:`slater_rules.irp.f`
 
     Computes <i|H|Psi> = \sum_J c_J <i|H|J>. 
+
     Uses filter_connected_i_H_psi0 to get all the |J> to which |i> is connected. The |J> are searched in short pre-computed lists.
 
 
@@ -2978,6 +3064,7 @@ Subroutines / functions
     File: :file:`s2.irp.f`
 
     Computes <i|S2|Psi> = \sum_J c_J <i|S2|J>. 
+
     Uses filter_connected_i_H_psi0 to get all the |J> to which |i> is connected. The |J> are searched in short pre-computed lists.
 
 
@@ -3105,8 +3192,11 @@ Subroutines / functions
     File: :file:`occ_pattern.irp.f`
 
     Transforms a determinant to an occupation pattern 
+
     occ(:,1) : Single occupations 
+
     occ(:,2) : Double occupations 
+
 
 
 
@@ -3248,7 +3338,9 @@ Subroutines / functions
     File: :file:`s2.irp.f`
 
     Computes v_0 = S^2|u_0> 
+
     n : number of determinants 
+
 
 
 
@@ -3264,7 +3356,9 @@ Subroutines / functions
     File: :file:`s2.irp.f`
 
     Computes v_0  = S^2|u_0> 
+
     n : number of determinants 
+
 
 
 
@@ -3434,7 +3528,9 @@ Subroutines / functions
     File: :file:`determinants.irp.f`
 
     Determinants are sorted are sorted according to their det_search_key. Useful to accelerate the search of a random determinant in the wave function. 
+
     /!\ The first dimension of coef_out and coef_in need to be psi_det_size 
+
 
 
 
@@ -3478,7 +3574,9 @@ Subroutines / functions
     File: :file:`s2.irp.f`
 
     Computes e_0 = <u_0|S2|u_0>/<u_0|u_0> 
+
     n : number of determinants 
+
 
 
 

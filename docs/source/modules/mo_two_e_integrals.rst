@@ -76,6 +76,7 @@ Providers
     File: :file:`integrals_3_index.irp.f`
 
     big_array_coulomb_integrals(i,j)  = <ij|ij> = (ii|jj) 
+
     big_array_exchange_integrals(i,j) = <ij|ji> = (ij|ij)
 
 
@@ -91,6 +92,7 @@ Providers
     File: :file:`integrals_3_index.irp.f`
 
     big_array_coulomb_integrals(i,j)  = <ij|ij> = (ii|jj) 
+
     big_array_exchange_integrals(i,j) = <ij|ji> = (ij|ij)
 
 
@@ -127,7 +129,7 @@ Providers
     .. code:: text
 
         subroutine insert_into_mo_integrals_map(n_integrals,                 &
-        buffer_i, buffer_values, thr)
+              buffer_i, buffer_values, thr)
 
     File: :file:`map_integrals.irp.f`
 

@@ -3,13 +3,14 @@
    implicit none
    BEGIN_DOC
    ! Fock matrix on the MO basis.
-   ! For open shells, the ROHF Fock Matrix is
+   ! For open shells, the ROHF Fock Matrix is ::
    !
-   !  |   F-K    |  F + K/2  |    F     |
-   !  |---------------------------------|
-   !  | F + K/2  |     F     |  F - K/2 |
-   !  |---------------------------------|
-   !  |    F     |  F - K/2  |  F + K   |
+   !       |   F-K    |  F + K/2  |    F     |
+   !       |---------------------------------|
+   !       | F + K/2  |     F     |  F - K/2 |
+   !       |---------------------------------|
+   !       |    F     |  F - K/2  |  F + K   |
+   !
    !
    ! F = 1/2 (Fa + Fb)
    !
