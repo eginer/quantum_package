@@ -14,13 +14,21 @@ subroutine run
 
   call H_apply_cisd
   print *,  'N_det = ', N_det
+  print*,'******************************'
+  print *,  'Energies  of the states:'
   do i = 1,N_states
-   print *,  'energy  = ',CI_energy(i), &
-             'E_corr  = ',CI_electronic_energy(i) - ref_bitmask_energy
+    print *,  i, CI_energy(i)
   enddo
+  if (N_states > 1) then
+    print*,'******************************'
+    print*,'Excitation energies '
+    do i = 2, N_states
+      print*, i ,CI_energy(i) - CI_energy(1)
+    enddo
+  endif
   psi_coef = ci_eigenvectors
   SOFT_TOUCH psi_coef
-  call save_wavefunction_truncated(1.d-12)
+  call save_wavefunction
   call ezfio_set_cisd_energy(CI_energy)
 
 end

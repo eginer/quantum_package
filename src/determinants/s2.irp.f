@@ -62,7 +62,7 @@ subroutine get_s2(key_i,key_j,Nint,s2)
   end select
 end
 
-BEGIN_PROVIDER [ double precision, S_z ]
+ BEGIN_PROVIDER [ double precision, S_z ]
 &BEGIN_PROVIDER [ double precision, S_z2_Sz ]
  implicit none
  BEGIN_DOC
@@ -77,7 +77,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, expected_s2]
  implicit none
  BEGIN_DOC
-! Expected value of S2 : S*(S+1)
+! Expected value of |S^2| : S*(S+1)
  END_DOC
    logical :: has_expected_s2
 
