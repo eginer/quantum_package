@@ -10,6 +10,32 @@ fetched from the EZFIO file.
 
 import sys
 
+def gen_ezfio_provider_disk_access(name_ref, name):
+    data = """
+  BEGIN_PROVIDER [ logical, read_{name} ]
+ &BEGIN_PROVIDER [ logical, write_{name} ]
+
+  BEGIN_DOC
+  ! One level of abstraction for {name}
+  END_DOC
+
+   if ({name_ref}.EQ.'Read') then
+     read_{name} =  .True.
+     write_{name} = .False.
+   else if  ({name_ref}.EQ.'Write') then
+     read_{name} = .False.
+     write_{name} =  .True.
+   else if ({name_ref}.EQ.'None') then
+     read_{name} = .False.
+     write_{name} = .False.
+   else
+     print *, '{name_ref} has a wrong type'
+     stop 1
+   endif
+
+ END_PROVIDER
+"""
+    return data.format(name=name,name_ref=name_ref)
 
 class EZFIO_Provider(object):
 

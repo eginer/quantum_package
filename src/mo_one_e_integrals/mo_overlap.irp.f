@@ -4,6 +4,13 @@ BEGIN_PROVIDER [ double precision, mo_overlap,(mo_tot_num,mo_tot_num)]
   integer :: i,j,n,l
   double precision :: f
   integer :: lmax
+
+
+  if (read_mo_one_integrals_overlap) then
+    call ezfio_get_mo_one_e_integrals_integral_overlap(mo_kinetic_integral)
+    print *,  'MO kinetic overlap read from disk'
+  else
+
   lmax = (ao_num/4) * 4
   !$OMP PARALLEL DO SCHEDULE(STATIC) DEFAULT(NONE) &
   !$OMP  PRIVATE(i,j,n,l) &
@@ -29,5 +36,12 @@ BEGIN_PROVIDER [ double precision, mo_overlap,(mo_tot_num,mo_tot_num)]
    enddo
   enddo
   !$OMP END PARALLEL DO
+ endif
+
+  if (write_mo_one_integrals_overlap) then
+    call ezfio_set_mo_one_e_integrals_integral_overlap(mo_kinetic_integral)
+    print *,  'MO kinetic integrals written to disk'
+  endif
+
 END_PROVIDER
 

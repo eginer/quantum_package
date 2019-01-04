@@ -15,13 +15,16 @@ Usage:
 
 Options:
   -c <file>, --config <file>            define a configuration file, in
-                                        "${QP_ROOT}/config/"
+                                        "${QP_ROOT}/config/". 
   -h, --help                            print the help message
   -i <package>, --install <package>     install <package>. Use at your own risk.
 
 Example:
   ./configure -c config/gfortran.cfg
+  ./configure -c config/gfortran.cfg -i all
 
+Note:
+  - Using different configuration files for installing dependencies and compiling QPs can improve the user experience.
 
 EOF
     exit
@@ -291,6 +294,7 @@ EOF
               "https://github.com/bats-core/bats-core/archive/v1.1.0.tar.gz" \
               "${QP_ROOT}"/external/bats.tar.gz
             (
+              cd "${QP_ROOT}"/external
               tar -zxf bats.tar.gz 
               (
               cd bats-core-1.1.0/

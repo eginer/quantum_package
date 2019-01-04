@@ -7,20 +7,20 @@ BEGIN_PROVIDER [ double precision, mo_mono_elec_integral,(mo_tot_num,mo_tot_num)
   END_DOC
   print*,'Providing the mono electronic integrals'
 
-  IF (do_pseudo) THEN
-      do j = 1, mo_tot_num
-      do i = 1, mo_tot_num
-          mo_mono_elec_integral(i,j) = mo_nucl_elec_integral(i,j) + mo_kinetic_integral(i,j) & 
-                                       + mo_pseudo_integral(i,j)
-      enddo
-      enddo
-
+  IF (read_mo_one_integrals) THEN
+        call ezfio_get_mo_one_e_integrals_integral_combined(mo_mono_elec_integral)
   ELSE
-      do j = 1, mo_tot_num
-      do i = 1, mo_tot_num
-          mo_mono_elec_integral(i,j) = mo_nucl_elec_integral(i,j) + mo_kinetic_integral(i,j)
-      enddo
-      enddo
+      mo_mono_elec_integral  = mo_nucl_elec_integral + mo_kinetic_integral
 
-  END IF
+      IF (DO_PSEUDO) THEN
+            mo_mono_elec_integral  += mo_pseudo_integral
+      ENDIF
+
+  ENDIF
+
+  IF (write_mo_one_integrals) THEN
+        call ezfio_set_mo_one_e_integrals_integral_combined(mo_mono_elec_integral)
+       print *,  'MO integrals combined written to disk'
+  ENDIF
+
 END_PROVIDER

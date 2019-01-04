@@ -126,7 +126,7 @@ BEGIN_PROVIDER [double precision, ao_kinetic_integral, (ao_num,ao_num)]
   END_DOC
   integer                        :: i,j,k,l
   
-  if (read_ao_one_integrals) then
+  if (read_ao_one_integrals_kinetic) then
     call ezfio_get_ao_one_e_integrals_integral_kinetic(ao_kinetic_integral)
     print *,  'AO kinetic integrals read from disk'
   else
@@ -140,7 +140,7 @@ BEGIN_PROVIDER [double precision, ao_kinetic_integral, (ao_num,ao_num)]
     enddo
     !$OMP END PARALLEL DO
   endif
-  if (write_ao_one_integrals) then
+  if (write_ao_one_integrals_kinetic) then
     call ezfio_set_ao_one_e_integrals_integral_kinetic(ao_kinetic_integral)
     print *,  'AO kinetic integrals written to disk'
   endif

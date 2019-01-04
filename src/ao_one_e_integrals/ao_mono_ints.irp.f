@@ -5,11 +5,25 @@
   BEGIN_DOC
  ! Array of the one-electron Hamiltonian on the |AO| basis.
   END_DOC
-  do j = 1, ao_num
-   do i = 1, ao_num
-    ao_mono_elec_integral(i,j) = ao_nucl_elec_integral(i,j) + ao_kinetic_integral(i,j) + ao_pseudo_integral(i,j)
-   enddo
-   ao_mono_elec_integral_diag(j) = ao_mono_elec_integral(j,j)
-  enddo
-END_PROVIDER
+  
+  IF (read_ao_one_integrals) THEN
+     call ezfio_get_ao_one_e_integrals_integral_combined(ao_mono_elec_integral)
+  ELSE
+        ao_mono_elec_integral = ao_nucl_elec_integral + ao_kinetic_integral
+
+        IF (DO_PSEUDO) THEN
+              ao_mono_elec_integral  += ao_pseudo_integral
+        ENDIF
+  ENDIF
+
+  DO j = 1, ao_num
+    ao_mono_elec_integral_diag(j) = ao_mono_elec_integral(j,j)
+  ENDDO
+
+  IF (write_ao_one_integrals) THEN
+       call ezfio_set_ao_one_e_integrals_integral_combined(ao_mono_elec_integral)
+       print *,  'AO integrals combined written to disk'
+  ENDIF
+ 
+ END_PROVIDER
 

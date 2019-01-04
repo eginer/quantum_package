@@ -4,7 +4,7 @@ BEGIN_PROVIDER [ double precision, ao_pseudo_integral, (ao_num,ao_num)]
   ! Pseudo-potential integrals in the |AO| basis set.
   END_DOC
   
-  if (read_ao_one_integrals) then
+  if (read_ao_one_integrals_pseudo) then
     call ezfio_get_ao_one_e_integrals_integral_pseudo(ao_pseudo_integral)
     print *,  'AO pseudopotential integrals read from disk'
   else
@@ -20,7 +20,7 @@ BEGIN_PROVIDER [ double precision, ao_pseudo_integral, (ao_num,ao_num)]
     endif
   endif
   
-  if (write_ao_one_integrals) then
+  if (write_ao_one_integrals_pseudo) then
     call ezfio_set_ao_one_e_integrals_integral_pseudo(ao_pseudo_integral)
     print *,  'AO pseudopotential integrals written to disk'
   endif

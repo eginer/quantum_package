@@ -561,10 +561,10 @@ subroutine add_integrals_to_map_three_indices(mask_ijk)
   wall_0 = wall_1
   allocate(bielec_tmp_3(mo_tot_num, n_j, n_k),                 &
       bielec_tmp_1(mo_tot_num),                                &
-      bielec_tmp_0(ao_num,ao_num),                                   &
-      bielec_tmp_0_idx(ao_num),                                      &
+      bielec_tmp_0(ao_num,ao_num),                             &
+      bielec_tmp_0_idx(ao_num),                                &
       bielec_tmp_2(mo_tot_num, n_j),                           &
-      buffer_i(size_buffer),                                         &
+      buffer_i(size_buffer),                                   &
       buffer_value(size_buffer) )
   
   thread_num = 0
@@ -1071,7 +1071,7 @@ end
       !$OMP REDUCTION(+:mo_bielec_integral_jj_from_ao,mo_bielec_integral_jj_exchange_from_ao)
   
   allocate( int_value(ao_num), int_idx(ao_num),                      &
-      iqrs(mo_tot_num,ao_num), iqis(mo_tot_num), iqri(mo_tot_num),&
+      iqrs(mo_tot_num,ao_num), iqis(mo_tot_num), iqri(mo_tot_num),   &
       iqsr(mo_tot_num,ao_num) )
   
   !$OMP DO SCHEDULE (guided)
@@ -1191,11 +1191,11 @@ END_PROVIDER
   !DIR$ ATTRIBUTES ALIGN : $IRP_ALIGN :: iqrs, iqsr
   
   
-  !$OMP PARALLEL DEFAULT(NONE)                                       &
-      !$OMP PRIVATE (i0,j0,i,j,p,q,r,s,integral,c,n,pp,int_value,int_idx,&
-      !$OMP  iqrs, iqsr,iqri,iqis)                                   &
-      !$OMP SHARED(n_virt_orb,mo_tot_num,list_virt,mo_coef_transp,ao_num,&
-      !$OMP  ao_integrals_threshold,do_direct_integrals)             &
+  !$OMP PARALLEL DEFAULT(NONE)                                            &
+      !$OMP PRIVATE (i0,j0,i,j,p,q,r,s,integral,c,n,pp,int_value,int_idx, &
+      !$OMP  iqrs, iqsr,iqri,iqis)                                        &
+      !$OMP SHARED(n_virt_orb,mo_tot_num,list_virt,mo_coef_transp,ao_num, &
+      !$OMP  ao_integrals_threshold,do_direct_integrals)                  &
       !$OMP REDUCTION(+:mo_bielec_integral_vv_from_ao,mo_bielec_integral_vv_exchange_from_ao)
   
   allocate( int_value(ao_num), int_idx(ao_num),                      &
@@ -1339,7 +1339,5 @@ subroutine clear_mo_map
   call map_deinit(mo_integrals_map)
   FREE mo_integrals_map mo_bielec_integral_jj mo_bielec_integral_jj_anti
   FREE mo_bielec_integral_jj_exchange mo_bielec_integrals_in_map
-  
-  
 end
 

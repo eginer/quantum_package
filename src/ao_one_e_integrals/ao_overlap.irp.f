@@ -19,7 +19,7 @@
   ao_overlap_x = 0.d0
   ao_overlap_y = 0.d0
   ao_overlap_z = 0.d0
-  if (read_ao_one_integrals) then
+  if (read_ao_one_integrals_overlap) then
      call ezfio_get_ao_one_e_integrals_integral_overlap(ao_overlap(1:ao_num, 1:ao_num))
      print *,  'AO overlap integrals read from disk'
   else
@@ -63,7 +63,7 @@
     enddo
     !$OMP END PARALLEL DO
   endif
-  if (write_ao_one_integrals) then
+  if (write_ao_one_integrals_overlap) then
      call ezfio_set_ao_one_e_integrals_integral_overlap(ao_overlap(1:ao_num, 1:ao_num))
      print *,  'AO overlap integrals written to disk'
   endif

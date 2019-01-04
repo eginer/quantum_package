@@ -12,7 +12,7 @@ BEGIN_PROVIDER [ double precision, ao_nucl_elec_integral, (ao_num,ao_num)]
   integer                        :: i,j,k,l,n_pt_in,m
   double precision               :: overlap_x,overlap_y,overlap_z,overlap,dx,NAI_pol_mult
   
-  if (read_ao_one_integrals) then
+  if (read_ao_one_integrals_nuclear) then
     call ezfio_get_ao_one_e_integrals_integral_nuclear(ao_nucl_elec_integral)
     print *,  'AO N-e integrals read from disk'
   else
@@ -76,7 +76,7 @@ BEGIN_PROVIDER [ double precision, ao_nucl_elec_integral, (ao_num,ao_num)]
     !$OMP END DO
     !$OMP END PARALLEL
   endif
-  if (write_ao_one_integrals) then
+  if (write_ao_one_integrals_nuclear) then
     call ezfio_set_ao_one_e_integrals_integral_nuclear(ao_nucl_elec_integral)
     print *,  'AO N-e integrals written to disk'
   endif

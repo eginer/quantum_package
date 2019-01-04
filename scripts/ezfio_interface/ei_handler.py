@@ -318,7 +318,7 @@ def create_ezfio_provider(dict_ezfio_cfg):
     return [code, ...]
     """
 
-    from ezfio_generate_provider import EZFIO_Provider
+    from ezfio_generate_provider import EZFIO_Provider, gen_ezfio_provider_disk_access
     dict_code_provider = dict()
 
     ez_p = EZFIO_Provider()
@@ -330,12 +330,24 @@ def create_ezfio_provider(dict_ezfio_cfg):
             ez_p.set_ezfio_dir(dict_info['ezfio_dir'])
             ez_p.set_ezfio_name(dict_info['ezfio_name'])
             ez_p.set_output("6")
-#            ez_p.set_output("output_%s" % dict_info['module'].lower)
 
             # (nuclei.nucl_num,pseudo.klocmax) => (nucl_num,klocmax)
             ez_p.set_size(re.sub(r'\w+\.', "", dict_info['size']))
 
-            dict_code_provider[provider_name] = str(ez_p) + "\n"
+            str_ = str(ez_p) + "\n"
+            if dict_info['type'].fancy == 'Disk_access':
+
+                allowed_prefix = ['disk_access', 'io']
+                assert (any(provider_name.startswith(p) for p in allowed_prefix))
+
+                provider_name_c = provider_name
+                for p in allowed_prefix:
+                    if provider_name_c.startswith(p):
+                        provider_name_c = provider_name_c.replace(p+'_','',1)
+
+                str_ += gen_ezfio_provider_disk_access(provider_name, provider_name_c)
+
+            dict_code_provider[provider_name] = str_
 
     return dict_code_provider
 
