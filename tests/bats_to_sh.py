@@ -13,7 +13,7 @@ for i in raw_data:
   if i == "@":
     inside = True
   elif i == "{" and inside and level == 0:
-    new_i = ""
+    new_i = "\nsetup\n"
   elif i == "}" and inside and level == 1:
     inside = False
     new_i = ""
