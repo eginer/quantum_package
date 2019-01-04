@@ -3,17 +3,11 @@
 source $QP_ROOT/tests/bats/common.bats.sh
 
 function run() {
-  if [[ -z $5 ]] ; then
-    S2=1
-  else
-    S2=0
-  fi
   thresh=1.e-6
   test_exe cis || skip
   qp_edit -c $1
   ezfio set_file $1
   ezfio set determinants n_states  3
-  ezfio set determinants s2_eig $S2
   ezfio set davidson threshold_davidson 1.e-12
   echo "Write" > $1/mo_two_e_integrals/disk_access_mo_integrals
   qp_set_frozen_core $1
@@ -29,7 +23,7 @@ function run() {
 
 
 @test "HBO" {
-  run  hbo.ezfio  -100.018582307658  -99.77695116779833 -99.74105601962573 x
+  run  hbo.ezfio  -100.018582259097  -99.7127500068768  -99.6982683641297
 }
 
 @test "H2O" {
@@ -41,7 +35,7 @@ function run() {
 }
 
 @test "C2H2" {
-  run c2h2.ezfio -12.1214401949631 -11.95227840126497 -11.91537223579299 x
+  run c2h2.ezfio -12.1214401949634 -11.8824874421211 -11.8682310791620
 }
 
 @test "ClO" {
@@ -57,15 +51,15 @@ function run() {
 }
 
 @test "HCN" {
-  run hcn.ezfio -92.88717500038086 -92.69765690338815 -92.66095614790936 x
+  run hcn.ezfio -92.8871750003811 -92.6250263755063 -92.6089719143274
 }
 
 @test "N2" {
-  run n2.ezfio  -108.9834897853052 -108.7538426008862 -108.7142633124650 x
+  run n2.ezfio  -108.983489785305 -108.670192549322 -108.649653940027
 }
 
 @test "SiH2_3B1" {
-  run sih2_3b1.ezfio -289.952916622430 -289.901707301173 -289.715063453770
+  run sih2_3b1.ezfio -289.969297318489 -289.766898643192 -289.737521023380
 }
 
 @test "SO" {
@@ -77,7 +71,7 @@ function run() {
 }
 
 @test "CO2" {
-  run co2.ezfio -187.6507108861505 -187.3564970712329 -187.3277981565893 x
+  run co2.ezfio -187.650710886151 -187.300746249524 -187.291641359067
 }
 
 @test "F2" {

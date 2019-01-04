@@ -122,7 +122,7 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
   double precision               :: to_print(3,N_st)
   double precision               :: cpu, wall
   integer                        :: shift, shift2, itermax, istate
-  double precision               :: r1, r2
+  double precision               :: r1, r2, alpha
   logical                        :: state_ok(N_st_diag*davidson_sze_max)
   integer                        :: nproc_target
   include 'constants.include.F'
@@ -318,58 +318,33 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
         endif
       endif
 
-      ! Compute h_kl = <u_k | W_l> = <u_k| H |u_l>
+      ! Compute s_kl = <u_k | W_l> = <u_k| S2 |u_l>
       ! -------------------------------------------
 
-      call dgemm('T','N', shift2, shift2, sze,                       &
-          1.d0, U, size(U,1), W, size(W,1),                          &
-          0.d0, h, size(h,1))
-      
       call dgemm('T','N', shift2, shift2, sze,                       &
           1.d0, U, size(U,1), S, size(S,1),                          &
           0.d0, s_, size(s_,1))
 
+      ! Compute h_kl = <u_k | W_l> = <u_k| H |u_l>
+      ! -------------------------------------------
 
-!      ! Diagonalize S^2
-!      ! ---------------
-!
-!      call lapack_diag(s2,y,s_,size(s_,1),shift2)
-!
-!
-!      ! Rotate H in the basis of eigenfunctions of s2
-!      ! ---------------------------------------------
-!
-!      call dgemm('N','N',shift2,shift2,shift2,                       &
-!          1.d0, h, size(h,1), y, size(y,1),                          &
-!          0.d0, s_tmp, size(s_tmp,1))
-!      
-!      call dgemm('T','N',shift2,shift2,shift2,                       &
-!          1.d0, y, size(y,1), s_tmp, size(s_tmp,1),                  &
-!          0.d0, h, size(h,1))
-!
-!      ! Damp interaction between different spin states
-!      ! ------------------------------------------------
-!
-!      do k=1,shift2
-!        do l=1,shift2
-!          if (dabs(s2(k) - s2(l)) > 1.d0) then
-!            h(k,l) = h(k,l)*(max(0.d0,1.d0 - dabs(s2(k) - s2(l))))
-!          endif
-!        enddo
-!      enddo
-!
-!      ! Rotate back H 
-!      ! -------------
-!
-!      call dgemm('N','T',shift2,shift2,shift2,                       &
-!          1.d0, h, size(h,1), y, size(y,1),                          &
-!          0.d0, s_tmp, size(s_tmp,1))
-!      
-!      call dgemm('N','N',shift2,shift2,shift2,                       &
-!          1.d0, y, size(y,1), s_tmp, size(s_tmp,1),                  &
-!          0.d0, h, size(h,1))
+      ! Penalty method
+      ! --------------
 
-      
+      if (s2_eig) then
+        h = s_
+        do k=1,shift2
+          h(k,k) = h(k,k) + S_z2_Sz - expected_s2
+        enddo
+        alpha = 0.1d0
+      else
+        alpha = 0.d0
+      endif
+
+      call dgemm('T','N', shift2, shift2, sze,                       &
+          1.d0, U, size(U,1), W, size(W,1),                          &
+          alpha , h, size(h,1))
+
       ! Diagonalize h
       ! -------------
 
@@ -389,7 +364,7 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
 
       
       do k=1,shift2
-        s2(k) = s_(k,k) + S_z2_Sz
+        s2(k) = s_(k,k) + S_z2_Sz 
       enddo
 
       if (only_expected_s2) then
@@ -475,42 +450,21 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
       ! Compute residual vector and davidson step
       ! -----------------------------------------
       
-      if (only_expected_s2) then
-
-        do k=1,N_st_diag
-          do i=1,sze
-            U(i,shift2+k) =  &
-              (lambda(k) * U(i,shift2+k) - W(i,shift2+k) )      &
-                * (1.d0 + expected_s2 * U(i,shift2+k) - (S(i,shift2+k) + S_z2_Sz) &
-              )/max(H_jj(i) - lambda (k),1.d-2)
-          enddo
-
-          if (k <= N_st) then
-            residual_norm(k) = u_dot_u(U(1,shift2+k),sze)
-            to_print(1,k) = lambda(k) + nuclear_repulsion
-            to_print(2,k) = s2(k)
-            to_print(3,k) = residual_norm(k)
-          endif
-        enddo
-      
-      else
-      
-        do k=1,N_st_diag
-          do i=1,sze
-            U(i,shift2+k) =  &
-              (lambda(k) * U(i,shift2+k) - W(i,shift2+k) )      &
-               /max(H_jj(i) - lambda (k),1.d-2)
-          enddo
-
-          if (k <= N_st) then
-            residual_norm(k) = u_dot_u(U(1,shift2+k),sze)
-            to_print(1,k) = lambda(k) + nuclear_repulsion
-            to_print(2,k) = s2(k)
-            to_print(3,k) = residual_norm(k)
-          endif
+      do k=1,N_st_diag
+        do i=1,sze
+          U(i,shift2+k) =  &
+            (lambda(k) * U(i,shift2+k) - W(i,shift2+k) )      &
+              /max(H_jj(i) - lambda (k),1.d-2)
         enddo
 
-      endif
+        if (k <= N_st) then
+          residual_norm(k) = u_dot_u(U(1,shift2+k),sze)
+          to_print(1,k) = lambda(k) + nuclear_repulsion
+          to_print(2,k) = s2(k)
+          to_print(3,k) = residual_norm(k)
+        endif
+      enddo
+
       
       write(6,'(1X,I3,1X,100(1X,F16.10,1X,F11.6,1X,E11.3))')  iter, to_print(1:3,1:N_st)
       call davidson_converged(lambda,residual_norm,wall,iter,cpu,N_st,converged)

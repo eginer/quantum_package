@@ -61,8 +61,10 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, mo_coef, (ao_num,mo_tot_num) ]
   implicit none
   BEGIN_DOC
-  ! Molecular orbital coefficients on AO basis set
-  ! mo_coef(i,j) = coefficient of the ith ao on the jth mo
+  ! Molecular orbital coefficients on |AO| basis set
+  !
+  ! mo_coef(i,j) = coefficient of the i-th |AO| on the jth mo
+  !
   ! mo_label : Label characterizing the MOS (local, canonical, natural, etc)
   END_DOC
   integer                        :: i, j
@@ -113,9 +115,9 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, mo_coef_in_ao_ortho_basis, (ao_num, mo_tot_num) ]
  implicit none
  BEGIN_DOC
- ! MO coefficients in orthogonalized AO basis
+ ! |MO| coefficients in orthogonalized |AO| basis
  !
- ! C^(-1).C_mo
+ ! $C^{-1}.C_{mo}$
  END_DOC
  call dgemm('N','N',ao_num,mo_tot_num,ao_num,1.d0,                   &
      ao_ortho_canonical_coef_inv, size(ao_ortho_canonical_coef_inv,1),&
@@ -127,9 +129,11 @@ END_PROVIDER
 BEGIN_PROVIDER [ character*(64), mo_label ]
   implicit none
   BEGIN_DOC
-  ! Molecular orbital coefficients on AO basis set
-  ! mo_coef(i,j) = coefficient of the ith ao on the jth mo
-  ! mo_label : Label characterizing the MOS (local, canonical, natural, etc)
+  ! |MO| coefficients on |AO| basis set
+  !
+  ! mo_coef(i,j) = coefficient of the i-th |AO| on the j-th |MO|
+  !
+  ! mo_label : Label characterizing the |MOs| (local, canonical, natural, etc)
   END_DOC
 
   logical                        :: exists
@@ -162,7 +166,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, mo_coef_transp, (mo_tot_num,ao_num) ]
   implicit none
   BEGIN_DOC
-  ! Molecular orbital coefficients on AO basis set
+  ! |MO| coefficients on |AO| basis set
   END_DOC
   integer                        :: i, j
   
@@ -178,7 +182,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, mo_occ, (mo_tot_num) ]
   implicit none
   BEGIN_DOC
-  ! MO occupation numbers
+  ! |MO| occupation numbers
   END_DOC
   PROVIDE ezfio_filename elec_beta_num elec_alpha_num 
   if (mpi_master) then
@@ -217,9 +221,9 @@ END_PROVIDER
 subroutine ao_to_mo(A_ao,LDA_ao,A_mo,LDA_mo)
   implicit none
   BEGIN_DOC
-  ! Transform A from the AO basis to the MO basis
+  ! Transform A from the |AO| basis to the |MO| basis
   !
-  ! Ct.A_ao.C
+  ! $C^\dagger.A_{ao}.C$
   END_DOC
   integer, intent(in)            :: LDA_ao,LDA_mo
   double precision, intent(in)   :: A_ao(LDA_ao,ao_num)
@@ -248,15 +252,14 @@ subroutine mix_mo_jk(j,k)
   integer, intent(in)            :: j,k
   integer                        :: i,i_plus,i_minus
   BEGIN_DOC
-  ! Rotates the jth MO with the kth MO
-  ! to give two new MO's that are
+  ! Rotates the j-th |MO| with the k-th |MO| to give two new |MOs| that are
   !
-  !         '+' = 1/sqrt(2) (|j> + |k>)
+  ! * $+ = \frac{1}{\sqrt{2}} (|j\rangle + |k\rangle)$
   !
-  !         '-' = 1/sqrt(2) (|j> - |k>)
+  ! * $- = \frac{1}{\sqrt{2}} (|j\rangle - |k\rangle)$
   !
-  ! by convention, the '+' MO is in the lower index (min(j,k))
-  ! by convention, the '-' MO is in the larger index (max(j,k))
+  ! by convention, the '+' |MO| is in the lowest  index (min(j,k))
+  ! by convention, the '-' |MO| is in the highest index (max(j,k))
   END_DOC
   double precision               :: array_tmp(ao_num,2),dsqrt_2
   if(j==k)then
@@ -283,9 +286,9 @@ end
 subroutine ao_ortho_cano_to_ao(A_ao,LDA_ao,A,LDA)
   implicit none
   BEGIN_DOC
-  ! Transform A from the AO basis to the orthogonal AO basis
+  ! Transform A from the |AO| basis to the orthogonal |AO| basis
   !
-  ! C^(-1).A_ao.Ct^(-1)
+  ! $C^{-1}.A_{ao}.C^\dagger^{-1}$
   END_DOC
   integer, intent(in)            :: LDA_ao,LDA
   double precision, intent(in)   :: A_ao(LDA_ao,*)

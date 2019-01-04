@@ -5,7 +5,7 @@
 Runs all the possible tests using bats.
 
 Usage:
-  qp_test [-av]
+  qp_test [-av] [TEST]
 
 Options:
   -v    verbose output
@@ -34,6 +34,9 @@ def main(arguments):
                 number, _ = f.split('.',1)
                 l_bats.append( (int(number), os.path.join(dirname,f)) )
 
+    if arguments["TEST"]:
+       os.environ["TEST"] = arguments["TEST"]
+
     if arguments["-a"]:
         for (dirname, _, filenames) in os.walk(QP_SRC, followlinks=False) :
             if "IRPF90_temp" not in dirname:
@@ -55,12 +58,12 @@ def main(arguments):
         print ""
         if arguments["-v"]:
             p1 = subprocess.Popen(["python2", "bats_to_sh.py", bats_file], \
-                    stdout=subprocess.PIPE)
-            p2 = subprocess.Popen(["bash"], stdin=p1.stdout)
+                    stdout=subprocess.PIPE, env=os.environ)
+            p2 = subprocess.Popen(["bash"], stdin=p1.stdout, env=os.environ)
             _, _ = os.waitpid(p2.pid,0)
             _, _ = os.waitpid(p1.pid,0)
         else:
-            subprocess.check_call(["bats", bats_file])
+            subprocess.check_call(["bats", bats_file], env=os.environ)
             
 
 

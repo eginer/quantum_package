@@ -178,10 +178,13 @@ end
 &BEGIN_PROVIDER [ integer, N_occ_pattern ]
  implicit none
  BEGIN_DOC
-  ! array of the occ_pattern present in the wf
-  ! psi_occ_pattern(:,1,j) = jth occ_pattern of the wave function : represent all the single occupations
-  ! psi_occ_pattern(:,2,j) = jth occ_pattern of the wave function : represent all the double occupations
-  ! The occ patterns are sorted by occ_pattern_search_key
+  ! Array of the occ_patterns present in the wave function.
+  !
+  ! psi_occ_pattern(:,1,j) = j-th occ_pattern of the wave function : represents all the single occupations
+  !
+  ! psi_occ_pattern(:,2,j) = j-th occ_pattern of the wave function : represents all the double occupations
+  !
+  ! The occ patterns are sorted by :c:func:`occ_pattern_search_key`
  END_DOC
  integer :: i,j,k
 
@@ -366,8 +369,9 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, psi_occ_pattern_Hii, (N_occ_pattern) ]
  implicit none
  BEGIN_DOC
- ! <I|h|I> where |I> is an occupation pattern. This is the minimum Hii of
- ! all <i|h|i>, where the |i> are the determinants if oI>
+ ! $\langle I|H|I \rangle$ where $|I\rangle$ is an occupation pattern.
+ ! This is the minimum $H_{ii}$, where the $|i\rangle$ are the
+ ! determinants of $|I\rangle$.
  END_DOC
  integer :: j, i
 

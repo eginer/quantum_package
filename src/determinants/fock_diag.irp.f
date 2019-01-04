@@ -3,7 +3,7 @@ subroutine build_fock_tmp(fock_diag_tmp,det_ref,Nint)
   implicit none
   BEGIN_DOC
 ! Build the diagonal of the Fock matrix corresponding to a generator
-! determinant. F_00 is <i|H|i> = E0.
+! determinant. $F_{00}$ is $\langle i|H|i \rangle = E_0$.
   END_DOC
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: det_ref(Nint,2)
@@ -22,18 +22,11 @@ subroutine build_fock_tmp(fock_diag_tmp,det_ref,Nint)
   if (Ne(1) /= elec_alpha_num) then
     print *,  'Error in build_fock_tmp (alpha)', Ne(1), Ne(2)
     call debug_det(det_ref,N_int)
-!    print *,  occ(:,1)
-!    print *,  occ(:,2)
-!    do i=1,10000
-!      occ(i,1) = fock_diag_tmp(1,mo_tot_num+i) !traceback
-!    enddo
     stop -1
   endif
   if (Ne(2) /= elec_beta_num) then
-!    print *, 'Error in build_fock_tmp (beta)', Ne(1), Ne(2)
-!    do i=1,10000
-!      occ(i,1) = fock_diag_tmp(1,mo_tot_num+i) !traceback
-!    enddo
+    print *, 'Error in build_fock_tmp (beta)', Ne(1), Ne(2)
+    call debug_det(det_ref,N_int)
     stop -1
   endif
 

@@ -66,7 +66,8 @@ BEGIN_PROVIDER [integer, max_degree_exc]
   integer                        :: i,degree
   max_degree_exc = 0
   BEGIN_DOC
-  ! Maximum degree of excitation in the wf
+  ! Maximum degree of excitation in the wave function with respect to the Hartree-Fock
+  ! determinant.
   END_DOC
   do i = 1, N_det
     call get_excitation_degree(HF_bitmask,psi_det(1,1,i),degree,N_int)
@@ -79,7 +80,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ integer, psi_det_size ]
   implicit none
   BEGIN_DOC
-  ! Size of the psi_det/psi_coef arrays
+  ! Size of the psi_det and psi_coef arrays
   END_DOC
   PROVIDE ezfio_filename 
   logical                        :: exists
@@ -112,8 +113,8 @@ END_PROVIDER
 BEGIN_PROVIDER [ integer(bit_kind), psi_det, (N_int,2,psi_det_size) ]
   implicit none
   BEGIN_DOC
-  ! The wave function determinants. Initialized with Hartree-Fock if the EZFIO file
-  ! is empty
+  ! The determinants of the wave function. Initialized with Hartree-Fock if the |EZFIO| file
+  ! is empty.
   END_DOC
   integer                        :: i
   logical                        :: exists
@@ -183,8 +184,8 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, psi_coef, (psi_det_size,N_states) ]
   implicit none
   BEGIN_DOC
-  ! The wave function coefficients. Initialized with Hartree-Fock if the EZFIO file
-  ! is empty
+  ! The wave function coefficients. Initialized with Hartree-Fock if the |EZFIO| file
+  ! is empty.
   END_DOC
   
   integer                        :: i,k, N_int2
@@ -244,7 +245,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, psi_average_norm_contrib, (psi_det_size) ]
   implicit none
   BEGIN_DOC
-  ! Contribution of determinants to the state-averaged density
+  ! Contribution of determinants to the state-averaged density.
   END_DOC
   integer                        :: i,j,k
   double precision               :: f
@@ -312,7 +313,7 @@ END_PROVIDER
 &BEGIN_PROVIDER [ double precision, psi_coef_sorted_bit, (psi_det_size,N_states) ]
    implicit none
    BEGIN_DOC
-   ! Determinants on which we apply <i|H|psi> for perturbation.
+   ! Determinants on which we apply $\langle i|H|psi \rangle$ for perturbation.
    ! They are sorted by determinants interpreted as integers. Useful
    ! to accelerate the search of a random determinant in the wave
    ! function.
@@ -332,7 +333,7 @@ subroutine sort_dets_by_det_search_key(Ndet, det_in, coef_in, sze, det_out, coef
    integer(bit_kind), intent(out) :: det_out (N_int,2,sze)
    double precision , intent(out) :: coef_out(sze,N_st)
    BEGIN_DOC
-   ! Determinants are sorted are sorted according to their det_search_key.
+   ! Determinants are sorted according to their :c:func:`det_search_key`.
    ! Useful to accelerate the search of a random determinant in the wave
    ! function.
    !
@@ -402,7 +403,7 @@ subroutine read_dets(det,Nint,Ndet)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Reads the determinants from the EZFIO file
+  ! Reads the determinants from the |EZFIO| file
   END_DOC
   
   integer, intent(in)            :: Nint,Ndet
@@ -458,7 +459,7 @@ subroutine save_wavefunction_truncated(thr)
   double precision, intent(in) :: thr
   use bitmasks
   BEGIN_DOC
-  !  Save the wave function into the EZFIO file
+  !  Save the wave function into the |EZFIO| file
   END_DOC
   integer :: N_det_save,i
   N_det_save = N_det
@@ -477,7 +478,7 @@ subroutine save_wavefunction
   implicit none
   use bitmasks
   BEGIN_DOC
-  !  Save the wave function into the EZFIO file
+  !  Save the wave function into the |EZFIO| file
   END_DOC
 
   ! Trick to avoid re-reading the wave function every time N_det changes
@@ -496,7 +497,7 @@ subroutine save_wavefunction_unsorted
   implicit none
   use bitmasks
   BEGIN_DOC
-  !  Save the wave function into the EZFIO file
+  !  Save the wave function into the |EZFIO| file
   END_DOC
   if (mpi_master) then
     call save_wavefunction_general(N_det,min(N_states,N_det),psi_det,size(psi_coef,1),psi_coef)
@@ -506,7 +507,7 @@ end
 subroutine save_wavefunction_general(ndet,nstates,psidet,dim_psicoef,psicoef)
   implicit none
   BEGIN_DOC
-  !  Save the wave function into the EZFIO file
+  !  Save the wave function into the |EZFIO| file
   END_DOC
   use bitmasks
   include 'constants.include.F'
@@ -556,7 +557,7 @@ end
 subroutine save_wavefunction_specified(ndet,nstates,psidet,psicoef,ndetsave,index_det_save)
   implicit none
   BEGIN_DOC
-  !  Save the wave function into the EZFIO file
+  !  Save the wave function into the |EZFIO| file
   END_DOC
   use bitmasks
   integer, intent(in)            :: ndet,nstates
@@ -868,7 +869,7 @@ end subroutine
 BEGIN_PROVIDER [ double precision, psi_det_Hii, (N_det) ]
  implicit none
  BEGIN_DOC
- ! <i|h|i> for all determinants.
+ ! $\langle i|h|i \rangle$ for all determinants.
  END_DOC
  integer :: i,j
  double precision, external :: diag_H_mat_elem

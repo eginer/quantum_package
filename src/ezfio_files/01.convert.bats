@@ -8,6 +8,8 @@ function run {
   cp ${QP_ROOT}/tests/input/$INPUT .
   qp_convert_output_to_ezfio $INPUT -o $EZ
   qp_edit -c $EZ
+  ezfio set_file $EZ
+  ezfio set scf_utils thresh_scf 1.e-12
   echo "Write" > ${EZ}/ao_two_e_integrals/disk_access_ao_integrals
 }
 
@@ -21,4 +23,5 @@ function run {
 
 @test "[Cu(NH3)4]2+ GAMESS" {
   run cu_nh3_4_2plus.gms.out  cu_nh3_4_2plus.ezfio
+  ezfio set scf_utils thresh_scf 1.e-10
 }

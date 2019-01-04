@@ -2,7 +2,7 @@ logical function det_inf(key1, key2, Nint)
   use bitmasks
   implicit none
   BEGIN_DOC
-! Ordering function for determinants
+! Ordering function for determinants.
   END_DOC
   integer,intent(in)                 :: Nint
   integer(bit_kind),intent(in)       :: key1(Nint, 2), key2(Nint, 2)
@@ -26,9 +26,6 @@ end function
 subroutine tamiser(key, idx, no, n, Nint, N_key)
   use bitmasks
   implicit none
-  BEGIN_DOC
-! Uncodumented : TODO
-  END_DOC
   integer,intent(in)                    :: no, n, Nint, N_key
   integer(bit_kind),intent(inout)       :: key(Nint, 2, N_key)
   integer,intent(inout)                 :: idx(N_key)
@@ -70,7 +67,7 @@ subroutine sort_dets_ba_v(key_in, key_out, idx, shortcut, version, N_key, Nint)
   use bitmasks
   implicit none
   BEGIN_DOC
-! Uncodumented : TODO
+! Deprecated routine
   END_DOC
   integer, intent(in)            :: Nint, N_key
   integer(bit_kind),intent(in)   :: key_in(Nint,2,N_key)
@@ -98,9 +95,8 @@ end subroutine
 subroutine sort_dets_ab_v(key_in, key_out, idx, shortcut, version, N_key, Nint)
   use bitmasks
   implicit none
-  
   BEGIN_DOC
-! Uncodumented : TODO
+! Deprecated routine
   END_DOC
   integer, intent(in)                   :: Nint, N_key
   integer(bit_kind),intent(in)          :: key_in(Nint,2,N_key)
@@ -168,10 +164,8 @@ end subroutine
 subroutine sort_dets_ab(key, idx, shortcut, N_key, Nint)
   use bitmasks
   implicit none
-  
-  
   BEGIN_DOC
-! Uncodumented : TODO
+! Deprecated routine
   END_DOC
   integer, intent(in)                   :: Nint, N_key
   integer(bit_kind),intent(inout)       :: key(Nint,2,N_key)

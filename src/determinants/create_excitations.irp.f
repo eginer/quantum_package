@@ -1,7 +1,7 @@
 subroutine do_mono_excitation(key_in,i_hole,i_particle,ispin,i_ok)
   implicit none
   BEGIN_DOC
-  ! Apply the mono excitation operator : a^{dager}_(i_particle) a_(i_hole) of spin = ispin
+  ! Apply the single excitation operator : a^{dager}_(i_particle) a_(i_hole) of spin = ispin
   ! on key_in
   ! ispin = 1  == alpha
   ! ispin = 2  == beta
@@ -41,7 +41,7 @@ end
 logical function is_spin_flip_possible(key_in,i_flip,ispin)
   implicit none
   BEGIN_DOC
-  ! returns .True. if the spin-flip of spin ispin in the orbital i_flip is possible
+  ! returns |true| if the spin-flip of spin ispin in the orbital i_flip is possible
   ! on key_in
   END_DOC
   integer, intent(in)            :: i_flip,ispin

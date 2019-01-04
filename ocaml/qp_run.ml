@@ -66,6 +66,7 @@ let run slave exe ezfio_file =
   Printf.printf "Git Commit: %s\n" Git.message;
   Printf.printf "Git Date  : %s\n" Git.date;
   Printf.printf "Git SHA1  : %s\n" Git.sha1;
+  Printf.printf "EZFIO Dir : %s\n" ezfio_file;
   Printf.printf "\n\n%!";
 
 

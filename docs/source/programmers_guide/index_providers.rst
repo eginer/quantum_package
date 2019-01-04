@@ -248,6 +248,11 @@ Index of Providers
 * :c:data:`generators_bitmask_restart`
 * :c:data:`gga_sr_type_functionals`
 * :c:data:`gga_type_functionals`
+<<<<<<< HEAD
+=======
+* :c:data:`give_polynom_mult_center_mono_elec_erf`
+* :c:data:`give_polynom_mult_center_mono_elec_erf_opt`
+>>>>>>> c297dbef83fb10c92ec048d3f0ecd9f6a93624c8
 * :c:data:`grad_aos_dsr_vc_alpha_pbe_w`
 * :c:data:`grad_aos_dsr_vc_beta_pbe_w`
 * :c:data:`grad_aos_dsr_vx_alpha_pbe_w`
@@ -305,7 +310,6 @@ Index of Providers
 * :c:data:`iradix_sort_big`
 * :c:data:`kinetic_ref_bitmask_energy`
 * :c:data:`ks_energy`
-* :c:data:`l3_weight`
 * :c:data:`l_to_charater`
 * :c:data:`level_shift`
 * :c:data:`list_act`
@@ -628,6 +632,7 @@ Index of Providers
 * :c:data:`reunion_of_core_inact_bitmask`
 * :c:data:`rs_ks_energy`
 * :c:data:`s2_eig`
+* :c:data:`s2_matrix_all_dets`
 * :c:data:`s2_values`
 * :c:data:`s_half`
 * :c:data:`s_half_inv`
@@ -966,8 +971,6 @@ Index of Subroutines/Functions
 * :c:func:`give_explicit_poly_and_gaussian_double`
 * :c:func:`give_explicit_poly_and_gaussian_x`
 * :c:func:`give_polynom_mult_center_mono_elec`
-* :c:func:`give_polynom_mult_center_mono_elec_erf`
-* :c:func:`give_polynom_mult_center_mono_elec_erf_opt`
 * :c:func:`give_polynom_mult_center_x`
 * :c:func:`gpw`
 * :c:func:`grad_rho_ab_to_grad_rho_oc`
@@ -1057,7 +1060,6 @@ Index of Subroutines/Functions
 * :c:func:`is_a_two_holes_two_particles`
 * :c:func:`is_connected_to`
 * :c:func:`is_connected_to_by_mono`
-* :c:func:`is_generable_cassd`
 * :c:func:`is_i_in_virtual`
 * :c:func:`is_in_wavefunction`
 * :c:func:`is_spin_flip_possible`
@@ -1134,7 +1136,6 @@ Index of Subroutines/Functions
 * :c:func:`perturb_buffer_by_mono_dummy`
 * :c:func:`perturb_buffer_by_mono_epstein_nesbet`
 * :c:func:`perturb_buffer_by_mono_epstein_nesbet_2x2`
-* :c:func:`perturb_buffer_by_mono_epstein_nesbet_2x2_no_ci_diag`
 * :c:func:`perturb_buffer_by_mono_h_core`
 * :c:func:`perturb_buffer_by_mono_moller_plesset`
 * :c:func:`perturb_buffer_by_mono_moller_plesset_general`
@@ -1142,7 +1143,6 @@ Index of Subroutines/Functions
 * :c:func:`perturb_buffer_dummy`
 * :c:func:`perturb_buffer_epstein_nesbet`
 * :c:func:`perturb_buffer_epstein_nesbet_2x2`
-* :c:func:`perturb_buffer_epstein_nesbet_2x2_no_ci_diag`
 * :c:func:`perturb_buffer_h_core`
 * :c:func:`perturb_buffer_moller_plesset`
 * :c:func:`perturb_buffer_moller_plesset_general`
@@ -1166,7 +1166,6 @@ Index of Subroutines/Functions
 * :c:func:`pt2_dummy`
 * :c:func:`pt2_epstein_nesbet`
 * :c:func:`pt2_epstein_nesbet_2x2`
-* :c:func:`pt2_epstein_nesbet_2x2_no_ci_diag`
 * :c:func:`pt2_find_sample`
 * :c:func:`pt2_find_sample_lr`
 * :c:func:`pt2_h_core`

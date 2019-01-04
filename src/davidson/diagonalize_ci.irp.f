@@ -2,7 +2,7 @@
 BEGIN_PROVIDER [ double precision, CI_energy, (N_states_diag) ]
   implicit none
   BEGIN_DOC
-  ! N_states lowest eigenvalues of the CI matrix
+  ! :c:data:`n_states` lowest eigenvalues of the |CI| matrix
   END_DOC
   
   integer                        :: j
@@ -23,7 +23,7 @@ END_PROVIDER
 &BEGIN_PROVIDER [ double precision, CI_eigenvectors, (N_det,N_states_diag) ]
 &BEGIN_PROVIDER [ double precision, CI_eigenvectors_s2, (N_states_diag) ]
    BEGIN_DOC
-   ! Eigenvectors/values of the CI matrix
+   ! Eigenvectors/values of the |CI| matrix
    END_DOC
    implicit none
    double precision               :: ovrlp,u_dot_v
@@ -32,7 +32,7 @@ END_PROVIDER
    logical, allocatable           :: good_state_array(:)
    double precision, allocatable  :: s2_values_tmp(:)
    integer                        :: i_other_state
-   double precision, allocatable  :: eigenvectors(:,:), eigenvalues(:)
+   double precision, allocatable  :: eigenvectors(:,:), eigenvalues(:), H_prime(:,:)
    integer                        :: i_state
    double precision               :: e_0
    integer                        :: i,j,k
@@ -42,7 +42,7 @@ END_PROVIDER
    logical                        :: converged
    
    PROVIDE threshold_davidson nthreads_davidson
-   ! Guess values for the "N_states" states of the CI_eigenvectors
+   ! Guess values for the "N_states" states of the |CI| eigenvectors
    do j=1,min(N_states,N_det)
      do i=1,N_det
        CI_eigenvectors(i,j) = psi_coef(i,j)
@@ -98,12 +98,19 @@ END_PROVIDER
      
    else if (diag_algorithm == "Lapack") then
      
+     print *,  'Diagonalization of H using Lapack'
      allocate (eigenvectors(size(H_matrix_all_dets,1),N_det))
      allocate (eigenvalues(N_det))
-     call lapack_diag(eigenvalues,eigenvectors,                      &
-         H_matrix_all_dets,size(H_matrix_all_dets,1),N_det)
-     CI_electronic_energy(:) = 0.d0
      if (s2_eig) then
+       double precision, parameter :: alpha = 0.1d0
+       allocate (H_prime(N_det,N_det) )
+       H_prime(1:N_det,1:N_det) = H_matrix_all_dets(1:N_det,1:N_det) +  &
+         alpha * S2_matrix_all_dets(1:N_det,1:N_det) 
+       do j=1,N_det
+         H_prime(j,j) = H_prime(j,j) + alpha*(S_z2_Sz - expected_s2)
+       enddo
+       call lapack_diag(eigenvalues,eigenvectors,H_prime,size(H_prime,1),N_det)
+       CI_electronic_energy(:) = 0.d0
        i_state = 0
        allocate (s2_eigvalues(N_det))
        allocate(index_good_state_array(N_det),good_state_array(N_det))
@@ -165,6 +172,9 @@ END_PROVIDER
        deallocate(index_good_state_array,good_state_array)
        deallocate(s2_eigvalues)
      else
+       call lapack_diag(eigenvalues,eigenvectors,                      &
+           H_matrix_all_dets,size(H_matrix_all_dets,1),N_det)
+       CI_electronic_energy(:) = 0.d0
        call u_0_S2_u_0(CI_eigenvectors_s2,eigenvectors,N_det,psi_det,N_int,&
           min(N_det,N_states_diag),size(eigenvectors,1))
        ! Select the "N_states_diag" states of lowest energy
@@ -183,8 +193,8 @@ END_PROVIDER
 subroutine diagonalize_CI
   implicit none
   BEGIN_DOC
-!  Replace the coefficients of the CI states by the coefficients of the 
-!  eigenstates of the CI matrix
+!  Replace the coefficients of the |CI| states by the coefficients of the 
+!  eigenstates of the |CI| matrix.
   END_DOC
   integer :: i,j
   do j=1,N_states
