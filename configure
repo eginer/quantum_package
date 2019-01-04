@@ -239,7 +239,7 @@ EOF
     elif [[ ${PACKAGE} = ezfio ]] ; then
 
             download \
-              "https://gitlab.com/scemama/EZFIO/-/archive/master/EZFIO-master.tar.gz" \
+              "https://gitlab.com/scemama/EZFIO/-/archive/v1.3.4/EZFIO-v1.3.4.tar.gz"
               "${QP_ROOT}"/external/ezfio.tar.gz
             (
               cd "${QP_ROOT}"/external
