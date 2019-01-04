@@ -13,8 +13,8 @@ for i in `seq 1 $nstates`
  do 
  out=${1}.${i}.conv
 cat << EOF > ${out}.plt
-set term eps
-set output "$out.eps"
+set term pdf
+set output "$out.pdf"
 set log x
 set xlabel "Number of determinants"
 set ylabel "Total Energy (a.u.)"
@@ -32,8 +32,8 @@ for i in `seq 2 $nstates`
  do 
  out=${1}.${i}.delta_e.conv
 cat << EOF > ${out}.plt
-set term eps
-set output "$out.eps"
+set term pdf
+set output "$out.pdf"
 set log x
 set xlabel "Number of determinants"
 set ylabel "Energy difference (a.u.)"
