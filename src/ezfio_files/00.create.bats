@@ -17,6 +17,8 @@ function run {
   qp_create_ezfio_from_xyz \
      $INPUT -b "$BASIS" -m $MULT -c $CHARGE $PSEUDO -o $EZ
   qp_edit -c $EZ
+  ezfio set_file $EZ
+  ezfio set scf_utils thresh_scf 1.e-12
   echo "Write" > ${EZ}/ao_two_e_integrals/disk_access_ao_integrals
 }
 
@@ -46,7 +48,7 @@ function run {
 }
 
 @test "SiH2_3B1" {
-  run sih2_3b1.xyz 1 0 6-31g
+  run sih2_3b1.xyz 3 0 6-31g
 }
 
 @test "SO" {

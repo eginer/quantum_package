@@ -3,7 +3,8 @@ subroutine i_Wee_j_mono(key_i,key_j,Nint,spin,hij)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Returns <i|H|j> where i and j are determinants differing by a single excitation
+  ! Returns $\langle i|H|j \rangle$  where $i$ and $j$ are determinants differing by a 
+  ! single excitation.
   END_DOC
   integer, intent(in)            :: Nint, spin
   integer(bit_kind), intent(in)  :: key_i(Nint,2), key_j(Nint,2)
@@ -22,7 +23,7 @@ end
 double precision function diag_wee_mat_elem(det_in,Nint)
   implicit none
   BEGIN_DOC
-  ! Computes <i|H|i>
+  ! Computes $\langle i|H|i \rangle$.
   END_DOC
   integer,intent(in)             :: Nint
   integer(bit_kind),intent(in)   :: det_in(Nint,2)
@@ -86,7 +87,7 @@ subroutine a_operator_bielec(iorb,ispin,key,hjj,Nint,na,nb)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Needed for diag_H_mat_elem
+  ! Needed for :c:func:`diag_Wee_mat_elem`.
   END_DOC
   integer, intent(in)            :: iorb, ispin, Nint
   integer, intent(inout)         :: na, nb
@@ -130,7 +131,7 @@ subroutine ac_operator_bielec(iorb,ispin,key,hjj,Nint,na,nb)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Needed for diag_H_mat_elem
+  ! Needed for :c:func:`diag_Wee_mat_elem`.
   END_DOC
   integer, intent(in)            :: iorb, ispin, Nint
   integer, intent(inout)         :: na, nb
@@ -177,7 +178,8 @@ subroutine i_H_j_mono_spin_monoelec(key_i,key_j,Nint,spin,hij)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Returns <i|H|j> where i and j are determinants differing by a single excitation
+  ! Returns $\langle i|H|j \rangle$  where $i$ and $j$ are determinants differing by 
+  ! a single excitation.
   END_DOC
   integer, intent(in)            :: Nint, spin
   integer(bit_kind), intent(in)  :: key_i(Nint,2), key_j(Nint,2)
@@ -198,7 +200,7 @@ double precision function diag_H_mat_elem_monoelec(det_in,Nint)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Computes <i|H|i>
+  ! Computes $\langle i|H|i \rangle$.
   END_DOC
   integer,intent(in)             :: Nint
   integer(bit_kind),intent(in)   :: det_in(Nint,2)
@@ -233,7 +235,7 @@ subroutine i_H_j_monoelec(key_i,key_j,Nint,hij)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Returns <i|H|j> where i and j are determinants
+  ! Returns $\langle i|H|j \rangle$  where $i$ and $j$ are determinants.
   END_DOC
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: key_i(Nint,2), key_j(Nint,2)
@@ -269,7 +271,7 @@ subroutine i_H_j_bielec(key_i,key_j,Nint,hij)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Returns <i|H|j> where i and j are determinants
+  ! Returns $\langle i|H|j \rangle$  where $i$ and $j$ are determinants.
   END_DOC
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: key_i(Nint,2), key_j(Nint,2)

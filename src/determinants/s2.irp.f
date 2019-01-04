@@ -62,7 +62,7 @@ subroutine get_s2(key_i,key_j,Nint,s2)
   end select
 end
 
-BEGIN_PROVIDER [ double precision, S_z ]
+ BEGIN_PROVIDER [ double precision, S_z ]
 &BEGIN_PROVIDER [ double precision, S_z2_Sz ]
  implicit none
  BEGIN_DOC
@@ -77,7 +77,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, expected_s2]
  implicit none
  BEGIN_DOC
-! Expected value of S2 : S*(S+1)
+! Expected value of |S^2| : S*(S+1)
  END_DOC
    logical :: has_expected_s2
 
@@ -344,10 +344,10 @@ subroutine i_S2_psi_minilist(key,keys,idx_key,N_minilist,coef,Nint,Ndet,Ndet_max
   double precision               :: s2ij
   integer                        :: idx(0:Ndet)
   BEGIN_DOC
-! Computes <i|S2|Psi> = \sum_J c_J <i|S2|J>.
+! Computes $\langle i|S^2|\Psi \rangle = \sum_J c_J \langle i|S^2|J \rangle$.
 !
-! Uses filter_connected_i_H_psi0 to get all the |J> to which |i>
-! is connected. The |J> are searched in short pre-computed lists.
+! Uses filter_connected_i_H_psi0 to get all the $|J\rangle$ to which $|i\rangle$
+! is connected. The $|J\rangle$ are searched in short pre-computed lists.
   END_DOC
   
   ASSERT (Nint > 0)

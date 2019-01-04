@@ -4,7 +4,7 @@ use map_module
 integer function load_mo_integrals_erf(filename)
   implicit none
   BEGIN_DOC
-  ! Read from disk the $ao integrals
+  ! Read from disk the |MO| erf integrals
   END_DOC
   character*(*), intent(in)      :: filename
   integer*8                      :: i
@@ -52,14 +52,14 @@ end
 BEGIN_PROVIDER [ type(map_type), mo_integrals_erf_map ]
   implicit none
   BEGIN_DOC
-  ! MO integrals
+  ! |MO| integrals
   END_DOC
   integer(key_kind)              :: key_max
   integer(map_size_kind)         :: sze
   call bielec_integrals_index(mo_tot_num,mo_tot_num,mo_tot_num,mo_tot_num,key_max)
   sze = key_max
   call map_init(mo_integrals_erf_map,sze)
-  print*, 'MO ERF map initialized'
+  print*, 'MO erf map initialized'
 END_PROVIDER
 
 subroutine insert_into_mo_integrals_erf_map(n_integrals,                 &
@@ -68,7 +68,7 @@ subroutine insert_into_mo_integrals_erf_map(n_integrals,                 &
   implicit none
   
   BEGIN_DOC
-  ! Create new entry into MO map, or accumulate in an existing entry
+  ! Create new entry into |MO| map, or accumulate in an existing entry
   END_DOC
   
   integer, intent(in)                :: n_integrals
@@ -92,7 +92,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, mo_integrals_erf_cache, (0:64*64*64*64) ]
  implicit none
  BEGIN_DOC
- ! Cache of MO integrals for fast access
+ ! Cache of |MO| integrals for fast access
  END_DOC
  PROVIDE mo_bielec_integrals_erf_in_map
  integer                        :: i,j,k,l
@@ -127,7 +127,7 @@ double precision function get_mo_bielec_integral_erf(i,j,k,l,map)
   use map_module
   implicit none
   BEGIN_DOC
-  ! Returns one integral <ij|kl> in the MO basis
+  ! Returns one integral $\langle ij|kl \rangle$ in the |MO| basis
   END_DOC
   integer, intent(in)            :: i,j,k,l
   integer(key_kind)              :: idx
@@ -158,7 +158,7 @@ end
 double precision function mo_bielec_integral_erf(i,j,k,l)
   implicit none
   BEGIN_DOC
-  ! Returns one integral <ij|kl> in the MO basis
+  ! Returns one integral $\langle ij|kl \rangle$ in the |MO| basis
   END_DOC
   integer, intent(in)            :: i,j,k,l
   double precision               :: get_mo_bielec_integral_erf
@@ -173,7 +173,7 @@ subroutine get_mo_bielec_integrals_erf(j,k,l,sze,out_val,map)
   use map_module
   implicit none
   BEGIN_DOC
-  ! Returns multiple integrals <ij|kl> in the MO basis, all
+  ! Returns multiple integrals $\langle ij|kl \rangle$ in the |MO| basis, all
   ! i for j,k,l fixed.
   END_DOC
   integer, intent(in)            :: j,k,l, sze
@@ -204,8 +204,8 @@ subroutine get_mo_bielec_integrals_erf_ij(k,l,sze,out_array,map)
   use map_module
   implicit none
   BEGIN_DOC
-  ! Returns multiple integrals <ij|kl> in the MO basis, all
-  ! i(1)j(2) 1/r12 k(1)l(2)
+  ! Returns multiple integrals $\langle ij|kl \rangle$ in the |MO| basis, all
+  ! $\int i(1)j(2) \frac{1}{r_{12}} k(1)l(2)$
   ! i, j for k,l fixed.
   END_DOC
   integer, intent(in)            :: k,l, sze
@@ -259,8 +259,8 @@ subroutine get_mo_bielec_integrals_erf_i1j1(k,l,sze,out_array,map)
   use map_module
   implicit none
   BEGIN_DOC
-  ! Returns multiple integrals <ik|jl> in the MO basis, all
-  ! i(1)j(1) erf(mu_erf * r12) /r12 k(2)l(2)
+  ! Returns multiple integrals $\langle ik|jl \rangle$ in the |MO| basis, all
+  ! $\int i(1)j(1) \frac{\erf(\mu * r_{12})}{r_{12}} k(2)l(2)$
   ! i, j for k,l fixed.
   END_DOC
   integer, intent(in)            :: k,l, sze
@@ -314,7 +314,8 @@ subroutine get_mo_bielec_integrals_erf_coulomb_ii(k,l,sze,out_val,map)
   use map_module
   implicit none
   BEGIN_DOC
-  ! Returns multiple integrals <ki|li> 
+  ! Returns multiple integrals $\langle ki|li \rangle$
+  !
   ! k(1)i(2) 1/r12 l(1)i(2) :: out_val(i1)
   ! for k,l fixed.
   END_DOC
@@ -347,8 +348,9 @@ subroutine get_mo_bielec_integrals_erf_exch_ii(k,l,sze,out_val,map)
   use map_module
   implicit none
   BEGIN_DOC
-  ! Returns multiple integrals <ki|il> 
-  ! k(1)i(2) 1/r12 i(1)l(2) :: out_val(i1)
+  ! Returns multiple integrals $\langle ki|il \rangle$
+  !
+  ! $\int k(1)i(2) \frac{1}{r_{12}} i(1)l(2)$ :: out_val(i1)
   ! for k,l fixed.
   END_DOC
   integer, intent(in)            :: k,l, sze
@@ -380,7 +382,7 @@ end
 integer*8 function get_mo_erf_map_size()
   implicit none
   BEGIN_DOC
-  ! Return the number of elements in the MO map
+  ! Returns the number of elements in the |MO| map
   END_DOC
   get_mo_erf_map_size = mo_integrals_erf_map % n_elements
 end

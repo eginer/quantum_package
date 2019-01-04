@@ -8,7 +8,6 @@ function run() {
   test_exe scf || skip
   qp_edit -c $1
   ezfio set_file $1
-  ezfio set scf_utils thresh_scf 1.e-12
   qp_run scf $1
   qp_set_frozen_core $1
   energy="$(ezfio get hartree_fock energy)"
@@ -56,7 +55,7 @@ function run() {
 }
 
 @test "SiH2_3B1" {
-  run sih2_3b1.ezfio -289.9529166224221
+  run sih2_3b1.ezfio -289.9654718650881
 }
 
 @test "SO" {

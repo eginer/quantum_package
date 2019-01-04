@@ -291,7 +291,7 @@ subroutine fill_H_apply_buffer_no_selection(n_selected,det_buffer,Nint,iproc)
   use bitmasks
   implicit none
   BEGIN_DOC
-  !  Fill the H_apply buffer with determiants for CISD
+  !  Fill the H_apply buffer with determiants for |CISD|
   END_DOC
   
   integer, intent(in)            :: n_selected, Nint, iproc
@@ -333,7 +333,7 @@ subroutine push_pt2(zmq_socket_push,pt2,norm_pert,H_pert_diag,i_generator,N_st,t
   use f77_zmq
   implicit none
   BEGIN_DOC
-! Push PT2 calculation to the collector
+! Push |PT2| calculation to the collector
   END_DOC
   integer(ZMQ_PTR), intent(in)   :: zmq_socket_push
   integer, intent(in)            :: N_st, i_generator
@@ -394,7 +394,7 @@ subroutine pull_pt2(zmq_socket_pull,pt2,norm_pert,H_pert_diag,i_generator,N_st,n
   use f77_zmq
   implicit none
   BEGIN_DOC
-! Pull PT2 calculation in the collector
+! Pull |PT2| calculation in the collector
   END_DOC
   integer(ZMQ_PTR), intent(in)   :: zmq_socket_pull
   integer, intent(in)            :: N_st

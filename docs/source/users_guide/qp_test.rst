@@ -4,14 +4,17 @@
 qp_test
 =======
 
-This command runs the consistency test of |qp|. The tests are run with the |Bats| shell testing environment.
+This command runs the consistency test of |qp|.
+The tests are run with the |Bats| shell testing environment.
+If the name of a test of its number is specified on the command line, only this
+test will be run.
 
 Usage
 -----
 
 .. code:: bash
 
-    qp_test [FLAGS] 
+    qp_test [FLAGS] [TEST]
     Flags :
       [-a]          Run all the tests
       [-v]          Verbose mode: shows the output of the runs

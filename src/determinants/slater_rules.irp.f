@@ -3,7 +3,7 @@ subroutine get_excitation_degree(key1,key2,degree,Nint)
   include 'utils/constants.include.F'
   implicit none
   BEGIN_DOC
-  ! Returns the excitation degree between two determinants
+  ! Returns the excitation degree between two determinants.
   END_DOC
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: key1(Nint*2)
@@ -60,7 +60,7 @@ subroutine get_excitation(det1,det2,exc,degree,phase,Nint)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Returns the excitation operators between two determinants and the phase
+  ! Returns the excitation operators between two determinants and the phase.
   END_DOC
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: det1(Nint,2)
@@ -171,7 +171,7 @@ subroutine get_double_excitation(det1,det2,exc,phase,Nint)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Returns the two excitation operators between two doubly excited determinants and the phase
+  ! Returns the two excitation operators between two doubly excited determinants and the phase.
   END_DOC
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: det1(Nint,2)
@@ -340,7 +340,7 @@ subroutine get_mono_excitation(det1,det2,exc,phase,Nint)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Returns the excitation operator between two singly excited determinants and the phase
+  ! Returns the excitation operator between two singly excited determinants and the phase.
   END_DOC
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: det1(Nint,2)
@@ -429,7 +429,7 @@ subroutine bitstring_to_list_ab( string, list, n_elements, Nint)
   implicit none
   BEGIN_DOC
   ! Gives the inidices(+1) of the bits set to 1 in the bit string
-  ! For alpha/beta determinants
+  ! For alpha/beta determinants.
   END_DOC
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: string(Nint,2)
@@ -467,7 +467,8 @@ subroutine i_H_j_s2(key_i,key_j,Nint,hij,s2)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Returns <i|H|j> where i and j are determinants
+  ! Returns $\langle i|H|j \rangle$ and $\langle i|S^2|j \rangle$
+  ! where $i$ and $j$ are determinants.
   END_DOC
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: key_i(Nint,2), key_j(Nint,2)
@@ -569,7 +570,7 @@ subroutine i_H_j(key_i,key_j,Nint,hij)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Returns <i|H|j> where i and j are determinants
+  ! Returns $\langle i|H|j \rangle$ where $i$ and $j$ are determinants.
   END_DOC
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: key_i(Nint,2), key_j(Nint,2)
@@ -668,7 +669,7 @@ subroutine i_H_j_verbose(key_i,key_j,Nint,hij,hmono,hdouble,phase)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Returns <i|H|j> where i and j are determinants with 
+  ! Returns $\langle i|H|j \rangle$ where $i$ and $j$ are determinants.
   END_DOC
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: key_i(Nint,2), key_j(Nint,2)
@@ -945,12 +946,12 @@ subroutine i_H_psi(key,keys,coef,Nint,Ndet,Ndet_max,Nstate,i_H_psi_array)
   use bitmasks
   implicit none
   BEGIN_DOC
-! Computes <i|H|Psi> = :math:`\sum_J c_J \langle i | H | J \rangle`.
+! Computes $\langle i|H|Psi \rangle  = \sum_J c_J \langle i | H | J \rangle$.
 !
-! Uses filter_connected_i_H_psi0 to get all the |J> to which |i>
+! Uses filter_connected_i_H_psi0 to get all the $|J \rangle$ to which $|i \rangle$
 ! is connected.
 ! The i_H_psi_minilist is much faster but requires to build the
-! minilists
+! minilists.
   END_DOC
   integer, intent(in)            :: Nint, Ndet,Ndet_max,Nstate
   integer(bit_kind), intent(in)  :: keys(Nint,2,Ndet)
@@ -1014,10 +1015,10 @@ subroutine i_H_psi_minilist(key,keys,idx_key,N_minilist,coef,Nint,Ndet,Ndet_max,
   double precision               :: hij
   integer, allocatable           :: idx(:)
   BEGIN_DOC
-! Computes <i|H|Psi> = \sum_J c_J <i|H|J>.
+! Computes $\langle i|H|\Psi \rangle = \sum_J c_J \langle i|H|J\rangle$.
 !
-! Uses filter_connected_i_H_psi0 to get all the |J> to which |i>
-! is connected. The |J> are searched in short pre-computed lists.
+! Uses filter_connected_i_H_psi0 to get all the $|J \rangle$ to which $|i \rangle$
+! is connected. The $|J\rangle$ are searched in short pre-computed lists.
   END_DOC
   
   ASSERT (Nint > 0)
@@ -1063,7 +1064,8 @@ subroutine get_excitation_degree_vector_mono(key1,key2,degree,Nint,sze,idx)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Applies get_excitation_degree to an array of determinants and return only the mono excitations
+  ! Applies get_excitation_degree to an array of determinants and returns only
+  ! the single excitations.
   END_DOC
   integer, intent(in)            :: Nint, sze
   integer(bit_kind), intent(in)  :: key1(Nint,2,sze)
@@ -1156,8 +1158,8 @@ subroutine get_excitation_degree_vector_mono_or_exchange(key1,key2,degree,Nint,s
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Applies get_excitation_degree to an array of determinants and return only the mono excitations
-  ! and the connections through exchange integrals 
+  ! Applies get_excitation_degree to an array of determinants and return only the
+  ! single excitations and the connections through exchange integrals.
   END_DOC
   integer, intent(in)            :: Nint, sze
   integer(bit_kind), intent(in)  :: key1(Nint,2,sze)
@@ -1214,8 +1216,8 @@ subroutine get_excitation_degree_vector_double_alpha_beta(key1,key2,degree,Nint,
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Applies get_excitation_degree to an array of determinants and return only the mono excitations
-  ! and the connections through exchange integrals 
+  ! Applies get_excitation_degree to an array of determinants and return only the
+  ! single excitations and the connections through exchange integrals.
   END_DOC
   integer, intent(in)            :: Nint, sze
   integer(bit_kind), intent(in)  :: key1(Nint,2,sze)
@@ -1324,8 +1326,8 @@ subroutine get_excitation_degree_vector_mono_or_exchange_verbose(key1,key2,degre
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Applies get_excitation_degree to an array of determinants and return only the mono excitations
-  ! and the connections through exchange integrals 
+  ! Applies get_excitation_degree to an array of determinants and return only the single
+  ! excitations and the connections through exchange integrals.
   END_DOC
   integer, intent(in)            :: Nint, sze
   integer(bit_kind), intent(in)  :: key1(Nint,2,sze)
@@ -1479,7 +1481,6 @@ subroutine get_excitation_degree_vector_mono_or_exchange_verbose(key1,key2,degre
        else 
         cycle
        endif
-!      pause
       else 
         degree(l) = shiftr(d,1)
         idx(l) = i
@@ -1496,7 +1497,7 @@ subroutine get_excitation_degree_vector(key1,key2,degree,Nint,sze,idx)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Applies get_excitation_degree to an array of determinants
+  ! Applies get_excitation_degree to an array of determinants.
   END_DOC
   integer, intent(in)            :: Nint, sze
   integer(bit_kind), intent(in)  :: key1(Nint,2,sze)
@@ -1586,7 +1587,7 @@ double precision function diag_H_mat_elem_fock(det_ref,det_pert,fock_diag_tmp,Ni
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Computes <i|H|i> when i is at most a double excitation from
+  ! Computes $\langle i|H|i \rangle$ when $i$ is at most a double excitation from
   ! a reference.
   END_DOC
   integer,intent(in)             :: Nint
@@ -1654,7 +1655,7 @@ end
 double precision function diag_H_mat_elem(det_in,Nint)
   implicit none
   BEGIN_DOC
-  ! Computes <i|H|i>
+  ! Computes $\langle i|H|i \rangle$.
   END_DOC
   integer,intent(in)             :: Nint
   integer(bit_kind),intent(in)   :: det_in(Nint,2)
@@ -1717,7 +1718,7 @@ subroutine a_operator(iorb,ispin,key,hjj,Nint,na,nb)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Needed for diag_H_mat_elem
+  ! Needed for :c:func:`diag_H_mat_elem`.
   END_DOC
   integer, intent(in)            :: iorb, ispin, Nint
   integer, intent(inout)         :: na, nb
@@ -1763,7 +1764,7 @@ subroutine ac_operator(iorb,ispin,key,hjj,Nint,na,nb)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Needed for diag_H_mat_elem
+  ! Needed for :c:func:`diag_H_mat_elem`.
   END_DOC
   integer, intent(in)            :: iorb, ispin, Nint
   integer, intent(inout)         :: na, nb
@@ -1819,7 +1820,7 @@ subroutine get_phase(key1,key2,phase,Nint)
   integer(bit_kind), intent(in)  :: key1(Nint,2), key2(Nint,2)
   double precision, intent(out)  :: phase
   BEGIN_DOC
-! Returns the phase between key1 and key2
+! Returns the phase between key1 and key2.
   END_DOC
   integer                        :: exc(0:2, 2, 2), degree
 
@@ -1837,7 +1838,7 @@ subroutine get_excitation_degree_spin(key1,key2,degree,Nint)
   include 'utils/constants.include.F'
   implicit none
   BEGIN_DOC
-  ! Returns the excitation degree between two determinants
+  ! Returns the excitation degree between two determinants.
   END_DOC
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: key1(Nint)
@@ -1890,7 +1891,7 @@ subroutine get_excitation_spin(det1,det2,exc,degree,phase,Nint)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Returns the excitation operators between two determinants and the phase
+  ! Returns the excitation operators between two determinants and the phase.
   END_DOC
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: det1(Nint)
@@ -1934,7 +1935,9 @@ subroutine decode_exc_spin(exc,h1,p1,h2,p2)
   implicit none
   BEGIN_DOC
   ! Decodes the exc arrays returned by get_excitation.
+  !
   ! h1,h2 : Holes
+  !
   ! p1,p2 : Particles
   END_DOC
   integer, intent(in)            :: exc(0:2,2)
@@ -1965,7 +1968,7 @@ subroutine get_double_excitation_spin(det1,det2,exc,phase,Nint)
   implicit none
   BEGIN_DOC
   ! Returns the two excitation operators between two doubly excited spin-determinants
-  ! and the phase
+  ! and the phase.
   END_DOC
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: det1(Nint)
@@ -2094,7 +2097,7 @@ subroutine get_mono_excitation_spin(det1,det2,exc,phase,Nint)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Returns the excitation operator between two singly excited determinants and the phase
+  ! Returns the excitation operator between two singly excited determinants and the phase.
   END_DOC
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: det1(Nint)
@@ -2170,7 +2173,8 @@ subroutine i_H_j_mono_spin(key_i,key_j,Nint,spin,hij)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Returns <i|H|j> where i and j are determinants differing by a single excitation
+  ! Returns $\langle i|H|j \rangle$ where $i$ and $j$ are determinants differing by
+  ! a single excitation.
   END_DOC
   integer, intent(in)            :: Nint, spin
   integer(bit_kind), intent(in)  :: key_i(Nint,2), key_j(Nint,2)
@@ -2189,7 +2193,8 @@ subroutine i_H_j_double_spin(key_i,key_j,Nint,hij)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Returns <i|H|j> where i and j are determinants differing by a same-spin double excitation
+  ! Returns $\langle i|H|j \rangle$ where $i$ and $j$ are determinants differing by 
+  ! a same-spin double excitation.
   END_DOC
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: key_i(Nint), key_j(Nint)
@@ -2217,7 +2222,8 @@ subroutine i_H_j_double_alpha_beta(key_i,key_j,Nint,hij)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Returns <i|H|j> where i and j are determinants differing by an opposite-spin double excitation
+  ! Returns $\langle i|H|j \rangle$ where $i$ and $j$ are determinants differing by 
+  ! an opposite-spin double excitation.
   END_DOC
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: key_i(Nint,2), key_j(Nint,2)

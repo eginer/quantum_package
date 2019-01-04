@@ -6,8 +6,8 @@ use bitmasks
 &BEGIN_PROVIDER [ integer, N_det_cas ]
   implicit none
   BEGIN_DOC
-  ! CAS wave function, defined from the application of the CAS bitmask on the 
-  ! determinants. idx_cas gives the indice of the CAS determinant in psi_det.
+  ! |CAS| wave function, defined from the application of the |CAS| bitmask on the 
+  ! determinants. idx_cas gives the indice of the |CAS| determinant in psi_det.
   END_DOC
   integer                        :: i, k, l
   logical                        :: good
@@ -50,7 +50,7 @@ END_PROVIDER
 &BEGIN_PROVIDER [ double precision, psi_cas_coef_sorted_bit, (psi_det_size,N_states) ]
  implicit none
  BEGIN_DOC
- ! CAS determinants sorted to accelerate the search of a random determinant in the wave
+ ! |CAS| determinants sorted to accelerate the search of a random determinant in the wave
  ! function.
  END_DOC
  call sort_dets_by_det_search_key(N_det_cas, psi_cas, psi_cas_coef, size(psi_cas_coef,1), &
@@ -66,8 +66,8 @@ END_PROVIDER
 &BEGIN_PROVIDER [ integer, N_det_non_cas ]
  implicit none
  BEGIN_DOC
-  ! Set of determinants which are not part of the CAS, defined from the application
-  ! of the CAS bitmask on the determinants. 
+  ! Set of determinants which are not part of the |CAS|, defined from the application
+  ! of the |CAS| bitmask on the determinants. 
   ! idx_non_cas gives the indice of the determinant in psi_det.
  END_DOC
  integer                        :: i_non_cas,j,k
@@ -103,7 +103,7 @@ END_PROVIDER
 &BEGIN_PROVIDER [ double precision, psi_non_cas_coef_sorted_bit, (psi_det_size,N_states) ]
  implicit none
  BEGIN_DOC
- ! CAS determinants sorted to accelerate the search of a random determinant in the wave
+ ! |CAS| determinants sorted to accelerate the search of a random determinant in the wave
  ! function.
  END_DOC
  call sort_dets_by_det_search_key(N_det_cas, psi_non_cas, psi_non_cas_coef, size(psi_non_cas_coef,1), &
@@ -145,6 +145,9 @@ END_PROVIDER
 
  BEGIN_PROVIDER [double precision, psi_cas_energy, (N_states)]
  implicit none
+ BEGIN_DOC
+! Variational energy of $\Psi_{CAS}$, where $\Psi_{CAS} =  \sum_{I \in CAS} \I \rangle \langle I | \Psi \rangle$.
+ END_DOC
  integer :: i,j,k
  double precision :: hij,norm,u_dot_v
   psi_cas_energy = 0.d0

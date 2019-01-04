@@ -44,3 +44,14 @@ function test_exe() {
   fi
 }
 
+run_only_test() {
+  if [[ "$BATS_TEST_DESCRIPTION" != "$1" ]] && [[ "$BATS_TEST_NUMBER" -ne "$1" ]]; then
+    skip
+  fi
+}
+
+setup() {
+  if [[ -n $TEST ]] ; then
+    run_only_test $TEST
+  fi
+}

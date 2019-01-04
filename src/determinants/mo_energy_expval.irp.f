@@ -113,7 +113,8 @@ subroutine diag_H_mat_elem_au0_h_au0(det_in,Nint,hii)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Computes <i|H|i> for any determinant i. Used for wave functions with an additional electron.
+  ! Computes $\langle i|H|i \rangle$ for any determinant $|i\rangle$.
+  ! Used for wave functions with an additional electron.
   END_DOC
   integer,intent(in)             :: Nint
   integer(bit_kind),intent(in)   :: det_in(Nint,2)
