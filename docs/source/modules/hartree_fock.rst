@@ -100,7 +100,9 @@ Providers
     File: :file:`hf_energy.irp.f`
 
     Extra contribution to the SCF energy coming from the density. 
+
     For a Hartree-Fock calculation: extra_e_contrib_density = 0 
+
     For a Kohn-Sham or Range-separated Kohn-Sham: the exchange/correlation - trace of the V_xc potential
 
 

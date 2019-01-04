@@ -12,8 +12,8 @@
    :caption: Introduction
    :hidden:
 
-   intro/selected_ci
    intro/install
+   intro/selected_ci
 
 .. toctree::
    :maxdepth: 1

@@ -786,7 +786,7 @@ Subroutines / functions
 
     File: :file:`pot_ao_erf_ints.irp.f`
 
-    subroutine that returs all integrals over r of type erf(mu_in * | r-C_center |)/| r-C_center |
+    subroutine that returs all integrals over r of type erf(mu_in * | r-C_center | )/| r-C_center |
 
 
 
@@ -890,7 +890,7 @@ Subroutines / functions
 
     File: :file:`pot_ao_erf_ints.irp.f`
 
-    computes the following integral : int[-infty;+infty] dr AO_i_ao (r) AO_j_ao(r) erf(mu_in * | r-C_center |)/| r-C_center |
+    computes the following integral : int[-infty;+infty] dr AO_i_ao (r) AO_j_ao(r) erf(mu_in * | r-C_center | )/| r-C_center |
 
 
 

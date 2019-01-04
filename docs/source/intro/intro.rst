@@ -11,8 +11,18 @@ The |qp|
 What it is
 ==========
 
-The |qp| is an open-source programming environment for quantum chemistry,
-especially for `wave function theory <https://en.wikipedia.org/wiki/Ab_initio_quantum_chemistry_methods>`_ (|WFT|).
+The |qp| is an open-source **programming environment** for quantum chemistry. 
+It has been built from the **developper** point of view in order to help 
+the design of new quantum chemistry methods, 
+especially for `wave function theory <https://en.wikipedia.org/wiki/Ab_initio_quantum_chemistry_methods>`_ (|WFT|). 
+
+From the **user** point of view, the |qp| proposes a stand-alone path 
+to use optimized selected configuration interaction |sCI| based on the 
+|CIPSI| algorithm that can efficiently reach near-full configuration interaction 
+|FCI| quality for relatively large systems (see for instance :cite:`Caffarel_2016,Caffarel_2016.2,Loos_2018,Scemama_2018,Dash_2018,Garniron_2017.2,Loos_2018,Garniron_2018,Giner2018Oct`). 
+To have a simple example of how to use the |CIPSI| program, go to the `users_guide/quickstart. 
+
+
 The main goal is the development of selected configuration interaction |sCI|
 methods and multi-reference perturbation theory |MRPT| in the
 determinant-driven paradigm. It also contains the very basics of Kohn-Sham `density functional theory <https://en.wikipedia.org/wiki/Density_functional_theory>`_ |KS-DFT| and `range-separated hybrids <https://aip.scitation.org/doi/10.1063/1.1383587>`_ |RSH|.  

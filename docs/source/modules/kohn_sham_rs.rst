@@ -52,7 +52,7 @@ EZFIO parameters
 
 .. option:: energy
 
-    SCF energy
+    Energy range separated hybrid
 
 
 

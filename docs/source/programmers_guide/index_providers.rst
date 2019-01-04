@@ -404,9 +404,6 @@ Index of Providers
 * :c:data:`n_det_max_full`
 * :c:data:`n_det_non_cas`
 * :c:data:`n_det_print_wf`
-* :c:data:`n_det_non_ref`
-* :c:data:`n_det_print_wf`
-* :c:data:`n_det_ref`
 * :c:data:`n_det_selectors`
 * :c:data:`n_double_exc_bitmasks`
 * :c:data:`n_double_selectors`
@@ -1134,7 +1131,6 @@ Index of Subroutines/Functions
 * :c:func:`overlap_x_abs`
 * :c:func:`past_d1`
 * :c:func:`past_d2`
-* :c:func:`perturb_buffer_by_mono_decontracted`
 * :c:func:`perturb_buffer_by_mono_dummy`
 * :c:func:`perturb_buffer_by_mono_epstein_nesbet`
 * :c:func:`perturb_buffer_by_mono_epstein_nesbet_2x2`
@@ -1143,7 +1139,6 @@ Index of Subroutines/Functions
 * :c:func:`perturb_buffer_by_mono_moller_plesset`
 * :c:func:`perturb_buffer_by_mono_moller_plesset_general`
 * :c:func:`perturb_buffer_by_mono_qdpt`
-* :c:func:`perturb_buffer_decontracted`
 * :c:func:`perturb_buffer_dummy`
 * :c:func:`perturb_buffer_epstein_nesbet`
 * :c:func:`perturb_buffer_epstein_nesbet_2x2`
@@ -1168,7 +1163,6 @@ Index of Subroutines/Functions
 * :c:func:`provide_everything`
 * :c:func:`pt2`
 * :c:func:`pt2_collector`
-* :c:func:`pt2_decontracted`
 * :c:func:`pt2_dummy`
 * :c:func:`pt2_epstein_nesbet`
 * :c:func:`pt2_epstein_nesbet_2x2`

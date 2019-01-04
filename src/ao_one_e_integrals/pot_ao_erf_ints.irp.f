@@ -1,7 +1,7 @@
 subroutine give_all_erf_kl_ao(integrals_ao,mu_in,C_center)
  implicit none
  BEGIN_DOC
-! subroutine that returs all integrals over r of type erf(mu_in * | r-C_center |)/| r-C_center |
+! subroutine that returs all integrals over r of type erf(mu_in * | r-C_center | )/| r-C_center |
  END_DOC
  double precision, intent(in)  :: mu_in,C_center(3)
  double precision, intent(out) :: integrals_ao(ao_num,ao_num)
@@ -19,7 +19,7 @@ double precision function NAI_pol_mult_erf_ao(i_ao,j_ao,mu_in,C_center)
  implicit none
  BEGIN_DOC
  ! computes the following integral : 
- ! int[-infty;+infty] dr AO_i_ao (r) AO_j_ao(r) erf(mu_in * | r-C_center |)/| r-C_center |
+ ! int[-infty;+infty] dr AO_i_ao (r) AO_j_ao(r) erf(mu_in * | r-C_center | )/| r-C_center |
  END_DOC
  integer, intent(in) :: i_ao,j_ao
  double precision, intent(in) :: mu_in, C_center(3)

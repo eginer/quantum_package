@@ -106,23 +106,6 @@ Providers
 
 
 
-.. c:var:: extra_e_contrib_density
-
-    .. code:: text
-
-        double precision	:: extra_e_contrib_density
-
-    File: :file:`ks_enery.irp.f`
-
-    Extra contribution to the SCF energy coming from the density. 
-
-    For a Hartree-Fock calculation: extra_e_contrib_density = 0 
-
-    For a Kohn-Sham or Range-separated Kohn-Sham: the exchange/correlation - 1/2 trace of the V_xc potential
-
-
-
-
 .. c:var:: fock_matrix_alpha_no_xc_ao
 
     .. code:: text

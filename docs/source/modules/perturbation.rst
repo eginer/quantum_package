@@ -203,20 +203,6 @@ Subroutines / functions
 
 
 
-.. c:function:: perturb_buffer_by_mono_decontracted
-
-    .. code:: text
-
-        subroutine perturb_buffer_by_mono_decontracted(i_generator,buffer,buffer_size,e_2_pert_buffer,coef_pert_buffer,sum_e_2_pert,sum_norm_pert,sum_H_pert_diag,N_st,Nint,key_mask,fock_diag_tmp,electronic_energy)
-
-    File: :file:`perturbation.irp.f_shell_13`
-
-    Applly pertubration ``decontracted`` to the buffer of determinants generated in the H_apply routine.
-
-
-
-
-
 .. c:function:: perturb_buffer_by_mono_dummy
 
     .. code:: text
@@ -324,20 +310,6 @@ Subroutines / functions
     File: :file:`perturbation.irp.f_shell_13`
 
     Applly pertubration ``qdpt`` to the buffer of determinants generated in the H_apply routine.
-
-
-
-
-
-.. c:function:: perturb_buffer_decontracted
-
-    .. code:: text
-
-        subroutine perturb_buffer_decontracted(i_generator,buffer,buffer_size,e_2_pert_buffer,coef_pert_buffer,sum_e_2_pert,sum_norm_pert,sum_H_pert_diag,N_st,Nint,key_mask,fock_diag_tmp,electronic_energy)
-
-    File: :file:`perturbation.irp.f_shell_13`
-
-    Applly pertubration ``decontracted`` to the buffer of determinants generated in the H_apply routine.
 
 
 
@@ -455,27 +427,13 @@ Subroutines / functions
 
 
 
-.. c:function:: pt2_decontracted
-
-    .. code:: text
-
-        subroutine pt2_decontracted (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
-
-    File: :file:`pt2_equations.irp.f_template_412`
-
-    
-
-
-
-
-
 .. c:function:: pt2_dummy
 
     .. code:: text
 
         subroutine pt2_dummy (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
 
-    File: :file:`pt2_equations.irp.f_template_412`
+    File: :file:`pt2_equations.irp.f_template_365`
 
     Dummy perturbation to add all connected determinants.
 
@@ -489,7 +447,7 @@ Subroutines / functions
 
         subroutine pt2_epstein_nesbet (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
 
-    File: :file:`pt2_equations.irp.f_template_412`
+    File: :file:`pt2_equations.irp.f_template_365`
 
     compute the standard Epstein-Nesbet perturbative first order coefficient and second order energetic contribution 
 
@@ -511,7 +469,7 @@ Subroutines / functions
 
         subroutine pt2_epstein_nesbet_2x2 (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
 
-    File: :file:`pt2_equations.irp.f_template_412`
+    File: :file:`pt2_equations.irp.f_template_365`
 
     compute the Epstein-Nesbet 2x2 diagonalization coefficient and energetic contribution 
 
@@ -533,7 +491,7 @@ Subroutines / functions
 
         subroutine pt2_epstein_nesbet_2x2_no_ci_diag(electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
 
-    File: :file:`pt2_equations.irp.f_template_412`
+    File: :file:`pt2_equations.irp.f_template_365`
 
     compute the Epstein-Nesbet 2x2 diagonalization coefficient and energetic contribution 
 
@@ -577,7 +535,7 @@ Subroutines / functions
 
         subroutine pt2_moller_plesset (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
 
-    File: :file:`pt2_equations.irp.f_template_412`
+    File: :file:`pt2_equations.irp.f_template_365`
 
     compute the standard Moller-Plesset perturbative first order coefficient and second order energetic contribution 
 
@@ -599,7 +557,7 @@ Subroutines / functions
 
         subroutine pt2_moller_plesset_general (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
 
-    File: :file:`pt2_equations.irp.f_template_412`
+    File: :file:`pt2_equations.irp.f_template_365`
 
     compute the general Moller-Plesset perturbative first order coefficient and second order energetic contribution 
 
@@ -621,7 +579,7 @@ Subroutines / functions
 
         subroutine pt2_qdpt (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
 
-    File: :file:`pt2_equations.irp.f_template_412`
+    File: :file:`pt2_equations.irp.f_template_365`
 
     compute the QDPT first order coefficient and second order energetic contribution 
 
