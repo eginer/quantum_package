@@ -29,7 +29,7 @@ function run() {
 
 @test "[Cu(NH3)4]2+" {
   qp_set_mo_class cu_nh3_4_2plus.ezfio -core "[1-24]" -act "[25-45]" -del "[46-87]"
-  run  cu_nh3_4_2plus.ezfio -1862.98685486633  -1862.68819645070 
+  run  cu_nh3_4_2plus.ezfio -1862.98686836443  -1862.68820041268 
 }
 
 @test "C2H2" {
