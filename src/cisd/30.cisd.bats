@@ -3,7 +3,7 @@
 source $QP_ROOT/tests/bats/common.bats.sh
 
 function run() {
-  thresh=1.e-6
+  thresh=1.e-5
   test_exe cisd || skip
   qp_edit -c $1
   ezfio set_file $1
@@ -29,7 +29,7 @@ function run() {
 
 @test "[Cu(NH3)4]2+" {
   qp_set_mo_class cu_nh3_4_2plus.ezfio -core "[1-24]" -act "[25-45]" -del "[46-87]"
-  run  cu_nh3_4_2plus.ezfio -1862.98686836443  -1862.68820041268 
+  run  cu_nh3_4_2plus.ezfio -1862.9868140855440 -1862.9868140855440
 }
 
 @test "C2H2" {
