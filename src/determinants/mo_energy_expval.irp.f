@@ -131,20 +131,20 @@ subroutine diag_H_mat_elem_au0_h_au0(det_in,Nint,hii)
   ! alpha - alpha
   do i = 1, elec_num_tab_local(1)
     iorb =  occ(i,1)
-    hii += mo_mono_elec_integrals(iorb,iorb)
+    hii += mo_one_e_integrals(iorb,iorb)
     do j = i+1, elec_num_tab_local(1)
       jorb = occ(j,1)
-      hii +=  mo_bielec_integral_jj_anti(jorb,iorb)
+      hii +=  mo_two_e_integrals_jj_anti(jorb,iorb)
     enddo
   enddo
   
   ! beta - beta
   do i = 1, elec_num_tab_local(2)
     iorb =  occ(i,2)
-    hii += mo_mono_elec_integrals(iorb,iorb)
+    hii += mo_one_e_integrals(iorb,iorb)
     do j = i+1, elec_num_tab_local(2)
       jorb = occ(j,2)
-      hii +=  mo_bielec_integral_jj_anti(jorb,iorb)
+      hii +=  mo_two_e_integrals_jj_anti(jorb,iorb)
     enddo
   enddo
   
@@ -153,7 +153,7 @@ subroutine diag_H_mat_elem_au0_h_au0(det_in,Nint,hii)
     iorb =  occ(i,2)
     do j = 1, elec_num_tab_local(1)
       jorb = occ(j,1)
-      hii +=  mo_bielec_integral_jj(jorb,iorb)
+      hii +=  mo_two_e_integrals_jj(jorb,iorb)
     enddo
   enddo
   

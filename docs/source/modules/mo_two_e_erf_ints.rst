@@ -15,7 +15,7 @@ in :file:`Utils/map_module.f90`.
 The range separation parameter :math:`{\mu}_{erf}` is the variable :option:`ao_two_e_erf_ints mu_erf`. 
 
 To fetch an |MO| integral, use
-`get_mo_bielec_integral_erf(i,j,k,l,mo_integrals_map_erf)`
+`get_mo_two_e_integral_erf(i,j,k,l,mo_integrals_map_erf)`
 
 The conventions are: 
 
@@ -113,19 +113,6 @@ Providers
 
 
 
-.. c:var:: mo_bielec_integrals_erf_in_map
-
-    .. code:: text
-
-        logical	:: mo_bielec_integrals_erf_in_map
-
-    File: :file:`mo_bi_integrals_erf.irp.f`
-
-    If True, the map of MO bielectronic integrals is provided
-
-
-
-
 .. c:var:: mo_integrals_erf_cache
 
     .. code:: text
@@ -190,7 +177,7 @@ Providers
 
     File: :file:`mo_bi_integrals_erf.irp.f`
 
-    mo_bielec_integral_jj(i,j) = J_ij mo_bielec_integral_jj_exchange(i,j) = K_ij mo_bielec_integral_jj_anti(i,j) = J_ij - K_ij
+    mo_two_e_integrals_jj(i,j) = J_ij mo_two_e_integrals_jj_exchange(i,j) = K_ij mo_two_e_integrals_jj_anti(i,j) = J_ij - K_ij
 
 
 
@@ -205,7 +192,7 @@ Providers
 
     File: :file:`mo_bi_integrals_erf.irp.f`
 
-    mo_bielec_integral_jj(i,j) = J_ij mo_bielec_integral_jj_exchange(i,j) = K_ij mo_bielec_integral_jj_anti(i,j) = J_ij - K_ij
+    mo_two_e_integrals_jj(i,j) = J_ij mo_two_e_integrals_jj_exchange(i,j) = K_ij mo_two_e_integrals_jj_anti(i,j) = J_ij - K_ij
 
 
 
@@ -220,7 +207,7 @@ Providers
 
     File: :file:`mo_bi_integrals_erf.irp.f`
 
-    mo_bielec_integral_jj_from_ao(i,j) = J_ij mo_bielec_integral_jj_exchange_from_ao(i,j) = J_ij mo_bielec_integral_jj_anti_from_ao(i,j) = J_ij - K_ij
+    mo_two_e_integral_jj_from_ao(i,j) = J_ij mo_two_e_integrals_jj_exchange_from_ao(i,j) = J_ij mo_two_e_integrals_jj_anti_from_ao(i,j) = J_ij - K_ij
 
 
 
@@ -235,7 +222,7 @@ Providers
 
     File: :file:`mo_bi_integrals_erf.irp.f`
 
-    mo_bielec_integral_jj(i,j) = J_ij mo_bielec_integral_jj_exchange(i,j) = K_ij mo_bielec_integral_jj_anti(i,j) = J_ij - K_ij
+    mo_two_e_integrals_jj(i,j) = J_ij mo_two_e_integrals_jj_exchange(i,j) = K_ij mo_two_e_integrals_jj_anti(i,j) = J_ij - K_ij
 
 
 
@@ -250,7 +237,7 @@ Providers
 
     File: :file:`mo_bi_integrals_erf.irp.f`
 
-    mo_bielec_integral_jj_from_ao(i,j) = J_ij mo_bielec_integral_jj_exchange_from_ao(i,j) = J_ij mo_bielec_integral_jj_anti_from_ao(i,j) = J_ij - K_ij
+    mo_two_e_integral_jj_from_ao(i,j) = J_ij mo_two_e_integrals_jj_exchange_from_ao(i,j) = J_ij mo_two_e_integrals_jj_anti_from_ao(i,j) = J_ij - K_ij
 
 
 
@@ -265,7 +252,20 @@ Providers
 
     File: :file:`mo_bi_integrals_erf.irp.f`
 
-    mo_bielec_integral_jj_from_ao(i,j) = J_ij mo_bielec_integral_jj_exchange_from_ao(i,j) = J_ij mo_bielec_integral_jj_anti_from_ao(i,j) = J_ij - K_ij
+    mo_two_e_integral_jj_from_ao(i,j) = J_ij mo_two_e_integrals_jj_exchange_from_ao(i,j) = J_ij mo_two_e_integrals_jj_anti_from_ao(i,j) = J_ij - K_ij
+
+
+
+
+.. c:var:: mo_two_e_integrals_erf_in_map
+
+    .. code:: text
+
+        logical	:: mo_two_e_integrals_erf_in_map
+
+    File: :file:`mo_bi_integrals_erf.irp.f`
+
+    If True, the map of MO two-electron integrals is provided
 
 
 
@@ -303,11 +303,25 @@ Subroutines / functions
 
 
 
-.. c:function:: get_mo_bielec_integral_erf
+.. c:function:: get_mo_erf_map_size
 
     .. code:: text
 
-        double precision function get_mo_bielec_integral_erf(i,j,k,l,map)
+        integer*8 function get_mo_erf_map_size()
+
+    File: :file:`map_integrals_erf.irp.f`
+
+    Returns the number of elements in the |MO| map
+
+
+
+
+
+.. c:function:: get_mo_two_e_integral_erf
+
+    .. code:: text
+
+        double precision function get_mo_two_e_integral_erf(i,j,k,l,map)
 
     File: :file:`map_integrals_erf.irp.f`
 
@@ -317,11 +331,11 @@ Subroutines / functions
 
 
 
-.. c:function:: get_mo_bielec_integrals_erf
+.. c:function:: get_mo_two_e_integrals_erf
 
     .. code:: text
 
-        subroutine get_mo_bielec_integrals_erf(j,k,l,sze,out_val,map)
+        subroutine get_mo_two_e_integrals_erf(j,k,l,sze,out_val,map)
 
     File: :file:`map_integrals_erf.irp.f`
 
@@ -331,11 +345,11 @@ Subroutines / functions
 
 
 
-.. c:function:: get_mo_bielec_integrals_erf_coulomb_ii
+.. c:function:: get_mo_two_e_integrals_erf_coulomb_ii
 
     .. code:: text
 
-        subroutine get_mo_bielec_integrals_erf_coulomb_ii(k,l,sze,out_val,map)
+        subroutine get_mo_two_e_integrals_erf_coulomb_ii(k,l,sze,out_val,map)
 
     File: :file:`map_integrals_erf.irp.f`
 
@@ -347,11 +361,11 @@ Subroutines / functions
 
 
 
-.. c:function:: get_mo_bielec_integrals_erf_exch_ii
+.. c:function:: get_mo_two_e_integrals_erf_exch_ii
 
     .. code:: text
 
-        subroutine get_mo_bielec_integrals_erf_exch_ii(k,l,sze,out_val,map)
+        subroutine get_mo_two_e_integrals_erf_exch_ii(k,l,sze,out_val,map)
 
     File: :file:`map_integrals_erf.irp.f`
 
@@ -363,11 +377,11 @@ Subroutines / functions
 
 
 
-.. c:function:: get_mo_bielec_integrals_erf_i1j1
+.. c:function:: get_mo_two_e_integrals_erf_i1j1
 
     .. code:: text
 
-        subroutine get_mo_bielec_integrals_erf_i1j1(k,l,sze,out_array,map)
+        subroutine get_mo_two_e_integrals_erf_i1j1(k,l,sze,out_array,map)
 
     File: :file:`map_integrals_erf.irp.f`
 
@@ -377,29 +391,15 @@ Subroutines / functions
 
 
 
-.. c:function:: get_mo_bielec_integrals_erf_ij
+.. c:function:: get_mo_two_e_integrals_erf_ij
 
     .. code:: text
 
-        subroutine get_mo_bielec_integrals_erf_ij(k,l,sze,out_array,map)
+        subroutine get_mo_two_e_integrals_erf_ij(k,l,sze,out_array,map)
 
     File: :file:`map_integrals_erf.irp.f`
 
     Returns multiple integrals  :math:`\langle ij|kl \rangle`  in the |MO| basis, all  :math:`\int i(1)j(2) \frac{1}{r_{12}} k(1)l(2)` i, j for k,l fixed.
-
-
-
-
-
-.. c:function:: get_mo_erf_map_size
-
-    .. code:: text
-
-        integer*8 function get_mo_erf_map_size()
-
-    File: :file:`map_integrals_erf.irp.f`
-
-    Returns the number of elements in the |MO| map
 
 
 
@@ -419,11 +419,11 @@ Subroutines / functions
 
 
 
-.. c:function:: mo_bielec_integral_erf
+.. c:function:: mo_two_e_integral_erf
 
     .. code:: text
 
-        double precision function mo_bielec_integral_erf(i,j,k,l)
+        double precision function mo_two_e_integral_erf(i,j,k,l)
 
     File: :file:`map_integrals_erf.irp.f`
 
@@ -433,11 +433,11 @@ Subroutines / functions
 
 
 
-.. c:function:: mo_bielec_integrals_erf_index
+.. c:function:: mo_two_e_integrals_erf_index
 
     .. code:: text
 
-        subroutine mo_bielec_integrals_erf_index(i,j,k,l,i1)
+        subroutine mo_two_e_integrals_erf_index(i,j,k,l,i1)
 
     File: :file:`mo_bi_integrals_erf.irp.f`
 
@@ -461,11 +461,11 @@ Subroutines / functions
 
 
 
-.. c:function:: save_erf_bi_elec_integrals_mo
+.. c:function:: save_erf_two_e_integrals_mo
 
     .. code:: text
 
-        subroutine save_erf_bi_elec_integrals_mo
+        subroutine save_erf_two_e_integrals_mo
 
     File: :file:`routines_save_integrals_erf.irp.f`
 
@@ -475,11 +475,11 @@ Subroutines / functions
 
 
 
-.. c:function:: save_erf_bielec_ints_mo_into_ints_mo
+.. c:function:: save_erf_two_e_ints_mo_into_ints_mo
 
     .. code:: text
 
-        subroutine save_erf_bielec_ints_mo_into_ints_mo
+        subroutine save_erf_two_e_ints_mo_into_ints_mo
 
     File: :file:`routines_save_integrals_erf.irp.f`
 

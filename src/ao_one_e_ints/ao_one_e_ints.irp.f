@@ -9,7 +9,7 @@
   IF (read_ao_one_e_integrals) THEN
      call ezfio_get_ao_one_e_ints_ao_one_e_integrals(ao_one_e_integrals)
   ELSE
-        ao_one_e_integrals = ao_nucl_elec_integrals + ao_kinetic_integrals
+        ao_one_e_integrals = ao_integrals_n_e + ao_kinetic_integrals
 
         IF (DO_PSEUDO) THEN
               ao_one_e_integrals += ao_pseudo_integrals

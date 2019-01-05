@@ -13,8 +13,8 @@ All the one-electron integrals in |MO| basis are defined here.
 The most important providers for usual quantum-chemistry calculation are:  
 
 * `mo_kinetic_integrals` which are the kinetic operator integrals on the |AO| basis (see :file:`kin_mo_ints.irp.f`)
-* `mo_nucl_elec_integrals` which are the nuclear-elctron operator integrals on the |AO| basis (see :file:`pot_mo_ints.irp.f`)
-* `mo_mono_elec_integrals` which are the the h_core operator integrals on the |AO| basis (see :file:`mo_mono_ints.irp.f`)
+* `mo_integrals_n_e` which are the nuclear-elctron operator integrals on the |AO| basis (see :file:`pot_mo_ints.irp.f`)
+* `mo_one_e_integrals` which are the the h_core operator integrals on the |AO| basis (see :file:`mo_mono_ints.irp.f`)
 
 Note that you can find other interesting integrals related to the position operator in :file:`spread_dipole_mo.irp.f`. 
 
@@ -117,6 +117,32 @@ Providers
 
 
 
+.. c:var:: mo_integrals_n_e
+
+    .. code:: text
+
+        double precision, allocatable	:: mo_integrals_n_e	(mo_num,mo_num)
+
+    File: :file:`pot_mo_ints.irp.f`
+
+    Nucleus-electron interaction on the |MO| basis
+
+
+
+
+.. c:var:: mo_integrals_n_e_per_atom
+
+    .. code:: text
+
+        double precision, allocatable	:: mo_integrals_n_e_per_atom	(mo_num,mo_num,nucl_num)
+
+    File: :file:`pot_mo_ints.irp.f`
+
+    mo_integrals_n_e_per_atom(i,j,k) =  :math:`\langle \phi_i| -\frac{1}{|r-R_k|} | \phi_j \rangle` . where R_k is the coordinate of the k-th nucleus.
+
+
+
+
 .. c:var:: mo_kinetic_integrals
 
     .. code:: text
@@ -130,41 +156,15 @@ Providers
 
 
 
-.. c:var:: mo_mono_elec_integrals
+.. c:var:: mo_one_e_integrals
 
     .. code:: text
 
-        double precision, allocatable	:: mo_mono_elec_integrals	(mo_num,mo_num)
+        double precision, allocatable	:: mo_one_e_integrals	(mo_num,mo_num)
 
     File: :file:`mo_one_e_ints.irp.f`
 
     array of the mono electronic hamiltonian on the MOs basis : sum of the kinetic and nuclear electronic potential (and pseudo potential if needed)
-
-
-
-
-.. c:var:: mo_nucl_elec_integrals
-
-    .. code:: text
-
-        double precision, allocatable	:: mo_nucl_elec_integrals	(mo_num,mo_num)
-
-    File: :file:`pot_mo_ints.irp.f`
-
-    Nucleus-electron interaction on the |MO| basis
-
-
-
-
-.. c:var:: mo_nucl_elec_integrals_per_atom
-
-    .. code:: text
-
-        double precision, allocatable	:: mo_nucl_elec_integrals_per_atom	(mo_num,mo_num,nucl_num)
-
-    File: :file:`pot_mo_ints.irp.f`
-
-    mo_nucl_elec_integrals_per_atom(i,j,k) =  :math:`\langle \phi_i| -\frac{1}{|r-R_k|} | \phi_j \rangle` . where R_k is the coordinate of the k-th nucleus.
 
 
 

@@ -1,4 +1,4 @@
-double precision function ao_bielec_integral_erf(i,j,k,l)
+double precision function ao_two_e_integral_erf(i,j,k,l)
   implicit none
   BEGIN_DOC
   !  integral of the AO basis <ik|jl> or (ij|kl)
@@ -14,10 +14,10 @@ double precision function ao_bielec_integral_erf(i,j,k,l)
   double precision               :: P_new(0:max_dim,3),P_center(3),fact_p,pp
   double precision               :: Q_new(0:max_dim,3),Q_center(3),fact_q,qq
   integer                        :: iorder_p(3), iorder_q(3)
-  double precision               :: ao_bielec_integral_schwartz_accel_erf
+  double precision               :: ao_two_e_integral_schwartz_accel_erf
   
    if (ao_prim_num(i) * ao_prim_num(j) * ao_prim_num(k) * ao_prim_num(l) > 1024 ) then
-     ao_bielec_integral_erf = ao_bielec_integral_schwartz_accel_erf(i,j,k,l)
+     ao_two_e_integral_erf = ao_two_e_integral_schwartz_accel_erf(i,j,k,l)
      return
    endif
 
@@ -27,7 +27,7 @@ double precision function ao_bielec_integral_erf(i,j,k,l)
   num_j = ao_nucl(j)
   num_k = ao_nucl(k)
   num_l = ao_nucl(l)
-  ao_bielec_integral_erf = 0.d0
+  ao_two_e_integral_erf = 0.d0
   
   if (num_i /= num_j .or. num_k /= num_l .or. num_j /= num_k)then
     do p = 1, 3
@@ -64,7 +64,7 @@ double precision function ao_bielec_integral_erf(i,j,k,l)
             integral = general_primitive_integral_erf(dim1,              &
                 P_new,P_center,fact_p,pp,p_inv,iorder_p,             &
                 Q_new,Q_center,fact_q,qq,q_inv,iorder_q)
-            ao_bielec_integral_erf = ao_bielec_integral_erf +  coef4 * integral
+            ao_two_e_integral_erf = ao_two_e_integral_erf +  coef4 * integral
           enddo ! s
         enddo  ! r
       enddo   ! q
@@ -93,7 +93,7 @@ double precision function ao_bielec_integral_erf(i,j,k,l)
                 I_power(1),J_power(1),K_power(1),L_power(1),         &
                 I_power(2),J_power(2),K_power(2),L_power(2),         &
                 I_power(3),J_power(3),K_power(3),L_power(3))
-            ao_bielec_integral_erf = ao_bielec_integral_erf + coef4 * integral
+            ao_two_e_integral_erf = ao_two_e_integral_erf + coef4 * integral
           enddo ! s
         enddo  ! r
       enddo   ! q
@@ -103,7 +103,7 @@ double precision function ao_bielec_integral_erf(i,j,k,l)
   
 end
 
-double precision function ao_bielec_integral_schwartz_accel_erf(i,j,k,l)
+double precision function ao_two_e_integral_schwartz_accel_erf(i,j,k,l)
   implicit none
   BEGIN_DOC
   !  integral of the AO basis <ik|jl> or (ij|kl)
@@ -127,7 +127,7 @@ double precision function ao_bielec_integral_schwartz_accel_erf(i,j,k,l)
   num_j = ao_nucl(j)
   num_k = ao_nucl(k)
   num_l = ao_nucl(l)
-  ao_bielec_integral_schwartz_accel_erf = 0.d0
+  ao_two_e_integral_schwartz_accel_erf = 0.d0
   double precision               :: thr
   thr = ao_integrals_threshold*ao_integrals_threshold
   
@@ -203,7 +203,7 @@ double precision function ao_bielec_integral_schwartz_accel_erf(i,j,k,l)
             integral = general_primitive_integral_erf(dim1,              &
                 P_new,P_center,fact_p,pp,p_inv,iorder_p,             &
                 Q_new,Q_center,fact_q,qq,q_inv,iorder_q)
-            ao_bielec_integral_schwartz_accel_erf = ao_bielec_integral_schwartz_accel_erf + coef4 * integral
+            ao_two_e_integral_schwartz_accel_erf = ao_two_e_integral_schwartz_accel_erf + coef4 * integral
           enddo ! s
         enddo  ! r
       enddo   ! q
@@ -263,7 +263,7 @@ double precision function ao_bielec_integral_schwartz_accel_erf(i,j,k,l)
                 I_power(1),J_power(1),K_power(1),L_power(1),         &
                 I_power(2),J_power(2),K_power(2),L_power(2),         &
                 I_power(3),J_power(3),K_power(3),L_power(3))
-            ao_bielec_integral_schwartz_accel_erf = ao_bielec_integral_schwartz_accel_erf +  coef4 * integral
+            ao_two_e_integral_schwartz_accel_erf = ao_two_e_integral_schwartz_accel_erf +  coef4 * integral
           enddo ! s
         enddo  ! r
       enddo   ! q
@@ -275,7 +275,7 @@ double precision function ao_bielec_integral_schwartz_accel_erf(i,j,k,l)
 end
 
 
-subroutine compute_ao_bielec_integrals_erf(j,k,l,sze,buffer_value)
+subroutine compute_ao_two_e_integrals_erf(j,k,l,sze,buffer_value)
   implicit none
   use map_module
   
@@ -286,7 +286,7 @@ subroutine compute_ao_bielec_integrals_erf(j,k,l,sze,buffer_value)
   include 'utils/constants.include.F'
   integer, intent(in)            :: j,k,l,sze
   real(integral_kind), intent(out) :: buffer_value(sze)
-  double precision               :: ao_bielec_integral_erf
+  double precision               :: ao_two_e_integral_erf
   
   integer                        :: i
   
@@ -294,7 +294,7 @@ subroutine compute_ao_bielec_integrals_erf(j,k,l,sze,buffer_value)
     buffer_value = 0._integral_kind
     return
   endif
-  if (ao_bielec_integral_erf_schwartz(j,l) < thresh ) then
+  if (ao_two_e_integral_erf_schwartz(j,l) < thresh ) then
     buffer_value = 0._integral_kind
     return
   endif
@@ -304,12 +304,12 @@ subroutine compute_ao_bielec_integrals_erf(j,k,l,sze,buffer_value)
       buffer_value(i) = 0._integral_kind
       cycle
     endif
-    if (ao_bielec_integral_erf_schwartz(i,k)*ao_bielec_integral_erf_schwartz(j,l) < thresh ) then
+    if (ao_two_e_integral_erf_schwartz(i,k)*ao_two_e_integral_erf_schwartz(j,l) < thresh ) then
       buffer_value(i) = 0._integral_kind
       cycle
     endif
     !DIR$ FORCEINLINE
-    buffer_value(i) = ao_bielec_integral_erf(i,k,j,l)
+    buffer_value(i) = ao_two_e_integral_erf(i,k,j,l)
   enddo
   
 end
@@ -458,7 +458,7 @@ end
 double precision function ERI_erf(alpha,beta,delta,gama,a_x,b_x,c_x,d_x,a_y,b_y,c_y,d_y,a_z,b_z,c_z,d_z)
   implicit none
   BEGIN_DOC
-  !  ATOMIC PRIMTIVE bielectronic integral between the 4 primitives :: 
+  !  ATOMIC PRIMTIVE two-electron integral between the 4 primitives :: 
   !         primitive_1 = x1**(a_x) y1**(a_y) z1**(a_z) exp(-alpha * r1**2)
   !         primitive_2 = x1**(b_x) y1**(b_y) z1**(b_z) exp(- beta * r1**2)
   !         primitive_3 = x2**(c_x) y2**(c_y) z2**(c_z) exp(-delta * r2**2)
@@ -608,7 +608,7 @@ subroutine compute_ao_integrals_erf_jl(j,l,n_integrals,buffer_i,buffer_value)
   real(integral_kind),intent(out) :: buffer_value(ao_num*ao_num)
 
   integer                        :: i,k
-  double precision               :: ao_bielec_integral_erf,cpu_1,cpu_2, wall_1, wall_2
+  double precision               :: ao_two_e_integral_erf,cpu_1,cpu_2, wall_1, wall_2
   double precision               :: integral, wall_0
   double precision               :: thr
   integer                        :: kk, m, j1, i1
@@ -631,17 +631,17 @@ subroutine compute_ao_integrals_erf_jl(j,l,n_integrals,buffer_i,buffer_value)
       if (ao_overlap_abs(i,k)*ao_overlap_abs(j,l) < thr) then
         cycle
       endif
-      if (ao_bielec_integral_erf_schwartz(i,k)*ao_bielec_integral_erf_schwartz(j,l) < thr ) then
+      if (ao_two_e_integral_erf_schwartz(i,k)*ao_two_e_integral_erf_schwartz(j,l) < thr ) then
         cycle
       endif
       !DIR$ FORCEINLINE
-      integral = ao_bielec_integral_erf(i,k,j,l)  ! i,k : r1    j,l : r2
+      integral = ao_two_e_integral_erf(i,k,j,l)  ! i,k : r1    j,l : r2
       if (abs(integral) < thr) then
         cycle
       endif
       n_integrals += 1
       !DIR$ FORCEINLINE
-      call bielec_integrals_index(i,j,k,l,buffer_i(n_integrals))
+      call two_e_integrals_index(i,j,k,l,buffer_i(n_integrals))
       buffer_value(n_integrals) = integral
     enddo
   enddo

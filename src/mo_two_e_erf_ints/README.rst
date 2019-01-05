@@ -9,7 +9,7 @@ in :file:`Utils/map_module.f90`.
 The range separation parameter :math:`{\mu}_{erf}` is the variable :option:`ao_two_e_erf_ints mu_erf`. 
 
 To fetch an |MO| integral, use
-`get_mo_bielec_integral_erf(i,j,k,l,mo_integrals_map_erf)`
+`get_mo_two_e_integral_erf(i,j,k,l,mo_integrals_map_erf)`
 
 The conventions are: 
 

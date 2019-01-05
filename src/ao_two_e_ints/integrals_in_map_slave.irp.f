@@ -1,20 +1,20 @@
-subroutine ao_bielec_integrals_in_map_slave_tcp(i)
+subroutine ao_two_e_integrals_in_map_slave_tcp(i)
   implicit none
   integer, intent(in)            :: i
   BEGIN_DOC
 ! Computes a buffer of integrals. i is the ID of the current thread.
   END_DOC
-  call ao_bielec_integrals_in_map_slave(0,i)
+  call ao_two_e_integrals_in_map_slave(0,i)
 end
 
 
-subroutine ao_bielec_integrals_in_map_slave_inproc(i)
+subroutine ao_two_e_integrals_in_map_slave_inproc(i)
   implicit none
   integer, intent(in)            :: i
   BEGIN_DOC
 ! Computes a buffer of integrals. i is the ID of the current thread.
   END_DOC
-  call ao_bielec_integrals_in_map_slave(1,i)
+  call ao_two_e_integrals_in_map_slave(1,i)
 end
 
 
@@ -71,7 +71,7 @@ end
 
 
 
-subroutine ao_bielec_integrals_in_map_slave(thread,iproc)
+subroutine ao_two_e_integrals_in_map_slave(thread,iproc)
   use map_module
   use f77_zmq
   implicit none
@@ -136,7 +136,7 @@ subroutine ao_bielec_integrals_in_map_slave(thread,iproc)
 end
 
 
-subroutine ao_bielec_integrals_in_map_collector(zmq_socket_pull)
+subroutine ao_two_e_integrals_in_map_collector(zmq_socket_pull)
   use map_module
   use f77_zmq
   implicit none

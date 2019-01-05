@@ -13,10 +13,10 @@ As they have 4 indices and many are zero, they are stored in a map, as defined
 in :file:`Utils/map_module.f90`.
 
 To fetch an |AO| integral, use the
-`get_ao_bielec_integral(i,j,k,l,ao_integrals_map)` function, and
+`get_ao_two_e_integral(i,j,k,l,ao_integrals_map)` function, and
 to fetch an |MO| integral, use
-`get_mo_bielec_integral(i,j,k,l,mo_integrals_map)` or
-`mo_bielec_integral(i,j,k,l)`.
+`get_two_e_integral(i,j,k,l,mo_integrals_map)` or
+`mo_two_e_integral(i,j,k,l)`.
 
 The conventions are:
 
@@ -138,154 +138,6 @@ Providers
 
 
 
-.. c:var:: mo_bielec_integral_jj
-
-    .. code:: text
-
-        double precision, allocatable	:: mo_bielec_integral_jj	(mo_num,mo_num)
-        double precision, allocatable	:: mo_bielec_integral_jj_exchange	(mo_num,mo_num)
-        double precision, allocatable	:: mo_bielec_integral_jj_anti	(mo_num,mo_num)
-
-    File: :file:`mo_bi_integrals.irp.f`
-
-    mo_bielec_integral_jj(i,j) = J_ij mo_bielec_integral_jj_exchange(i,j) = K_ij mo_bielec_integral_jj_anti(i,j) = J_ij - K_ij
-
-
-
-
-.. c:var:: mo_bielec_integral_jj_anti
-
-    .. code:: text
-
-        double precision, allocatable	:: mo_bielec_integral_jj	(mo_num,mo_num)
-        double precision, allocatable	:: mo_bielec_integral_jj_exchange	(mo_num,mo_num)
-        double precision, allocatable	:: mo_bielec_integral_jj_anti	(mo_num,mo_num)
-
-    File: :file:`mo_bi_integrals.irp.f`
-
-    mo_bielec_integral_jj(i,j) = J_ij mo_bielec_integral_jj_exchange(i,j) = K_ij mo_bielec_integral_jj_anti(i,j) = J_ij - K_ij
-
-
-
-
-.. c:var:: mo_bielec_integral_jj_anti_from_ao
-
-    .. code:: text
-
-        double precision, allocatable	:: mo_bielec_integral_jj_from_ao	(mo_num,mo_num)
-        double precision, allocatable	:: mo_bielec_integral_jj_exchange_from_ao	(mo_num,mo_num)
-        double precision, allocatable	:: mo_bielec_integral_jj_anti_from_ao	(mo_num,mo_num)
-
-    File: :file:`mo_bi_integrals.irp.f`
-
-    mo_bielec_integral_jj_from_ao(i,j) = J_ij mo_bielec_integral_jj_exchange_from_ao(i,j) = J_ij mo_bielec_integral_jj_anti_from_ao(i,j) = J_ij - K_ij
-
-
-
-
-.. c:var:: mo_bielec_integral_jj_exchange
-
-    .. code:: text
-
-        double precision, allocatable	:: mo_bielec_integral_jj	(mo_num,mo_num)
-        double precision, allocatable	:: mo_bielec_integral_jj_exchange	(mo_num,mo_num)
-        double precision, allocatable	:: mo_bielec_integral_jj_anti	(mo_num,mo_num)
-
-    File: :file:`mo_bi_integrals.irp.f`
-
-    mo_bielec_integral_jj(i,j) = J_ij mo_bielec_integral_jj_exchange(i,j) = K_ij mo_bielec_integral_jj_anti(i,j) = J_ij - K_ij
-
-
-
-
-.. c:var:: mo_bielec_integral_jj_exchange_from_ao
-
-    .. code:: text
-
-        double precision, allocatable	:: mo_bielec_integral_jj_from_ao	(mo_num,mo_num)
-        double precision, allocatable	:: mo_bielec_integral_jj_exchange_from_ao	(mo_num,mo_num)
-        double precision, allocatable	:: mo_bielec_integral_jj_anti_from_ao	(mo_num,mo_num)
-
-    File: :file:`mo_bi_integrals.irp.f`
-
-    mo_bielec_integral_jj_from_ao(i,j) = J_ij mo_bielec_integral_jj_exchange_from_ao(i,j) = J_ij mo_bielec_integral_jj_anti_from_ao(i,j) = J_ij - K_ij
-
-
-
-
-.. c:var:: mo_bielec_integral_jj_from_ao
-
-    .. code:: text
-
-        double precision, allocatable	:: mo_bielec_integral_jj_from_ao	(mo_num,mo_num)
-        double precision, allocatable	:: mo_bielec_integral_jj_exchange_from_ao	(mo_num,mo_num)
-        double precision, allocatable	:: mo_bielec_integral_jj_anti_from_ao	(mo_num,mo_num)
-
-    File: :file:`mo_bi_integrals.irp.f`
-
-    mo_bielec_integral_jj_from_ao(i,j) = J_ij mo_bielec_integral_jj_exchange_from_ao(i,j) = J_ij mo_bielec_integral_jj_anti_from_ao(i,j) = J_ij - K_ij
-
-
-
-
-.. c:var:: mo_bielec_integral_vv_anti_from_ao
-
-    .. code:: text
-
-        double precision, allocatable	:: mo_bielec_integral_vv_from_ao	(mo_num,mo_num)
-        double precision, allocatable	:: mo_bielec_integral_vv_exchange_from_ao	(mo_num,mo_num)
-        double precision, allocatable	:: mo_bielec_integral_vv_anti_from_ao	(mo_num,mo_num)
-
-    File: :file:`mo_bi_integrals.irp.f`
-
-    mo_bielec_integral_vv_from_ao(i,j) = J_ij mo_bielec_integral_vv_exchange_from_ao(i,j) = J_ij mo_bielec_integral_vv_anti_from_ao(i,j) = J_ij - K_ij but only for the virtual orbitals
-
-
-
-
-.. c:var:: mo_bielec_integral_vv_exchange_from_ao
-
-    .. code:: text
-
-        double precision, allocatable	:: mo_bielec_integral_vv_from_ao	(mo_num,mo_num)
-        double precision, allocatable	:: mo_bielec_integral_vv_exchange_from_ao	(mo_num,mo_num)
-        double precision, allocatable	:: mo_bielec_integral_vv_anti_from_ao	(mo_num,mo_num)
-
-    File: :file:`mo_bi_integrals.irp.f`
-
-    mo_bielec_integral_vv_from_ao(i,j) = J_ij mo_bielec_integral_vv_exchange_from_ao(i,j) = J_ij mo_bielec_integral_vv_anti_from_ao(i,j) = J_ij - K_ij but only for the virtual orbitals
-
-
-
-
-.. c:var:: mo_bielec_integral_vv_from_ao
-
-    .. code:: text
-
-        double precision, allocatable	:: mo_bielec_integral_vv_from_ao	(mo_num,mo_num)
-        double precision, allocatable	:: mo_bielec_integral_vv_exchange_from_ao	(mo_num,mo_num)
-        double precision, allocatable	:: mo_bielec_integral_vv_anti_from_ao	(mo_num,mo_num)
-
-    File: :file:`mo_bi_integrals.irp.f`
-
-    mo_bielec_integral_vv_from_ao(i,j) = J_ij mo_bielec_integral_vv_exchange_from_ao(i,j) = J_ij mo_bielec_integral_vv_anti_from_ao(i,j) = J_ij - K_ij but only for the virtual orbitals
-
-
-
-
-.. c:var:: mo_bielec_integrals_in_map
-
-    .. code:: text
-
-        logical	:: mo_bielec_integrals_in_map
-
-    File: :file:`mo_bi_integrals.irp.f`
-
-    If True, the map of MO bielectronic integrals is provided
-
-
-
-
 .. c:var:: mo_integrals_cache
 
     .. code:: text
@@ -376,6 +228,154 @@ Providers
 
 
 
+.. c:var:: mo_two_e_integral_jj_from_ao
+
+    .. code:: text
+
+        double precision, allocatable	:: mo_two_e_integral_jj_from_ao	(mo_num,mo_num)
+        double precision, allocatable	:: mo_two_e_integrals_jj_exchange_from_ao	(mo_num,mo_num)
+        double precision, allocatable	:: mo_two_e_integrals_jj_anti_from_ao	(mo_num,mo_num)
+
+    File: :file:`mo_bi_integrals.irp.f`
+
+    mo_two_e_integral_jj_from_ao(i,j) = J_ij mo_two_e_integrals_jj_exchange_from_ao(i,j) = J_ij mo_two_e_integrals_jj_anti_from_ao(i,j) = J_ij - K_ij
+
+
+
+
+.. c:var:: mo_two_e_integrals_in_map
+
+    .. code:: text
+
+        logical	:: mo_two_e_integrals_in_map
+
+    File: :file:`mo_bi_integrals.irp.f`
+
+    If True, the map of MO two-electron integrals is provided
+
+
+
+
+.. c:var:: mo_two_e_integrals_jj
+
+    .. code:: text
+
+        double precision, allocatable	:: mo_two_e_integrals_jj	(mo_num,mo_num)
+        double precision, allocatable	:: mo_two_e_integrals_jj_exchange	(mo_num,mo_num)
+        double precision, allocatable	:: mo_two_e_integrals_jj_anti	(mo_num,mo_num)
+
+    File: :file:`mo_bi_integrals.irp.f`
+
+    mo_two_e_integrals_jj(i,j) = J_ij mo_two_e_integrals_jj_exchange(i,j) = K_ij mo_two_e_integrals_jj_anti(i,j) = J_ij - K_ij
+
+
+
+
+.. c:var:: mo_two_e_integrals_jj_anti
+
+    .. code:: text
+
+        double precision, allocatable	:: mo_two_e_integrals_jj	(mo_num,mo_num)
+        double precision, allocatable	:: mo_two_e_integrals_jj_exchange	(mo_num,mo_num)
+        double precision, allocatable	:: mo_two_e_integrals_jj_anti	(mo_num,mo_num)
+
+    File: :file:`mo_bi_integrals.irp.f`
+
+    mo_two_e_integrals_jj(i,j) = J_ij mo_two_e_integrals_jj_exchange(i,j) = K_ij mo_two_e_integrals_jj_anti(i,j) = J_ij - K_ij
+
+
+
+
+.. c:var:: mo_two_e_integrals_jj_anti_from_ao
+
+    .. code:: text
+
+        double precision, allocatable	:: mo_two_e_integral_jj_from_ao	(mo_num,mo_num)
+        double precision, allocatable	:: mo_two_e_integrals_jj_exchange_from_ao	(mo_num,mo_num)
+        double precision, allocatable	:: mo_two_e_integrals_jj_anti_from_ao	(mo_num,mo_num)
+
+    File: :file:`mo_bi_integrals.irp.f`
+
+    mo_two_e_integral_jj_from_ao(i,j) = J_ij mo_two_e_integrals_jj_exchange_from_ao(i,j) = J_ij mo_two_e_integrals_jj_anti_from_ao(i,j) = J_ij - K_ij
+
+
+
+
+.. c:var:: mo_two_e_integrals_jj_exchange
+
+    .. code:: text
+
+        double precision, allocatable	:: mo_two_e_integrals_jj	(mo_num,mo_num)
+        double precision, allocatable	:: mo_two_e_integrals_jj_exchange	(mo_num,mo_num)
+        double precision, allocatable	:: mo_two_e_integrals_jj_anti	(mo_num,mo_num)
+
+    File: :file:`mo_bi_integrals.irp.f`
+
+    mo_two_e_integrals_jj(i,j) = J_ij mo_two_e_integrals_jj_exchange(i,j) = K_ij mo_two_e_integrals_jj_anti(i,j) = J_ij - K_ij
+
+
+
+
+.. c:var:: mo_two_e_integrals_jj_exchange_from_ao
+
+    .. code:: text
+
+        double precision, allocatable	:: mo_two_e_integral_jj_from_ao	(mo_num,mo_num)
+        double precision, allocatable	:: mo_two_e_integrals_jj_exchange_from_ao	(mo_num,mo_num)
+        double precision, allocatable	:: mo_two_e_integrals_jj_anti_from_ao	(mo_num,mo_num)
+
+    File: :file:`mo_bi_integrals.irp.f`
+
+    mo_two_e_integral_jj_from_ao(i,j) = J_ij mo_two_e_integrals_jj_exchange_from_ao(i,j) = J_ij mo_two_e_integrals_jj_anti_from_ao(i,j) = J_ij - K_ij
+
+
+
+
+.. c:var:: mo_two_e_integrals_vv_anti_from_ao
+
+    .. code:: text
+
+        double precision, allocatable	:: mo_two_e_integrals_vv_from_ao	(mo_num,mo_num)
+        double precision, allocatable	:: mo_two_e_integrals_vv_exchange_from_ao	(mo_num,mo_num)
+        double precision, allocatable	:: mo_two_e_integrals_vv_anti_from_ao	(mo_num,mo_num)
+
+    File: :file:`mo_bi_integrals.irp.f`
+
+    mo_two_e_integrals_vv_from_ao(i,j) = J_ij mo_two_e_integrals_vv_exchange_from_ao(i,j) = J_ij mo_two_e_integrals_vv_anti_from_ao(i,j) = J_ij - K_ij but only for the virtual orbitals
+
+
+
+
+.. c:var:: mo_two_e_integrals_vv_exchange_from_ao
+
+    .. code:: text
+
+        double precision, allocatable	:: mo_two_e_integrals_vv_from_ao	(mo_num,mo_num)
+        double precision, allocatable	:: mo_two_e_integrals_vv_exchange_from_ao	(mo_num,mo_num)
+        double precision, allocatable	:: mo_two_e_integrals_vv_anti_from_ao	(mo_num,mo_num)
+
+    File: :file:`mo_bi_integrals.irp.f`
+
+    mo_two_e_integrals_vv_from_ao(i,j) = J_ij mo_two_e_integrals_vv_exchange_from_ao(i,j) = J_ij mo_two_e_integrals_vv_anti_from_ao(i,j) = J_ij - K_ij but only for the virtual orbitals
+
+
+
+
+.. c:var:: mo_two_e_integrals_vv_from_ao
+
+    .. code:: text
+
+        double precision, allocatable	:: mo_two_e_integrals_vv_from_ao	(mo_num,mo_num)
+        double precision, allocatable	:: mo_two_e_integrals_vv_exchange_from_ao	(mo_num,mo_num)
+        double precision, allocatable	:: mo_two_e_integrals_vv_anti_from_ao	(mo_num,mo_num)
+
+    File: :file:`mo_bi_integrals.irp.f`
+
+    mo_two_e_integrals_vv_from_ao(i,j) = J_ij mo_two_e_integrals_vv_exchange_from_ao(i,j) = J_ij mo_two_e_integrals_vv_anti_from_ao(i,j) = J_ij - K_ij but only for the virtual orbitals
+
+
+
+
 Subroutines / functions
 -----------------------
 
@@ -451,90 +451,6 @@ Subroutines / functions
 
 
 
-.. c:function:: get_mo_bielec_integral
-
-    .. code:: text
-
-        double precision function get_mo_bielec_integral(i,j,k,l,map)
-
-    File: :file:`map_integrals.irp.f`
-
-    Returns one integral <ij|kl> in the MO basis
-
-
-
-
-
-.. c:function:: get_mo_bielec_integrals
-
-    .. code:: text
-
-        subroutine get_mo_bielec_integrals(j,k,l,sze,out_val,map)
-
-    File: :file:`map_integrals.irp.f`
-
-    Returns multiple integrals <ij|kl> in the MO basis, all i for j,k,l fixed.
-
-
-
-
-
-.. c:function:: get_mo_bielec_integrals_coulomb_ii
-
-    .. code:: text
-
-        subroutine get_mo_bielec_integrals_coulomb_ii(k,l,sze,out_val,map)
-
-    File: :file:`map_integrals.irp.f`
-
-    Returns multiple integrals <ki|li> k(1)i(2) 1/r12 l(1)i(2) :: out_val(i1) for k,l fixed.
-
-
-
-
-
-.. c:function:: get_mo_bielec_integrals_exch_ii
-
-    .. code:: text
-
-        subroutine get_mo_bielec_integrals_exch_ii(k,l,sze,out_val,map)
-
-    File: :file:`map_integrals.irp.f`
-
-    Returns multiple integrals <ki|il> k(1)i(2) 1/r12 i(1)l(2) :: out_val(i1) for k,l fixed.
-
-
-
-
-
-.. c:function:: get_mo_bielec_integrals_i1j1
-
-    .. code:: text
-
-        subroutine get_mo_bielec_integrals_i1j1(k,l,sze,out_array,map)
-
-    File: :file:`map_integrals.irp.f`
-
-    Returns multiple integrals <ik|jl> in the MO basis, all i(1)j(1) 1/r12 k(2)l(2) i, j for k,l fixed.
-
-
-
-
-
-.. c:function:: get_mo_bielec_integrals_ij
-
-    .. code:: text
-
-        subroutine get_mo_bielec_integrals_ij(k,l,sze,out_array,map)
-
-    File: :file:`map_integrals.irp.f`
-
-    Returns multiple integrals <ij|kl> in the MO basis, all i(1)j(2) 1/r12 k(1)l(2) i, j for k,l fixed.
-
-
-
-
-
 .. c:function:: get_mo_map_size
 
     .. code:: text
@@ -544,6 +460,90 @@ Subroutines / functions
     File: :file:`map_integrals.irp.f`
 
     Return the number of elements in the MO map
+
+
+
+
+
+.. c:function:: get_mo_two_e_integrals
+
+    .. code:: text
+
+        subroutine get_mo_two_e_integrals(j,k,l,sze,out_val,map)
+
+    File: :file:`map_integrals.irp.f`
+
+    Returns multiple integrals <ij|kl> in the MO basis, all i for j,k,l fixed.
+
+
+
+
+
+.. c:function:: get_mo_two_e_integrals_coulomb_ii
+
+    .. code:: text
+
+        subroutine get_mo_two_e_integrals_coulomb_ii(k,l,sze,out_val,map)
+
+    File: :file:`map_integrals.irp.f`
+
+    Returns multiple integrals <ki|li> k(1)i(2) 1/r12 l(1)i(2) :: out_val(i1) for k,l fixed.
+
+
+
+
+
+.. c:function:: get_mo_two_e_integrals_exch_ii
+
+    .. code:: text
+
+        subroutine get_mo_two_e_integrals_exch_ii(k,l,sze,out_val,map)
+
+    File: :file:`map_integrals.irp.f`
+
+    Returns multiple integrals <ki|il> k(1)i(2) 1/r12 i(1)l(2) :: out_val(i1) for k,l fixed.
+
+
+
+
+
+.. c:function:: get_mo_two_e_integrals_i1j1
+
+    .. code:: text
+
+        subroutine get_mo_two_e_integrals_i1j1(k,l,sze,out_array,map)
+
+    File: :file:`map_integrals.irp.f`
+
+    Returns multiple integrals <ik|jl> in the MO basis, all i(1)j(1) 1/r12 k(2)l(2) i, j for k,l fixed.
+
+
+
+
+
+.. c:function:: get_mo_two_e_integrals_ij
+
+    .. code:: text
+
+        subroutine get_mo_two_e_integrals_ij(k,l,sze,out_array,map)
+
+    File: :file:`map_integrals.irp.f`
+
+    Returns multiple integrals <ij|kl> in the MO basis, all i(1)j(2) 1/r12 k(1)l(2) i, j for k,l fixed.
+
+
+
+
+
+.. c:function:: get_two_e_integral
+
+    .. code:: text
+
+        double precision function get_two_e_integral(i,j,k,l,map)
+
+    File: :file:`map_integrals.irp.f`
+
+    Returns one integral <ij|kl> in the MO basis
 
 
 
@@ -563,11 +563,11 @@ Subroutines / functions
 
 
 
-.. c:function:: mo_bielec_integral
+.. c:function:: mo_two_e_integral
 
     .. code:: text
 
-        double precision function mo_bielec_integral(i,j,k,l)
+        double precision function mo_two_e_integral(i,j,k,l)
 
     File: :file:`map_integrals.irp.f`
 
@@ -577,11 +577,11 @@ Subroutines / functions
 
 
 
-.. c:function:: mo_bielec_integrals_index
+.. c:function:: mo_two_e_integrals_index
 
     .. code:: text
 
-        subroutine mo_bielec_integrals_index(i,j,k,l,i1)
+        subroutine mo_two_e_integrals_index(i,j,k,l,i1)
 
     File: :file:`mo_bi_integrals.irp.f`
 

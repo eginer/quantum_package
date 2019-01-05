@@ -66,7 +66,7 @@ subroutine create_guess
       mo_coef = ao_ortho_lowdin_coef
       TOUCH mo_coef
       mo_label = 'Guess'
-      call mo_as_eigvectors_of_mo_matrix(mo_mono_elec_integrals,size(mo_mono_elec_integrals,1),size(mo_mono_elec_integrals,2),mo_label,.false.)
+      call mo_as_eigvectors_of_mo_matrix(mo_one_e_integrals,size(mo_one_e_integrals,1),size(mo_one_e_integrals,2),mo_label,.false.)
       SOFT_TOUCH mo_coef mo_label
     else if (mo_guess_type == "Huckel") then
       call huckel_guess

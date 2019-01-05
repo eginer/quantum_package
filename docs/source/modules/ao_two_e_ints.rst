@@ -13,7 +13,7 @@ As they have 4 indices and many are zero, they are stored in a map, as defined
 in :file:`utils/map_module.f90`.
 
 To fetch an |AO| integral, use the
-`get_ao_bielec_integral(i,j,k,l,ao_integrals_map)` function. 
+`get_ao_two_e_integral(i,j,k,l,ao_integrals_map)` function. 
 
 
 The conventions are:
@@ -48,32 +48,6 @@ EZFIO parameters
 
 Providers
 ---------
-
-
-.. c:var:: ao_bielec_integral_schwartz
-
-    .. code:: text
-
-        double precision, allocatable	:: ao_bielec_integral_schwartz	(ao_num,ao_num)
-
-    File: :file:`two_e_integrals.irp.f`
-
-    Needed to compute Schwartz inequalities
-
-
-
-
-.. c:var:: ao_bielec_integrals_in_map
-
-    .. code:: text
-
-        logical	:: ao_bielec_integrals_in_map
-
-    File: :file:`two_e_integrals.irp.f`
-
-    Map of Atomic integrals i(r1) j(r2) 1/r12 k(r1) l(r2)
-
-
 
 
 .. c:var:: ao_integrals_cache
@@ -126,6 +100,32 @@ Providers
     File: :file:`map_integrals.irp.f`
 
     AO integrals
+
+
+
+
+.. c:var:: ao_two_e_integral_schwartz
+
+    .. code:: text
+
+        double precision, allocatable	:: ao_two_e_integral_schwartz	(ao_num,ao_num)
+
+    File: :file:`two_e_integrals.irp.f`
+
+    Needed to compute Schwartz inequalities
+
+
+
+
+.. c:var:: ao_two_e_integrals_in_map
+
+    .. code:: text
+
+        logical	:: ao_two_e_integrals_in_map
+
+    File: :file:`two_e_integrals.irp.f`
+
+    Map of Atomic integrals i(r1) j(r2) 1/r12 k(r1) l(r2)
 
 
 
@@ -256,90 +256,6 @@ Subroutines / functions
 
 
 
-.. c:function:: ao_bielec_integral
-
-    .. code:: text
-
-        double precision function ao_bielec_integral(i,j,k,l)
-
-    File: :file:`two_e_integrals.irp.f`
-
-    integral of the AO basis <ik|jl> or (ij|kl) i(r1) j(r1) 1/r12 k(r2) l(r2)
-
-
-
-
-
-.. c:function:: ao_bielec_integral_schwartz_accel
-
-    .. code:: text
-
-        double precision function ao_bielec_integral_schwartz_accel(i,j,k,l)
-
-    File: :file:`two_e_integrals.irp.f`
-
-    integral of the AO basis <ik|jl> or (ij|kl) i(r1) j(r1) 1/r12 k(r2) l(r2)
-
-
-
-
-
-.. c:function:: ao_bielec_integrals_in_map_collector
-
-    .. code:: text
-
-        subroutine ao_bielec_integrals_in_map_collector(zmq_socket_pull)
-
-    File: :file:`integrals_in_map_slave.irp.f`
-
-    Collects results from the AO integral calculation
-
-
-
-
-
-.. c:function:: ao_bielec_integrals_in_map_slave
-
-    .. code:: text
-
-        subroutine ao_bielec_integrals_in_map_slave(thread,iproc)
-
-    File: :file:`integrals_in_map_slave.irp.f`
-
-    Computes a buffer of integrals
-
-
-
-
-
-.. c:function:: ao_bielec_integrals_in_map_slave_inproc
-
-    .. code:: text
-
-        subroutine ao_bielec_integrals_in_map_slave_inproc(i)
-
-    File: :file:`integrals_in_map_slave.irp.f`
-
-    Computes a buffer of integrals. i is the ID of the current thread.
-
-
-
-
-
-.. c:function:: ao_bielec_integrals_in_map_slave_tcp
-
-    .. code:: text
-
-        subroutine ao_bielec_integrals_in_map_slave_tcp(i)
-
-    File: :file:`integrals_in_map_slave.irp.f`
-
-    Computes a buffer of integrals. i is the ID of the current thread.
-
-
-
-
-
 .. c:function:: ao_l4
 
     .. code:: text
@@ -354,29 +270,85 @@ Subroutines / functions
 
 
 
-.. c:function:: bielec_integrals_index
+.. c:function:: ao_two_e_integral
 
     .. code:: text
 
-        subroutine bielec_integrals_index(i,j,k,l,i1)
+        double precision function ao_two_e_integral(i,j,k,l)
 
-    File: :file:`map_integrals.irp.f`
+    File: :file:`two_e_integrals.irp.f`
 
-    
-
-
+    integral of the AO basis <ik|jl> or (ij|kl) i(r1) j(r1) 1/r12 k(r2) l(r2)
 
 
 
-.. c:function:: bielec_integrals_index_reverse
+
+
+.. c:function:: ao_two_e_integral_schwartz_accel
 
     .. code:: text
 
-        subroutine bielec_integrals_index_reverse(i,j,k,l,i1)
+        double precision function ao_two_e_integral_schwartz_accel(i,j,k,l)
 
-    File: :file:`map_integrals.irp.f`
+    File: :file:`two_e_integrals.irp.f`
 
-    
+    integral of the AO basis <ik|jl> or (ij|kl) i(r1) j(r1) 1/r12 k(r2) l(r2)
+
+
+
+
+
+.. c:function:: ao_two_e_integrals_in_map_collector
+
+    .. code:: text
+
+        subroutine ao_two_e_integrals_in_map_collector(zmq_socket_pull)
+
+    File: :file:`integrals_in_map_slave.irp.f`
+
+    Collects results from the AO integral calculation
+
+
+
+
+
+.. c:function:: ao_two_e_integrals_in_map_slave
+
+    .. code:: text
+
+        subroutine ao_two_e_integrals_in_map_slave(thread,iproc)
+
+    File: :file:`integrals_in_map_slave.irp.f`
+
+    Computes a buffer of integrals
+
+
+
+
+
+.. c:function:: ao_two_e_integrals_in_map_slave_inproc
+
+    .. code:: text
+
+        subroutine ao_two_e_integrals_in_map_slave_inproc(i)
+
+    File: :file:`integrals_in_map_slave.irp.f`
+
+    Computes a buffer of integrals. i is the ID of the current thread.
+
+
+
+
+
+.. c:function:: ao_two_e_integrals_in_map_slave_tcp
+
+    .. code:: text
+
+        subroutine ao_two_e_integrals_in_map_slave_tcp(i)
+
+    File: :file:`integrals_in_map_slave.irp.f`
+
+    Computes a buffer of integrals. i is the ID of the current thread.
 
 
 
@@ -396,20 +368,6 @@ Subroutines / functions
 
 
 
-.. c:function:: compute_ao_bielec_integrals
-
-    .. code:: text
-
-        subroutine compute_ao_bielec_integrals(j,k,l,sze,buffer_value)
-
-    File: :file:`two_e_integrals.irp.f`
-
-    Compute AO 1/r12 integrals for all i and fixed j,k,l
-
-
-
-
-
 .. c:function:: compute_ao_integrals_jl
 
     .. code:: text
@@ -419,6 +377,20 @@ Subroutines / functions
     File: :file:`two_e_integrals.irp.f`
 
     Parallel client for AO integrals
+
+
+
+
+
+.. c:function:: compute_ao_two_e_integrals
+
+    .. code:: text
+
+        subroutine compute_ao_two_e_integrals(j,k,l,sze,buffer_value)
+
+    File: :file:`two_e_integrals.irp.f`
+
+    Compute AO 1/r12 integrals for all i and fixed j,k,l
 
 
 
@@ -466,48 +438,6 @@ Subroutines / functions
 
 
 
-.. c:function:: get_ao_bielec_integral
-
-    .. code:: text
-
-        double precision function get_ao_bielec_integral(i,j,k,l,map) result(result)
-
-    File: :file:`map_integrals.irp.f`
-
-    Gets one AO bi-electronic integral from the AO map
-
-
-
-
-
-.. c:function:: get_ao_bielec_integrals
-
-    .. code:: text
-
-        subroutine get_ao_bielec_integrals(j,k,l,sze,out_val)
-
-    File: :file:`map_integrals.irp.f`
-
-    Gets multiple AO bi-electronic integral from the AO map . All i are retrieved for j,k,l fixed.
-
-
-
-
-
-.. c:function:: get_ao_bielec_integrals_non_zero
-
-    .. code:: text
-
-        subroutine get_ao_bielec_integrals_non_zero(j,k,l,sze,out_val,out_val_index,non_zero_int)
-
-    File: :file:`map_integrals.irp.f`
-
-    Gets multiple AO bi-electronic integral from the AO map . All non-zero i are retrieved for j,k,l fixed.
-
-
-
-
-
 .. c:function:: get_ao_map_size
 
     .. code:: text
@@ -517,6 +447,48 @@ Subroutines / functions
     File: :file:`map_integrals.irp.f`
 
     Returns the number of elements in the AO map
+
+
+
+
+
+.. c:function:: get_ao_two_e_integral
+
+    .. code:: text
+
+        double precision function get_ao_two_e_integral(i,j,k,l,map) result(result)
+
+    File: :file:`map_integrals.irp.f`
+
+    Gets one AO bi-electronic integral from the AO map
+
+
+
+
+
+.. c:function:: get_ao_two_e_integrals
+
+    .. code:: text
+
+        subroutine get_ao_two_e_integrals(j,k,l,sze,out_val)
+
+    File: :file:`map_integrals.irp.f`
+
+    Gets multiple AO bi-electronic integral from the AO map . All i are retrieved for j,k,l fixed.
+
+
+
+
+
+.. c:function:: get_ao_two_e_integrals_non_zero
+
+    .. code:: text
+
+        subroutine get_ao_two_e_integrals_non_zero(j,k,l,sze,out_val,out_val_index,non_zero_int)
+
+    File: :file:`map_integrals.irp.f`
+
+    Gets multiple AO bi-electronic integral from the AO map . All non-zero i are retrieved for j,k,l fixed.
 
 
 
@@ -615,5 +587,33 @@ Subroutines / functions
     File: :file:`integrals_in_map_slave.irp.f`
 
     Push integrals in the push socket
+
+
+
+
+
+.. c:function:: two_e_integrals_index
+
+    .. code:: text
+
+        subroutine two_e_integrals_index(i,j,k,l,i1)
+
+    File: :file:`map_integrals.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: two_e_integrals_index_reverse
+
+    .. code:: text
+
+        subroutine two_e_integrals_index_reverse(i,j,k,l,i1)
+
+    File: :file:`map_integrals.irp.f`
+
+    
 
 

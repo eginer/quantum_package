@@ -13,7 +13,7 @@ subroutine i_Wee_j_mono(key_i,key_j,Nint,spin,hij)
   integer                        :: exc(0:2,2)
   double precision               :: phase
 
-  PROVIDE big_array_exchange_integrals mo_bielec_integrals_in_map
+  PROVIDE big_array_exchange_integrals mo_two_e_integrals_in_map
 
   call get_mono_excitation_spin(key_i(1,spin),key_j(1,spin),exc,phase,Nint)
   call mono_excitation_wee(key_i,key_j,exc(1,1),exc(1,2),spin,phase,hij)
@@ -53,7 +53,7 @@ double precision function diag_wee_mat_elem(det_in,Nint)
     nexc(2)       = nexc(2) + popcnt(hole(i,2))
   enddo
   
-  diag_wee_mat_elem = bi_elec_ref_bitmask_energy
+  diag_wee_mat_elem = ref_bitmask_two_e_energy
   if (nexc(1)+nexc(2) == 0) then
     return
   endif
@@ -75,15 +75,15 @@ double precision function diag_wee_mat_elem(det_in,Nint)
     nb = elec_num_tab(iand(ispin,1)+1)
     do i=1,nexc(ispin)
       !DIR$ FORCEINLINE
-      call ac_operator_bielec( occ_particle(i,ispin), ispin, det_tmp, diag_wee_mat_elem, Nint,na,nb)
+      call ac_operator_two_e( occ_particle(i,ispin), ispin, det_tmp, diag_wee_mat_elem, Nint,na,nb)
       !DIR$ FORCEINLINE
-      call a_operator_bielec ( occ_hole    (i,ispin), ispin, det_tmp, diag_wee_mat_elem, Nint,na,nb)
+      call a_operator_two_e ( occ_hole    (i,ispin), ispin, det_tmp, diag_wee_mat_elem, Nint,na,nb)
     enddo
   enddo
 end
 
 
-subroutine a_operator_bielec(iorb,ispin,key,hjj,Nint,na,nb)
+subroutine a_operator_two_e(iorb,ispin,key,hjj,Nint,na,nb)
   use bitmasks
   implicit none
   BEGIN_DOC
@@ -116,18 +116,18 @@ subroutine a_operator_bielec(iorb,ispin,key,hjj,Nint,na,nb)
   
   ! Same spin
   do i=1,na
-    hjj = hjj - mo_bielec_integral_jj_anti(occ(i,ispin),iorb)
+    hjj = hjj - mo_two_e_integrals_jj_anti(occ(i,ispin),iorb)
   enddo
   
   ! Opposite spin
   do i=1,nb
-    hjj = hjj - mo_bielec_integral_jj(occ(i,other_spin),iorb)
+    hjj = hjj - mo_two_e_integrals_jj(occ(i,other_spin),iorb)
   enddo
   
 end
 
 
-subroutine ac_operator_bielec(iorb,ispin,key,hjj,Nint,na,nb)
+subroutine ac_operator_two_e(iorb,ispin,key,hjj,Nint,na,nb)
   use bitmasks
   implicit none
   BEGIN_DOC
@@ -162,19 +162,19 @@ subroutine ac_operator_bielec(iorb,ispin,key,hjj,Nint,na,nb)
   
   ! Same spin
   do i=1,na
-    hjj = hjj + mo_bielec_integral_jj_anti(occ(i,ispin),iorb)
+    hjj = hjj + mo_two_e_integrals_jj_anti(occ(i,ispin),iorb)
   enddo
   
   ! Opposite spin
   do i=1,nb
-    hjj = hjj + mo_bielec_integral_jj(occ(i,other_spin),iorb)
+    hjj = hjj + mo_two_e_integrals_jj(occ(i,other_spin),iorb)
   enddo
   na = na+1
 end
 
 
 
-subroutine i_H_j_mono_spin_monoelec(key_i,key_j,Nint,spin,hij)
+subroutine i_H_j_mono_spin_one_e(key_i,key_j,Nint,spin,hij)
   use bitmasks
   implicit none
   BEGIN_DOC
@@ -192,11 +192,11 @@ subroutine i_H_j_mono_spin_monoelec(key_i,key_j,Nint,spin,hij)
   integer :: m,p
   m = exc(1,1)
   p = exc(1,2)
-  hij = phase * mo_mono_elec_integrals(m,p)
+  hij = phase * mo_one_e_integrals(m,p)
 end
 
 
-double precision function diag_H_mat_elem_monoelec(det_in,Nint)
+double precision function diag_H_mat_elem_one_e(det_in,Nint)
   use bitmasks
   implicit none
   BEGIN_DOC
@@ -217,7 +217,7 @@ double precision function diag_H_mat_elem_monoelec(det_in,Nint)
   ASSERT (sum(popcnt(det_in(:,1))) == elec_alpha_num)
   ASSERT (sum(popcnt(det_in(:,2))) == elec_beta_num)
   
-  diag_H_mat_elem_monoelec = 0.d0
+  diag_H_mat_elem_one_e = 0.d0
   
   !call debug_det(det_in,Nint)
   integer                        :: tmp(2)
@@ -225,13 +225,13 @@ double precision function diag_H_mat_elem_monoelec(det_in,Nint)
   call bitstring_to_list_ab(det_in, occ_particle, tmp, Nint)
   do ispin = 1,2 
    do i = 1, tmp(ispin)
-    diag_H_mat_elem_monoelec +=  mo_mono_elec_integrals(occ_particle(i,ispin),occ_particle(i,ispin))
+    diag_H_mat_elem_one_e +=  mo_one_e_integrals(occ_particle(i,ispin),occ_particle(i,ispin))
    enddo
   enddo
   
 end
 
-subroutine i_H_j_monoelec(key_i,key_j,Nint,hij)
+subroutine i_H_j_one_e(key_i,key_j,Nint,hij)
   use bitmasks
   implicit none
   BEGIN_DOC
@@ -242,7 +242,7 @@ subroutine i_H_j_monoelec(key_i,key_j,Nint,hij)
   double precision, intent(out)  :: hij
 
   integer :: degree,m,p
-  double precision :: diag_H_mat_elem_monoelec,phase
+  double precision :: diag_H_mat_elem_one_e,phase
   integer                        :: exc(0:2,2,2)
   call get_excitation_degree(key_i,key_j,degree,Nint)
   hij = 0.d0
@@ -250,7 +250,7 @@ subroutine i_H_j_monoelec(key_i,key_j,Nint,hij)
    return
   endif
   if(degree==0)then
-   hij = diag_H_mat_elem_monoelec(key_i,N_int)
+   hij = diag_H_mat_elem_one_e(key_i,N_int)
   else 
    call get_mono_excitation(key_i,key_j,exc,phase,Nint)
    if (exc(0,1,1) == 1) then
@@ -262,12 +262,12 @@ subroutine i_H_j_monoelec(key_i,key_j,Nint,hij)
      m = exc(1,1,2)
      p = exc(1,2,2)
    endif
-   hij = phase * mo_mono_elec_integrals(m,p)
+   hij = phase * mo_one_e_integrals(m,p)
   endif
 
 end
 
-subroutine i_H_j_bielec(key_i,key_j,Nint,hij)
+subroutine i_H_j_two_e(key_i,key_j,Nint,hij)
   use bitmasks
   implicit none
   BEGIN_DOC
@@ -279,13 +279,13 @@ subroutine i_H_j_bielec(key_i,key_j,Nint,hij)
   
   integer                        :: exc(0:2,2,2)
   integer                        :: degree
-  double precision               :: get_mo_bielec_integral
+  double precision               :: get_two_e_integral
   integer                        :: m,n,p,q
   integer                        :: i,j,k
   integer                        :: occ(Nint*bit_kind_size,2)
   double precision               :: diag_H_mat_elem, phase,phase_2
   integer                        :: n_occ_ab(2)
-  PROVIDE mo_bielec_integrals_in_map mo_integrals_map big_array_exchange_integrals bi_elec_ref_bitmask_energy
+  PROVIDE mo_two_e_integrals_in_map mo_integrals_map big_array_exchange_integrals ref_bitmask_two_e_energy
   
   ASSERT (Nint > 0)
   ASSERT (Nint == N_int)
@@ -308,7 +308,7 @@ subroutine i_H_j_bielec(key_i,key_j,Nint,hij)
         else if (exc(1,2,1) ==exc(1,1,2))then
          hij = phase * big_array_exchange_integrals(exc(1,2,1),exc(1,1,1),exc(1,2,2))
         else
-         hij = phase*get_mo_bielec_integral(                          &
+         hij = phase*get_two_e_integral(                          &
              exc(1,1,1),                                              &
              exc(1,1,2),                                              &
              exc(1,2,1),                                              &
@@ -316,24 +316,24 @@ subroutine i_H_j_bielec(key_i,key_j,Nint,hij)
         endif
       else if (exc(0,1,1) == 2) then
         ! Double alpha
-        hij = phase*(get_mo_bielec_integral(                         &
+        hij = phase*(get_two_e_integral(                         &
             exc(1,1,1),                                              &
             exc(2,1,1),                                              &
             exc(1,2,1),                                              &
             exc(2,2,1) ,mo_integrals_map) -                          &
-            get_mo_bielec_integral(                                  &
+            get_two_e_integral(                                  &
             exc(1,1,1),                                              &
             exc(2,1,1),                                              &
             exc(2,2,1),                                              &
             exc(1,2,1) ,mo_integrals_map) )
       else if (exc(0,1,2) == 2) then
         ! Double beta
-        hij = phase*(get_mo_bielec_integral(                         &
+        hij = phase*(get_two_e_integral(                         &
             exc(1,1,2),                                              &
             exc(2,1,2),                                              &
             exc(1,2,2),                                              &
             exc(2,2,2) ,mo_integrals_map) -                          &
-            get_mo_bielec_integral(                                  &
+            get_two_e_integral(                                  &
             exc(1,1,2),                                              &
             exc(2,1,2),                                              &
             exc(2,2,2),                                              &

@@ -175,23 +175,6 @@ Providers
 
 
 
-.. c:var:: bi_elec_ref_bitmask_energy
-
-    .. code:: text
-
-        double precision	:: ref_bitmask_energy
-        double precision	:: mono_elec_ref_bitmask_energy
-        double precision	:: kinetic_ref_bitmask_energy
-        double precision	:: nucl_elec_ref_bitmask_energy
-        double precision	:: bi_elec_ref_bitmask_energy
-
-    File: :file:`ref_bitmask.irp.f`
-
-    Energy of the reference bitmask used in Slater rules
-
-
-
-
 .. c:var:: c0_weight
 
     .. code:: text
@@ -422,23 +405,6 @@ Providers
 
 
 
-.. c:var:: kinetic_ref_bitmask_energy
-
-    .. code:: text
-
-        double precision	:: ref_bitmask_energy
-        double precision	:: mono_elec_ref_bitmask_energy
-        double precision	:: kinetic_ref_bitmask_energy
-        double precision	:: nucl_elec_ref_bitmask_energy
-        double precision	:: bi_elec_ref_bitmask_energy
-
-    File: :file:`ref_bitmask.irp.f`
-
-    Energy of the reference bitmask used in Slater rules
-
-
-
-
 .. c:var:: max_degree_exc
 
     .. code:: text
@@ -461,23 +427,6 @@ Providers
     File: :file:`mo_energy_expval.irp.f`
 
     Third index is spin. Fourth index is 1:creation, 2:annihilation
-
-
-
-
-.. c:var:: mono_elec_ref_bitmask_energy
-
-    .. code:: text
-
-        double precision	:: ref_bitmask_energy
-        double precision	:: mono_elec_ref_bitmask_energy
-        double precision	:: kinetic_ref_bitmask_energy
-        double precision	:: nucl_elec_ref_bitmask_energy
-        double precision	:: bi_elec_ref_bitmask_energy
-
-    File: :file:`ref_bitmask.irp.f`
-
-    Energy of the reference bitmask used in Slater rules
 
 
 
@@ -597,23 +546,6 @@ Providers
     File: :file:`determinants_bitmasks.irp.f`
 
     Number of single excitation bitmasks
-
-
-
-
-.. c:var:: nucl_elec_ref_bitmask_energy
-
-    .. code:: text
-
-        double precision	:: ref_bitmask_energy
-        double precision	:: mono_elec_ref_bitmask_energy
-        double precision	:: kinetic_ref_bitmask_energy
-        double precision	:: nucl_elec_ref_bitmask_energy
-        double precision	:: bi_elec_ref_bitmask_energy
-
-    File: :file:`ref_bitmask.irp.f`
-
-    Energy of the reference bitmask used in Slater rules
 
 
 
@@ -1403,7 +1335,7 @@ Providers
 
     psi_energy_h_core =  :math:`\langle \Psi | h_{core} |\Psi \rangle` 
 
-    computed using the :c:data:`one_body_dm_mo_alpha` + :c:data:`one_body_dm_mo_beta` and :c:data:`mo_mono_elec_integrals`
+    computed using the :c:data:`one_body_dm_mo_alpha` + :c:data:`one_body_dm_mo_beta` and :c:data:`mo_one_e_integrals`
 
 
 
@@ -1501,15 +1433,83 @@ Providers
 
 
 
+.. c:var:: ref_bitmask_e_n_energy
+
+    .. code:: text
+
+        double precision	:: ref_bitmask_energy
+        double precision	:: ref_bitmask_one_e_energy
+        double precision	:: ref_bitmask_kinetic_energy
+        double precision	:: ref_bitmask_e_n_energy
+        double precision	:: ref_bitmask_two_e_energy
+
+    File: :file:`ref_bitmask.irp.f`
+
+    Energy of the reference bitmask used in Slater rules
+
+
+
+
 .. c:var:: ref_bitmask_energy
 
     .. code:: text
 
         double precision	:: ref_bitmask_energy
-        double precision	:: mono_elec_ref_bitmask_energy
-        double precision	:: kinetic_ref_bitmask_energy
-        double precision	:: nucl_elec_ref_bitmask_energy
-        double precision	:: bi_elec_ref_bitmask_energy
+        double precision	:: ref_bitmask_one_e_energy
+        double precision	:: ref_bitmask_kinetic_energy
+        double precision	:: ref_bitmask_e_n_energy
+        double precision	:: ref_bitmask_two_e_energy
+
+    File: :file:`ref_bitmask.irp.f`
+
+    Energy of the reference bitmask used in Slater rules
+
+
+
+
+.. c:var:: ref_bitmask_kinetic_energy
+
+    .. code:: text
+
+        double precision	:: ref_bitmask_energy
+        double precision	:: ref_bitmask_one_e_energy
+        double precision	:: ref_bitmask_kinetic_energy
+        double precision	:: ref_bitmask_e_n_energy
+        double precision	:: ref_bitmask_two_e_energy
+
+    File: :file:`ref_bitmask.irp.f`
+
+    Energy of the reference bitmask used in Slater rules
+
+
+
+
+.. c:var:: ref_bitmask_one_e_energy
+
+    .. code:: text
+
+        double precision	:: ref_bitmask_energy
+        double precision	:: ref_bitmask_one_e_energy
+        double precision	:: ref_bitmask_kinetic_energy
+        double precision	:: ref_bitmask_e_n_energy
+        double precision	:: ref_bitmask_two_e_energy
+
+    File: :file:`ref_bitmask.irp.f`
+
+    Energy of the reference bitmask used in Slater rules
+
+
+
+
+.. c:var:: ref_bitmask_two_e_energy
+
+    .. code:: text
+
+        double precision	:: ref_bitmask_energy
+        double precision	:: ref_bitmask_one_e_energy
+        double precision	:: ref_bitmask_kinetic_energy
+        double precision	:: ref_bitmask_e_n_energy
+        double precision	:: ref_bitmask_two_e_energy
 
     File: :file:`ref_bitmask.irp.f`
 
@@ -1701,11 +1701,11 @@ Subroutines / functions
 
 
 
-.. c:function:: a_operator_bielec
+.. c:function:: a_operator_two_e
 
     .. code:: text
 
-        subroutine a_operator_bielec(iorb,ispin,key,hjj,Nint,na,nb)
+        subroutine a_operator_two_e(iorb,ispin,key,hjj,Nint,na,nb)
 
     File: :file:`slater_rules_wee_mono.irp.f`
 
@@ -1729,11 +1729,11 @@ Subroutines / functions
 
 
 
-.. c:function:: ac_operator_bielec
+.. c:function:: ac_operator_two_e
 
     .. code:: text
 
-        subroutine ac_operator_bielec(iorb,ispin,key,hjj,Nint,na,nb)
+        subroutine ac_operator_two_e(iorb,ispin,key,hjj,Nint,na,nb)
 
     File: :file:`slater_rules_wee_mono.irp.f`
 
@@ -2121,11 +2121,11 @@ Subroutines / functions
 
 
 
-.. c:function:: diag_h_mat_elem_monoelec
+.. c:function:: diag_h_mat_elem_one_e
 
     .. code:: text
 
-        double precision function diag_H_mat_elem_monoelec(det_in,Nint)
+        double precision function diag_H_mat_elem_one_e(det_in,Nint)
 
     File: :file:`slater_rules_wee_mono.irp.f`
 
@@ -2953,20 +2953,6 @@ Subroutines / functions
 
 
 
-.. c:function:: i_h_j_bielec
-
-    .. code:: text
-
-        subroutine i_H_j_bielec(key_i,key_j,Nint,hij)
-
-    File: :file:`slater_rules_wee_mono.irp.f`
-
-    Returns  :math:`\langle i|H|j \rangle`   where  :math:`i`  and  :math:`j`  are determinants.
-
-
-
-
-
 .. c:function:: i_h_j_double_alpha_beta
 
     .. code:: text
@@ -3009,11 +2995,11 @@ Subroutines / functions
 
 
 
-.. c:function:: i_h_j_mono_spin_monoelec
+.. c:function:: i_h_j_mono_spin_one_e
 
     .. code:: text
 
-        subroutine i_H_j_mono_spin_monoelec(key_i,key_j,Nint,spin,hij)
+        subroutine i_H_j_mono_spin_one_e(key_i,key_j,Nint,spin,hij)
 
     File: :file:`slater_rules_wee_mono.irp.f`
 
@@ -3023,11 +3009,11 @@ Subroutines / functions
 
 
 
-.. c:function:: i_h_j_monoelec
+.. c:function:: i_h_j_one_e
 
     .. code:: text
 
-        subroutine i_H_j_monoelec(key_i,key_j,Nint,hij)
+        subroutine i_H_j_one_e(key_i,key_j,Nint,hij)
 
     File: :file:`slater_rules_wee_mono.irp.f`
 
@@ -3046,6 +3032,20 @@ Subroutines / functions
     File: :file:`slater_rules.irp.f`
 
     Returns  :math:`\langle i|H|j \rangle`  and  :math:`\langle i|S^2|j \rangle` where  :math:`i`  and  :math:`j`  are determinants.
+
+
+
+
+
+.. c:function:: i_h_j_two_e
+
+    .. code:: text
+
+        subroutine i_H_j_two_e(key_i,key_j,Nint,hij)
+
+    File: :file:`slater_rules_wee_mono.irp.f`
+
+    Returns  :math:`\langle i|H|j \rangle`   where  :math:`i`  and  :math:`j`  are determinants.
 
 
 

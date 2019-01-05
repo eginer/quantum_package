@@ -309,6 +309,36 @@ Providers
 
 
 
+.. c:var:: ao_integrals_n_e
+
+    .. code:: text
+
+        double precision, allocatable	:: ao_integrals_n_e	(ao_num,ao_num)
+
+    File: :file:`pot_ao_ints.irp.f`
+
+    Nucleus-electron interaction, in the |AO| basis set. 
+
+    :math:`\langle \chi_i | -\sum_A \frac{1}{|r-R_A|} | \chi_j \rangle`
+
+
+
+
+.. c:var:: ao_integrals_n_e_per_atom
+
+    .. code:: text
+
+        double precision, allocatable	:: ao_integrals_n_e_per_atom	(ao_num,ao_num,nucl_num)
+
+    File: :file:`pot_ao_ints.irp.f`
+
+    Nucleus-electron interaction in the |AO| basis set, per atom A. 
+
+    :math:`\langle \chi_i | -\frac{1}{|r-R_A|} | \chi_j \rangle`
+
+
+
+
 .. c:var:: ao_kinetic_integrals
 
     .. code:: text
@@ -320,36 +350,6 @@ Providers
     Kinetic energy integrals in the |AO| basis. 
 
     :math:`\langle \chi_i |\hat{T}| \chi_j \rangle`
-
-
-
-
-.. c:var:: ao_nucl_elec_integrals
-
-    .. code:: text
-
-        double precision, allocatable	:: ao_nucl_elec_integrals	(ao_num,ao_num)
-
-    File: :file:`pot_ao_ints.irp.f`
-
-    Nucleus-electron interaction, in the |AO| basis set. 
-
-    :math:`\langle \chi_i | -\sum_A \frac{1}{|r-R_A|} | \chi_j \rangle`
-
-
-
-
-.. c:var:: ao_nucl_elec_integrals_per_atom
-
-    .. code:: text
-
-        double precision, allocatable	:: ao_nucl_elec_integrals_per_atom	(ao_num,ao_num,nucl_num)
-
-    File: :file:`pot_ao_ints.irp.f`
-
-    Nucleus-electron interaction in the |AO| basis set, per atom A. 
-
-    :math:`\langle \chi_i | -\frac{1}{|r-R_A|} | \chi_j \rangle`
 
 
 
@@ -619,11 +619,11 @@ Providers
 
 
 
-.. c:var:: give_polynom_mult_center_mono_elec_erf
+.. c:var:: give_polynomial_mult_center_one_e_erf
 
     .. code:: text
 
-        subroutine give_polynom_mult_center_mono_elec_erf(A_center,B_center,alpha,beta,&
+        subroutine give_polynomial_mult_center_one_e_erf(A_center,B_center,alpha,beta,&
               power_A,power_B,C_center,n_pt_in,d,n_pt_out,mu_in)
 
     File: :file:`pot_ao_erf_ints.irp.f`
@@ -635,11 +635,11 @@ Providers
 
 
 
-.. c:var:: give_polynom_mult_center_mono_elec_erf_opt
+.. c:var:: give_polynomial_mult_center_one_e_erf_opt
 
     .. code:: text
 
-        subroutine give_polynom_mult_center_mono_elec_erf_opt(A_center,B_center,alpha,beta,&
+        subroutine give_polynomial_mult_center_one_e_erf_opt(A_center,B_center,alpha,beta,&
               power_A,power_B,C_center,n_pt_in,d,n_pt_out,mu_in,p,p_inv,p_inv_2,p_new,P_center)
 
     File: :file:`pot_ao_erf_ints.irp.f`
@@ -651,11 +651,11 @@ Providers
 
 
 
-.. c:var:: i_x1_pol_mult_mono_elec
+.. c:var:: i_x1_pol_mult_one_e
 
     .. code:: text
 
-        recursive subroutine I_x1_pol_mult_mono_elec(a,c,R1x,R1xp,R2x,d,nd,n_pt_in)
+        recursive subroutine I_x1_pol_mult_one_e(a,c,R1x,R1xp,R2x,d,nd,n_pt_in)
 
     File: :file:`pot_ao_ints.irp.f`
 
@@ -664,11 +664,11 @@ Providers
 
 
 
-.. c:var:: i_x2_pol_mult_mono_elec
+.. c:var:: i_x2_pol_mult_one_e
 
     .. code:: text
 
-        recursive subroutine I_x2_pol_mult_mono_elec(c,R1x,R1xp,R2x,d,nd,dim)
+        recursive subroutine I_x2_pol_mult_one_e(c,R1x,R1xp,R2x,d,nd,dim)
 
     File: :file:`pot_ao_ints.irp.f`
 
@@ -825,11 +825,11 @@ Subroutines / functions
 
 
 
-.. c:function:: give_polynom_mult_center_mono_elec
+.. c:function:: give_polynomial_mult_center_one_e
 
     .. code:: text
 
-        subroutine give_polynom_mult_center_mono_elec(A_center,B_center,alpha,beta,power_A,power_B,C_center,n_pt_in,d,n_pt_out)
+        subroutine give_polynomial_mult_center_one_e(A_center,B_center,alpha,beta,power_A,power_B,C_center,n_pt_in,d,n_pt_out)
 
     File: :file:`pot_ao_ints.irp.f`
 

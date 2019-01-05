@@ -103,9 +103,9 @@ double precision function NAI_pol_mult_erf(A_center,B_center,power_A,power_B,alp
     return
   endif
   
-  ! call give_polynom_mult_center_mono_elec_erf(A_center,B_center,alpha,beta,power_A,power_B,C_center,n_pt_in,d,n_pt_out,mu_in)
+  ! call give_polynomial_mult_center_one_e_erf(A_center,B_center,alpha,beta,power_A,power_B,C_center,n_pt_in,d,n_pt_out,mu_in)
   p_new = p_new * p_new
-  call give_polynom_mult_center_mono_elec_erf_opt(A_center,B_center,alpha,beta,power_A,power_B,C_center,n_pt_in,d,n_pt_out,mu_in,p,p_inv,p_inv_2,p_new,P_center)
+  call give_polynomial_mult_center_one_e_erf_opt(A_center,B_center,alpha,beta,power_A,power_B,C_center,n_pt_in,d,n_pt_out,mu_in,p,p_inv,p_inv_2,p_new,P_center)
   
   
   if(n_pt_out<0)then
@@ -123,7 +123,7 @@ double precision function NAI_pol_mult_erf(A_center,B_center,power_A,power_B,alp
 end
 
 
-subroutine give_polynom_mult_center_mono_elec_erf_opt(A_center,B_center,alpha,beta,&
+subroutine give_polynomial_mult_center_one_e_erf_opt(A_center,B_center,alpha,beta,&
       power_A,power_B,C_center,n_pt_in,d,n_pt_out,mu_in,p,p_inv,p_inv_2,p_new,P_center)
   BEGIN_DOC
   ! Returns the explicit polynomial in terms of the $t$ variable of the following polynomial:
@@ -176,7 +176,7 @@ subroutine give_polynom_mult_center_mono_elec_erf_opt(A_center,B_center,alpha,be
   n_pt3 = n_pt_in
   a_x = power_A(1)
   b_x = power_B(1)
-  call I_x1_pol_mult_mono_elec(a_x,b_x,R1x,R1xp,R2x,d1,n_pt1,n_pt_in)
+  call I_x1_pol_mult_one_e(a_x,b_x,R1x,R1xp,R2x,d1,n_pt1,n_pt_in)
   if(n_pt1<0)then
     n_pt_out = -1
     do i = 0,n_pt_in
@@ -195,7 +195,7 @@ subroutine give_polynom_mult_center_mono_elec_erf_opt(A_center,B_center,alpha,be
   !R1xp = (P_x - B_x) - (P_x - C_x) ( t * mu/sqrt(p+mu^2) )^2
   a_y = power_A(2)
   b_y = power_B(2)
-  call I_x1_pol_mult_mono_elec(a_y,b_y,R1x,R1xp,R2x,d2,n_pt2,n_pt_in)
+  call I_x1_pol_mult_one_e(a_y,b_y,R1x,R1xp,R2x,d2,n_pt2,n_pt_in)
   if(n_pt2<0)then
     n_pt_out = -1
     do i = 0,n_pt_in
@@ -216,7 +216,7 @@ subroutine give_polynom_mult_center_mono_elec_erf_opt(A_center,B_center,alpha,be
   a_z = power_A(3)
   b_z = power_B(3)
   
-  call I_x1_pol_mult_mono_elec(a_z,b_z,R1x,R1xp,R2x,d3,n_pt3,n_pt_in)
+  call I_x1_pol_mult_one_e(a_z,b_z,R1x,R1xp,R2x,d3,n_pt3,n_pt_in)
   if(n_pt3<0)then
     n_pt_out = -1
     do i = 0,n_pt_in
@@ -241,7 +241,7 @@ end
 
 
 
-subroutine give_polynom_mult_center_mono_elec_erf(A_center,B_center,alpha,beta,&
+subroutine give_polynomial_mult_center_one_e_erf(A_center,B_center,alpha,beta,&
       power_A,power_B,C_center,n_pt_in,d,n_pt_out,mu_in)
   BEGIN_DOC
   ! Returns the explicit polynomial in terms of the $t$ variable of the following polynomial:
@@ -302,7 +302,7 @@ subroutine give_polynom_mult_center_mono_elec_erf(A_center,B_center,alpha,beta,&
   n_pt3 = n_pt_in
   a_x = power_A(1)
   b_x = power_B(1)
-  call I_x1_pol_mult_mono_elec(a_x,b_x,R1x,R1xp,R2x,d1,n_pt1,n_pt_in)
+  call I_x1_pol_mult_one_e(a_x,b_x,R1x,R1xp,R2x,d1,n_pt1,n_pt_in)
   ! print*,'passed the first I_x1'
   if(n_pt1<0)then
     n_pt_out = -1
@@ -322,7 +322,7 @@ subroutine give_polynom_mult_center_mono_elec_erf(A_center,B_center,alpha,beta,&
   !R1xp = (P_x - B_x) - (P_x - C_x) ( t * mu/sqrt(p+mu^2) )^2
   a_y = power_A(2)
   b_y = power_B(2)
-  call I_x1_pol_mult_mono_elec(a_y,b_y,R1x,R1xp,R2x,d2,n_pt2,n_pt_in)
+  call I_x1_pol_mult_one_e(a_y,b_y,R1x,R1xp,R2x,d2,n_pt2,n_pt_in)
   ! print*,'passed the second I_x1'
   if(n_pt2<0)then
     n_pt_out = -1
@@ -346,7 +346,7 @@ subroutine give_polynom_mult_center_mono_elec_erf(A_center,B_center,alpha,beta,&
   
   ! print*,'a_z = ',a_z
   ! print*,'b_z = ',b_z
-  call I_x1_pol_mult_mono_elec(a_z,b_z,R1x,R1xp,R2x,d3,n_pt3,n_pt_in)
+  call I_x1_pol_mult_one_e(a_z,b_z,R1x,R1xp,R2x,d3,n_pt3,n_pt_in)
   ! print*,'passed the third I_x1'
   if(n_pt3<0)then
     n_pt_out = -1

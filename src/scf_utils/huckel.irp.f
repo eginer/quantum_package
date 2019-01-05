@@ -17,7 +17,7 @@ subroutine huckel_guess
     do i=1,ao_num
       A(i,j) = c * ao_overlap(i,j) * (ao_one_e_integrals_diag(i) + ao_one_e_integrals_diag(j))
     enddo
-    A(j,j) = ao_one_e_integrals_diag(j) + ao_bi_elec_integral_alpha(j,j)
+    A(j,j) = ao_one_e_integrals_diag(j) + ao_two_e_integral_alpha(j,j)
   enddo
 
   Fock_matrix_ao_alpha(1:ao_num,1:ao_num) = A(1:ao_num,1:ao_num)

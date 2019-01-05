@@ -189,7 +189,7 @@ Subroutines / functions
 
     File: :file:`write_integrals_erf.irp.f`
 
-    Saves the bielec erf integrals into the EZFIO
+    Saves the two-electron erf integrals into the EZFIO
 
 
 

@@ -27,33 +27,33 @@ subroutine mono_excitation_wee(det_1,det_2,h,p,spin,phase,hij)
  ! holes :: direct terms
  do i0 = 1, n_occ_ab_hole(1)
   i = occ_hole(i0,1)
-  hij -= big_array_coulomb_integrals(i,h,p) ! get_mo_bielec_integral_schwartz(h,i,p,i,mo_integrals_map)
+  hij -= big_array_coulomb_integrals(i,h,p) ! get_mo_two_e_integral_schwartz(h,i,p,i,mo_integrals_map)
  enddo
  do i0 = 1, n_occ_ab_hole(2)
   i = occ_hole(i0,2)
-  hij -= big_array_coulomb_integrals(i,h,p) !get_mo_bielec_integral_schwartz(h,i,p,i,mo_integrals_map)
+  hij -= big_array_coulomb_integrals(i,h,p) !get_mo_two_e_integral_schwartz(h,i,p,i,mo_integrals_map)
  enddo
 
  ! holes :: exchange terms
  do i0 = 1, n_occ_ab_hole(spin)
   i = occ_hole(i0,spin)
-  hij += big_array_exchange_integrals(i,h,p) ! get_mo_bielec_integral_schwartz(h,i,i,p,mo_integrals_map)
+  hij += big_array_exchange_integrals(i,h,p) ! get_mo_two_e_integral_schwartz(h,i,i,p,mo_integrals_map)
  enddo
 
  ! particles :: direct terms
  do i0 = 1, n_occ_ab_partcl(1)
   i = occ_partcl(i0,1)
-  hij += big_array_coulomb_integrals(i,h,p)!get_mo_bielec_integral_schwartz(h,i,p,i,mo_integrals_map)
+  hij += big_array_coulomb_integrals(i,h,p)!get_mo_two_e_integral_schwartz(h,i,p,i,mo_integrals_map)
  enddo
  do i0 = 1, n_occ_ab_partcl(2)
   i = occ_partcl(i0,2)
-  hij += big_array_coulomb_integrals(i,h,p) !get_mo_bielec_integral_schwartz(h,i,p,i,mo_integrals_map)
+  hij += big_array_coulomb_integrals(i,h,p) !get_mo_two_e_integral_schwartz(h,i,p,i,mo_integrals_map)
  enddo
 
  ! particles :: exchange terms
  do i0 = 1, n_occ_ab_partcl(spin)
   i = occ_partcl(i0,spin)
-  hij -= big_array_exchange_integrals(i,h,p)!get_mo_bielec_integral_schwartz(h,i,i,p,mo_integrals_map)
+  hij -= big_array_exchange_integrals(i,h,p)!get_mo_two_e_integral_schwartz(h,i,i,p,mo_integrals_map)
  enddo
  hij = hij * phase
 
@@ -84,8 +84,8 @@ BEGIN_PROVIDER [double precision, fock_wee_closed_shell, (mo_num, mo_num) ]
   i=occ(i0,1)
   do j0 = 1, n_occ_ab_virt(1)
    j = occ_virt(j0,1)
-   call get_mo_bielec_integrals_coulomb_ii(i,j,mo_num,array_coulomb,mo_integrals_map)
-   call get_mo_bielec_integrals_exch_ii(i,j,mo_num,array_exchange,mo_integrals_map)
+   call get_mo_two_e_integrals_coulomb_ii(i,j,mo_num,array_coulomb,mo_integrals_map)
+   call get_mo_two_e_integrals_exch_ii(i,j,mo_num,array_exchange,mo_integrals_map)
    double precision :: accu
    accu = 0.d0
    do k0 = 1, n_occ_ab(1)
@@ -102,8 +102,8 @@ BEGIN_PROVIDER [double precision, fock_wee_closed_shell, (mo_num, mo_num) ]
   i=occ_virt(i0,1)
   do j0 = 1, n_occ_ab_virt(1)
    j = occ_virt(j0,1)
-   call get_mo_bielec_integrals_coulomb_ii(i,j,mo_num,array_coulomb,mo_integrals_map)
-   call get_mo_bielec_integrals_exch_ii(i,j,mo_num,array_exchange,mo_integrals_map)
+   call get_mo_two_e_integrals_coulomb_ii(i,j,mo_num,array_coulomb,mo_integrals_map)
+   call get_mo_two_e_integrals_exch_ii(i,j,mo_num,array_exchange,mo_integrals_map)
    accu = 0.d0
    do k0 = 1, n_occ_ab(1)
     k = occ(k0,1)
@@ -119,8 +119,8 @@ BEGIN_PROVIDER [double precision, fock_wee_closed_shell, (mo_num, mo_num) ]
   i=occ(i0,1)
   do j0 = 1, n_occ_ab(1)
    j = occ(j0,1)
-   call get_mo_bielec_integrals_coulomb_ii(i,j,mo_num,array_coulomb,mo_integrals_map)
-   call get_mo_bielec_integrals_exch_ii(i,j,mo_num,array_exchange,mo_integrals_map)
+   call get_mo_two_e_integrals_coulomb_ii(i,j,mo_num,array_coulomb,mo_integrals_map)
+   call get_mo_two_e_integrals_exch_ii(i,j,mo_num,array_exchange,mo_integrals_map)
    accu = 0.d0
    do k0 = 1, n_occ_ab(1)
     k = occ(k0,1)

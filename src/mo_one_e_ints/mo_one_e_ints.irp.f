@@ -1,4 +1,4 @@
-BEGIN_PROVIDER [ double precision, mo_mono_elec_integrals,(mo_num,mo_num)]
+BEGIN_PROVIDER [ double precision, mo_one_e_integrals,(mo_num,mo_num)]
   implicit none
   integer                        :: i,j,n,l
   BEGIN_DOC
@@ -8,18 +8,18 @@ BEGIN_PROVIDER [ double precision, mo_mono_elec_integrals,(mo_num,mo_num)]
   print*,'Providing the mono electronic integrals'
 
   IF (read_mo_one_e_integrals) THEN
-        call ezfio_get_mo_one_e_ints_mo_one_e_integrals(mo_mono_elec_integrals)
+        call ezfio_get_mo_one_e_ints_mo_one_e_integrals(mo_one_e_integrals)
   ELSE
-      mo_mono_elec_integrals  = mo_nucl_elec_integrals + mo_kinetic_integrals
+      mo_one_e_integrals  = mo_integrals_n_e + mo_kinetic_integrals
 
       IF (DO_PSEUDO) THEN
-            mo_mono_elec_integrals  += mo_pseudo_integrals
+            mo_one_e_integrals  += mo_pseudo_integrals
       ENDIF
 
   ENDIF
 
   IF (write_mo_one_e_integrals) THEN
-        call ezfio_set_mo_one_e_ints_mo_one_e_integrals(mo_mono_elec_integrals)
+        call ezfio_set_mo_one_e_ints_mo_one_e_integrals(mo_one_e_integrals)
        print *,  'MO one-e integrals written to disk'
   ENDIF
 

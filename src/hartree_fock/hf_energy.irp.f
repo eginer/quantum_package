@@ -22,8 +22,8 @@ END_PROVIDER
  HF_energy = nuclear_repulsion
  do j=1,ao_num
    do i=1,ao_num
-    HF_two_electron_energy += 0.5d0 * ( ao_bi_elec_integral_alpha(i,j) * SCF_density_matrix_ao_alpha(i,j) &
-                                       +ao_bi_elec_integral_beta(i,j)  * SCF_density_matrix_ao_beta(i,j) )
+    HF_two_electron_energy += 0.5d0 * ( ao_two_e_integral_alpha(i,j) * SCF_density_matrix_ao_alpha(i,j) &
+                                       +ao_two_e_integral_beta(i,j)  * SCF_density_matrix_ao_beta(i,j) )
     HF_one_electron_energy += ao_one_e_integrals(i,j) * (SCF_density_matrix_ao_alpha(i,j) + SCF_density_matrix_ao_beta (i,j) )
    enddo
  enddo

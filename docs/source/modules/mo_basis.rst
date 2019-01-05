@@ -187,7 +187,7 @@ Subroutines / functions
 
     Transform A from the |AO| basis to the orthogonal |AO| basis 
 
-     :math:`C^{-1}.A_{ao}.C^\dagger^{-1}`
+     :math:`C^{-1}.A_{ao}.C^{\dagger-1}`
 
 
 

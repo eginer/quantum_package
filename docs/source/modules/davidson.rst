@@ -17,7 +17,7 @@ the :ref:`davidson` module should be used, and it has a default zero dressing ve
 The important providers for that module are:
 
 # `psi_energy` which is the expectation value over the wave function (`psi_det`, `psi_coef`) of the Hamiltonian, dressed or not. It uses the general subroutine `u_0_H_u_0`. 
-# `psi_energy_bielec` which is the expectation value over the wave function (`psi_det`, `psi_coef`) of the standard two-electrons coulomb operator. It uses the general routine `u_0_H_u_0_bielec`. 
+# `psi_energy_two_e` which is the expectation value over the wave function (`psi_det`, `psi_coef`) of the standard two-electrons coulomb operator. It uses the general routine `u_0_H_u_0_two_e`. 
 
 
 
@@ -194,11 +194,11 @@ Providers
 
 
 
-.. c:var:: psi_energy_bielec
+.. c:var:: psi_energy_two_e
 
     .. code:: text
 
-        double precision, allocatable	:: psi_energy_bielec	(N_states)
+        double precision, allocatable	:: psi_energy_two_e	(N_states)
 
     File: :file:`u0_wee_u0.irp.f`
 
@@ -409,120 +409,6 @@ Subroutines / functions
 
 
 
-.. c:function:: h_s2_u_0_bielec_nstates_openmp
-
-    .. code:: text
-
-        subroutine H_S2_u_0_bielec_nstates_openmp(v_0,s_0,u_0,N_st,sze)
-
-    File: :file:`u0_wee_u0.irp.f`
-
-    Computes  :math:`v_0 = H|u_0\rangle`  and  :math:`s_0 = S^2 |u_0\rangle` 
-
-    Assumes that the determinants are in psi_det 
-
-    istart, iend, ishift, istep are used in ZMQ parallelization.
-
-
-
-
-
-.. c:function:: h_s2_u_0_bielec_nstates_openmp_work
-
-    .. code:: text
-
-        subroutine H_S2_u_0_bielec_nstates_openmp_work(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
-
-    File: :file:`u0_wee_u0.irp.f`
-
-    Computes  :math:`v_t = H|u_t\rangle`  and  :math:`s_t = S^2 |u_t\rangle` 
-
-    Default should be 1,N_det,0,1
-
-
-
-
-
-.. c:function:: h_s2_u_0_bielec_nstates_openmp_work_1
-
-    .. code:: text
-
-        subroutine H_S2_u_0_bielec_nstates_openmp_work_1(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
-
-    File: :file:`u0_wee_u0.irp.f_template_457`
-
-    Computes  :math:`v_t = H|u_t angle`  and  :math:`s_t = S^2 |u_t angle` 
-
-    Default should be 1,N_det,0,1
-
-
-
-
-
-.. c:function:: h_s2_u_0_bielec_nstates_openmp_work_2
-
-    .. code:: text
-
-        subroutine H_S2_u_0_bielec_nstates_openmp_work_2(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
-
-    File: :file:`u0_wee_u0.irp.f_template_457`
-
-    Computes  :math:`v_t = H|u_t angle`  and  :math:`s_t = S^2 |u_t angle` 
-
-    Default should be 1,N_det,0,1
-
-
-
-
-
-.. c:function:: h_s2_u_0_bielec_nstates_openmp_work_3
-
-    .. code:: text
-
-        subroutine H_S2_u_0_bielec_nstates_openmp_work_3(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
-
-    File: :file:`u0_wee_u0.irp.f_template_457`
-
-    Computes  :math:`v_t = H|u_t angle`  and  :math:`s_t = S^2 |u_t angle` 
-
-    Default should be 1,N_det,0,1
-
-
-
-
-
-.. c:function:: h_s2_u_0_bielec_nstates_openmp_work_4
-
-    .. code:: text
-
-        subroutine H_S2_u_0_bielec_nstates_openmp_work_4(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
-
-    File: :file:`u0_wee_u0.irp.f_template_457`
-
-    Computes  :math:`v_t = H|u_t angle`  and  :math:`s_t = S^2 |u_t angle` 
-
-    Default should be 1,N_det,0,1
-
-
-
-
-
-.. c:function:: h_s2_u_0_bielec_nstates_openmp_work_n_int
-
-    .. code:: text
-
-        subroutine H_S2_u_0_bielec_nstates_openmp_work_N_int(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
-
-    File: :file:`u0_wee_u0.irp.f_template_457`
-
-    Computes  :math:`v_t = H|u_t angle`  and  :math:`s_t = S^2 |u_t angle` 
-
-    Default should be 1,N_det,0,1
-
-
-
-
-
 .. c:function:: h_s2_u_0_nstates_openmp
 
     .. code:: text
@@ -657,6 +543,120 @@ Subroutines / functions
 
 
 
+.. c:function:: h_s2_u_0_two_e_nstates_openmp
+
+    .. code:: text
+
+        subroutine H_S2_u_0_two_e_nstates_openmp(v_0,s_0,u_0,N_st,sze)
+
+    File: :file:`u0_wee_u0.irp.f`
+
+    Computes  :math:`v_0 = H|u_0\rangle`  and  :math:`s_0 = S^2 |u_0\rangle` 
+
+    Assumes that the determinants are in psi_det 
+
+    istart, iend, ishift, istep are used in ZMQ parallelization.
+
+
+
+
+
+.. c:function:: h_s2_u_0_two_e_nstates_openmp_work
+
+    .. code:: text
+
+        subroutine H_S2_u_0_two_e_nstates_openmp_work(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
+
+    File: :file:`u0_wee_u0.irp.f`
+
+    Computes  :math:`v_t = H|u_t\rangle`  and  :math:`s_t = S^2 |u_t\rangle` 
+
+    Default should be 1,N_det,0,1
+
+
+
+
+
+.. c:function:: h_s2_u_0_two_e_nstates_openmp_work_1
+
+    .. code:: text
+
+        subroutine H_S2_u_0_two_e_nstates_openmp_work_1(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
+
+    File: :file:`u0_wee_u0.irp.f_template_457`
+
+    Computes  :math:`v_t = H|u_t angle`  and  :math:`s_t = S^2 |u_t angle` 
+
+    Default should be 1,N_det,0,1
+
+
+
+
+
+.. c:function:: h_s2_u_0_two_e_nstates_openmp_work_2
+
+    .. code:: text
+
+        subroutine H_S2_u_0_two_e_nstates_openmp_work_2(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
+
+    File: :file:`u0_wee_u0.irp.f_template_457`
+
+    Computes  :math:`v_t = H|u_t angle`  and  :math:`s_t = S^2 |u_t angle` 
+
+    Default should be 1,N_det,0,1
+
+
+
+
+
+.. c:function:: h_s2_u_0_two_e_nstates_openmp_work_3
+
+    .. code:: text
+
+        subroutine H_S2_u_0_two_e_nstates_openmp_work_3(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
+
+    File: :file:`u0_wee_u0.irp.f_template_457`
+
+    Computes  :math:`v_t = H|u_t angle`  and  :math:`s_t = S^2 |u_t angle` 
+
+    Default should be 1,N_det,0,1
+
+
+
+
+
+.. c:function:: h_s2_u_0_two_e_nstates_openmp_work_4
+
+    .. code:: text
+
+        subroutine H_S2_u_0_two_e_nstates_openmp_work_4(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
+
+    File: :file:`u0_wee_u0.irp.f_template_457`
+
+    Computes  :math:`v_t = H|u_t angle`  and  :math:`s_t = S^2 |u_t angle` 
+
+    Default should be 1,N_det,0,1
+
+
+
+
+
+.. c:function:: h_s2_u_0_two_e_nstates_openmp_work_n_int
+
+    .. code:: text
+
+        subroutine H_S2_u_0_two_e_nstates_openmp_work_N_int(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
+
+    File: :file:`u0_wee_u0.irp.f_template_457`
+
+    Computes  :math:`v_t = H|u_t angle`  and  :math:`s_t = S^2 |u_t angle` 
+
+    Default should be 1,N_det,0,1
+
+
+
+
+
 .. c:function:: u_0_h_u_0
 
     .. code:: text
@@ -675,11 +675,11 @@ Subroutines / functions
 
 
 
-.. c:function:: u_0_h_u_0_bielec
+.. c:function:: u_0_h_u_0_two_e
 
     .. code:: text
 
-        subroutine u_0_H_u_0_bielec(e_0,u_0,n,keys_tmp,Nint,N_st,sze)
+        subroutine u_0_H_u_0_two_e(e_0,u_0,n,keys_tmp,Nint,N_st,sze)
 
     File: :file:`u0_wee_u0.irp.f`
 

@@ -63,12 +63,12 @@ Providers
 ---------
 
 
-.. c:var:: ao_bi_elec_integral_alpha
+.. c:var:: ao_two_e_integral_alpha
 
     .. code:: text
 
-        double precision, allocatable	:: ao_bi_elec_integral_alpha	(ao_num,ao_num)
-        double precision, allocatable	:: ao_bi_elec_integral_beta	(ao_num,ao_num)
+        double precision, allocatable	:: ao_two_e_integral_alpha	(ao_num,ao_num)
+        double precision, allocatable	:: ao_two_e_integral_beta	(ao_num,ao_num)
 
     File: :file:`fock_matrix_hf.irp.f`
 
@@ -77,12 +77,12 @@ Providers
 
 
 
-.. c:var:: ao_bi_elec_integral_beta
+.. c:var:: ao_two_e_integral_beta
 
     .. code:: text
 
-        double precision, allocatable	:: ao_bi_elec_integral_alpha	(ao_num,ao_num)
-        double precision, allocatable	:: ao_bi_elec_integral_beta	(ao_num,ao_num)
+        double precision, allocatable	:: ao_two_e_integral_alpha	(ao_num,ao_num)
+        double precision, allocatable	:: ao_two_e_integral_beta	(ao_num,ao_num)
 
     File: :file:`fock_matrix_hf.irp.f`
 

@@ -62,7 +62,11 @@ def main(arguments):
             sys.exit(1)
 
     # Now search in all the files 
-    print "Replacing..."
+    if arguments["--rename"]:
+        print "Replacing..."
+    else:
+        print "Searching..."
+
     name = re.compile(r"\b"+arguments["<name>"]+r"\b", re.IGNORECASE)
 
     for mod in all_modules:

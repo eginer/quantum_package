@@ -44,16 +44,16 @@ BEGIN_PROVIDER [double precision, fock_operator_closed_shell_ref_bitmask, (mo_nu
   i=occ(i0,1)
   do j0 = 1, n_occ_ab_virt(1)
    j = occ_virt(j0,1)
-   call get_mo_bielec_integrals_coulomb_ii(i,j,mo_num,array_coulomb,mo_integrals_map)
-   call get_mo_bielec_integrals_exch_ii(i,j,mo_num,array_exchange,mo_integrals_map)
+   call get_mo_two_e_integrals_coulomb_ii(i,j,mo_num,array_coulomb,mo_integrals_map)
+   call get_mo_two_e_integrals_exch_ii(i,j,mo_num,array_exchange,mo_integrals_map)
    double precision :: accu
    accu = 0.d0
    do k0 = 1, n_occ_ab(1)
     k = occ(k0,1)
     accu += 2.d0 * array_coulomb(k) - array_exchange(k)
    enddo
-   fock_operator_closed_shell_ref_bitmask(i,j) = accu + mo_mono_elec_integrals(i,j)
-   fock_operator_closed_shell_ref_bitmask(j,i) = accu + mo_mono_elec_integrals(i,j)
+   fock_operator_closed_shell_ref_bitmask(i,j) = accu + mo_one_e_integrals(i,j)
+   fock_operator_closed_shell_ref_bitmask(j,i) = accu + mo_one_e_integrals(i,j)
   enddo
  enddo
 
@@ -62,15 +62,15 @@ BEGIN_PROVIDER [double precision, fock_operator_closed_shell_ref_bitmask, (mo_nu
   i=occ_virt(i0,1)
   do j0 = 1, n_occ_ab_virt(1)
    j = occ_virt(j0,1)
-   call get_mo_bielec_integrals_coulomb_ii(i,j,mo_num,array_coulomb,mo_integrals_map)
-   call get_mo_bielec_integrals_exch_ii(i,j,mo_num,array_exchange,mo_integrals_map)
+   call get_mo_two_e_integrals_coulomb_ii(i,j,mo_num,array_coulomb,mo_integrals_map)
+   call get_mo_two_e_integrals_exch_ii(i,j,mo_num,array_exchange,mo_integrals_map)
    accu = 0.d0
    do k0 = 1, n_occ_ab(1)
     k = occ(k0,1)
     accu += 2.d0 * array_coulomb(k) - array_exchange(k)
    enddo
-   fock_operator_closed_shell_ref_bitmask(i,j) = accu+ mo_mono_elec_integrals(i,j)
-   fock_operator_closed_shell_ref_bitmask(j,i) = accu+ mo_mono_elec_integrals(i,j)
+   fock_operator_closed_shell_ref_bitmask(i,j) = accu+ mo_one_e_integrals(i,j)
+   fock_operator_closed_shell_ref_bitmask(j,i) = accu+ mo_one_e_integrals(i,j)
   enddo
  enddo
 
@@ -79,15 +79,15 @@ BEGIN_PROVIDER [double precision, fock_operator_closed_shell_ref_bitmask, (mo_nu
   i=occ(i0,1)
   do j0 = 1, n_occ_ab(1)
    j = occ(j0,1)
-   call get_mo_bielec_integrals_coulomb_ii(i,j,mo_num,array_coulomb,mo_integrals_map)
-   call get_mo_bielec_integrals_exch_ii(i,j,mo_num,array_exchange,mo_integrals_map)
+   call get_mo_two_e_integrals_coulomb_ii(i,j,mo_num,array_coulomb,mo_integrals_map)
+   call get_mo_two_e_integrals_exch_ii(i,j,mo_num,array_exchange,mo_integrals_map)
    accu = 0.d0
    do k0 = 1, n_occ_ab(1)
     k = occ(k0,1)
     accu += 2.d0 * array_coulomb(k) - array_exchange(k)
    enddo
-   fock_operator_closed_shell_ref_bitmask(i,j) = accu+ mo_mono_elec_integrals(i,j)
-   fock_operator_closed_shell_ref_bitmask(j,i) = accu+ mo_mono_elec_integrals(i,j)
+   fock_operator_closed_shell_ref_bitmask(i,j) = accu+ mo_one_e_integrals(i,j)
+   fock_operator_closed_shell_ref_bitmask(j,i) = accu+ mo_one_e_integrals(i,j)
   enddo
  enddo
  deallocate(array_coulomb,array_exchange)

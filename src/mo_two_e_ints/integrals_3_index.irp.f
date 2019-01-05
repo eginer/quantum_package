@@ -7,17 +7,17 @@
  ! big_array_exchange_integrals(i,j) = <ij|ji> = (ij|ij) 
  END_DOC
  integer :: i,j,k,l
- double precision :: get_mo_bielec_integral
+ double precision :: get_two_e_integral
  double precision :: integral
 
  do k = 1, mo_num
   do i = 1, mo_num
    do j = 1, mo_num
      l = j
-     integral = get_mo_bielec_integral(i,j,k,l,mo_integrals_map)
+     integral = get_two_e_integral(i,j,k,l,mo_integrals_map)
      big_array_coulomb_integrals(j,i,k) = integral
      l = j
-     integral = get_mo_bielec_integral(i,j,l,k,mo_integrals_map)
+     integral = get_two_e_integral(i,j,l,k,mo_integrals_map)
      big_array_exchange_integrals(j,i,k) = integral
    enddo
   enddo

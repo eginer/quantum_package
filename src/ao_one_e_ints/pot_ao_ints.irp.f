@@ -1,4 +1,4 @@
-BEGIN_PROVIDER [ double precision, ao_nucl_elec_integrals, (ao_num,ao_num)]
+BEGIN_PROVIDER [ double precision, ao_integrals_n_e, (ao_num,ao_num)]
   BEGIN_DOC
   !  Nucleus-electron interaction, in the |AO| basis set.
   !
@@ -13,11 +13,11 @@ BEGIN_PROVIDER [ double precision, ao_nucl_elec_integrals, (ao_num,ao_num)]
   double precision               :: overlap_x,overlap_y,overlap_z,overlap,dx,NAI_pol_mult
   
   if (read_ao_integrals_e_n) then
-    call ezfio_get_ao_one_e_ints_ao_integrals_e_n(ao_nucl_elec_integrals)
+    call ezfio_get_ao_one_e_ints_ao_integrals_e_n(ao_integrals_n_e)
     print *,  'AO N-e integrals read from disk'
   else
     
-    ao_nucl_elec_integrals = 0.d0
+    ao_integrals_n_e = 0.d0
     
     !        _
     ! /|  / |_)
@@ -29,7 +29,7 @@ BEGIN_PROVIDER [ double precision, ao_nucl_elec_integrals, (ao_num,ao_num)]
         !$OMP PRIVATE (i,j,k,l,m,alpha,beta,A_center,B_center,C_center,power_A,power_B,&
         !$OMP          num_A,num_B,Z,c,n_pt_in)                      &
         !$OMP SHARED (ao_num,ao_prim_num,ao_expo_ordered_transp,ao_power,ao_nucl,nucl_coord,ao_coef_normalized_ordered_transp,&
-        !$OMP         n_pt_max_integrals,ao_nucl_elec_integrals,nucl_num,nucl_charge)
+        !$OMP         n_pt_max_integrals,ao_integrals_n_e,nucl_num,nucl_charge)
     
     n_pt_in = n_pt_max_integrals
     
@@ -65,7 +65,7 @@ BEGIN_PROVIDER [ double precision, ao_nucl_elec_integrals, (ao_num,ao_num)]
                   power_A,power_B,alpha,beta,C_center,n_pt_in)
               
             enddo
-            ao_nucl_elec_integrals(i,j) = ao_nucl_elec_integrals(i,j)  &
+            ao_integrals_n_e(i,j) = ao_integrals_n_e(i,j)  &
                 + ao_coef_normalized_ordered_transp(l,j)             &
                 * ao_coef_normalized_ordered_transp(m,i) * c
           enddo
@@ -77,13 +77,13 @@ BEGIN_PROVIDER [ double precision, ao_nucl_elec_integrals, (ao_num,ao_num)]
     !$OMP END PARALLEL
   endif
   if (write_ao_integrals_e_n) then
-    call ezfio_set_ao_one_e_ints_ao_integrals_e_n(ao_nucl_elec_integrals)
+    call ezfio_set_ao_one_e_ints_ao_integrals_e_n(ao_integrals_n_e)
     print *,  'AO N-e integrals written to disk'
   endif
   
 END_PROVIDER
 
-BEGIN_PROVIDER [ double precision, ao_nucl_elec_integrals_per_atom, (ao_num,ao_num,nucl_num)]
+BEGIN_PROVIDER [ double precision, ao_integrals_n_e_per_atom, (ao_num,ao_num,nucl_num)]
   BEGIN_DOC
 ! Nucleus-electron interaction in the |AO| basis set, per atom A.
 !
@@ -97,14 +97,14 @@ BEGIN_PROVIDER [ double precision, ao_nucl_elec_integrals_per_atom, (ao_num,ao_n
   integer                        :: i,j,k,l,n_pt_in,m
   double precision               :: overlap_x,overlap_y,overlap_z,overlap,dx,NAI_pol_mult
   
-  ao_nucl_elec_integrals_per_atom = 0.d0
+  ao_integrals_n_e_per_atom = 0.d0
   
   !$OMP PARALLEL                                                    &
       !$OMP DEFAULT (NONE)                                          &
       !$OMP PRIVATE (i,j,k,l,m,alpha,beta,A_center,B_center,power_A,power_B,&
       !$OMP  num_A,num_B,c,n_pt_in,C_center)                        &
       !$OMP SHARED (ao_num,ao_prim_num,ao_expo_ordered_transp,ao_power,ao_nucl,nucl_coord,ao_coef_normalized_ordered_transp,&
-      !$OMP  n_pt_max_integrals,ao_nucl_elec_integrals_per_atom,nucl_num)
+      !$OMP  n_pt_max_integrals,ao_integrals_n_e_per_atom,nucl_num)
   n_pt_in = n_pt_max_integrals
   !$OMP DO SCHEDULE (dynamic)
   
@@ -140,7 +140,7 @@ BEGIN_PROVIDER [ double precision, ao_nucl_elec_integrals_per_atom, (ao_num,ao_n
                 * ao_coef_normalized_ordered_transp(m,i)
           enddo
         enddo
-        ao_nucl_elec_integrals_per_atom(i,j,k) = -c
+        ao_integrals_n_e_per_atom(i,j,k) = -c
       enddo
     enddo
   enddo
@@ -214,7 +214,7 @@ double precision function NAI_pol_mult(A_center,B_center,power_A,power_B,alpha,b
     return
   endif
   
-  call give_polynom_mult_center_mono_elec(A_center,B_center,alpha,beta,power_A,power_B,C_center,n_pt_in,d,n_pt_out)
+  call give_polynomial_mult_center_one_e(A_center,B_center,alpha,beta,power_A,power_B,C_center,n_pt_in,d,n_pt_out)
   
   
   if(n_pt_out<0)then
@@ -234,7 +234,7 @@ double precision function NAI_pol_mult(A_center,B_center,power_A,power_B,alpha,b
 end
 
 
-subroutine give_polynom_mult_center_mono_elec(A_center,B_center,alpha,beta,power_A,power_B,C_center,n_pt_in,d,n_pt_out)
+subroutine give_polynomial_mult_center_one_e(A_center,B_center,alpha,beta,power_A,power_B,C_center,n_pt_in,d,n_pt_out)
   implicit none
   BEGIN_DOC
   ! Returns the explicit polynomial in terms of the "t" variable of the following
@@ -295,7 +295,7 @@ subroutine give_polynom_mult_center_mono_elec(A_center,B_center,alpha,beta,power
   n_pt3 = n_pt_in
   a_x = power_A(1)
   b_x = power_B(1)
-  call I_x1_pol_mult_mono_elec(a_x,b_x,R1x,R1xp,R2x,d1,n_pt1,n_pt_in)
+  call I_x1_pol_mult_one_e(a_x,b_x,R1x,R1xp,R2x,d1,n_pt1,n_pt_in)
 
   if(n_pt1<0)then
     n_pt_out = -1
@@ -315,7 +315,7 @@ subroutine give_polynom_mult_center_mono_elec(A_center,B_center,alpha,beta,power
 
   a_y = power_A(2)
   b_y = power_B(2)
-  call I_x1_pol_mult_mono_elec(a_y,b_y,R1x,R1xp,R2x,d2,n_pt2,n_pt_in)
+  call I_x1_pol_mult_one_e(a_y,b_y,R1x,R1xp,R2x,d2,n_pt2,n_pt_in)
 
   if(n_pt2<0)then
     n_pt_out = -1
@@ -337,7 +337,7 @@ subroutine give_polynom_mult_center_mono_elec(A_center,B_center,alpha,beta,power
   a_z = power_A(3)
   b_z = power_B(3)
   
-  call I_x1_pol_mult_mono_elec(a_z,b_z,R1x,R1xp,R2x,d3,n_pt3,n_pt_in)
+  call I_x1_pol_mult_one_e(a_z,b_z,R1x,R1xp,R2x,d3,n_pt3,n_pt_in)
 
   if(n_pt3<0)then
     n_pt_out = -1
@@ -361,7 +361,7 @@ subroutine give_polynom_mult_center_mono_elec(A_center,B_center,alpha,beta,power
 end
 
 
-recursive subroutine I_x1_pol_mult_mono_elec(a,c,R1x,R1xp,R2x,d,nd,n_pt_in)
+recursive subroutine I_x1_pol_mult_one_e(a,c,R1x,R1xp,R2x,d,nd,n_pt_in)
   implicit none
   BEGIN_DOC
 !  Recursive routine involved in the electron-nucleus potential
@@ -388,20 +388,20 @@ recursive subroutine I_x1_pol_mult_mono_elec(a,c,R1x,R1xp,R2x,d,nd,n_pt_in)
     nd = -1
     return
   else if ((a==0).and.(c.ne.0)) then
-    call I_x2_pol_mult_mono_elec(c,R1x,R1xp,R2x,d,nd,n_pt_in)
+    call I_x2_pol_mult_one_e(c,R1x,R1xp,R2x,d,nd,n_pt_in)
   else if (a==1) then
     nx = nd
     do ix=0,n_pt_in
       X(ix) = 0.d0
       Y(ix) = 0.d0
     enddo
-    call I_x2_pol_mult_mono_elec(c-1,R1x,R1xp,R2x,X,nx,n_pt_in)
+    call I_x2_pol_mult_one_e(c-1,R1x,R1xp,R2x,X,nx,n_pt_in)
     do ix=0,nx
       X(ix) *= dble(c)
     enddo
     call multiply_poly(X,nx,R2x,2,d,nd)
     ny=0
-    call I_x2_pol_mult_mono_elec(c,R1x,R1xp,R2x,Y,ny,n_pt_in)
+    call I_x2_pol_mult_one_e(c,R1x,R1xp,R2x,Y,ny,n_pt_in)
     call multiply_poly(Y,ny,R1x,2,d,nd)
   else
     do ix=0,n_pt_in
@@ -409,7 +409,7 @@ recursive subroutine I_x1_pol_mult_mono_elec(a,c,R1x,R1xp,R2x,d,nd,n_pt_in)
       Y(ix) = 0.d0
     enddo
     nx = 0
-    call I_x1_pol_mult_mono_elec(a-2,c,R1x,R1xp,R2x,X,nx,n_pt_in)
+    call I_x1_pol_mult_one_e(a-2,c,R1x,R1xp,R2x,X,nx,n_pt_in)
     do ix=0,nx
       X(ix) *= dble(a-1)
     enddo
@@ -419,18 +419,18 @@ recursive subroutine I_x1_pol_mult_mono_elec(a,c,R1x,R1xp,R2x,d,nd,n_pt_in)
     do ix=0,n_pt_in
       X(ix) = 0.d0
     enddo
-    call I_x1_pol_mult_mono_elec(a-1,c-1,R1x,R1xp,R2x,X,nx,n_pt_in)
+    call I_x1_pol_mult_one_e(a-1,c-1,R1x,R1xp,R2x,X,nx,n_pt_in)
     do ix=0,nx
       X(ix) *= dble(c)
     enddo
     call multiply_poly(X,nx,R2x,2,d,nd)
     ny=0
-    call I_x1_pol_mult_mono_elec(a-1,c,R1x,R1xp,R2x,Y,ny,n_pt_in)
+    call I_x1_pol_mult_one_e(a-1,c,R1x,R1xp,R2x,Y,ny,n_pt_in)
     call multiply_poly(Y,ny,R1x,2,d,nd)
   endif
 end
 
-recursive subroutine I_x2_pol_mult_mono_elec(c,R1x,R1xp,R2x,d,nd,dim)
+recursive subroutine I_x2_pol_mult_one_e(c,R1x,R1xp,R2x,d,nd,dim)
   implicit none
   BEGIN_DOC
 !  Recursive routine involved in the electron-nucleus potential
@@ -459,7 +459,7 @@ recursive subroutine I_x2_pol_mult_mono_elec(c,R1x,R1xp,R2x,d,nd,dim)
       Y(ix) = 0.d0
     enddo
     nx = 0
-    call I_x1_pol_mult_mono_elec(0,c-2,R1x,R1xp,R2x,X,nx,dim)
+    call I_x1_pol_mult_one_e(0,c-2,R1x,R1xp,R2x,X,nx,dim)
     do ix=0,nx
       X(ix) *= dble(c-1)
     enddo
@@ -469,7 +469,7 @@ recursive subroutine I_x2_pol_mult_mono_elec(c,R1x,R1xp,R2x,d,nd,dim)
       Y(ix) = 0.d0
     enddo
     
-    call I_x1_pol_mult_mono_elec(0,c-1,R1x,R1xp,R2x,Y,ny,dim)
+    call I_x1_pol_mult_one_e(0,c-1,R1x,R1xp,R2x,Y,ny,dim)
     if(ny.ge.0)then
       call multiply_poly(Y,ny,R1xp,2,d,nd)
     endif

@@ -10,7 +10,7 @@ BEGIN_PROVIDER [ type(map_type), ao_integrals_erf_map ]
   END_DOC
   integer(key_kind)              :: key_max
   integer(map_size_kind)         :: sze
-  call bielec_integrals_index(ao_num,ao_num,ao_num,ao_num,key_max)
+  call two_e_integrals_index(ao_num,ao_num,ao_num,ao_num,key_max)
   sze = key_max
   call map_init(ao_integrals_erf_map,sze)
   print*,  'AO map initialized : ', sze
@@ -33,7 +33,7 @@ BEGIN_PROVIDER [ double precision, ao_integrals_erf_cache, (0:64*64*64*64) ]
  BEGIN_DOC
  ! Cache of |AO| integrals for fast access
  END_DOC
- PROVIDE ao_bielec_integrals_erf_in_map
+ PROVIDE ao_two_e_integrals_erf_in_map
  integer                        :: i,j,k,l,ii
  integer(key_kind)              :: idx
  real(integral_kind)            :: integral
@@ -43,7 +43,7 @@ BEGIN_PROVIDER [ double precision, ao_integrals_erf_cache, (0:64*64*64*64) ]
      do j=ao_integrals_erf_cache_min,ao_integrals_erf_cache_max
        do i=ao_integrals_erf_cache_min,ao_integrals_erf_cache_max
          !DIR$ FORCEINLINE
-         call bielec_integrals_index(i,j,k,l,idx)
+         call two_e_integrals_index(i,j,k,l,idx)
          !DIR$ FORCEINLINE
          call map_get(ao_integrals_erf_map,idx,integral)
          ii = l-ao_integrals_erf_cache_min
@@ -74,7 +74,7 @@ subroutine insert_into_ao_integrals_erf_map(n_integrals,buffer_i, buffer_values)
   call map_append(ao_integrals_erf_map, buffer_i, buffer_values, n_integrals)
 end
 
-double precision function get_ao_bielec_integral_erf(i,j,k,l,map) result(result)
+double precision function get_ao_two_e_integral_erf(i,j,k,l,map) result(result)
   use map_module
   implicit none
   BEGIN_DOC
@@ -85,11 +85,11 @@ double precision function get_ao_bielec_integral_erf(i,j,k,l,map) result(result)
   type(map_type), intent(inout)  :: map
   integer                        :: ii
   real(integral_kind)            :: tmp
-  PROVIDE ao_bielec_integrals_erf_in_map ao_integrals_erf_cache ao_integrals_erf_cache_min
+  PROVIDE ao_two_e_integrals_erf_in_map ao_integrals_erf_cache ao_integrals_erf_cache_min
   !DIR$ FORCEINLINE
   if (ao_overlap_abs(i,k)*ao_overlap_abs(j,l) < ao_integrals_threshold ) then
     tmp = 0.d0
-  else if (ao_bielec_integral_erf_schwartz(i,k)*ao_bielec_integral_erf_schwartz(j,l) < ao_integrals_threshold) then
+  else if (ao_two_e_integral_erf_schwartz(i,k)*ao_two_e_integral_erf_schwartz(j,l) < ao_integrals_threshold) then
     tmp = 0.d0
   else
     ii = l-ao_integrals_erf_cache_min
@@ -98,7 +98,7 @@ double precision function get_ao_bielec_integral_erf(i,j,k,l,map) result(result)
     ii = ior(ii, i-ao_integrals_erf_cache_min)
     if (iand(ii, -64) /= 0) then
       !DIR$ FORCEINLINE
-      call bielec_integrals_index(i,j,k,l,idx)
+      call two_e_integrals_index(i,j,k,l,idx)
       !DIR$ FORCEINLINE
       call map_get(map,idx,tmp)
       tmp = tmp
@@ -114,7 +114,7 @@ double precision function get_ao_bielec_integral_erf(i,j,k,l,map) result(result)
 end
 
 
-subroutine get_ao_bielec_integrals_erf(j,k,l,sze,out_val)
+subroutine get_ao_two_e_integrals_erf(j,k,l,sze,out_val)
   use map_module
   BEGIN_DOC
   ! Gets multiple |AO| two-electron integral from the |AO| map .
@@ -127,7 +127,7 @@ subroutine get_ao_bielec_integrals_erf(j,k,l,sze,out_val)
   integer                        :: i
   integer(key_kind)              :: hash
   double precision               :: thresh
-  PROVIDE ao_bielec_integrals_erf_in_map ao_integrals_erf_map
+  PROVIDE ao_two_e_integrals_erf_in_map ao_integrals_erf_map
   thresh = ao_integrals_threshold
   
   if (ao_overlap_abs(j,l) < thresh) then
@@ -135,14 +135,14 @@ subroutine get_ao_bielec_integrals_erf(j,k,l,sze,out_val)
     return
   endif
   
-  double precision :: get_ao_bielec_integral_erf
+  double precision :: get_ao_two_e_integral_erf
   do i=1,sze
-    out_val(i) = get_ao_bielec_integral_erf(i,j,k,l,ao_integrals_erf_map)
+    out_val(i) = get_ao_two_e_integral_erf(i,j,k,l,ao_integrals_erf_map)
   enddo
   
 end
 
-subroutine get_ao_bielec_integrals_erf_non_zero(j,k,l,sze,out_val,out_val_index,non_zero_int)
+subroutine get_ao_two_e_integrals_erf_non_zero(j,k,l,sze,out_val,out_val_index,non_zero_int)
   use map_module
   implicit none
   BEGIN_DOC
@@ -156,7 +156,7 @@ subroutine get_ao_bielec_integrals_erf_non_zero(j,k,l,sze,out_val,out_val_index,
   integer                        :: i
   integer(key_kind)              :: hash
   double precision               :: thresh,tmp
-  PROVIDE ao_bielec_integrals_erf_in_map
+  PROVIDE ao_two_e_integrals_erf_in_map
   thresh = ao_integrals_threshold
   
   non_zero_int = 0
@@ -168,12 +168,12 @@ subroutine get_ao_bielec_integrals_erf_non_zero(j,k,l,sze,out_val,out_val_index,
   non_zero_int = 0
   do i=1,sze
     integer, external :: ao_l4
-    double precision, external :: ao_bielec_integral_erf
+    double precision, external :: ao_two_e_integral_erf
     !DIR$ FORCEINLINE
-    if (ao_bielec_integral_erf_schwartz(i,k)*ao_bielec_integral_erf_schwartz(j,l) < thresh) then
+    if (ao_two_e_integral_erf_schwartz(i,k)*ao_two_e_integral_erf_schwartz(j,l) < thresh) then
       cycle
     endif
-    call bielec_integrals_index(i,j,k,l,hash)
+    call two_e_integrals_index(i,j,k,l,hash)
     call map_get(ao_integrals_erf_map, hash,tmp)
     if (dabs(tmp) < thresh ) cycle
     non_zero_int = non_zero_int+1

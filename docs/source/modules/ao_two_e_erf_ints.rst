@@ -15,7 +15,7 @@ in :file:`utils/map_module.f90`.
 The main parameter of this module is :option:`ao_two_e_erf_ints mu_erf` which is the range-separation parameter. 
 
 To fetch an |AO| integral, use the
-`get_ao_bielec_integral_erf(i,j,k,l,ao_integrals_erf_map)` function. 
+`get_ao_two_e_integral_erf(i,j,k,l,ao_integrals_erf_map)` function. 
 
 
 The conventions are:
@@ -44,32 +44,6 @@ EZFIO parameters
 
 Providers
 ---------
-
-
-.. c:var:: ao_bielec_integral_erf_schwartz
-
-    .. code:: text
-
-        double precision, allocatable	:: ao_bielec_integral_erf_schwartz	(ao_num,ao_num)
-
-    File: :file:`providers_ao_erf.irp.f`
-
-    Needed to compute Schwartz inequalities
-
-
-
-
-.. c:var:: ao_bielec_integrals_erf_in_map
-
-    .. code:: text
-
-        logical	:: ao_bielec_integrals_erf_in_map
-
-    File: :file:`providers_ao_erf.irp.f`
-
-    Map of Atomic integrals i(r1) j(r2) 1/r12 k(r1) l(r2)
-
-
 
 
 .. c:var:: ao_integrals_erf_cache
@@ -126,6 +100,32 @@ Providers
 
 
 
+.. c:var:: ao_two_e_integral_erf_schwartz
+
+    .. code:: text
+
+        double precision, allocatable	:: ao_two_e_integral_erf_schwartz	(ao_num,ao_num)
+
+    File: :file:`providers_ao_erf.irp.f`
+
+    Needed to compute Schwartz inequalities
+
+
+
+
+.. c:var:: ao_two_e_integrals_erf_in_map
+
+    .. code:: text
+
+        logical	:: ao_two_e_integrals_erf_in_map
+
+    File: :file:`providers_ao_erf.irp.f`
+
+    Map of Atomic integrals i(r1) j(r2) 1/r12 k(r1) l(r2)
+
+
+
+
 .. c:var:: general_primitive_integral_erf
 
     .. code:: text
@@ -146,11 +146,11 @@ Subroutines / functions
 
 
 
-.. c:function:: ao_bielec_integral_erf
+.. c:function:: ao_two_e_integral_erf
 
     .. code:: text
 
-        double precision function ao_bielec_integral_erf(i,j,k,l)
+        double precision function ao_two_e_integral_erf(i,j,k,l)
 
     File: :file:`two_e_integrals_erf.irp.f`
 
@@ -160,11 +160,11 @@ Subroutines / functions
 
 
 
-.. c:function:: ao_bielec_integral_schwartz_accel_erf
+.. c:function:: ao_two_e_integral_schwartz_accel_erf
 
     .. code:: text
 
-        double precision function ao_bielec_integral_schwartz_accel_erf(i,j,k,l)
+        double precision function ao_two_e_integral_schwartz_accel_erf(i,j,k,l)
 
     File: :file:`two_e_integrals_erf.irp.f`
 
@@ -174,11 +174,11 @@ Subroutines / functions
 
 
 
-.. c:function:: ao_bielec_integrals_erf_in_map_collector
+.. c:function:: ao_two_e_integrals_erf_in_map_collector
 
     .. code:: text
 
-        subroutine ao_bielec_integrals_erf_in_map_collector(zmq_socket_pull)
+        subroutine ao_two_e_integrals_erf_in_map_collector(zmq_socket_pull)
 
     File: :file:`integrals_erf_in_map_slave.irp.f`
 
@@ -188,11 +188,11 @@ Subroutines / functions
 
 
 
-.. c:function:: ao_bielec_integrals_erf_in_map_slave
+.. c:function:: ao_two_e_integrals_erf_in_map_slave
 
     .. code:: text
 
-        subroutine ao_bielec_integrals_erf_in_map_slave(thread,iproc)
+        subroutine ao_two_e_integrals_erf_in_map_slave(thread,iproc)
 
     File: :file:`integrals_erf_in_map_slave.irp.f`
 
@@ -202,11 +202,11 @@ Subroutines / functions
 
 
 
-.. c:function:: ao_bielec_integrals_erf_in_map_slave_inproc
+.. c:function:: ao_two_e_integrals_erf_in_map_slave_inproc
 
     .. code:: text
 
-        subroutine ao_bielec_integrals_erf_in_map_slave_inproc(i)
+        subroutine ao_two_e_integrals_erf_in_map_slave_inproc(i)
 
     File: :file:`integrals_erf_in_map_slave.irp.f`
 
@@ -216,11 +216,11 @@ Subroutines / functions
 
 
 
-.. c:function:: ao_bielec_integrals_erf_in_map_slave_tcp
+.. c:function:: ao_two_e_integrals_erf_in_map_slave_tcp
 
     .. code:: text
 
-        subroutine ao_bielec_integrals_erf_in_map_slave_tcp(i)
+        subroutine ao_two_e_integrals_erf_in_map_slave_tcp(i)
 
     File: :file:`integrals_erf_in_map_slave.irp.f`
 
@@ -244,20 +244,6 @@ Subroutines / functions
 
 
 
-.. c:function:: compute_ao_bielec_integrals_erf
-
-    .. code:: text
-
-        subroutine compute_ao_bielec_integrals_erf(j,k,l,sze,buffer_value)
-
-    File: :file:`two_e_integrals_erf.irp.f`
-
-    Compute AO 1/r12 integrals for all i and fixed j,k,l
-
-
-
-
-
 .. c:function:: compute_ao_integrals_erf_jl
 
     .. code:: text
@@ -267,6 +253,20 @@ Subroutines / functions
     File: :file:`two_e_integrals_erf.irp.f`
 
     Parallel client for AO integrals
+
+
+
+
+
+.. c:function:: compute_ao_two_e_integrals_erf
+
+    .. code:: text
+
+        subroutine compute_ao_two_e_integrals_erf(j,k,l,sze,buffer_value)
+
+    File: :file:`two_e_integrals_erf.irp.f`
+
+    Compute AO 1/r12 integrals for all i and fixed j,k,l
 
 
 
@@ -294,49 +294,7 @@ Subroutines / functions
 
     File: :file:`two_e_integrals_erf.irp.f`
 
-    ATOMIC PRIMTIVE bielectronic integral between the 4 primitives :: primitive_1 = x1**(a_x) y1**(a_y) z1**(a_z) exp(-alpha * r1**2) primitive_2 = x1**(b_x) y1**(b_y) z1**(b_z) exp(- beta * r1**2) primitive_3 = x2**(c_x) y2**(c_y) z2**(c_z) exp(-delta * r2**2) primitive_4 = x2**(d_x) y2**(d_y) z2**(d_z) exp(- gama * r2**2)
-
-
-
-
-
-.. c:function:: get_ao_bielec_integral_erf
-
-    .. code:: text
-
-        double precision function get_ao_bielec_integral_erf(i,j,k,l,map) result(result)
-
-    File: :file:`map_integrals_erf.irp.f`
-
-    Gets one |AO| two-electron integral from the |AO| map
-
-
-
-
-
-.. c:function:: get_ao_bielec_integrals_erf
-
-    .. code:: text
-
-        subroutine get_ao_bielec_integrals_erf(j,k,l,sze,out_val)
-
-    File: :file:`map_integrals_erf.irp.f`
-
-    Gets multiple |AO| two-electron integral from the |AO| map . All i are retrieved for j,k,l fixed.
-
-
-
-
-
-.. c:function:: get_ao_bielec_integrals_erf_non_zero
-
-    .. code:: text
-
-        subroutine get_ao_bielec_integrals_erf_non_zero(j,k,l,sze,out_val,out_val_index,non_zero_int)
-
-    File: :file:`map_integrals_erf.irp.f`
-
-    Gets multiple |AO| two-electron integrals from the |AO| map . All non-zero i are retrieved for j,k,l fixed.
+    ATOMIC PRIMTIVE two-electron integral between the 4 primitives :: primitive_1 = x1**(a_x) y1**(a_y) z1**(a_z) exp(-alpha * r1**2) primitive_2 = x1**(b_x) y1**(b_y) z1**(b_z) exp(- beta * r1**2) primitive_3 = x2**(c_x) y2**(c_y) z2**(c_z) exp(-delta * r2**2) primitive_4 = x2**(d_x) y2**(d_y) z2**(d_z) exp(- gama * r2**2)
 
 
 
@@ -351,6 +309,48 @@ Subroutines / functions
     File: :file:`map_integrals_erf.irp.f`
 
     Returns the number of elements in the |AO| map
+
+
+
+
+
+.. c:function:: get_ao_two_e_integral_erf
+
+    .. code:: text
+
+        double precision function get_ao_two_e_integral_erf(i,j,k,l,map) result(result)
+
+    File: :file:`map_integrals_erf.irp.f`
+
+    Gets one |AO| two-electron integral from the |AO| map
+
+
+
+
+
+.. c:function:: get_ao_two_e_integrals_erf
+
+    .. code:: text
+
+        subroutine get_ao_two_e_integrals_erf(j,k,l,sze,out_val)
+
+    File: :file:`map_integrals_erf.irp.f`
+
+    Gets multiple |AO| two-electron integral from the |AO| map . All i are retrieved for j,k,l fixed.
+
+
+
+
+
+.. c:function:: get_ao_two_e_integrals_erf_non_zero
+
+    .. code:: text
+
+        subroutine get_ao_two_e_integrals_erf_non_zero(j,k,l,sze,out_val,out_val_index,non_zero_int)
+
+    File: :file:`map_integrals_erf.irp.f`
+
+    Gets multiple |AO| two-electron integrals from the |AO| map . All non-zero i are retrieved for j,k,l fixed.
 
 
 
@@ -398,11 +398,11 @@ Subroutines / functions
 
 
 
-.. c:function:: save_erf_bi_elec_integrals_ao
+.. c:function:: save_erf_two_e_integrals_ao
 
     .. code:: text
 
-        subroutine save_erf_bi_elec_integrals_ao
+        subroutine save_erf_two_e_integrals_ao
 
     File: :file:`routines_save_integrals_erf.irp.f`
 
@@ -412,11 +412,11 @@ Subroutines / functions
 
 
 
-.. c:function:: save_erf_bielec_ints_ao_into_ints_ao
+.. c:function:: save_erf_two_e_ints_ao_into_ints_ao
 
     .. code:: text
 
-        subroutine save_erf_bielec_ints_ao_into_ints_ao
+        subroutine save_erf_two_e_ints_ao_into_ints_ao
 
     File: :file:`routines_save_integrals_erf.irp.f`
 

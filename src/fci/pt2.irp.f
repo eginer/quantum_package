@@ -7,7 +7,7 @@ program pt2
   read_wf = .True.
   threshold_generators = 1.d0
   SOFT_TOUCH read_wf threshold_generators
-  PROVIDE mo_bielec_integrals_in_map
+  PROVIDE mo_two_e_integrals_in_map
   PROVIDE psi_energy
   call run
 end

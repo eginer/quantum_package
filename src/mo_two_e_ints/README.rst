@@ -7,10 +7,10 @@ As they have 4 indices and many are zero, they are stored in a map, as defined
 in :file:`Utils/map_module.f90`.
 
 To fetch an |AO| integral, use the
-`get_ao_bielec_integral(i,j,k,l,ao_integrals_map)` function, and
+`get_ao_two_e_integral(i,j,k,l,ao_integrals_map)` function, and
 to fetch an |MO| integral, use
-`get_mo_bielec_integral(i,j,k,l,mo_integrals_map)` or
-`mo_bielec_integral(i,j,k,l)`.
+`get_two_e_integral(i,j,k,l,mo_integrals_map)` or
+`mo_two_e_integral(i,j,k,l)`.
 
 The conventions are:
 

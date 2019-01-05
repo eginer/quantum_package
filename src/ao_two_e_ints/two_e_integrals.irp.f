@@ -1,4 +1,4 @@
-double precision function ao_bielec_integral(i,j,k,l)
+double precision function ao_two_e_integral(i,j,k,l)
   implicit none
   BEGIN_DOC
   !  integral of the AO basis <ik|jl> or (ij|kl)
@@ -14,10 +14,10 @@ double precision function ao_bielec_integral(i,j,k,l)
   double precision               :: P_new(0:max_dim,3),P_center(3),fact_p,pp
   double precision               :: Q_new(0:max_dim,3),Q_center(3),fact_q,qq
   integer                        :: iorder_p(3), iorder_q(3)
-  double precision               :: ao_bielec_integral_schwartz_accel
+  double precision               :: ao_two_e_integral_schwartz_accel
   
    if (ao_prim_num(i) * ao_prim_num(j) * ao_prim_num(k) * ao_prim_num(l) > 1024 ) then
-     ao_bielec_integral = ao_bielec_integral_schwartz_accel(i,j,k,l)
+     ao_two_e_integral = ao_two_e_integral_schwartz_accel(i,j,k,l)
      return
    endif
 
@@ -27,7 +27,7 @@ double precision function ao_bielec_integral(i,j,k,l)
   num_j = ao_nucl(j)
   num_k = ao_nucl(k)
   num_l = ao_nucl(l)
-  ao_bielec_integral = 0.d0
+  ao_two_e_integral = 0.d0
   
   if (num_i /= num_j .or. num_k /= num_l .or. num_j /= num_k)then
     do p = 1, 3
@@ -64,7 +64,7 @@ double precision function ao_bielec_integral(i,j,k,l)
             integral = general_primitive_integral(dim1,              &
                 P_new,P_center,fact_p,pp,p_inv,iorder_p,             &
                 Q_new,Q_center,fact_q,qq,q_inv,iorder_q)
-            ao_bielec_integral = ao_bielec_integral +  coef4 * integral
+            ao_two_e_integral = ao_two_e_integral +  coef4 * integral
           enddo ! s
         enddo  ! r
       enddo   ! q
@@ -93,7 +93,7 @@ double precision function ao_bielec_integral(i,j,k,l)
                 I_power(1),J_power(1),K_power(1),L_power(1),         &
                 I_power(2),J_power(2),K_power(2),L_power(2),         &
                 I_power(3),J_power(3),K_power(3),L_power(3))
-            ao_bielec_integral = ao_bielec_integral + coef4 * integral
+            ao_two_e_integral = ao_two_e_integral + coef4 * integral
           enddo ! s
         enddo  ! r
       enddo   ! q
@@ -103,7 +103,7 @@ double precision function ao_bielec_integral(i,j,k,l)
   
 end
 
-double precision function ao_bielec_integral_schwartz_accel(i,j,k,l)
+double precision function ao_two_e_integral_schwartz_accel(i,j,k,l)
   implicit none
   BEGIN_DOC
   !  integral of the AO basis <ik|jl> or (ij|kl)
@@ -127,7 +127,7 @@ double precision function ao_bielec_integral_schwartz_accel(i,j,k,l)
   num_j = ao_nucl(j)
   num_k = ao_nucl(k)
   num_l = ao_nucl(l)
-  ao_bielec_integral_schwartz_accel = 0.d0
+  ao_two_e_integral_schwartz_accel = 0.d0
   double precision               :: thr
   thr = ao_integrals_threshold*ao_integrals_threshold
   
@@ -203,7 +203,7 @@ double precision function ao_bielec_integral_schwartz_accel(i,j,k,l)
             integral = general_primitive_integral(dim1,              &
                 P_new,P_center,fact_p,pp,p_inv,iorder_p,             &
                 Q_new,Q_center,fact_q,qq,q_inv,iorder_q)
-            ao_bielec_integral_schwartz_accel = ao_bielec_integral_schwartz_accel + coef4 * integral
+            ao_two_e_integral_schwartz_accel = ao_two_e_integral_schwartz_accel + coef4 * integral
           enddo ! s
         enddo  ! r
       enddo   ! q
@@ -263,7 +263,7 @@ double precision function ao_bielec_integral_schwartz_accel(i,j,k,l)
                 I_power(1),J_power(1),K_power(1),L_power(1),         &
                 I_power(2),J_power(2),K_power(2),L_power(2),         &
                 I_power(3),J_power(3),K_power(3),L_power(3))
-            ao_bielec_integral_schwartz_accel = ao_bielec_integral_schwartz_accel +  coef4 * integral
+            ao_two_e_integral_schwartz_accel = ao_two_e_integral_schwartz_accel +  coef4 * integral
           enddo ! s
         enddo  ! r
       enddo   ! q
@@ -286,7 +286,7 @@ end
 
 
 
-subroutine compute_ao_bielec_integrals(j,k,l,sze,buffer_value)
+subroutine compute_ao_two_e_integrals(j,k,l,sze,buffer_value)
   implicit none
   use map_module
   
@@ -297,7 +297,7 @@ subroutine compute_ao_bielec_integrals(j,k,l,sze,buffer_value)
   include 'utils/constants.include.F'
   integer, intent(in)            :: j,k,l,sze
   real(integral_kind), intent(out) :: buffer_value(sze)
-  double precision               :: ao_bielec_integral
+  double precision               :: ao_two_e_integral
   
   integer                        :: i
   
@@ -305,7 +305,7 @@ subroutine compute_ao_bielec_integrals(j,k,l,sze,buffer_value)
     buffer_value = 0._integral_kind
     return
   endif
-  if (ao_bielec_integral_schwartz(j,l) < thresh ) then
+  if (ao_two_e_integral_schwartz(j,l) < thresh ) then
     buffer_value = 0._integral_kind
     return
   endif
@@ -315,17 +315,17 @@ subroutine compute_ao_bielec_integrals(j,k,l,sze,buffer_value)
       buffer_value(i) = 0._integral_kind
       cycle
     endif
-    if (ao_bielec_integral_schwartz(i,k)*ao_bielec_integral_schwartz(j,l) < thresh ) then
+    if (ao_two_e_integral_schwartz(i,k)*ao_two_e_integral_schwartz(j,l) < thresh ) then
       buffer_value(i) = 0._integral_kind
       cycle
     endif
     !DIR$ FORCEINLINE
-    buffer_value(i) = ao_bielec_integral(i,k,j,l)
+    buffer_value(i) = ao_two_e_integral(i,k,j,l)
   enddo
   
 end
 
-BEGIN_PROVIDER [ logical, ao_bielec_integrals_in_map ]
+BEGIN_PROVIDER [ logical, ao_two_e_integrals_in_map ]
   implicit none
   use f77_zmq
   use map_module
@@ -335,7 +335,7 @@ BEGIN_PROVIDER [ logical, ao_bielec_integrals_in_map ]
   END_DOC
   
   integer                        :: i,j,k,l
-  double precision               :: ao_bielec_integral,cpu_1,cpu_2, wall_1, wall_2
+  double precision               :: ao_two_e_integral,cpu_1,cpu_2, wall_1, wall_2
   double precision               :: integral, wall_0
   include 'utils/constants.include.F'
   
@@ -348,7 +348,7 @@ BEGIN_PROVIDER [ logical, ao_bielec_integrals_in_map ]
   integer                        :: kk, m, j1, i1, lmax
   character*(64)                 :: fmt
   
-  integral = ao_bielec_integral(1,1,1,1)
+  integral = ao_two_e_integral(1,1,1,1)
   
   double precision               :: map_mb
   PROVIDE read_ao_two_e_integrals io_ao_two_e_integrals
@@ -356,7 +356,7 @@ BEGIN_PROVIDER [ logical, ao_bielec_integrals_in_map ]
     print*,'Reading the AO integrals'
       call map_load_from_disk(trim(ezfio_filename)//'/work/ao_ints',ao_integrals_map)
       print*, 'AO integrals provided'
-      ao_bielec_integrals_in_map = .True.
+      ao_two_e_integrals_in_map = .True.
       return
   endif
   
@@ -389,9 +389,9 @@ BEGIN_PROVIDER [ logical, ao_bielec_integrals_in_map ]
   !$OMP PARALLEL DEFAULT(shared) private(i) num_threads(nproc+1)
       i = omp_get_thread_num()
       if (i==0) then
-        call ao_bielec_integrals_in_map_collector(zmq_socket_pull)
+        call ao_two_e_integrals_in_map_collector(zmq_socket_pull)
       else
-        call ao_bielec_integrals_in_map_slave_inproc(i)
+        call ao_two_e_integrals_in_map_slave_inproc(i)
       endif
   !$OMP END PARALLEL
 
@@ -411,7 +411,7 @@ BEGIN_PROVIDER [ logical, ao_bielec_integrals_in_map ]
   print*, ' cpu  time :',cpu_2 - cpu_1, 's'
   print*, ' wall time :',wall_2 - wall_1, 's  ( x ', (cpu_2-cpu_1)/(wall_2-wall_1+tiny(1.d0)), ' )'
   
-  ao_bielec_integrals_in_map = .True.
+  ao_two_e_integrals_in_map = .True.
 
   if (write_ao_two_e_integrals.and.mpi_master) then
     call ezfio_set_work_empty(.False.)
@@ -421,24 +421,24 @@ BEGIN_PROVIDER [ logical, ao_bielec_integrals_in_map ]
   
 END_PROVIDER
  
-BEGIN_PROVIDER [ double precision, ao_bielec_integral_schwartz,(ao_num,ao_num)  ]
+BEGIN_PROVIDER [ double precision, ao_two_e_integral_schwartz,(ao_num,ao_num)  ]
   implicit none
   BEGIN_DOC
   !  Needed to compute Schwartz inequalities
   END_DOC
   
   integer                        :: i,k
-  double precision               :: ao_bielec_integral,cpu_1,cpu_2, wall_1, wall_2
+  double precision               :: ao_two_e_integral,cpu_1,cpu_2, wall_1, wall_2
   
-  ao_bielec_integral_schwartz(1,1) = ao_bielec_integral(1,1,1,1)
+  ao_two_e_integral_schwartz(1,1) = ao_two_e_integral(1,1,1,1)
   !$OMP PARALLEL DO PRIVATE(i,k)                                     &
       !$OMP DEFAULT(NONE)                                            &
-      !$OMP SHARED (ao_num,ao_bielec_integral_schwartz)              &
+      !$OMP SHARED (ao_num,ao_two_e_integral_schwartz)              &
       !$OMP SCHEDULE(dynamic)
   do i=1,ao_num
     do k=1,i
-      ao_bielec_integral_schwartz(i,k) = dsqrt(ao_bielec_integral(i,k,i,k))
-      ao_bielec_integral_schwartz(k,i) = ao_bielec_integral_schwartz(i,k)
+      ao_two_e_integral_schwartz(i,k) = dsqrt(ao_two_e_integral(i,k,i,k))
+      ao_two_e_integral_schwartz(k,i) = ao_two_e_integral_schwartz(i,k)
     enddo
   enddo
   !$OMP END PARALLEL DO
@@ -1166,7 +1166,7 @@ subroutine compute_ao_integrals_jl(j,l,n_integrals,buffer_i,buffer_value)
   real(integral_kind),intent(out) :: buffer_value(ao_num*ao_num)
 
   integer                        :: i,k
-  double precision               :: ao_bielec_integral,cpu_1,cpu_2, wall_1, wall_2
+  double precision               :: ao_two_e_integral,cpu_1,cpu_2, wall_1, wall_2
   double precision               :: integral, wall_0
   double precision               :: thr
   integer                        :: kk, m, j1, i1
@@ -1189,17 +1189,17 @@ subroutine compute_ao_integrals_jl(j,l,n_integrals,buffer_i,buffer_value)
       if (ao_overlap_abs(i,k)*ao_overlap_abs(j,l) < thr) then
         cycle
       endif
-      if (ao_bielec_integral_schwartz(i,k)*ao_bielec_integral_schwartz(j,l) < thr ) then
+      if (ao_two_e_integral_schwartz(i,k)*ao_two_e_integral_schwartz(j,l) < thr ) then
         cycle
       endif
       !DIR$ FORCEINLINE
-      integral = ao_bielec_integral(i,k,j,l)  ! i,k : r1    j,l : r2
+      integral = ao_two_e_integral(i,k,j,l)  ! i,k : r1    j,l : r2
       if (abs(integral) < thr) then
         cycle
       endif
       n_integrals += 1
       !DIR$ FORCEINLINE
-      call bielec_integrals_index(i,j,k,l,buffer_i(n_integrals))
+      call two_e_integrals_index(i,j,k,l,buffer_i(n_integrals))
       buffer_value(n_integrals) = integral
     enddo
   enddo

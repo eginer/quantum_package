@@ -138,7 +138,7 @@ subroutine routine_example_psi_det
     enddo
   enddo
   print*,''
-  print*,'Finding the connection through a bielectronic operator in the wave function'
+  print*,'Finding the connection through a two-electron operator in the wave function'
   print*,'You want to know the connections of the first determinant '
   !                                 wave function  determinant    exc degree              list
   call get_excitation_degree_vector(   psi_det  ,  psi_det(1,1,1),degree_list,N_int,N_det,idx)
