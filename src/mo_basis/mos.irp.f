@@ -270,7 +270,7 @@ subroutine ao_ortho_cano_to_ao(A_ao,LDA_ao,A,LDA)
   BEGIN_DOC
   ! Transform A from the |AO| basis to the orthogonal |AO| basis
   !
-  ! $C^{-1}.A_{ao}.C^\dagger^{-1}$
+  ! $C^{-1}.A_{ao}.C^{\dagger-1}$
   END_DOC
   integer, intent(in)            :: LDA_ao,LDA
   double precision, intent(in)   :: A_ao(LDA_ao,*)

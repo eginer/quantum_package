@@ -70,7 +70,7 @@ function run() {
 
 @test "CH4" {
   qp_set_mo_class ch4.ezfio -core "[1]" -act "[2-30]" -del "[31-59]"
-  run ch4.ezfio -40.2403916878857 -39.8433229646061
+  run ch4.ezfio -40.2403916383084 -39.8433214756675
 }
 
 @test "CO2" {
