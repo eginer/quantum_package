@@ -1592,7 +1592,7 @@ double precision function diag_H_mat_elem_fock(det_ref,det_pert,fock_diag_tmp,Ni
   END_DOC
   integer,intent(in)             :: Nint
   integer(bit_kind),intent(in)   :: det_ref(Nint,2), det_pert(Nint,2)
-  double precision, intent(in)   :: fock_diag_tmp(2,mo_tot_num+1)
+  double precision, intent(in)   :: fock_diag_tmp(2,mo_num+1)
 
   integer                        :: degree
   double precision               :: phase, E0
@@ -1600,7 +1600,7 @@ double precision function diag_H_mat_elem_fock(det_ref,det_pert,fock_diag_tmp,Ni
   integer                        :: h1, p1, h2, p2, s1, s2
 
   call get_excitation_degree(det_ref,det_pert,degree,Nint)
-  E0 = fock_diag_tmp(1,mo_tot_num+1)
+  E0 = fock_diag_tmp(1,mo_num+1)
   if (degree == 2) then
     call get_double_excitation(det_ref,det_pert,exc,phase,Nint)
     call decode_exc(exc,2,h1,p1,h2,p2,s1,s2)
@@ -1793,9 +1793,9 @@ subroutine ac_operator(iorb,ispin,key,hjj,Nint,na,nb)
   key(k,ispin) = ibset(key(k,ispin),l)
   other_spin = iand(ispin,1)+1
   
-!  if (iorb > mo_tot_num) then
-!    print *,  irp_here, 'iorb > mo_tot_num'
-!    print *,  iorb, mo_tot_num
+!  if (iorb > mo_num) then
+!    print *,  irp_here, 'iorb > mo_num'
+!    print *,  iorb, mo_num
 !    stop -1
 !  endif
   hjj = hjj + mo_mono_elec_integrals(iorb,iorb)

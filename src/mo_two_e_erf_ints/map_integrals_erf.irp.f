@@ -56,7 +56,7 @@ BEGIN_PROVIDER [ type(map_type), mo_integrals_erf_map ]
   END_DOC
   integer(key_kind)              :: key_max
   integer(map_size_kind)         :: sze
-  call bielec_integrals_index(mo_tot_num,mo_tot_num,mo_tot_num,mo_tot_num,key_max)
+  call bielec_integrals_index(mo_num,mo_num,mo_num,mo_num,key_max)
   sze = key_max
   call map_init(mo_integrals_erf_map,sze)
   print*, 'MO erf map initialized'
@@ -85,7 +85,7 @@ end
  ! Min and max values of the MOs for which the integrals are in the cache
  END_DOC
  mo_integrals_erf_cache_min = max(1,elec_alpha_num - 31)
- mo_integrals_erf_cache_max = min(mo_tot_num,mo_integrals_erf_cache_min+63)
+ mo_integrals_erf_cache_max = min(mo_num,mo_integrals_erf_cache_min+63)
 
 END_PROVIDER
 

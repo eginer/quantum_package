@@ -1,5 +1,5 @@
- BEGIN_PROVIDER [ double precision, Fock_matrix_mo, (mo_tot_num,mo_tot_num) ]
-&BEGIN_PROVIDER [ double precision, Fock_matrix_diag_mo, (mo_tot_num)]
+ BEGIN_PROVIDER [ double precision, Fock_matrix_mo, (mo_num,mo_num) ]
+&BEGIN_PROVIDER [ double precision, Fock_matrix_diag_mo, (mo_num)]
    implicit none
    BEGIN_DOC
    ! Fock matrix on the MO basis.
@@ -34,7 +34,7 @@
              + 0.5d0*(Fock_matrix_mo_beta(i,j) - Fock_matrix_mo_alpha(i,j))
        enddo
        ! F
-       do i=elec_alpha_num+1, mo_tot_num
+       do i=elec_alpha_num+1, mo_num
          Fock_matrix_mo(i,j) = 0.5d0*(Fock_matrix_mo_alpha(i,j)+Fock_matrix_mo_beta(i,j))
        enddo
      enddo
@@ -50,13 +50,13 @@
          Fock_matrix_mo(i,j) = 0.5d0*(Fock_matrix_mo_alpha(i,j)+Fock_matrix_mo_beta(i,j))
        enddo
        ! F-K/2
-       do i=elec_alpha_num+1, mo_tot_num
+       do i=elec_alpha_num+1, mo_num
          Fock_matrix_mo(i,j) = 0.5d0*(Fock_matrix_mo_alpha(i,j)+Fock_matrix_mo_beta(i,j))&
              - 0.5d0*(Fock_matrix_mo_beta(i,j) - Fock_matrix_mo_alpha(i,j))
        enddo
      enddo
 
-     do j=elec_alpha_num+1, mo_tot_num
+     do j=elec_alpha_num+1, mo_num
        ! F
        do i=1,elec_beta_num
          Fock_matrix_mo(i,j) = 0.5d0*(Fock_matrix_mo_alpha(i,j)+Fock_matrix_mo_beta(i,j))
@@ -67,7 +67,7 @@
              - 0.5d0*(Fock_matrix_mo_beta(i,j) - Fock_matrix_mo_alpha(i,j))
        enddo
        ! F+K
-       do i=elec_alpha_num+1,mo_tot_num
+       do i=elec_alpha_num+1,mo_num
          Fock_matrix_mo(i,j) = 0.5d0*(Fock_matrix_mo_alpha(i,j)+Fock_matrix_mo_beta(i,j)) &
              + (Fock_matrix_mo_beta(i,j) - Fock_matrix_mo_alpha(i,j))
        enddo
@@ -75,14 +75,14 @@
      
    endif
 
-   do i = 1, mo_tot_num
+   do i = 1, mo_num
      Fock_matrix_diag_mo(i) = Fock_matrix_mo(i,i) 
    enddo
 END_PROVIDER
  
  
  
-BEGIN_PROVIDER [ double precision, Fock_matrix_mo_alpha, (mo_tot_num,mo_tot_num) ]
+BEGIN_PROVIDER [ double precision, Fock_matrix_mo_alpha, (mo_num,mo_num) ]
    implicit none
    BEGIN_DOC
    ! Fock matrix on the MO basis
@@ -92,7 +92,7 @@ BEGIN_PROVIDER [ double precision, Fock_matrix_mo_alpha, (mo_tot_num,mo_tot_num)
 END_PROVIDER
  
  
-BEGIN_PROVIDER [ double precision, Fock_matrix_mo_beta, (mo_tot_num,mo_tot_num) ]
+BEGIN_PROVIDER [ double precision, Fock_matrix_mo_beta, (mo_num,mo_num) ]
    implicit none
    BEGIN_DOC
    ! Fock matrix on the MO basis

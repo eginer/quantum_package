@@ -1,4 +1,4 @@
-BEGIN_PROVIDER [double precision, mo_nucl_elec_integrals, (mo_tot_num,mo_tot_num)]
+BEGIN_PROVIDER [double precision, mo_nucl_elec_integrals, (mo_num,mo_num)]
  implicit none
  BEGIN_DOC
 ! Nucleus-electron interaction on the |MO| basis
@@ -23,7 +23,7 @@ BEGIN_PROVIDER [double precision, mo_nucl_elec_integrals, (mo_tot_num,mo_tot_num
 END_PROVIDER
 
 
-BEGIN_PROVIDER [double precision, mo_nucl_elec_integrals_per_atom, (mo_tot_num,mo_tot_num,nucl_num)]
+BEGIN_PROVIDER [double precision, mo_nucl_elec_integrals_per_atom, (mo_num,mo_num,nucl_num)]
  implicit none
  BEGIN_DOC
 ! mo_nucl_elec_integrals_per_atom(i,j,k) =

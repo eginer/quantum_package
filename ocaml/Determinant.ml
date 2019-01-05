@@ -24,9 +24,9 @@ let to_bitlist_couple x =
   in (xa,xb)
 
 
-let bitlist_to_string ~mo_tot_num x =
+let bitlist_to_string ~mo_num x =
   let len = 
-    MO_number.to_int mo_tot_num
+    MO_number.to_int mo_num
   in
   let s = 
     List.map (function
@@ -47,17 +47,17 @@ let of_int64_array ~n_int ~alpha ~beta x =
    in
    if ( (Bitlist.popcnt a) <> alpha) then
      begin
-       let mo_tot_num = MO_number.get_max () in
-       let mo_tot_num = MO_number.of_int mo_tot_num ~max:mo_tot_num  in
+       let mo_num = MO_number.get_max () in
+       let mo_num = MO_number.of_int mo_num ~max:mo_num  in
        failwith (Printf.sprintf "Expected %d electrons in alpha determinant
-%s" alpha (bitlist_to_string ~mo_tot_num:mo_tot_num a) )
+%s" alpha (bitlist_to_string ~mo_num:mo_num a) )
      end;
    if ( (Bitlist.popcnt b) <> beta ) then
      begin
-       let mo_tot_num = MO_number.get_max () in
-       let mo_tot_num = MO_number.of_int mo_tot_num ~max:mo_tot_num  in
+       let mo_num = MO_number.get_max () in
+       let mo_num = MO_number.of_int mo_num ~max:mo_num  in
        failwith (Printf.sprintf "Expected %d electrons in beta determinant
-%s" beta (bitlist_to_string ~mo_tot_num:mo_tot_num b) )
+%s" beta (bitlist_to_string ~mo_num:mo_num b) )
      end;
    x
 
@@ -70,15 +70,15 @@ let of_bitlist_couple ?n_int ~alpha ~beta (xa,xb) =
   and n_int = 
     match n_int with
     | Some x -> x
-    | None -> Bitlist.n_int_of_mo_tot_num (List.length xa)
+    | None -> Bitlist.n_int_of_mo_num (List.length xa)
   in
   of_int64_array ~n_int ~alpha ~beta (Array.concat [ba;bb])
 
 
-let to_string ~mo_tot_num x = 
+let to_string ~mo_num x = 
   let (xa,xb) = to_bitlist_couple x in
-  [ "  " ; bitlist_to_string ~mo_tot_num xa ; "\n" ;
-    "  " ; bitlist_to_string ~mo_tot_num xb ]
+  [ "  " ; bitlist_to_string ~mo_num xa ; "\n" ;
+    "  " ; bitlist_to_string ~mo_num xb ]
   |> String.concat ""
 
 

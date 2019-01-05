@@ -1,4 +1,4 @@
-BEGIN_PROVIDER [double precision, mo_pseudo_integrals, (mo_tot_num,mo_tot_num)]
+BEGIN_PROVIDER [double precision, mo_pseudo_integrals, (mo_num,mo_num)]
   implicit none
   BEGIN_DOC
   ! Pseudopotential integrals in |MO| basis

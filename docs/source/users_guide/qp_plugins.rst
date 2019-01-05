@@ -4,6 +4,8 @@
 qp_plugins
 ==========
 
+.. program:: qp_plugins
+
 This command deals with all external plugings of |qp|. Plugin repositories can
 be downloaded, and the plugins in these repositories can be
 installed/uninstalled of created. 

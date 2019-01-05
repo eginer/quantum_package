@@ -1,4 +1,4 @@
-BEGIN_PROVIDER [ double precision, mo_energy_expval, (N_states,mo_tot_num,2,2)]
+BEGIN_PROVIDER [ double precision, mo_energy_expval, (N_states,mo_num,2,2)]
   use bitmasks
   implicit none
   BEGIN_DOC
@@ -42,7 +42,7 @@ BEGIN_PROVIDER [ double precision, mo_energy_expval, (N_states,mo_tot_num,2,2)]
   
   do hp=1,2
     do ispin=1,2
-      do i=1,mo_tot_num
+      do i=1,mo_num
         psi_in_out_coef(1:N_det,1:N_states) = psi_coef(1:N_det,1:N_states)
         psi_in_out(1:N_int,1:2,1:N_det) = psi_det(1:N_int,1:2,1:N_det)
         call apply_exc_to_psi(i,hole_particle(hp),ispin,             &
@@ -70,7 +70,7 @@ BEGIN_PROVIDER [ double precision, mo_energy_expval, (N_states,mo_tot_num,2,2)]
     enddo
     
   enddo
-  mo_energy_expval(1:N_states,1:mo_tot_num,1:2,1) = -mo_energy_expval(1:N_states,1:mo_tot_num,1:2,1) 
+  mo_energy_expval(1:N_states,1:mo_num,1:2,1) = -mo_energy_expval(1:N_states,1:mo_num,1:2,1) 
 
 END_PROVIDER
 

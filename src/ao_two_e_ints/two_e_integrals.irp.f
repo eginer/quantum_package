@@ -416,7 +416,7 @@ BEGIN_PROVIDER [ logical, ao_bielec_integrals_in_map ]
   if (write_ao_two_e_integrals.and.mpi_master) then
     call ezfio_set_work_empty(.False.)
     call map_save_to_disk(trim(ezfio_filename)//'/work/ao_ints',ao_integrals_map)
-    call ezfio_set_ao_two_e_integrals_disk_access_ao_integrals('Read')
+    call ezfio_set_ao_two_e_ints_io_ao_two_e_integrals('Read')
   endif
   
 END_PROVIDER

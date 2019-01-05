@@ -24,7 +24,7 @@ let run ?(sym="None") ?(apply="no") fc ezfio_filename =
   and n =
     (AO_number.to_int aos.Input.Ao_basis.ao_num) 
   and m =
-    (MO_number.to_int mos.Input.Mo_basis.mo_tot_num) 
+    (MO_number.to_int mos.Input.Mo_basis.mo_num) 
   and one  = Positive_int.of_int 1
   and zero =  Positive_int.of_int 0
   in

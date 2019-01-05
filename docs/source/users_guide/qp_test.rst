@@ -4,6 +4,8 @@
 qp_test
 =======
 
+.. program:: qp_test
+
 This command runs the consistency test of |qp|.
 The tests are run with the |Bats| shell testing environment.
 If the name of a test of its number is specified on the command line, only this

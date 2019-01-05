@@ -30,4 +30,4 @@ val of_bitlist_couple : ?n_int:Qptypes.N_int_number.t ->
   Bitlist.t * Bitlist.t -> t
 
 (** String representation *)
-val to_string : mo_tot_num:Qptypes.MO_number.t -> t -> string
+val to_string : mo_num:Qptypes.MO_number.t -> t -> string

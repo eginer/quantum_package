@@ -1,5 +1,5 @@
 
-BEGIN_PROVIDER [ double precision, mo_overlap,(mo_tot_num,mo_tot_num) ]
+BEGIN_PROVIDER [ double precision, mo_overlap,(mo_num,mo_num) ]
   implicit none
   BEGIN_DOC
 ! Provider to check that the MOs are indeed orthonormal.
@@ -13,9 +13,9 @@ BEGIN_PROVIDER [ double precision, mo_overlap,(mo_tot_num,mo_tot_num) ]
   !$OMP PARALLEL DO SCHEDULE(STATIC) DEFAULT(NONE) &
   !$OMP  PRIVATE(i,j,n,l) &
   !$OMP  SHARED(mo_overlap,mo_coef,ao_overlap, &
-  !$OMP    mo_tot_num,ao_num,lmax)
-  do j=1,mo_tot_num
-   do i= 1,mo_tot_num
+  !$OMP    mo_num,ao_num,lmax)
+  do j=1,mo_num
+   do i= 1,mo_num
     mo_overlap(i,j) = 0.d0
     do n = 1, lmax,4
      do l = 1, ao_num

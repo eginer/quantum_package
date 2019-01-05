@@ -147,7 +147,7 @@ subroutine $subroutine_slave(thread, iproc)
 
   N_st = N_states
   allocate( pt2(N_st), norm_pert(N_st), H_pert_diag(N_st), &
-            mask(N_int,2,6), fock_diag_tmp(2,mo_tot_num+1) )
+            mask(N_int,2,6), fock_diag_tmp(2,mo_num+1) )
 
   do
     integer, external :: get_task_from_taskserver

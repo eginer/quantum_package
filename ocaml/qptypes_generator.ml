@@ -58,8 +58,8 @@ let input_data = "
 
 * Det_number_max : int 
   assert (x > 0) ; 
-  if (x > 10_00_000_000) then
-    warning \"More than 10 billion determinants\";
+  if (x > 50_00_000_000) then
+    warning \"More than 50 billion determinants\";
 
 * States_number : int 
   assert (x > 0) ; 
@@ -141,7 +141,7 @@ let input_data = "
 
 let input_ezfio = "
 * MO_number : int
-  mo_basis_mo_tot_num
+  mo_basis_mo_num
   1 : 10_000
   More than 10_000 MOs
 
@@ -162,8 +162,8 @@ let input_ezfio = "
 
 * Det_number : int
   determinants_n_det
-  1 : 10_000_000_000
-  More than 10 billion determinants
+  1 : 50_000_000_000
+  More than 50 billion determinants
 
 "
 

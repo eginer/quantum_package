@@ -218,11 +218,11 @@ subroutine getMobiles(key,key_mask, mobiles,Nint)
   else if(nel == 1) then
     mobiles(1) = list(1)
     call bitstring_to_list(mobileMask(1,2), list, nel, Nint)
-    mobiles(2) = list(1) + mo_tot_num
+    mobiles(2) = list(1) + mo_num
   else
     call bitstring_to_list(mobileMask(1,2), list, nel, Nint)
-    mobiles(1) = list(1) + mo_tot_num
-    mobiles(2) = list(2) + mo_tot_num
+    mobiles(1) = list(1) + mo_num
+    mobiles(2) = list(2) + mo_num
   end if
 end subroutine
   
@@ -233,16 +233,16 @@ subroutine create_microlist(minilist, N_minilist, key_mask, microlist, idx_micro
   integer, intent(in) :: Nint, N_minilist
   integer(bit_kind), intent(in) :: minilist(Nint,2,N_minilist), key_mask(Nint,2)
   
-  integer, intent(out) :: N_microlist(0:mo_tot_num*2), ptr_microlist(0:mo_tot_num*2+1), idx_microlist(N_minilist*4)
+  integer, intent(out) :: N_microlist(0:mo_num*2), ptr_microlist(0:mo_num*2+1), idx_microlist(N_minilist*4)
   integer(bit_kind), intent(out) :: microlist(Nint,2,N_minilist*4)
   
   integer :: i,j,k,nt,n_element(2)
   integer :: list(Nint*bit_kind_size,2)
   integer, allocatable :: cur_microlist(:)
-  allocate (cur_microlist(0:mo_tot_num*2+1))
+  allocate (cur_microlist(0:mo_num*2+1))
   integer(bit_kind) :: key_mask_neg(Nint,2), mobileMask(Nint,2)
-  integer :: mo_tot_num_2
-  mo_tot_num_2 = mo_tot_num+mo_tot_num
+  integer :: mo_num_2
+  mo_num_2 = mo_num+mo_num
 
   
   do i=1,Nint
@@ -250,7 +250,7 @@ subroutine create_microlist(minilist, N_minilist, key_mask, microlist, idx_micro
     key_mask_neg(i,2) = not(key_mask(i,2))
   end do
   
-  do i=0,mo_tot_num_2
+  do i=0,mo_num_2
     N_microlist(i) = 0
   enddo
   
@@ -272,18 +272,18 @@ subroutine create_microlist(minilist, N_minilist, key_mask, microlist, idx_micro
       end do
       
       do j=1,n_element(2)
-        nt = list(j,2) + mo_tot_num
+        nt = list(j,2) + mo_num
         N_microlist(nt) = N_microlist(nt) + 1
       end do
     end if
   end do
   
   ptr_microlist(0) = 1
-  do i=1,mo_tot_num_2+1
+  do i=1,mo_num_2+1
     ptr_microlist(i) = ptr_microlist(i-1) + N_microlist(i-1)
   end do
 
-  do i=0,mo_tot_num_2+1
+  do i=0,mo_num_2+1
     cur_microlist(i) = ptr_microlist(i)
   end do
   
@@ -318,7 +318,7 @@ subroutine create_microlist(minilist, N_minilist, key_mask, microlist, idx_micro
       end do
       
       do j=1,n_element(2)
-        nt = list(j,2) + mo_tot_num
+        nt = list(j,2) + mo_num
         idx_microlist(cur_microlist(nt)) = i
         do k=1,Nint
           microlist(k,1,cur_microlist(nt)) = minilist(k,1,i)

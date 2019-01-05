@@ -296,7 +296,7 @@ electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nin
     integer, intent(in)             :: N_minilist
     integer(bit_kind), intent(in)   :: det_ref (Nint,2)
     integer(bit_kind), intent(in)   :: det_pert(Nint,2)
-    double precision , intent(in)   :: fock_diag_tmp(2,mo_tot_num+1)
+    double precision , intent(in)   :: fock_diag_tmp(2,mo_num+1)
     double precision , intent(in)    :: electronic_energy(N_st)
     double precision , intent(out)  :: c_pert(N_st)
     double precision , intent(out)  :: e_2_pert(N_st)

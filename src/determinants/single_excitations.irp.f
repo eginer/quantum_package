@@ -19,7 +19,7 @@ BEGIN_PROVIDER [integer(bit_kind), ref_closed_shell_bitmask, (N_int,2)]
 END_PROVIDER
 
 
-BEGIN_PROVIDER [double precision, fock_operator_closed_shell_ref_bitmask, (mo_tot_num, mo_tot_num) ]
+BEGIN_PROVIDER [double precision, fock_operator_closed_shell_ref_bitmask, (mo_num, mo_num) ]
  implicit none
  integer :: i0,j0,i,j,k0,k
  integer :: n_occ_ab(2)
@@ -37,15 +37,15 @@ BEGIN_PROVIDER [double precision, fock_operator_closed_shell_ref_bitmask, (mo_to
   key_virt(i,2) = xor(key_virt(i,2),ref_closed_shell_bitmask(i,2))
  enddo
  double precision, allocatable :: array_coulomb(:),array_exchange(:)
- allocate (array_coulomb(mo_tot_num),array_exchange(mo_tot_num))
+ allocate (array_coulomb(mo_num),array_exchange(mo_num))
  call bitstring_to_list_ab(key_virt, occ_virt, n_occ_ab_virt, N_int)
  ! docc ---> virt mono excitations
  do i0 = 1,  n_occ_ab(1)
   i=occ(i0,1)
   do j0 = 1, n_occ_ab_virt(1)
    j = occ_virt(j0,1)
-   call get_mo_bielec_integrals_coulomb_ii(i,j,mo_tot_num,array_coulomb,mo_integrals_map)
-   call get_mo_bielec_integrals_exch_ii(i,j,mo_tot_num,array_exchange,mo_integrals_map)
+   call get_mo_bielec_integrals_coulomb_ii(i,j,mo_num,array_coulomb,mo_integrals_map)
+   call get_mo_bielec_integrals_exch_ii(i,j,mo_num,array_exchange,mo_integrals_map)
    double precision :: accu
    accu = 0.d0
    do k0 = 1, n_occ_ab(1)
@@ -62,8 +62,8 @@ BEGIN_PROVIDER [double precision, fock_operator_closed_shell_ref_bitmask, (mo_to
   i=occ_virt(i0,1)
   do j0 = 1, n_occ_ab_virt(1)
    j = occ_virt(j0,1)
-   call get_mo_bielec_integrals_coulomb_ii(i,j,mo_tot_num,array_coulomb,mo_integrals_map)
-   call get_mo_bielec_integrals_exch_ii(i,j,mo_tot_num,array_exchange,mo_integrals_map)
+   call get_mo_bielec_integrals_coulomb_ii(i,j,mo_num,array_coulomb,mo_integrals_map)
+   call get_mo_bielec_integrals_exch_ii(i,j,mo_num,array_exchange,mo_integrals_map)
    accu = 0.d0
    do k0 = 1, n_occ_ab(1)
     k = occ(k0,1)
@@ -79,8 +79,8 @@ BEGIN_PROVIDER [double precision, fock_operator_closed_shell_ref_bitmask, (mo_to
   i=occ(i0,1)
   do j0 = 1, n_occ_ab(1)
    j = occ(j0,1)
-   call get_mo_bielec_integrals_coulomb_ii(i,j,mo_tot_num,array_coulomb,mo_integrals_map)
-   call get_mo_bielec_integrals_exch_ii(i,j,mo_tot_num,array_exchange,mo_integrals_map)
+   call get_mo_bielec_integrals_coulomb_ii(i,j,mo_num,array_coulomb,mo_integrals_map)
+   call get_mo_bielec_integrals_exch_ii(i,j,mo_num,array_exchange,mo_integrals_map)
    accu = 0.d0
    do k0 = 1, n_occ_ab(1)
     k = occ(k0,1)

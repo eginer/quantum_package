@@ -23,7 +23,7 @@ subroutine $subroutine($params_main)
   call wall_time(wall_0)
 
   iproc = 0
-  allocate( mask(N_int,2,6), fock_diag_tmp(2,mo_tot_num+1) )
+  allocate( mask(N_int,2,6), fock_diag_tmp(2,mo_num+1) )
   do i_generator=1,N_det_generators
 
     ! Compute diagonal of the Fock matrix

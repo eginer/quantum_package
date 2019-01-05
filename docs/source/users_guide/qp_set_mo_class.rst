@@ -3,7 +3,7 @@
 qp_set_mo_class
 ===============
 
-.. TODO
+.. program:: qp_set_mo_class
 
 
 This command sets the orbital classes in an |EZFIO| directory.

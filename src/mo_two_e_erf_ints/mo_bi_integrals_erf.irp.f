@@ -32,7 +32,7 @@ BEGIN_PROVIDER [ logical, mo_bielec_integrals_erf_in_map ]
   real                           :: map_mb
 
   mo_bielec_integrals_erf_in_map = .True.
-  if (read_mo_integrals_erf) then
+  if (read_mo_two_e_integrals_erf) then
     print*,'Reading the MO integrals_erf'
     call map_load_from_disk(trim(ezfio_filename)//'/work/mo_ints_erf',mo_integrals_erf_map)
     print*, 'MO integrals_erf provided'
@@ -52,18 +52,18 @@ BEGIN_PROVIDER [ logical, mo_bielec_integrals_erf_in_map ]
 ! print*,'Molecular integrals ERF provided:'
 ! print*,' Size of MO ERF map           ', map_mb(mo_integrals_erf_map) ,'MB'
 ! print*,' Number of MO ERF integrals: ',  mo_erf_map_size
-  if (write_mo_integrals_erf) then
+  if (write_mo_two_e_integrals_erf) then
     call ezfio_set_work_empty(.False.)
     call map_save_to_disk(trim(ezfio_filename)//'/work/mo_ints_erf',mo_integrals_erf_map)
-    call ezfio_set_mo_two_e_erf_integrals_disk_access_mo_integrals_erf("Read")
+    call ezfio_set_mo_two_e_erf_ints_io_mo_two_e_integrals_erf("Read")
   endif
   
 END_PROVIDER
 
 
- BEGIN_PROVIDER [ double precision, mo_two_e_int_erf_jj_from_ao, (mo_tot_num,mo_tot_num) ]
-&BEGIN_PROVIDER [ double precision, mo_two_e_int_erf_jj_exchange_from_ao, (mo_tot_num,mo_tot_num) ]
-&BEGIN_PROVIDER [ double precision, mo_two_e_int_erf_jj_anti_from_ao, (mo_tot_num,mo_tot_num) ]
+ BEGIN_PROVIDER [ double precision, mo_two_e_int_erf_jj_from_ao, (mo_num,mo_num) ]
+&BEGIN_PROVIDER [ double precision, mo_two_e_int_erf_jj_exchange_from_ao, (mo_num,mo_num) ]
+&BEGIN_PROVIDER [ double precision, mo_two_e_int_erf_jj_anti_from_ao, (mo_num,mo_num) ]
   BEGIN_DOC
   ! mo_bielec_integral_jj_from_ao(i,j) = J_ij
   ! mo_bielec_integral_jj_exchange_from_ao(i,j) = J_ij
@@ -92,13 +92,13 @@ END_PROVIDER
   !$OMP PARALLEL DEFAULT(NONE)                                       &
       !$OMP PRIVATE (i,j,p,q,r,s,integral,c,n,pp,int_value,int_idx,  &
       !$OMP  iqrs, iqsr,iqri,iqis)                                   &
-      !$OMP SHARED(mo_tot_num,mo_coef_transp,ao_num,&
+      !$OMP SHARED(mo_num,mo_coef_transp,ao_num,&
       !$OMP  ao_integrals_threshold,do_direct_integrals)             &
       !$OMP REDUCTION(+:mo_two_e_int_erf_jj_from_ao,mo_two_e_int_erf_jj_exchange_from_ao)
   
   allocate( int_value(ao_num), int_idx(ao_num),                      &
-      iqrs(mo_tot_num,ao_num), iqis(mo_tot_num), iqri(mo_tot_num),&
-      iqsr(mo_tot_num,ao_num) )
+      iqrs(mo_num,ao_num), iqis(mo_num), iqri(mo_num),&
+      iqsr(mo_num,ao_num) )
   
   !$OMP DO SCHEDULE (guided)
   do s=1,ao_num
@@ -106,7 +106,7 @@ END_PROVIDER
       
       do j=1,ao_num
         !DIR$ VECTOR ALIGNED
-        do i=1,mo_tot_num
+        do i=1,mo_num
           iqrs(i,j) = 0.d0
           iqsr(i,j) = 0.d0
         enddo
@@ -120,7 +120,7 @@ END_PROVIDER
             integral = int_value(p)
             if (abs(integral) > ao_integrals_threshold) then
               !DIR$ VECTOR ALIGNED
-              do i=1,mo_tot_num
+              do i=1,mo_num
                 iqrs(i,r) += mo_coef_transp(i,p) * integral
               enddo
             endif
@@ -130,7 +130,7 @@ END_PROVIDER
             integral = int_value(p)
             if (abs(integral) > ao_integrals_threshold) then
               !DIR$ VECTOR ALIGNED
-              do i=1,mo_tot_num
+              do i=1,mo_num
                 iqsr(i,r) += mo_coef_transp(i,p) * integral
               enddo
             endif
@@ -146,7 +146,7 @@ END_PROVIDER
             integral = int_value(pp)
             if (abs(integral) > ao_integrals_threshold) then
               !DIR$ VECTOR ALIGNED
-              do i=1,mo_tot_num
+              do i=1,mo_num
                 iqrs(i,r) += mo_coef_transp(i,p) * integral
               enddo
             endif
@@ -157,7 +157,7 @@ END_PROVIDER
             integral = int_value(pp)
             if (abs(integral) > ao_integrals_threshold) then
               !DIR$ VECTOR ALIGNED
-              do i=1,mo_tot_num
+              do i=1,mo_num
                 iqsr(i,r) += mo_coef_transp(i,p) * integral
               enddo
             endif
@@ -168,14 +168,14 @@ END_PROVIDER
       iqri = 0.d0
       do r=1,ao_num
         !DIR$ VECTOR ALIGNED
-        do i=1,mo_tot_num
+        do i=1,mo_num
           iqis(i) += mo_coef_transp(i,r) * iqrs(i,r)
           iqri(i) += mo_coef_transp(i,r) * iqsr(i,r)
         enddo
       enddo
-      do i=1,mo_tot_num
+      do i=1,mo_num
         !DIR$ VECTOR ALIGNED
-        do j=1,mo_tot_num
+        do j=1,mo_num
           c = mo_coef_transp(j,q)*mo_coef_transp(j,s)
           mo_two_e_int_erf_jj_from_ao(j,i) += c * iqis(i)
           mo_two_e_int_erf_jj_exchange_from_ao(j,i) += c * iqri(i)
@@ -195,9 +195,9 @@ END_PROVIDER
 END_PROVIDER 
 
 
- BEGIN_PROVIDER [ double precision, mo_two_e_int_erf_jj, (mo_tot_num,mo_tot_num) ]
-&BEGIN_PROVIDER [ double precision, mo_two_e_int_erf_jj_exchange, (mo_tot_num,mo_tot_num) ]
-&BEGIN_PROVIDER [ double precision, mo_two_e_int_erf_jj_anti, (mo_tot_num,mo_tot_num) ]
+ BEGIN_PROVIDER [ double precision, mo_two_e_int_erf_jj, (mo_num,mo_num) ]
+&BEGIN_PROVIDER [ double precision, mo_two_e_int_erf_jj_exchange, (mo_num,mo_num) ]
+&BEGIN_PROVIDER [ double precision, mo_two_e_int_erf_jj_anti, (mo_num,mo_num) ]
   implicit none
   BEGIN_DOC
   ! mo_bielec_integral_jj(i,j) = J_ij
@@ -212,8 +212,8 @@ END_PROVIDER
   mo_two_e_int_erf_jj = 0.d0
   mo_two_e_int_erf_jj_exchange = 0.d0
   
-  do j=1,mo_tot_num
-    do i=1,mo_tot_num
+  do j=1,mo_num
+    do i=1,mo_num
       mo_two_e_int_erf_jj(i,j) = get_mo_bielec_integral_erf(i,j,i,j,mo_integrals_erf_map)
       mo_two_e_int_erf_jj_exchange(i,j) = get_mo_bielec_integral_erf(i,j,j,i,mo_integrals_erf_map)
       mo_two_e_int_erf_jj_anti(i,j) = mo_two_e_int_erf_jj(i,j) - mo_two_e_int_erf_jj_exchange(i,j)
@@ -281,7 +281,7 @@ subroutine add_integrals_to_map_erf(mask_ijkl)
   !Get list of MOs for i,j,k and l
   !-------------------------------
   
-  allocate(list_ijkl(mo_tot_num,4))
+  allocate(list_ijkl(mo_num,4))
   call bitstring_to_list( mask_ijkl(1,1), list_ijkl(1,1), n_i, N_int )
   call bitstring_to_list( mask_ijkl(1,2), list_ijkl(1,2), n_j, N_int )
   call bitstring_to_list( mask_ijkl(1,3), list_ijkl(1,3), n_k, N_int )
@@ -333,7 +333,7 @@ subroutine add_integrals_to_map_erf(mask_ijkl)
   
   size_buffer = min(ao_num*ao_num*ao_num,16000000)
   print*, 'Providing the ERF molecular integrals '
-  print*, 'Buffers : ', 8.*(mo_tot_num*(n_j)*(n_k+1) + mo_tot_num+&
+  print*, 'Buffers : ', 8.*(mo_num*(n_j)*(n_k+1) + mo_num+&
       ao_num+ao_num*ao_num+ size_buffer*3)/(1024*1024), 'MB / core'
   
   call wall_time(wall_1)
@@ -346,18 +346,18 @@ subroutine add_integrals_to_map_erf(mask_ijkl)
       !$OMP  buffer_i,buffer_value,n_integrals,wall_2,i0,j0,k0,l0,   &
       !$OMP  wall_0,thread_num,accu_bis)                             &
       !$OMP  DEFAULT(NONE)                                           &
-      !$OMP  SHARED(size_buffer,ao_num,mo_tot_num,n_i,n_j,n_k,n_l,   &
+      !$OMP  SHARED(size_buffer,ao_num,mo_num,n_i,n_j,n_k,n_l,   &
       !$OMP  mo_coef_transp,                                         &
       !$OMP  mo_coef_transp_is_built, list_ijkl,                     &
       !$OMP  mo_coef_is_built, wall_1,                               &
       !$OMP  mo_coef,mo_integrals_threshold,mo_integrals_erf_map)
   n_integrals = 0
   wall_0 = wall_1
-  allocate(bielec_tmp_3(mo_tot_num, n_j, n_k),                 &
-      bielec_tmp_1(mo_tot_num),                                &
+  allocate(bielec_tmp_3(mo_num, n_j, n_k),                 &
+      bielec_tmp_1(mo_num),                                &
       bielec_tmp_0(ao_num,ao_num),                                   &
       bielec_tmp_0_idx(ao_num),                                      &
-      bielec_tmp_2(mo_tot_num, n_j),                           &
+      bielec_tmp_2(mo_num, n_j),                           &
       buffer_i(size_buffer),                                         &
       buffer_value(size_buffer) )
   

@@ -60,7 +60,7 @@ BEGIN_PROVIDER [double precision, FPS_SPF_Matrix_AO, (AO_num, AO_num)]
 
 END_PROVIDER
 
-bEGIN_PROVIDER [double precision, FPS_SPF_Matrix_MO, (mo_tot_num, mo_tot_num)]
+bEGIN_PROVIDER [double precision, FPS_SPF_Matrix_MO, (mo_num, mo_num)]
   implicit none
   begin_doc 
 !   Commutator FPS - SPF in MO basis

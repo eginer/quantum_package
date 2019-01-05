@@ -7,7 +7,7 @@ subroutine build_fock_tmp(fock_diag_tmp,det_ref,Nint)
   END_DOC
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: det_ref(Nint,2)
-  double precision, intent(out)  :: fock_diag_tmp(2,mo_tot_num+1)
+  double precision, intent(out)  :: fock_diag_tmp(2,mo_num+1)
   
   integer                        :: occ(Nint*bit_kind_size,2)
   integer                        :: ne(2), i, j, ii, jj
@@ -64,7 +64,7 @@ subroutine build_fock_tmp(fock_diag_tmp,det_ref,Nint)
   enddo
 
   ! Virtual MOs
-  do i=1,mo_tot_num
+  do i=1,mo_num
     if (fock_diag_tmp(1,i) /= 0.d0) cycle
     fock_diag_tmp(1,i) = fock_diag_tmp(1,i) + mo_mono_elec_integrals(i,i)
     do jj=1,elec_alpha_num
@@ -76,7 +76,7 @@ subroutine build_fock_tmp(fock_diag_tmp,det_ref,Nint)
       fock_diag_tmp(1,i) = fock_diag_tmp(1,i) + mo_bielec_integral_jj(i,j)
     enddo
   enddo
-  do i=1,mo_tot_num
+  do i=1,mo_num
     if (fock_diag_tmp(2,i) /= 0.d0) cycle
     fock_diag_tmp(2,i) = fock_diag_tmp(2,i) + mo_mono_elec_integrals(i,i)
     do jj=1,elec_beta_num
@@ -89,7 +89,7 @@ subroutine build_fock_tmp(fock_diag_tmp,det_ref,Nint)
     enddo
   enddo
 
-  fock_diag_tmp(1,mo_tot_num+1) = E0
-  fock_diag_tmp(2,mo_tot_num+1) = E0
+  fock_diag_tmp(1,mo_num+1) = E0
+  fock_diag_tmp(2,mo_num+1) = E0
 
 end

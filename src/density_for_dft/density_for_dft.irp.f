@@ -1,9 +1,9 @@
-BEGIN_PROVIDER [double precision, one_body_dm_mo_alpha_for_dft, (mo_tot_num,mo_tot_num, N_states)]
+BEGIN_PROVIDER [double precision, one_body_dm_mo_alpha_for_dft, (mo_num,mo_num, N_states)]
  implicit none
  BEGIN_DOC
 ! density matrix for alpha electrons in the MO basis used for all DFT calculations based on the density 
  END_DOC
- double precision :: delta_alpha(mo_tot_num,mo_tot_num,N_states)
+ double precision :: delta_alpha(mo_num,mo_num,N_states)
  if(density_for_dft .EQ. "damping_rs_dft")then
   delta_alpha = one_body_dm_mo_alpha - data_one_body_alpha_dm_mo 
   one_body_dm_mo_alpha_for_dft = data_one_body_alpha_dm_mo + damping_for_rs_dft * delta_alpha
@@ -16,12 +16,12 @@ BEGIN_PROVIDER [double precision, one_body_dm_mo_alpha_for_dft, (mo_tot_num,mo_t
 
 END_PROVIDER 
 
-BEGIN_PROVIDER [double precision, one_body_dm_mo_beta_for_dft, (mo_tot_num,mo_tot_num, N_states)]
+BEGIN_PROVIDER [double precision, one_body_dm_mo_beta_for_dft, (mo_num,mo_num, N_states)]
  implicit none
  BEGIN_DOC
 ! density matrix for beta  electrons in the MO basis used for all DFT calculations based on the density 
  END_DOC
- double precision :: delta_beta(mo_tot_num,mo_tot_num,N_states)
+ double precision :: delta_beta(mo_num,mo_num,N_states)
  if(density_for_dft .EQ. "damping_rs_dft")then
   delta_beta = one_body_dm_mo_beta - data_one_body_beta_dm_mo 
   one_body_dm_mo_beta_for_dft = data_one_body_beta_dm_mo + damping_for_rs_dft * delta_beta
@@ -33,12 +33,12 @@ BEGIN_PROVIDER [double precision, one_body_dm_mo_beta_for_dft, (mo_tot_num,mo_to
  endif
 END_PROVIDER 
 
-BEGIN_PROVIDER [double precision, one_body_dm_mo_for_dft, (mo_tot_num,mo_tot_num, N_states)]
+BEGIN_PROVIDER [double precision, one_body_dm_mo_for_dft, (mo_num,mo_num, N_states)]
  implicit none
  one_body_dm_mo_for_dft = one_body_dm_mo_beta_for_dft + one_body_dm_mo_alpha_for_dft
 END_PROVIDER 
 
-BEGIN_PROVIDER [double precision, one_body_dm_average_mo_for_dft, (mo_tot_num,mo_tot_num)]
+BEGIN_PROVIDER [double precision, one_body_dm_average_mo_for_dft, (mo_num,mo_num)]
  implicit none
  integer :: i
  one_body_dm_average_mo_for_dft = 0.d0
@@ -60,8 +60,8 @@ END_PROVIDER
  one_body_dm_beta_ao_for_dft = 0.d0
  do k = 1, ao_num
   do l = 1, ao_num
-   do i = 1, mo_tot_num
-    do j = 1, mo_tot_num
+   do i = 1, mo_num
+    do j = 1, mo_num
      do istate = 1, N_states
       mo_alpha = one_body_dm_mo_alpha_for_dft(j,i,istate)
       mo_beta  = one_body_dm_mo_beta_for_dft(j,i,istate)

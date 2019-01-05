@@ -25,8 +25,8 @@ BEGIN_PROVIDER [ logical, ao_bielec_integrals_erf_in_map ]
   integral = ao_bielec_integral_erf(1,1,1,1)
   
   double precision               :: map_mb
-  PROVIDE read_ao_integrals_erf disk_access_ao_integrals_erf
-  if (read_ao_integrals_erf) then
+  PROVIDE read_ao_two_e_integrals_erf io_ao_two_e_integrals_erf
+  if (read_ao_two_e_integrals_erf) then
     print*,'Reading the AO ERF integrals'
       call map_load_from_disk(trim(ezfio_filename)//'/work/ao_ints_erf',ao_integrals_erf_map)
       print*, 'AO ERF integrals provided'
@@ -87,10 +87,10 @@ BEGIN_PROVIDER [ logical, ao_bielec_integrals_erf_in_map ]
   
   ao_bielec_integrals_erf_in_map = .True.
 
-  if (write_ao_integrals_erf) then
+  if (write_ao_two_e_integrals_erf) then
     call ezfio_set_work_empty(.False.)
     call map_save_to_disk(trim(ezfio_filename)//'/work/ao_ints_erf',ao_integrals_erf_map)
-    call ezfio_set_ao_two_e_erf_integrals_disk_access_ao_integrals_erf("Read")
+    call ezfio_set_ao_two_e_erf_ints_io_ao_two_e_integrals_erf("Read")
   endif
   
 END_PROVIDER

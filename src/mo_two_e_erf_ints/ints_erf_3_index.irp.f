@@ -1,5 +1,5 @@
- BEGIN_PROVIDER [double precision, int_erf_3_index, (mo_tot_num,mo_tot_num, mo_tot_num)]
-&BEGIN_PROVIDER [double precision, int_erf_3_index_exc,(mo_tot_num,mo_tot_num, mo_tot_num)]
+ BEGIN_PROVIDER [double precision, int_erf_3_index, (mo_num,mo_num, mo_num)]
+&BEGIN_PROVIDER [double precision, int_erf_3_index_exc,(mo_num,mo_num, mo_num)]
  implicit none
  BEGIN_DOC
  ! int_erf_3_index(i,j)     = <ij|ij> = (ii|jj) with the erf interaction
@@ -10,9 +10,9 @@
  double precision :: get_mo_bielec_integral_erf
  double precision :: integral
 
- do k = 1, mo_tot_num
-  do i = 1, mo_tot_num
-   do j = 1, mo_tot_num
+ do k = 1, mo_num
+  do i = 1, mo_num
+   do j = 1, mo_num
      l = j
      integral = get_mo_bielec_integral_erf(i,j,k,l,mo_integrals_erf_map)
      int_erf_3_index(j,i,k) = integral
