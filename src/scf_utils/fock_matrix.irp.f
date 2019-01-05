@@ -135,8 +135,8 @@ BEGIN_PROVIDER [ double precision, SCF_energy ]
  do j=1,ao_num
    do i=1,ao_num
      SCF_energy += 0.5d0 * (                                          &
-         (ao_mono_elec_integral(i,j) + Fock_matrix_ao_alpha(i,j) ) *  SCF_density_matrix_ao_alpha(i,j) +&
-         (ao_mono_elec_integral(i,j) + Fock_matrix_ao_beta (i,j) ) *  SCF_density_matrix_ao_beta (i,j) )
+         (ao_one_e_integrals(i,j) + Fock_matrix_ao_alpha(i,j) ) *  SCF_density_matrix_ao_alpha(i,j) +&
+         (ao_one_e_integrals(i,j) + Fock_matrix_ao_beta (i,j) ) *  SCF_density_matrix_ao_beta (i,j) )
    enddo
  enddo
  SCF_energy += extra_e_contrib_density

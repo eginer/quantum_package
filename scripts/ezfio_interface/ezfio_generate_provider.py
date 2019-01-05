@@ -29,7 +29,7 @@ def gen_ezfio_provider_disk_access(name_ref, name):
      read_{name} = .False.
      write_{name} = .False.
    else
-     print *, '{name_ref} has a wrong type'
+     print *, '{name_ref} has a bad type'
      stop 1
    endif
 

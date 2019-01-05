@@ -21,7 +21,7 @@
                             Fock_matrix_ao_beta(i,j) * SCF_density_matrix_ao_beta(i,j)
     two_electron_energy += 0.5d0 * ( ao_bi_elec_integral_alpha(i,j) * SCF_density_matrix_ao_alpha(i,j) &
                 +ao_bi_elec_integral_beta(i,j) * SCF_density_matrix_ao_beta(i,j) )
-    one_electron_energy += ao_mono_elec_integral(i,j) * (SCF_density_matrix_ao_alpha(i,j) + SCF_density_matrix_ao_beta (i,j) )
+    one_electron_energy += ao_one_e_integrals(i,j) * (SCF_density_matrix_ao_alpha(i,j) + SCF_density_matrix_ao_beta (i,j) )
     trace_potential_xc += ao_potential_alpha_xc(i,j) * SCF_density_matrix_ao_alpha(i,j) + ao_potential_beta_xc(i,j) *  SCF_density_matrix_ao_beta (i,j)
    enddo
  enddo

@@ -1,1 +1,3 @@
-scf_utils ao_one_e_integrals ao_two_e_integrals
+ao_one_e_ints
+ao_two_e_ints
+scf_utils

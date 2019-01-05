@@ -24,7 +24,7 @@ END_PROVIDER
    do i=1,ao_num
     HF_two_electron_energy += 0.5d0 * ( ao_bi_elec_integral_alpha(i,j) * SCF_density_matrix_ao_alpha(i,j) &
                                        +ao_bi_elec_integral_beta(i,j)  * SCF_density_matrix_ao_beta(i,j) )
-    HF_one_electron_energy += ao_mono_elec_integral(i,j) * (SCF_density_matrix_ao_alpha(i,j) + SCF_density_matrix_ao_beta (i,j) )
+    HF_one_electron_energy += ao_one_e_integrals(i,j) * (SCF_density_matrix_ao_alpha(i,j) + SCF_density_matrix_ao_beta (i,j) )
    enddo
  enddo
  HF_energy += HF_two_electron_energy + HF_one_electron_energy

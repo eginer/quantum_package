@@ -1,14 +1,13 @@
 program scf
   BEGIN_DOC
-! Produce `Hartree_Fock` MO orbital 
+! Produce `Hartree_Fock` |MOs| 
+!
 ! output: mo_basis.mo_tot_num mo_basis.mo_label mo_basis.ao_md5 mo_basis.mo_coef mo_basis.mo_occ
+!
 ! output: hartree_fock.energy
+!
 ! optional: mo_basis.mo_coef
   END_DOC
-  disk_access_mo_one_integrals = "None" 
-  touch disk_access_mo_one_integrals 
-  disk_access_ao_one_integrals = "None" 
-  touch disk_access_ao_one_integrals 
   call create_guess
   call orthonormalize_mos
   call run
@@ -27,7 +26,10 @@ subroutine create_guess
       mo_coef = ao_ortho_lowdin_coef
       TOUCH mo_coef
       mo_label = 'Guess'
-      call mo_as_eigvectors_of_mo_matrix(mo_mono_elec_integral,size(mo_mono_elec_integral,1),size(mo_mono_elec_integral,2),mo_label,1,.false.)
+      call mo_as_eigvectors_of_mo_matrix(mo_mono_elec_integrals,     &
+          size(mo_mono_elec_integrals,1),                            &
+          size(mo_mono_elec_integrals,2),                            &
+          mo_label,1,.false.)
       SOFT_TOUCH mo_coef mo_label
     else if (mo_guess_type == "Huckel") then
       call huckel_guess
@@ -47,15 +49,9 @@ subroutine run
   use bitmasks
   implicit none
 
-  double precision               :: SCF_energy_before,SCF_energy_after,diag_H_mat_elem
-  double precision               :: EHF
   integer                        :: i_it, i, j, k
    
-  EHF = SCF_energy 
-
-  mo_label = "Canonical"
-
-! Choose SCF algorithm
+  mo_label = "Orthonormalized"
 
   call Roothaan_Hall_SCF
   call ezfio_set_hartree_fock_energy(SCF_energy)

@@ -3,10 +3,10 @@ program write_integrals
  BEGIN_DOC
  ! Saves the bielec erf integrals into the EZFIO 
  END_DOC 
- disk_access_mo_integrals = 'None'
- touch disk_access_mo_integrals
- disk_access_ao_integrals = 'None'
- touch disk_access_ao_integrals
+ io_mo_two_e_integrals = 'None'
+ touch io_mo_two_e_integrals
+ io_ao_two_e_integrals = 'None'
+ touch io_ao_two_e_integrals
  call routine
 
 end

@@ -21,10 +21,10 @@ Options:
 
 Example:
   ./configure -c config/gfortran.cfg
-  ./configure -c config/gfortran.cfg -i all
 
 Note:
-  - Using different configuration files for installing dependencies and compiling QPs can improve the user experience.
+  - Using different configuration files for installing dependencies and
+    compiling QP can improve the user experience.
 
 EOF
     exit

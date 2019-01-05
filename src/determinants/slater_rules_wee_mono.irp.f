@@ -192,7 +192,7 @@ subroutine i_H_j_mono_spin_monoelec(key_i,key_j,Nint,spin,hij)
   integer :: m,p
   m = exc(1,1)
   p = exc(1,2)
-  hij = phase * mo_mono_elec_integral(m,p)
+  hij = phase * mo_mono_elec_integrals(m,p)
 end
 
 
@@ -225,7 +225,7 @@ double precision function diag_H_mat_elem_monoelec(det_in,Nint)
   call bitstring_to_list_ab(det_in, occ_particle, tmp, Nint)
   do ispin = 1,2 
    do i = 1, tmp(ispin)
-    diag_H_mat_elem_monoelec +=  mo_mono_elec_integral(occ_particle(i,ispin),occ_particle(i,ispin))
+    diag_H_mat_elem_monoelec +=  mo_mono_elec_integrals(occ_particle(i,ispin),occ_particle(i,ispin))
    enddo
   enddo
   
@@ -262,7 +262,7 @@ subroutine i_H_j_monoelec(key_i,key_j,Nint,hij)
      m = exc(1,1,2)
      p = exc(1,2,2)
    endif
-   hij = phase * mo_mono_elec_integral(m,p)
+   hij = phase * mo_mono_elec_integrals(m,p)
   endif
 
 end

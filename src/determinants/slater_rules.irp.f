@@ -795,7 +795,7 @@ subroutine i_H_j_verbose(key_i,key_j,Nint,hij,hmono,hdouble,phase)
         enddo
         
       endif
-      hmono = mo_mono_elec_integral(m,p)
+      hmono = mo_mono_elec_integrals(m,p)
       hij = phase*(hdouble + hmono)
       
     case (0)
@@ -1745,7 +1745,7 @@ subroutine a_operator(iorb,ispin,key,hjj,Nint,na,nb)
   call bitstring_to_list_ab(key, occ, tmp, Nint)
   na = na-1
   
-  hjj = hjj - mo_mono_elec_integral(iorb,iorb)
+  hjj = hjj - mo_mono_elec_integrals(iorb,iorb)
   
   ! Same spin
   do i=1,na
@@ -1798,7 +1798,7 @@ subroutine ac_operator(iorb,ispin,key,hjj,Nint,na,nb)
 !    print *,  iorb, mo_tot_num
 !    stop -1
 !  endif
-  hjj = hjj + mo_mono_elec_integral(iorb,iorb)
+  hjj = hjj + mo_mono_elec_integrals(iorb,iorb)
   
   ! Same spin
   do i=1,na

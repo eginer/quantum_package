@@ -12,8 +12,8 @@
  do istate = 1, N_states 
   do i = 1, mo_tot_num
    do j = 1, mo_tot_num
-    psi_dft_energy_kinetic(istate)      += ( one_body_dm_mo_alpha_for_dft(j,i,istate)+one_body_dm_mo_beta_for_dft(j,i,istate)) * mo_kinetic_integral(j,i) 
-    psi_dft_energy_nuclear_elec(istate) += ( one_body_dm_mo_alpha_for_dft(j,i,istate)+one_body_dm_mo_beta_for_dft(j,i,istate)) * mo_nucl_elec_integral(j,i) 
+    psi_dft_energy_kinetic(istate)      += ( one_body_dm_mo_alpha_for_dft(j,i,istate)+one_body_dm_mo_beta_for_dft(j,i,istate)) * mo_kinetic_integrals(j,i) 
+    psi_dft_energy_nuclear_elec(istate) += ( one_body_dm_mo_alpha_for_dft(j,i,istate)+one_body_dm_mo_beta_for_dft(j,i,istate)) * mo_nucl_elec_integrals(j,i) 
    enddo
   enddo
  enddo

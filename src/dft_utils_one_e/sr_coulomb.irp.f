@@ -54,10 +54,10 @@ END_PROVIDER
  do istate = 1, N_states
   do i = 1, mo_tot_num
    do j = 1, mo_tot_num
-    effective_one_e_potential(i,j,istate) = short_range_Hartree_operator(i,j,istate) + mo_nucl_elec_integral(i,j) + mo_kinetic_integral(i,j)    & 
+    effective_one_e_potential(i,j,istate) = short_range_Hartree_operator(i,j,istate) + mo_nucl_elec_integrals(i,j) + mo_kinetic_integrals(i,j)    & 
                                    + 0.5d0 * (potential_x_alpha_mo(i,j,istate) + potential_c_alpha_mo(i,j,istate)                               &
                                    +          potential_x_beta_mo(i,j,istate)  + potential_c_beta_mo(i,j,istate)   )
-    effective_one_e_potential_without_kin(i,j,istate) = short_range_Hartree_operator(i,j,istate) + mo_nucl_elec_integral(i,j)                   & 
+    effective_one_e_potential_without_kin(i,j,istate) = short_range_Hartree_operator(i,j,istate) + mo_nucl_elec_integrals(i,j)                   & 
                                    + 0.5d0 * (potential_x_alpha_mo(i,j,istate) + potential_c_alpha_mo(i,j,istate)                               &
                                    +          potential_x_beta_mo(i,j,istate)  + potential_c_beta_mo(i,j,istate)   )
    enddo

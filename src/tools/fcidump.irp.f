@@ -53,7 +53,7 @@ program fcidump
    j1 = list_act(j)
    do i=j,n_act_orb
     i1 = list_act(i)
-      integral = mo_mono_elec_integral(i1,j1) + core_fock_operator(i1,j1)
+      integral = mo_mono_elec_integrals(i1,j1) + core_fock_operator(i1,j1)
       if (dabs(integral) > mo_integrals_threshold) then 
         write(i_unit_output,*) integral, i,j,0,0
       endif

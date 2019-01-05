@@ -43,7 +43,10 @@ END_DOC
 !
 ! Start of main SCF loop
 !
-  do while(( (max_error_DIIS > threshold_DIIS_nonzero).or.(dabs(Delta_energy_SCF) > thresh_SCF) ) .and. (iteration_SCF < n_it_SCF_max))
+  do while ( &
+    ( (max_error_DIIS > threshold_DIIS_nonzero) .or. &
+      (dabs(Delta_energy_SCF) > thresh_SCF) &
+    ) .and. (iteration_SCF < n_it_SCF_max) )
 
 ! Increment cycle number
 
@@ -145,6 +148,9 @@ END_DOC
 
   enddo
 
+ if (iteration_SCF < n_it_SCF_max) then
+   mo_label = "Canonical"
+ endif
 !
 ! End of Main SCF loop
 !
@@ -158,8 +164,7 @@ END_DOC
    call save_mos
   endif
 
-  call write_double(6, Energy_SCF, 'SCF energy ')
-! call ezfio_set_hartree_fock_energy(Energy_SCF)
+  call write_double(6, Energy_SCF, 'SCF energy')
 
   call write_time(6)
 
