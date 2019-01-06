@@ -15,98 +15,100 @@ function run() {
 }
 
 
+@test "SiH2_3B1" { # 0.539000
+  run sih2_3b1.ezfio -289.9654718650881
+}
 
-@test "HBO" {
+@test "SO" { # 0.539000
+  run so.ezfio -25.71752633718843
+}
+
+@test "HCO" { # 0.636700
+  run hco.ezfio -113.0862778269114
+}
+
+@test "HBO" { # 0.805600
   run  hbo.ezfio  -100.018582259096 
 }
 
-@test "H2O" {
+@test "H2S" { # 1.655600
+  run h2s.ezfio -398.6944130421982
+}
+
+@test "H3COH" { # 1.751000
+  run h3coh.ezfio  -114.9865030596373
+}
+
+@test "H2O" { # 1.811100
   run  h2o.ezfio  -0.760270218692179E+02
 }
 
-@test "[Cu(NH3)4]2+" {
+@test "H2O2" { # 2.217000
+  run h2o2.ezfio -150.7806608469964
+}
+
+@test "ClF" { # 2.797000
+  run clf.ezfio -558.8442570663570
+}
+
+@test "CO2" { # 2.811100
+  run co2.ezfio -187.6507108861204
+}
+
+@test "N2H4" { # 4.054600
+  run n2h4.ezfio -111.1799916679009
+}
+
+@test "ClO" { # 4.927400
+  run clo.ezfio -534.2496714154559
+}
+
+@test "F2" { # 5.070800
+  run f2.ezfio  -198.7643578233773
+}
+
+@test "CH4" { # 5.994000
+  run ch4.ezfio -40.19961807784367
+}
+
+@test "HCN" { # 7.792500
+  run hcn.ezfio -92.88717500035233
+}
+
+@test "N2" { # 8.648100
+  run n2.ezfio  -108.9834897852979
+}
+
+@test "DHNO" { # 12.856700
+  run  dhno.ezfio  -130.4278777822   
+}
+
+@test "NH3" { # 13.632200
+  run nh3.ezfio -56.21783428976567
+}
+
+@test "C2H2" { # 19.599000
+  run c2h2.ezfio -12.12144019495306
+}
+
+@test "SiH3" { # 20.316100
+  run sih3.ezfio -5.455398769158780
+}
+
+@test "OH" { # 32.042200
+  run oh.ezfio -75.42025413469165
+}
+
+if [[ -z $TRAVIS ]] ; then
+
+@test "[Cu(NH3)4]2+" { # 59.610100
   ezfio set_file cu_nh3_4_2plus.ezfio
   ezfio set scf_utils thresh_scf 1.e-10
   run  cu_nh3_4_2plus.ezfio -1862.97590388214
 }
 
-@test "C2H2" {
-  run c2h2.ezfio -12.12144019495306
-}
-
-@test "ClO" {
-  run clo.ezfio -534.2496714154559
-}
-
-@test "DHNO" {
-  run  dhno.ezfio  -130.4278777822   
-}
-
-@test "H3COH" {
-  run h3coh.ezfio  -114.9865030596373
-}
-
-@test "HCN" {
-  run hcn.ezfio -92.88717500035233
-}
-
-@test "N2" {
-  run n2.ezfio  -108.9834897852979
-}
-
-@test "SiH2_3B1" {
-  run sih2_3b1.ezfio -289.9654718650881
-}
-
-@test "SO" {
-  run so.ezfio -25.71752633718843
-}
-
-@test "CH4" {
-  run ch4.ezfio -40.19961807784367
-}
-
-@test "CO2" {
-  run co2.ezfio -187.6507108861204
-}
-
-@test "F2" {
-  run f2.ezfio  -198.7643578233773
-}
-
-@test "HCO" {
-  run hco.ezfio -113.0862778269114
-}
-
-@test "NH3" {
-  run nh3.ezfio -56.21783428976567
-}
-
-@test "SiH3" {
-  run sih3.ezfio -5.455398769158780
-}
-
-@test "ClF" {
-  run clf.ezfio -558.8442570663570
-}
-
-@test "H2O2" {
-  run h2o2.ezfio -150.7806608469964
-}
-
-@test "H2S" {
-  run h2s.ezfio -398.6944130421982
-}
-
-@test "N2H4" {
-  run n2h4.ezfio -111.1799916679009
-}
-
-@test "OH" {
-  run oh.ezfio -75.42025413469165
-}
-
-@test "SO2" {
+@test "SO2" { # 71.894900
   run so2.ezfio -41.55800190733211
 }
 
+fi

@@ -1,15 +1,14 @@
 * Mettre le fichier LIB
+* Faire que le slave de Hartree-fock est le calcul des integrales AO en parallele
 
 # Web/doc
 
 * Creer une page web pas trop degueu et la mettre ici : http://lcpq.github.io/quantum_package
-* Pour les README.rst des modules, mettre un deuxième saut à la ligne pour la doc en ligne.
-* Changer irpf90 pour creer de la doc en format rst
 
 
 # Exterieur
 
-* Molden format : http://cheminf.cmbi.ru.nl/molden/molden_format.html : read+write
+* Molden format : http://cheminf.cmbi.ru.nl/molden/molden_format.html : read+write. Thomas est dessus
 * Un module pour lire les integrales Moleculaires depuis un FCIDUMP
 * Un module pour lire des integrales Atomiques (voir module de Mimi pour lire les AO Slater)
 
@@ -30,7 +29,6 @@
   * Parameters for Hartree-Fock
   * Parameters for Davidson
   * Running in parallel
-  * Parameters for selection (Generators)
 
 # Programmers doc:
 
@@ -41,7 +39,4 @@
 
 # EZFIO sans fork
 
-/home/scemama/quantum_package/docs/source/modules/perturbation.rst:216: WARNING
-: script pour mettre des :math: dans les commentaires
-
-# Selection stochastique
+Refaire les benchmarks

@@ -1,10 +1,9 @@
-subroutine print_extrapolated_energy(e_,pt2_)
+subroutine print_extrapolated_energy
   implicit none
   BEGIN_DOC
 ! Print the extrapolated energy in the output
   END_DOC
 
-  double precision, intent(in) :: e_(N_states), pt2_(N_states)
   integer :: i,k
 
   if (N_iter< 2) then

@@ -91,8 +91,8 @@ subroutine switch_qp_run_to_master
   END_DOC
   character*(128)                :: buffer
   call getenv('QP_RUN_ADDRESS_MASTER',buffer)
-  if (trim(buffer) == '') then
-    print *,  'This run should be started with the qp_run command'
+  if (.not.is_zmq_slave) then
+    print *,  'This run should be started with "qp_run -slave"'
     stop -1
   endif
   qp_run_address = adjustl(buffer)
@@ -1282,4 +1282,15 @@ subroutine wait_for_states(state_wait,state,n)
   call end_zmq_sub_socket(zmq_socket_sub)
 end
 
+
+BEGIN_PROVIDER [ logical, is_zmq_slave ]
+ implicit none
+ BEGIN_DOC
+ ! If |true|, the current process is a |ZeroMQ| slave.
+ END_DOC
+ character*(128)                :: buffer
+ call getenv('QP_RUN_ADDRESS_MASTER',buffer)
+ is_zmq_slave = (trim(buffer) /= '')
+
+END_PROVIDER
 

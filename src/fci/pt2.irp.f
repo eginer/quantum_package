@@ -4,12 +4,16 @@ program pt2
   ! Second order perturbative correction to the wave function contained in the
   ! EZFIO directory.
   END_DOC
-  read_wf = .True.
-  threshold_generators = 1.d0
-  SOFT_TOUCH read_wf threshold_generators
-  PROVIDE mo_two_e_integrals_in_map
-  PROVIDE psi_energy
-  call run
+  if (.not. is_zmq_slave) then
+    read_wf = .True.
+    threshold_generators = 1.d0
+    SOFT_TOUCH read_wf threshold_generators
+    PROVIDE mo_two_e_integrals_in_map
+    PROVIDE psi_energy
+    call run
+  else
+    call run_slave_cipsi
+  endif
 end
 
 subroutine run
@@ -35,10 +39,8 @@ subroutine run
     rpt2(:) = pt2(:)/(1.d0 + norm(k)) 
   enddo
 
-  call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm)
-
-  call ezfio_set_fci_energy(E_CI_before)
-  call ezfio_set_fci_energy_pt2(E_CI_before+pt2)
+  call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm,N_det,N_occ_pattern)
+  call save_energy(E_CI_before,pt2)
 end
 
 
