@@ -103,17 +103,17 @@ function run() {
 
 
 @test "NH3" { # 14.2066s
-  [[ -z ${TRAVIS} ]] && skip
+  [[ -n ${TRAVIS} ]] && skip
   run nh3.ezfio -56.21783428981829 -55.91997684191139 -55.84753645754046
 }
 
 @test "[Cu(NH3)4]2+" { # 29.7711s
-  [[ -z ${TRAVIS} ]] && skip
+  [[ -n ${TRAVIS} ]] && skip
   run  cu_nh3_4_2plus.ezfio -1862.97958709248 -1862.92454796197 -1862.91130872182
 }
 
 @test "SO2" { # 32.092s
-  [[ -z ${TRAVIS} ]] && skip
+  [[ -n ${TRAVIS} ]] && skip
   run so2.ezfio -41.5580019075645  -41.38232986913486 -41.35512503680323
 }
 
