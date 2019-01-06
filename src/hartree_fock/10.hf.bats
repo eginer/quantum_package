@@ -99,16 +99,16 @@ function run() {
   run oh.ezfio -75.42025413469165
 }
 
-if [[ -z $TRAVIS ]] ; then
 
 @test "[Cu(NH3)4]2+" { # 59.610100
+  [[ -n $TRAVIS ]] && skip
   ezfio set_file cu_nh3_4_2plus.ezfio
   ezfio set scf_utils thresh_scf 1.e-10
   run  cu_nh3_4_2plus.ezfio -1862.97590388214
 }
 
 @test "SO2" { # 71.894900
+  [[ -n $TRAVIS ]] && skip
   run so2.ezfio -41.55800190733211
 }
 
-fi

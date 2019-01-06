@@ -6,7 +6,7 @@ irpf90_entities
 tags
 Makefile
 ao_basis
-ao_one_e_integrals
+ao_one_e_ints
 ao_two_e_erf_ints
 ao_two_e_ints
 aux_quantities
@@ -36,7 +36,7 @@ kohn_sham
 kohn_sham_rs
 mo_basis
 mo_guess
-mo_one_e_integrals
+mo_one_e_ints
 mo_two_e_erf_ints
 mo_two_e_ints
 mpi

@@ -311,6 +311,7 @@ Index of Providers
 * :c:data:`io_mo_two_e_integrals_erf`
 * :c:data:`iradix_sort`
 * :c:data:`iradix_sort_big`
+* :c:data:`is_zmq_slave`
 * :c:data:`ks_energy`
 * :c:data:`l_to_charater`
 * :c:data:`level_shift`
@@ -590,6 +591,7 @@ Index of Providers
 * :c:data:`psi_selectors_coef_transp`
 * :c:data:`psi_selectors_diag_h_mat`
 * :c:data:`psi_selectors_size`
+* :c:data:`pt2_collector`
 * :c:data:`pt2_cw`
 * :c:data:`pt2_e0_denominator`
 * :c:data:`pt2_f`
@@ -660,6 +662,7 @@ Index of Providers
 * :c:data:`selection_criterion`
 * :c:data:`selection_criterion_factor`
 * :c:data:`selection_criterion_min`
+* :c:data:`selection_weight`
 * :c:data:`shifting_constant`
 * :c:data:`short_range_hartree`
 * :c:data:`short_range_hartree_operator`
@@ -1178,7 +1181,6 @@ Index of Subroutines/Functions
 * :c:func:`provide_all_mo_integrals_erf`
 * :c:func:`provide_everything`
 * :c:func:`pt2`
-* :c:func:`pt2_collector`
 * :c:func:`pt2_dummy`
 * :c:func:`pt2_epstein_nesbet`
 * :c:func:`pt2_epstein_nesbet_2x2`
@@ -1196,7 +1198,6 @@ Index of Subroutines/Functions
 * :c:func:`push_pt2`
 * :c:func:`push_pt2_results`
 * :c:func:`push_selection_results`
-* :c:func:`qp_ao_ints`
 * :c:func:`qrpa`
 * :c:func:`qrpad`
 * :c:func:`qrpadd`
@@ -1227,12 +1228,16 @@ Index of Subroutines/Functions
 * :c:func:`routine_example_psi_det`
 * :c:func:`rs_ks_scf`
 * :c:func:`run`
+* :c:func:`run_cipsi`
 * :c:func:`run_pt2_slave`
 * :c:func:`run_selection_slave`
-* :c:func:`run_wf`
+* :c:func:`run_slave_cipsi`
+* :c:func:`run_slave_main`
+* :c:func:`run_stochastic_cipsi`
 * :c:func:`s2_u_0`
 * :c:func:`s2_u_0_nstates`
 * :c:func:`sabpartial`
+* :c:func:`save_energy`
 * :c:func:`save_erf_two_e_integrals_ao`
 * :c:func:`save_erf_two_e_integrals_mo`
 * :c:func:`save_erf_two_e_ints_ao_into_ints_ao`
@@ -1261,7 +1266,6 @@ Index of Subroutines/Functions
 * :c:func:`set_natural_mos`
 * :c:func:`set_order`
 * :c:func:`set_order_big`
-* :c:func:`slave`
 * :c:func:`sort`
 * :c:func:`sort_dets_ab`
 * :c:func:`sort_dets_ab_v`

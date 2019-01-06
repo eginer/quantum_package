@@ -23,7 +23,7 @@ import shutil
 
 try:
     from docopt import docopt
-    from qp_path import QP_SRC, QP_ROOT, QP_PLUGINS
+    from qp_path import QP_SRC, QP_ROOT, QP_PLUGINS, QP_EZFIO
 except ImportError:
     print "source .quantum_package.rc"
     raise
@@ -205,6 +205,10 @@ if __name__ == '__main__':
     if arguments['--all']:
         l_module = [f for f in os.listdir(QP_SRC)
                     if os.path.isdir(os.path.join(QP_SRC, f))]
+        # Remove all produced ezfio_config files
+        for filename in os.listdir( os.path.join(QP_EZFIO, "config") ):
+            os.remove( os.path.join(QP_EZFIO, "config", filename) )
+            
 
     elif not arguments['<module_name>']:
         dir_ = os.getcwd()

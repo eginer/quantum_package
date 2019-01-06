@@ -54,77 +54,90 @@ function run() {
 
 
 
-if [[ -z ${TRAVIS} ]] ; then
 
 
 @test "CH4" { # 19.821s
+  [[ -n $TRAVIS ]] && skip
   qp_set_mo_class ch4.ezfio -core "[1]" -act "[2-30]" -del "[31-59]"
   run ch4.ezfio -40.2403962667047 -39.8433221754964
 }
 
 @test "SiH3" { # 20.2202s
+  [[ -n $TRAVIS ]] && skip
   run sih3.ezfio -5.57096611856522  -5.30950347928823
 }
 
 @test "NH3" { # 20.6771s
+  [[ -n $TRAVIS ]] && skip
   qp_set_mo_class nh3.ezfio -core "[1-4]" -act "[5-72]"
   run nh3.ezfio -56.2447484835843 -55.9521689975716
 }
 
 @test "DHNO" { # 24.7077s
+  [[ -n $TRAVIS ]] && skip
   qp_set_mo_class dhno.ezfio -core "[1-7]" -act "[8-64]" 
   run dhno.ezfio -130.458814562403 -130.356308303681
 }
 
 @test "H3COH" { # 24.7248s
+  [[ -n $TRAVIS ]] && skip
   run h3coh.ezfio  -115.204958752377 -114.755913828245
 }
 
 @test "[Cu(NH3)4]2+" { # 29.9956s
+  [[ -n $TRAVIS ]] && skip
   qp_set_mo_class cu_nh3_4_2plus.ezfio -core "[1-24]" -act "[25-45]" -del "[46-87]"
   run  cu_nh3_4_2plus.ezfio -1862.98659549315  -1862.68813764356
 }
 
 @test "ClF" { # 30.3225s
+  [[ -n $TRAVIS ]] && skip
   run clf.ezfio  -559.162476603880  -558.792395927088
 }
 
 @test "C2H2" { # 35.3324s
+  [[ -n $TRAVIS ]] && skip
   qp_set_mo_class c2h2.ezfio -act "[1-30]" -del "[31-36]"
   run c2h2.ezfio -12.3566731164213 -11.9495394759914 
 }
 
 @test "ClO" { # 37.6949s
+  [[ -n $TRAVIS ]] && skip
   run clo.ezfio -534.5404021326773 -534.3818725793897 
 }
 
 @test "F2" { # 45.2078s
+  [[ -n $TRAVIS ]] && skip
   qp_set_mo_class f2.ezfio -core "[1,2]" -act "[3-30]" -del "[31-62]"
   run f2.ezfio  -199.056829527539 -198.731828008346
 }
 
 @test "SO2" { # 47.6922s
+  [[ -n $TRAVIS ]] && skip
   qp_set_mo_class so2.ezfio -core "[1-8]" -act "[9-87]" 
   run so2.ezfio -41.5746738710350 -41.3800467740750
 }
 
 @test "SO" { # 51.2476s
+  [[ -n $TRAVIS ]] && skip
   run so.ezfio -26.0131812819785 -25.7053111980226
 }
 
 @test "CO2" { # 95.3736s
+  [[ -n $TRAVIS ]] && skip
   qp_set_mo_class co2.ezfio -core "[1,2]" -act "[3-30]" -del "[31-42]"
   run co2.ezfio -187.959378390998  -187.432502050556
 }
 
 @test "N2" { # 133.1814
+  [[ -n $TRAVIS ]] && skip
   qp_set_mo_class n2.ezfio -core "[1,2]" -act "[3-40]" -del "[41-60]"
   run n2.ezfio -109.275693633982 -108.757794570948 
 }
 
 @test "HCN" { # 133.8696s
+  [[ -n $TRAVIS ]] && skip
   qp_set_mo_class hcn.ezfio -core "[1,2]" -act "[3-40]" -del "[41-55]"
   run hcn.ezfio -93.0776334511721 -92.6684633795506
 }
 
-fi
