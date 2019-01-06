@@ -95,34 +95,42 @@ end function
 
 
 
-subroutine ZMQ_pt2(E, pt2,relative_error, error, variance, norm)
+subroutine ZMQ_pt2(E, pt2,relative_error, error, variance, norm, N_in)
   use f77_zmq
   use selection_types
   
   implicit none
   
   integer(ZMQ_PTR)               :: zmq_to_qp_run_socket, zmq_socket_pull
+  integer, intent(in)            :: N_in
   integer, external              :: omp_get_thread_num
   double precision, intent(in)   :: relative_error, E(N_states)
   double precision, intent(out)  :: pt2(N_states),error(N_states)
   double precision, intent(out)  :: variance(N_states),norm(N_states)
   
   
-  integer                        :: i
+  integer                        :: i, N
   
   double precision, external     :: omp_get_wtime
   double precision               :: state_average_weight_save(N_states), w(N_states,4)
   integer(ZMQ_PTR), external     :: new_zmq_to_qp_run_socket
+  type(selection_buffer)         :: b
+
   
   if (N_det < max(10,N_states)) then
     pt2=0.d0
     variance=0.d0
     norm=0.d0
-    call ZMQ_selection(0, pt2, variance, norm)
+    call ZMQ_selection(N_in, pt2, variance, norm)
     error(:) = 0.d0
   else
     
+    N = max(N_in,1)
     state_average_weight_save(:) = state_average_weight(:)
+    call create_selection_buffer(N, N*2, b)
+    ASSERT (associated(b%det))
+    ASSERT (associated(b%val))
+
     do pt2_stoch_istate=1,N_states
       state_average_weight(:) = 0.d0
       state_average_weight(pt2_stoch_istate) = 1.d0
@@ -159,9 +167,8 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error, variance, norm)
       endif
 
 
-
       integer, external :: add_task_to_taskserver
-      character(400000) :: task
+      character(300000) :: task
 
       integer :: j,k,ipos,ifirst
       ifirst=0
@@ -178,9 +185,9 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error, variance, norm)
       ipos=1
       do i= 1, N_det_generators
         do j=1,pt2_F(pt2_J(i))
-          write(task(ipos:ipos+20),'(I9,1X,I9,''|'')') j, pt2_J(i)
-          ipos += 20
-          if (ipos > 400000-20) then
+          write(task(ipos:ipos+30),'(I9,1X,I9,1X,I9,''|'')') j, pt2_J(i), N
+          ipos += 30
+          if (ipos > 300000-30) then
             if (add_task_to_taskserver(zmq_to_qp_run_socket,trim(task(1:ipos))) == -1) then
               stop 'Unable to add task to task server'
             endif
@@ -199,7 +206,7 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error, variance, norm)
           stop 'Unable to add task to task server'
         endif
       endif
-      
+
       integer, external :: zmq_set_running
       if (zmq_set_running(zmq_to_qp_run_socket) == -1) then
         print *,  irp_here, ': Failed in zmq_set_running'
@@ -228,7 +235,7 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error, variance, norm)
       i = omp_get_thread_num()
       if (i==0) then
 
-        call pt2_collector(zmq_socket_pull, E(pt2_stoch_istate),relative_error, w(1,1), w(1,2), w(1,3), w(1,4))
+        call pt2_collector(zmq_socket_pull, E(pt2_stoch_istate),relative_error, w(1,1), w(1,2), w(1,3), w(1,4), b, N)
         pt2(pt2_stoch_istate) = w(pt2_stoch_istate,1)
         error(pt2_stoch_istate) = w(pt2_stoch_istate,2)
         variance(pt2_stoch_istate) = w(pt2_stoch_istate,3)
@@ -243,9 +250,18 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error, variance, norm)
       print '(A)', '========== ================= =========== =============== =============== ================='
       
     enddo
-!    call omp_set_nested(.false.)
-
     FREE pt2_stoch_istate
+
+    if (N_in > 0) then
+      if (s2_eig) then
+        call make_selection_buffer_s2(b)
+      endif
+      call fill_H_apply_buffer_no_selection(b%cur,b%det,N_int,0)
+      call copy_H_apply_buffer_to_wf()
+      call save_wavefunction
+    endif
+    call delete_selection_buffer(b)  
+
     state_average_weight(:) = state_average_weight_save(:)
     TOUCH state_average_weight
   endif
@@ -264,7 +280,8 @@ subroutine pt2_slave_inproc(i)
 end
 
 
-subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error, variance, norm)
+subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error,  &
+  variance, norm, b, N_)
   use f77_zmq
   use selection_types
   use bitmasks
@@ -272,9 +289,11 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error, varianc
 
   
   integer(ZMQ_PTR), intent(in)   :: zmq_socket_pull
-  double precision, intent(in) :: relative_error, E
+  double precision, intent(in)   :: relative_error, E
   double precision, intent(out)  :: pt2(N_states), error(N_states)
   double precision, intent(out)  :: variance(N_states), norm(N_states)
+  type(selection_buffer), intent(inout) :: b
+  integer, intent(in)            :: N_
 
 
   double precision, allocatable      :: eI(:,:), eI_task(:,:), S(:), S2(:)
@@ -297,6 +316,7 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error, varianc
   integer, allocatable :: f(:)
   logical, allocatable :: d(:) 
   logical :: do_exit
+  type(selection_buffer) :: b2
 
 
   double precision :: rss
@@ -319,6 +339,8 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error, varianc
 
   
   zmq_to_qp_run_socket = new_zmq_to_qp_run_socket()
+  call create_selection_buffer(N_, N_*2, b2)
+
   
   pt2(:) = -huge(1.)
   error(:) = huge(1.)
@@ -417,7 +439,7 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error, varianc
     else if(more == 0) then
       exit
     else
-      call pull_pt2_results(zmq_socket_pull, index, eI_task, vI_task, nI_task, task_id, n_tasks)
+      call pull_pt2_results(zmq_socket_pull, index, eI_task, vI_task, nI_task, task_id, n_tasks, b2)
       if (zmq_delete_tasks(zmq_to_qp_run_socket,zmq_socket_pull,task_id,n_tasks,more) == -1) then
           stop 'Unable to delete tasks'
       endif
@@ -427,9 +449,16 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error, varianc
         nI(:, index(i)) += nI_task(:,i)
         f(index(i)) -= 1
       end do
+      do i=1, b2%cur
+        call add_to_selection_buffer(b, b2%det(1,1,i), b2%val(i))
+        if (b2%val(i) > b%mini) exit
+      end do
     end if
   end do
+  call delete_selection_buffer(b2)
+  call sort_selection_buffer(b)
   call end_zmq_to_qp_run_socket(zmq_to_qp_run_socket)
+
 end subroutine
 
 

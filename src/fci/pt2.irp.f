@@ -29,7 +29,8 @@ subroutine run
   E_CI_before(:) = psi_energy(:) + nuclear_repulsion
   relative_error=PT2_relative_error
   
-  call ZMQ_pt2(psi_energy_with_nucl_rep,pt2,relative_error,error, variance, norm) ! Stochastic PT2
+  call ZMQ_pt2(psi_energy_with_nucl_rep,pt2,relative_error,error, variance, &
+     norm,0) ! Stochastic PT2
   do k=1,N_states
     rpt2(:) = pt2(:)/(1.d0 + norm(k)) 
   enddo

@@ -66,17 +66,19 @@ program fci
       write(*,'(A)')  '--------------------------------------------------------------------------------'
 
 
-    if (do_pt2) then
-      pt2 = 0.d0
-      variance = 0.d0
-      norm = 0.d0
-      threshold_generators = 1.d0 
-      SOFT_TOUCH threshold_generators
-      call ZMQ_pt2(psi_energy_with_nucl_rep,pt2,relative_error,error, variance, norm) ! Stochastic PT2
-      threshold_generators = threshold_generators_save
-      SOFT_TOUCH threshold_generators
-    endif
+    n_det_before = N_det
+    to_select = N_det
+    to_select = max(N_states_diag, to_select)
 
+    pt2 = 0.d0
+    variance = 0.d0
+    norm = 0.d0
+    threshold_generators = 1.d0 
+    SOFT_TOUCH threshold_generators
+    call ZMQ_pt2(psi_energy_with_nucl_rep,pt2,relative_error,error, variance, &
+       norm, to_select) ! Stochastic PT2
+    threshold_generators = threshold_generators_save
+    SOFT_TOUCH threshold_generators
 
     correlation_energy_ratio = (psi_energy_with_nucl_rep(1) - hf_energy_ref)  /     &
                     (psi_energy_with_nucl_rep(1) + pt2(1) - hf_energy_ref)
@@ -94,11 +96,7 @@ program fci
     call print_extrapolated_energy(psi_energy_with_nucl_rep(1:N_states),rpt2)
     N_iter += 1
 
-    n_det_before = N_det
-    to_select = N_det
-    to_select = max(N_states_diag, to_select)
-!    to_select = min(to_select, N_det_max-n_det_before)
-    call ZMQ_selection(to_select, pt2, variance, norm)
+!    call ZMQ_selection(to_select, pt2, variance, norm)
     
     PROVIDE  psi_coef
     PROVIDE  psi_det
@@ -116,23 +114,17 @@ program fci
       call ezfio_set_fci_energy_pt2(psi_energy_with_nucl_rep(1:N_states)+pt2)
   endif
 
-  if (do_pt2) then
-    pt2 = 0.d0
-    variance = 0.d0
-    norm = 0.d0
-    threshold_generators = 1d0 
-    SOFT_TOUCH threshold_generators
-    call ZMQ_pt2(psi_energy_with_nucl_rep, pt2,relative_error,error,variance,norm) ! Stochastic PT2
-    threshold_generators = threshold_generators_save
-    SOFT_TOUCH threshold_generators
-    call ezfio_set_fci_energy(psi_energy_with_nucl_rep(1:N_states))
-    call ezfio_set_fci_energy_pt2(psi_energy_with_nucl_rep(1:N_states)+pt2)
-  endif
-  print *,  'N_det             = ', N_det
-  print *,  'N_sop             = ', N_occ_pattern
-  print *,  'N_states          = ', N_states
-  print*,   'correlation_ratio = ', correlation_energy_ratio
-
+  pt2 = 0.d0
+  variance = 0.d0
+  norm = 0.d0
+  threshold_generators = 1d0 
+  SOFT_TOUCH threshold_generators
+  call ZMQ_pt2(psi_energy_with_nucl_rep, pt2,relative_error,error,variance, &
+    norm,0) ! Stochastic PT2
+  threshold_generators = threshold_generators_save
+  SOFT_TOUCH threshold_generators
+  call ezfio_set_fci_energy(psi_energy_with_nucl_rep(1:N_states))
+  call ezfio_set_fci_energy_pt2(psi_energy_with_nucl_rep(1:N_states)+pt2)
 
   do k=1,N_states
     rpt2(:) = pt2(:)/(1.d0 + norm(k)) 

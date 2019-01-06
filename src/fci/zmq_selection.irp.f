@@ -150,7 +150,7 @@ subroutine selection_collector(zmq_socket_pull, b, N, pt2, variance, norm)
 
   integer(ZMQ_PTR), intent(in)   :: zmq_socket_pull
   type(selection_buffer), intent(inout) :: b
-  integer, intent(in) :: N
+  integer, intent(in)            :: N
   double precision, intent(inout)    :: pt2(N_states)
   double precision, intent(inout)    :: variance(N_states)
   double precision, intent(inout)    :: norm(N_states)
