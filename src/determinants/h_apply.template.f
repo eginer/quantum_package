@@ -7,7 +7,7 @@ subroutine $subroutine_diexc(key_in, key_prev, hole_1,particl_1, hole_2, particl
   integer,intent(in)                    :: i_generator,iproc_in
   integer                               :: status(N_int*bit_kind_size, 2)
   integer                               :: highest, p1,p2,sp,ni,i,mi,nt,ns,k
-  double precision, intent(in)          :: fock_diag_tmp(2,mo_tot_num+1)
+  double precision, intent(in)          :: fock_diag_tmp(2,mo_num+1)
   integer(bit_kind), intent(in)         :: key_prev(N_int, 2, *)
   PROVIDE N_int
   PROVIDE N_det
@@ -74,7 +74,7 @@ end subroutine
 subroutine $subroutine_diexcP(key_in, fs1, fh1, particl_1, fs2, fh2, particl_2, fock_diag_tmp, i_generator, iproc_in $parameters )
   implicit none
   integer(bit_kind), intent(in)         :: key_in(N_int, 2), particl_1(N_int, 2), particl_2(N_int, 2)
-  double precision, intent(in)          :: fock_diag_tmp(2,mo_tot_num+1)
+  double precision, intent(in)          :: fock_diag_tmp(2,mo_num+1)
   integer(bit_kind)                     :: p1_mask(N_int, 2), p2_mask(N_int, 2), key_mask(N_int, 2)
   integer,intent(in)                    :: fs1,fs2,i_generator,iproc_in, fh1,fh2
   integer(bit_kind)                     :: miniList(N_int, 2, N_det)
@@ -121,7 +121,7 @@ subroutine $subroutine_diexcOrg(key_in,key_mask,hole_1,particl_1,hole_2, particl
   integer(bit_kind), intent(in)  :: hole_1(N_int,2), particl_1(N_int,2)
   integer(bit_kind), intent(in)  :: hole_2(N_int,2), particl_2(N_int,2)
   integer, intent(in)            :: iproc_in
-  double precision, intent(in)   :: fock_diag_tmp(2,mo_tot_num+1)
+  double precision, intent(in)   :: fock_diag_tmp(2,mo_num+1)
   integer(bit_kind), allocatable :: hole_save(:,:)
   integer(bit_kind), allocatable :: key(:,:),hole(:,:), particle(:,:)
   integer(bit_kind), allocatable :: hole_tmp(:,:), particle_tmp(:,:)
@@ -133,7 +133,7 @@ subroutine $subroutine_diexcOrg(key_in,key_mask,hole_1,particl_1,hole_2, particl
   integer                        :: N_elec_in_key_hole_1(2),N_elec_in_key_part_1(2)
   integer                        :: N_elec_in_key_hole_2(2),N_elec_in_key_part_2(2)
   
-  double precision               :: mo_bielec_integral
+  double precision               :: mo_two_e_integral
   logical                        :: is_a_two_holes_two_particles
   integer, allocatable           :: ia_ja_pairs(:,:,:)
   integer, allocatable           :: ib_jb_pairs(:,:)
@@ -177,20 +177,20 @@ subroutine $subroutine_diexcOrg(key_in,key_mask,hole_1,particl_1,hole_2, particl
   enddo
   call bitstring_to_list_ab(particle,occ_particle,N_elec_in_key_part_1,N_int)
   call bitstring_to_list_ab(hole,occ_hole,N_elec_in_key_hole_1,N_int)
-  allocate (ia_ja_pairs(2,0:(elec_alpha_num)*mo_tot_num,2),          &
-            ib_jb_pairs(2,0:(elec_alpha_num)*mo_tot_num))
+  allocate (ia_ja_pairs(2,0:(elec_alpha_num)*mo_num,2),          &
+            ib_jb_pairs(2,0:(elec_alpha_num)*mo_num))
   
   do ispin=1,2
     i=0
     do ii=N_elec_in_key_hole_1(ispin),1,-1             ! hole
       i_a = occ_hole(ii,ispin)
       ASSERT (i_a > 0)
-      ASSERT (i_a <= mo_tot_num)
+      ASSERT (i_a <= mo_num)
       
       do jj=1,N_elec_in_key_part_1(ispin)              !particle
         j_a = occ_particle(jj,ispin)
         ASSERT (j_a > 0)
-        ASSERT (j_a <= mo_tot_num)
+        ASSERT (j_a <= mo_num)
         i += 1
         ia_ja_pairs(1,i,ispin) = i_a
         ia_ja_pairs(2,i,ispin) = j_a
@@ -205,7 +205,7 @@ subroutine $subroutine_diexcOrg(key_in,key_mask,hole_1,particl_1,hole_2, particl
   integer(bit_kind)              :: test(N_int,2)
   double precision               :: accu
   logical, allocatable           :: array_pairs(:,:)
-  allocate(array_pairs(mo_tot_num,mo_tot_num))
+  allocate(array_pairs(mo_num,mo_num))
   accu = 0.d0
   do ispin=1,2
     other_spin = iand(ispin,1)+1
@@ -213,10 +213,10 @@ subroutine $subroutine_diexcOrg(key_in,key_mask,hole_1,particl_1,hole_2, particl
     do ii=1,ia_ja_pairs(1,0,ispin)
       i_a = ia_ja_pairs(1,ii,ispin)
       ASSERT (i_a > 0)
-      ASSERT (i_a <= mo_tot_num)
+      ASSERT (i_a <= mo_num)
       j_a = ia_ja_pairs(2,ii,ispin)
       ASSERT (j_a > 0)
-      ASSERT (j_a <= mo_tot_num)
+      ASSERT (j_a <= mo_num)
       hole = key_in
       k = shiftr(i_a-1,bit_kind_shift)+1
       j = i_a-shiftl(k-1,bit_kind_shift)-1
@@ -249,11 +249,11 @@ subroutine $subroutine_diexcOrg(key_in,key_mask,hole_1,particl_1,hole_2, particl
         do kk = 1,N_elec_in_key_hole_2(other_spin)
           i_b = occ_hole_tmp(kk,other_spin)
           ASSERT (i_b > 0)
-          ASSERT (i_b <= mo_tot_num)
+          ASSERT (i_b <= mo_num)
           do jjj=1,N_elec_in_key_part_2(other_spin)     ! particle
             j_b = occ_particle_tmp(jjj,other_spin)
             ASSERT (j_b > 0)
-            ASSERT (j_b <= mo_tot_num)
+            ASSERT (j_b <= mo_num)
             if (array_pairs(i_b,j_b)) then
               $filter_vvvv_excitation
               i+= 1
@@ -303,11 +303,11 @@ subroutine $subroutine_diexcOrg(key_in,key_mask,hole_1,particl_1,hole_2, particl
         i_b = occ_hole_tmp(kk,ispin)
         if (i_b <= i_a.or.i_b == j_a) cycle
         ASSERT (i_b > 0)
-        ASSERT (i_b <= mo_tot_num)
+        ASSERT (i_b <= mo_num)
         do jjj=1,N_elec_in_key_part_2(ispin)     ! particule
           j_b = occ_particle_tmp(jjj,ispin)
           ASSERT (j_b > 0)
-          ASSERT (j_b <= mo_tot_num)
+          ASSERT (j_b <= mo_num)
           if (j_b <= j_a) cycle
           if (array_pairs(i_b,j_b)) then
             $filter_vvvv_excitation
@@ -381,7 +381,7 @@ subroutine $subroutine_monoexc(key_in, hole_1,particl_1,fock_diag_tmp,i_generato
   integer(bit_kind),intent(in)   :: key_in(N_int,2)
   integer(bit_kind),intent(in)   :: hole_1(N_int,2), particl_1(N_int,2)
   integer, intent(in)            :: iproc_in
-  double precision, intent(in)   :: fock_diag_tmp(2,mo_tot_num+1)
+  double precision, intent(in)   :: fock_diag_tmp(2,mo_num+1)
   integer(bit_kind),allocatable  :: keys_out(:,:,:)
   integer(bit_kind),allocatable  :: hole_save(:,:)
   integer(bit_kind),allocatable  :: key(:,:),hole(:,:), particle(:,:)
@@ -444,7 +444,7 @@ subroutine $subroutine_monoexc(key_in, hole_1,particl_1,fock_diag_tmp,i_generato
   
   call bitstring_to_list_ab(particle,occ_particle,N_elec_in_key_part_1,N_int)
   call bitstring_to_list_ab(hole,occ_hole,N_elec_in_key_hole_1,N_int)
-  allocate (ia_ja_pairs(2,0:(elec_alpha_num)*mo_tot_num,2))
+  allocate (ia_ja_pairs(2,0:(elec_alpha_num)*mo_num,2))
   
   do ispin=1,2
     i=0

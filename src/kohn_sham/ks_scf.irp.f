@@ -1,15 +1,15 @@
 program srs_ks_cf
   BEGIN_DOC
 ! Produce `Kohn_Sham` MO orbital 
-! output: mo_basis.mo_tot_num mo_basis.mo_label mo_basis.ao_md5 mo_basis.mo_coef mo_basis.mo_occ
+! output: mo_basis.mo_num mo_basis.mo_label mo_basis.ao_md5 mo_basis.mo_coef mo_basis.mo_occ
 ! output: kohn_sham.energy
 ! optional: mo_basis.mo_coef
   END_DOC
 
-  disk_access_mo_one_integrals = "None" 
-  touch disk_access_mo_one_integrals
-  disk_access_ao_one_integrals = "None"  
-  touch disk_access_ao_one_integrals
+  io_mo_one_e_integrals = "None" 
+  touch io_mo_one_e_integrals
+  io_ao_one_e_integrals = "None"  
+  touch io_ao_one_e_integrals
   read_wf = .False.
   density_for_dft ="WFT"
   touch density_for_dft
@@ -64,7 +64,7 @@ subroutine create_guess
       mo_coef = ao_ortho_lowdin_coef
       TOUCH mo_coef
       mo_label = 'Guess'
-      call mo_as_eigvectors_of_mo_matrix(mo_mono_elec_integral,size(mo_mono_elec_integral,1),size(mo_mono_elec_integral,2),mo_label,.false.)
+      call mo_as_eigvectors_of_mo_matrix(mo_one_e_integrals,size(mo_one_e_integrals,1),size(mo_one_e_integrals,2),mo_label,.false.)
       SOFT_TOUCH mo_coef mo_label
     else if (mo_guess_type == "Huckel") then
       call huckel_guess

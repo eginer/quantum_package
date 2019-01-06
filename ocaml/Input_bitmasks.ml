@@ -29,8 +29,8 @@ end = struct
 
   let read_n_int () = 
     if not (Ezfio.has_bitmasks_n_int()) then
-       Ezfio.get_mo_basis_mo_tot_num ()
-       |> Bitlist.n_int_of_mo_tot_num 
+       Ezfio.get_mo_basis_mo_num ()
+       |> Bitlist.n_int_of_mo_num 
        |> N_int_number.to_int
        |> Ezfio.set_bitmasks_n_int 
     ;
@@ -59,7 +59,7 @@ end = struct
 
   let full_mask n_int = 
       let range = "[1-"^
-        (Int.to_string (Ezfio.get_mo_basis_mo_tot_num ()))^"]"
+        (Int.to_string (Ezfio.get_mo_basis_mo_num ()))^"]"
       in
       MO_class.create_active range 
       |> MO_class.to_bitlist n_int 
@@ -121,7 +121,7 @@ end = struct
   ;;
 
   let read () = 
-    if (Ezfio.has_mo_basis_mo_tot_num ()) then
+    if (Ezfio.has_mo_basis_mo_num ()) then
       Some
       { n_int       = read_n_int ();
         bit_kind    = read_bit_kind ();

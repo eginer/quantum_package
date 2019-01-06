@@ -6,7 +6,7 @@ BEGIN_PROVIDER [ integer, N_int ]
   BEGIN_DOC
   ! Number of 64-bit integers needed to represent determinants as binary strings
   END_DOC
-  N_int = (mo_tot_num-1)/bit_kind_size + 1
+  N_int = (mo_num-1)/bit_kind_size + 1
   call write_int(6,N_int, 'N_int')
   if (N_int > N_int_max) then
     stop 'N_int > N_int_max'
@@ -30,7 +30,7 @@ BEGIN_PROVIDER [ integer(bit_kind), full_ijkl_bitmask, (N_int) ]
       if (mo_class(k) /= 'Deleted') then
         full_ijkl_bitmask(j) = ibset(full_ijkl_bitmask(j),i)
       endif
-      if (k == mo_tot_num) exit
+      if (k == mo_num) exit
     enddo
   enddo
 END_PROVIDER
@@ -496,8 +496,8 @@ END_PROVIDER
 
   BEGIN_PROVIDER [ integer, list_inact, (n_inact_orb)]
  &BEGIN_PROVIDER [ integer, list_virt, (n_virt_orb)]
- &BEGIN_PROVIDER [ integer, list_inact_reverse, (mo_tot_num)]
- &BEGIN_PROVIDER [ integer, list_virt_reverse, (mo_tot_num)]
+ &BEGIN_PROVIDER [ integer, list_inact_reverse, (mo_num)]
+ &BEGIN_PROVIDER [ integer, list_virt_reverse, (mo_num)]
  BEGIN_DOC
  ! list_inact : List of the inactive orbitals which are supposed to be doubly excited 
  ! in post CAS methods
@@ -536,7 +536,7 @@ END_PROVIDER
 
 
  BEGIN_PROVIDER [ integer, list_core_inact, (n_core_inact_orb)]
-&BEGIN_PROVIDER [ integer, list_core_inact_reverse, (mo_tot_num)]
+&BEGIN_PROVIDER [ integer, list_core_inact_reverse, (mo_num)]
 
  implicit none
  integer :: occ_inact(N_int*bit_kind_size)
@@ -591,7 +591,7 @@ END_PROVIDER
  enddo
  END_PROVIDER
  BEGIN_PROVIDER [ integer, list_core_inact_act, (n_core_inact_act_orb)]
-&BEGIN_PROVIDER [ integer, list_core_inact_act_reverse, (mo_tot_num)]
+&BEGIN_PROVIDER [ integer, list_core_inact_act_reverse, (mo_num)]
   implicit none
  integer :: occ_inact(N_int*bit_kind_size)
  integer :: itest,i
@@ -636,7 +636,7 @@ END_PROVIDER
  END_PROVIDER
 
  BEGIN_PROVIDER [integer, list_core, (n_core_orb)]
-&BEGIN_PROVIDER [integer, list_core_reverse, (mo_tot_num)]
+&BEGIN_PROVIDER [integer, list_core_reverse, (mo_num)]
  BEGIN_DOC
  ! List of the core orbitals that are never excited in post CAS method
  END_DOC
@@ -705,7 +705,7 @@ BEGIN_PROVIDER [ integer, n_act_orb]
 END_PROVIDER
 
  BEGIN_PROVIDER [integer, list_act, (n_act_orb)]
-&BEGIN_PROVIDER [integer, list_act_reverse, (mo_tot_num)]
+&BEGIN_PROVIDER [integer, list_act_reverse, (mo_num)]
  BEGIN_DOC
  ! list_act(i) = index of the ith active orbital
  ! 

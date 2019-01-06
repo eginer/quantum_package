@@ -20,8 +20,8 @@ program qp_ao_ints
   zmq_state = 'ao_integrals'
 
   ! Provide everything needed
-  double precision :: integral, ao_bielec_integral
-  integral = ao_bielec_integral(1,1,1,1)
+  double precision :: integral, ao_two_e_integral
+  integral = ao_two_e_integral(1,1,1,1)
 
   do
     call wait_for_state('ao_integrals',zmq_state)
@@ -31,7 +31,7 @@ program qp_ao_ints
 
     !$OMP PARALLEL DEFAULT(PRIVATE) PRIVATE(i)
     i = omp_get_thread_num()
-    call ao_bielec_integrals_in_map_slave_tcp(i)
+    call ao_two_e_integrals_in_map_slave_tcp(i)
     !$OMP END PARALLEL
     IRP_IF MPI
       call MPI_BARRIER(MPI_COMM_WORLD, ierr)

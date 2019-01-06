@@ -228,8 +228,8 @@ def write_ezfio(res, filename):
     for i in MOindices:
         MOs.append(allMOs[i])
 
-    mo_tot_num = len(MOs)
-    while len(MOindices) < mo_tot_num:
+    mo_num = len(MOs)
+    while len(MOindices) < mo_num:
         MOindices.append(len(MOindices))
 
     MOmap = list(MOindices)
@@ -237,7 +237,7 @@ def write_ezfio(res, filename):
         MOmap[i] = MOindices.index(i)
 
     energies = []
-    for i in xrange(mo_tot_num):
+    for i in xrange(mo_num):
         energies.append(MOs[i].eigenvalue)
 
     if res.occ_num is not None:
@@ -245,7 +245,7 @@ def write_ezfio(res, filename):
         for i in MOindices:
             OccNum.append(res.occ_num[MO_type][i])
 
-        while len(OccNum) < mo_tot_num:
+        while len(OccNum) < mo_num:
             OccNum.append(0.)
 
     MoMatrix = []
@@ -267,7 +267,7 @@ def write_ezfio(res, filename):
     # W r i t e #
     # ~#~#~#~#~ #
 
-    ezfio.set_mo_basis_mo_tot_num(mo_tot_num)
+    ezfio.set_mo_basis_mo_num(mo_num)
     ezfio.set_mo_basis_mo_occ(OccNum)
     ezfio.set_mo_basis_mo_coef(MoMatrix)
     print "OK"

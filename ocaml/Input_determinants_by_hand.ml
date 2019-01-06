@@ -41,8 +41,8 @@ end = struct
 
   let read_n_int () =
     if not (Ezfio.has_determinants_n_int()) then
-       Ezfio.get_mo_basis_mo_tot_num ()
-       |> Bitlist.n_int_of_mo_tot_num
+       Ezfio.get_mo_basis_mo_num ()
+       |> Bitlist.n_int_of_mo_num
        |> N_int_number.to_int
        |> Ezfio.set_determinants_n_int
     ;
@@ -214,10 +214,10 @@ end = struct
     in
     if not (Ezfio.has_determinants_psi_det ()) then
       begin
-        let mo_tot_num = MO_number.get_max () in
+        let mo_num = MO_number.get_max () in
         let rec build_data accu =  function
           | 0 -> accu
-          | n -> build_data ((MO_number.of_int ~max:mo_tot_num n)::accu) (n-1)
+          | n -> build_data ((MO_number.of_int ~max:mo_num n)::accu) (n-1)
         in
         let det_a = build_data [] (Elec_alpha_number.to_int n_alpha)
           |> Bitlist.of_mo_number_list n_int
@@ -257,7 +257,7 @@ end = struct
 
 
   let read () =
-    if (Ezfio.has_mo_basis_mo_tot_num ()) then
+    if (Ezfio.has_mo_basis_mo_num ()) then
         { n_int                  = read_n_int ()                ;
           bit_kind               = read_bit_kind ()             ;
           n_det                  = read_n_det ()                ;
@@ -304,9 +304,9 @@ end = struct
 
   let to_rst b =
     let max =
-      Ezfio.get_mo_basis_mo_tot_num () 
+      Ezfio.get_mo_basis_mo_num () 
     in
-    let mo_tot_num =
+    let mo_num =
       MO_number.of_int ~max max
     in
     let det_text = 
@@ -333,7 +333,7 @@ end = struct
       Array.init ndet ~f:(fun i ->
         Printf.sprintf "  %s\n%s\n"
           (coefs_string i)
-          (Determinant.to_string ~mo_tot_num:mo_tot_num b.psi_det.(i)
+          (Determinant.to_string ~mo_num:mo_num b.psi_det.(i)
            |> String.split ~on:'\n'
            |> List.map ~f:(fun x -> "  "^x)
            |> String.concat ~sep:"\n"
@@ -367,8 +367,8 @@ Determinants ::
   ;;
 
   let to_string b =
-    let mo_tot_num = Ezfio.get_mo_basis_mo_tot_num () in
-    let mo_tot_num = MO_number.of_int mo_tot_num ~max:mo_tot_num in
+    let mo_num = Ezfio.get_mo_basis_mo_num () in
+    let mo_num = MO_number.of_int mo_num ~max:mo_num in
     Printf.sprintf "
 n_int                  = %s
 bit_kind               = %s
@@ -388,7 +388,7 @@ psi_det                = %s
      (b.psi_coef  |> Array.to_list |> List.map ~f:Det_coef.to_string
       |> String.concat ~sep:", ")
      (b.psi_det   |> Array.to_list |> List.map ~f:(Determinant.to_string
-       ~mo_tot_num:mo_tot_num) |> String.concat ~sep:"\n\n")
+       ~mo_num) |> String.concat ~sep:"\n\n")
   ;;
 
   let of_rst r =

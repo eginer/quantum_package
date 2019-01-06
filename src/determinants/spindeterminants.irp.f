@@ -872,7 +872,7 @@ BEGIN_PROVIDER [ integer, singles_alpha_size ]
  BEGIN_DOC
  ! Dimension of the singles_alpha array
  END_DOC
- singles_alpha_size = elec_alpha_num * (mo_tot_num - elec_alpha_num)
+ singles_alpha_size = elec_alpha_num * (mo_num - elec_alpha_num)
 END_PROVIDER
 
  BEGIN_PROVIDER [ integer*8, singles_alpha_csc_idx, (N_det_alpha_unique+1) ]

@@ -109,7 +109,7 @@ end
  integer :: i,j,k,l,m,istate
  double precision :: contrib
  double precision :: r(3)
- double precision :: aos_array(ao_num),mos_array(mo_tot_num)
+ double precision :: aos_array(ao_num),mos_array(mo_num)
   do j = 1, nucl_num
    do k = 1, n_points_radial_grid -1
     do l = 1, n_points_integration_angular

@@ -17,7 +17,7 @@ END_DOC
 
   PROVIDE ao_md5 mo_occ level_shift 
  
-  allocate(mo_coef_save(ao_num,mo_tot_num),                          &
+  allocate(mo_coef_save(ao_num,mo_num),                          &
       Fock_matrix_DIIS (ao_num,ao_num,max_dim_DIIS),                 &
       error_matrix_DIIS(ao_num,ao_num,max_dim_DIIS)                  &
       )
@@ -43,7 +43,10 @@ END_DOC
 !
 ! Start of main SCF loop
 !
-  do while(( (max_error_DIIS > threshold_DIIS_nonzero).or.(dabs(Delta_energy_SCF) > thresh_SCF) ) .and. (iteration_SCF < n_it_SCF_max))
+  do while ( &
+    ( (max_error_DIIS > threshold_DIIS_nonzero) .or. &
+      (dabs(Delta_energy_SCF) > thresh_SCF) &
+    ) .and. (iteration_SCF < n_it_SCF_max) )
 
 ! Increment cycle number
 
@@ -106,16 +109,16 @@ END_DOC
 
     double precision :: level_shift_save
     level_shift_save = level_shift
-    mo_coef_save(1:ao_num,1:mo_tot_num) = mo_coef(1:ao_num,1:mo_tot_num)
+    mo_coef_save(1:ao_num,1:mo_num) = mo_coef(1:ao_num,1:mo_num)
     do while (Delta_energy_SCF .ge. 0.d0)
-      mo_coef(1:ao_num,1:mo_tot_num) = mo_coef_save
+      mo_coef(1:ao_num,1:mo_num) = mo_coef_save
       TOUCH mo_coef
       if (level_shift <= 0.d0) then
         level_shift = 1.d0
       else
         level_shift = level_shift * 2.0d0
       endif
-      mo_coef(1:ao_num,1:mo_tot_num) = eigenvectors_Fock_matrix_MO(1:ao_num,1:mo_tot_num)
+      mo_coef(1:ao_num,1:mo_num) = eigenvectors_Fock_matrix_MO(1:ao_num,1:mo_num)
       if(no_oa_or_av_opt)then
         call reorder_active_orb
         call initialize_mo_coef_begin_iteration
@@ -145,6 +148,9 @@ END_DOC
 
   enddo
 
+ if (iteration_SCF < n_it_SCF_max) then
+   mo_label = "Canonical"
+ endif
 !
 ! End of Main SCF loop
 !
@@ -158,8 +164,7 @@ END_DOC
    call save_mos
   endif
 
-  call write_double(6, Energy_SCF, 'SCF energy ')
-! call ezfio_set_hartree_fock_energy(Energy_SCF)
+  call write_double(6, Energy_SCF, 'SCF energy')
 
   call write_time(6)
 

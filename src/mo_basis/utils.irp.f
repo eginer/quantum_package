@@ -5,12 +5,12 @@ subroutine save_mos
   
   call system('$QP_ROOT/scripts/save_current_mos.sh '//trim(ezfio_filename))
   
-  call ezfio_set_mo_basis_mo_tot_num(mo_tot_num)
+  call ezfio_set_mo_basis_mo_num(mo_num)
   call ezfio_set_mo_basis_mo_label(mo_label)
   call ezfio_set_mo_basis_ao_md5(ao_md5)
-  allocate ( buffer(ao_num,mo_tot_num) )
+  allocate ( buffer(ao_num,mo_num) )
   buffer = 0.d0
-  do j = 1, mo_tot_num
+  do j = 1, mo_num
     do i = 1, ao_num
       buffer(i,j) = mo_coef(i,j)
     enddo
@@ -28,7 +28,7 @@ subroutine save_mos_truncated(n)
   
   call system('$QP_ROOT/scripts/save_current_mos.sh '//trim(ezfio_filename))
   
-  call ezfio_set_mo_basis_mo_tot_num(n)
+  call ezfio_set_mo_basis_mo_num(n)
   call ezfio_set_mo_basis_mo_label(mo_label)
   call ezfio_set_mo_basis_ao_md5(ao_md5)
   allocate ( buffer(ao_num,n) )
@@ -56,8 +56,8 @@ subroutine mo_as_eigvectors_of_mo_matrix(matrix,n,m,label,sign,output)
   !DIR$ ATTRIBUTES ALIGN : $IRP_ALIGN :: mo_coef_new, R
   
   call write_time(6)
-  if (m /= mo_tot_num) then
-    print *, irp_here, ': Error : m/= mo_tot_num'
+  if (m /= mo_num) then
+    print *, irp_here, ': Error : m/= mo_num'
     stop 1
   endif
   allocate(A(n,m),R(n,m),mo_coef_new(ao_num,m),eigvalues(m))
@@ -117,8 +117,8 @@ subroutine mo_as_svd_vectors_of_mo_matrix(matrix,lda,m,n,label)
   !DIR$ ATTRIBUTES ALIGN : $IRP_ALIGN :: mo_coef_new, U, Vt, A
   
   call write_time(6)
-  if (m /= mo_tot_num) then
-    print *, irp_here, ': Error : m/= mo_tot_num'
+  if (m /= mo_num) then
+    print *, irp_here, ': Error : m/= mo_num'
     stop 1
   endif
 
@@ -170,8 +170,8 @@ subroutine mo_as_svd_vectors_of_mo_matrix_eig(matrix,lda,m,n,eig,label)
   !DIR$ ATTRIBUTES ALIGN : $IRP_ALIGN :: mo_coef_new, U, Vt, A
   
   call write_time(6)
-  if (m /= mo_tot_num) then
-    print *, irp_here, ': Error : m/= mo_tot_num'
+  if (m /= mo_num) then
+    print *, irp_here, ': Error : m/= mo_num'
     stop 1
   endif
 

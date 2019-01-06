@@ -13,7 +13,7 @@ subroutine perturb_buffer_$PERT(i_generator,buffer,buffer_size,e_2_pert_buffer,c
   integer, intent(in)            :: Nint, N_st, buffer_size, i_generator
   integer(bit_kind), intent(in)  :: buffer(Nint,2,buffer_size)
   integer(bit_kind),intent(in)    :: key_mask(Nint,2)
-  double precision, intent(in)    :: fock_diag_tmp(2,0:mo_tot_num)
+  double precision, intent(in)    :: fock_diag_tmp(2,0:mo_num)
   double precision, intent(in)    :: electronic_energy(N_st)
   double precision, intent(inout) :: sum_norm_pert(N_st),sum_e_2_pert(N_st)
   double precision, intent(inout) :: coef_pert_buffer(N_st,buffer_size),e_2_pert_buffer(N_st,buffer_size),sum_H_pert_diag(N_st)
@@ -63,13 +63,13 @@ subroutine perturb_buffer_$PERT(i_generator,buffer,buffer_size,e_2_pert_buffer,c
   call create_minilist(key_mask, psi_selectors, minilist, idx_miniList, N_det_selectors, N_minilist, Nint)
   allocate(   microlist(Nint,2,N_minilist*4),               &
        idx_microlist(N_minilist*4),                  &
-       ptr_microlist(0:mo_tot_num*2+1),  &
-       N_microlist(0:mo_tot_num*2) )
+       ptr_microlist(0:mo_num*2+1),  &
+       N_microlist(0:mo_num*2) )
   
   allocate(   microlist_gen(Nint,2,N_minilist_gen*4),               &
       idx_microlist_gen(N_minilist_gen*4 ),                  &
-      ptr_microlist_gen(0:mo_tot_num*2+1),  &
-       N_microlist_gen(0:mo_tot_num*2) )
+      ptr_microlist_gen(0:mo_num*2+1),  &
+       N_microlist_gen(0:mo_num*2) )
 
   if(key_mask(1,1) /= 0) then
     
@@ -80,7 +80,7 @@ subroutine perturb_buffer_$PERT(i_generator,buffer,buffer_size,e_2_pert_buffer,c
     allocate(idx_microlist_zero(N_minilist))
     
     
-    do i=0,mo_tot_num*2
+    do i=0,mo_num*2
       do k=ptr_microlist(i),ptr_microlist(i+1)-1
         idx_microlist(k) = idx_minilist(idx_microlist(k))
       end do
@@ -192,7 +192,7 @@ subroutine perturb_buffer_by_mono_$PERT(i_generator,buffer,buffer_size,e_2_pert_
   integer, intent(in)            :: Nint, N_st, buffer_size, i_generator
   integer(bit_kind), intent(in)  :: buffer(Nint,2,buffer_size)
   integer(bit_kind),intent(in)    :: key_mask(Nint,2)
-  double precision, intent(in)    :: fock_diag_tmp(2,0:mo_tot_num)
+  double precision, intent(in)    :: fock_diag_tmp(2,0:mo_num)
   double precision, intent(in)    :: electronic_energy(N_st)
   double precision, intent(inout) :: sum_norm_pert(N_st),sum_e_2_pert(N_st)
   double precision, intent(inout) :: coef_pert_buffer(N_st,buffer_size),e_2_pert_buffer(N_st,buffer_size),sum_H_pert_diag(N_st)

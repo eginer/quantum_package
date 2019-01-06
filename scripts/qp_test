@@ -13,6 +13,7 @@ Options:
 
 """
 
+import sys
 import os
 import subprocess
 
@@ -22,7 +23,7 @@ try:
 except ImportError:
     print "Please check if you have sourced the ${QP_ROOT}/quantum_package.rc"
     print "(`source ${QP_ROOT}/quantum_package.rc`)"
-    print sys.exit(1)
+    sys.exit(1)
 
 
 def main(arguments):

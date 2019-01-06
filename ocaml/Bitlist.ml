@@ -87,9 +87,9 @@ let of_int64_array l =
 
 
 (* Compute n_int *)
-let n_int_of_mo_tot_num mo_tot_num =
+let n_int_of_mo_num mo_num =
   let bit_kind_size = Bit_kind_size.to_int (Lazy.force Qpackage.bit_kind_size) in
-  N_int_number.of_int ( (mo_tot_num-1)/bit_kind_size + 1 )
+  N_int_number.of_int ( (mo_num-1)/bit_kind_size + 1 )
 
 
 (* Create a zero bit list *)
@@ -134,14 +134,14 @@ let of_mo_number_list n_int l =
 
 let to_mo_number_list l =
   let a = Array.of_list l in
-  let mo_tot_num = MO_number.get_max () in
+  let mo_num = MO_number.get_max () in
   let rec do_work accu = function
   | 0 -> accu
   | i ->
       begin
         let new_accu = 
         match a.(i-1) with
-        | Bit.One  -> (MO_number.of_int ~max:mo_tot_num i)::accu 
+        | Bit.One  -> (MO_number.of_int ~max:mo_num i)::accu 
         | Bit.Zero -> accu 
         in
         do_work new_accu (i-1)

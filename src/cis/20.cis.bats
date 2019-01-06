@@ -9,7 +9,7 @@ function run() {
   ezfio set_file $1
   ezfio set determinants n_states  3
   ezfio set davidson threshold_davidson 1.e-12
-  echo "Write" > $1/mo_two_e_integrals/disk_access_mo_integrals
+  ezfio set mo_two_e_ints io_mo_two_e_integrals Write
   qp_set_frozen_core $1
   qp_run cis $1
   energy1="$(ezfio get cis energy | tr '[]' ' ' | cut -d ',' -f 1)"
@@ -63,7 +63,7 @@ function run() {
 }
 
 @test "SO" {
-  run so.ezfio -25.7502241401925 -25.5862791897799 -25.5829342971276
+  run so.ezfio -25.7502263243068 -25.5862810638724 -25.5829361589673
 }
 
 @test "CH4" {

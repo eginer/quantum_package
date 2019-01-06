@@ -476,13 +476,13 @@ subroutine i_H_j_s2(key_i,key_j,Nint,hij,s2)
   
   integer                        :: exc(0:2,2,2)
   integer                        :: degree
-  double precision               :: get_mo_bielec_integral
+  double precision               :: get_two_e_integral
   integer                        :: m,n,p,q
   integer                        :: i,j,k
   integer                        :: occ(Nint*bit_kind_size,2)
   double precision               :: diag_H_mat_elem, phase
   integer                        :: n_occ_ab(2)
-  PROVIDE mo_bielec_integrals_in_map mo_integrals_map big_array_exchange_integrals
+  PROVIDE mo_two_e_integrals_in_map mo_integrals_map big_array_exchange_integrals
   
   ASSERT (Nint > 0)
   ASSERT (Nint == N_int)
@@ -509,7 +509,7 @@ subroutine i_H_j_s2(key_i,key_j,Nint,hij,s2)
         else if (exc(1,2,1) ==exc(1,1,2))then
           hij = phase * big_array_exchange_integrals(exc(1,2,1),exc(1,1,1),exc(1,2,2))
         else
-          hij = phase*get_mo_bielec_integral(                          &
+          hij = phase*get_two_e_integral(                          &
               exc(1,1,1),                                              &
               exc(1,1,2),                                              &
               exc(1,2,1),                                              &
@@ -517,24 +517,24 @@ subroutine i_H_j_s2(key_i,key_j,Nint,hij,s2)
         endif
       ! Double alpha
       else if (exc(0,1,1) == 2) then
-        hij = phase*(get_mo_bielec_integral(                         &
+        hij = phase*(get_two_e_integral(                         &
             exc(1,1,1),                                              &
             exc(2,1,1),                                              &
             exc(1,2,1),                                              &
             exc(2,2,1) ,mo_integrals_map) -                          &
-            get_mo_bielec_integral(                                  &
+            get_two_e_integral(                                  &
             exc(1,1,1),                                              &
             exc(2,1,1),                                              &
             exc(2,2,1),                                              &
             exc(1,2,1) ,mo_integrals_map) )
       ! Double beta
       else if (exc(0,1,2) == 2) then
-        hij = phase*(get_mo_bielec_integral(                         &
+        hij = phase*(get_two_e_integral(                         &
             exc(1,1,2),                                              &
             exc(2,1,2),                                              &
             exc(1,2,2),                                              &
             exc(2,2,2) ,mo_integrals_map) -                          &
-            get_mo_bielec_integral(                                  &
+            get_two_e_integral(                                  &
             exc(1,1,2),                                              &
             exc(2,1,2),                                              &
             exc(2,2,2),                                              &
@@ -578,13 +578,13 @@ subroutine i_H_j(key_i,key_j,Nint,hij)
   
   integer                        :: exc(0:2,2,2)
   integer                        :: degree
-  double precision               :: get_mo_bielec_integral
+  double precision               :: get_two_e_integral
   integer                        :: m,n,p,q
   integer                        :: i,j,k
   integer                        :: occ(Nint*bit_kind_size,2)
   double precision               :: diag_H_mat_elem, phase
   integer                        :: n_occ_ab(2)
-  PROVIDE mo_bielec_integrals_in_map mo_integrals_map big_array_exchange_integrals
+  PROVIDE mo_two_e_integrals_in_map mo_integrals_map big_array_exchange_integrals
   
   ASSERT (Nint > 0)
   ASSERT (Nint == N_int)
@@ -608,7 +608,7 @@ subroutine i_H_j(key_i,key_j,Nint,hij)
         else if (exc(1,2,1) ==exc(1,1,2))then
           hij = phase * big_array_exchange_integrals(exc(1,2,1),exc(1,1,1),exc(1,2,2))
         else
-          hij = phase*get_mo_bielec_integral(                          &
+          hij = phase*get_two_e_integral(                          &
               exc(1,1,1),                                              &
               exc(1,1,2),                                              &
               exc(1,2,1),                                              &
@@ -616,24 +616,24 @@ subroutine i_H_j(key_i,key_j,Nint,hij)
         endif
       else if (exc(0,1,1) == 2) then
         ! Double alpha
-        hij = phase*(get_mo_bielec_integral(                         &
+        hij = phase*(get_two_e_integral(                         &
             exc(1,1,1),                                              &
             exc(2,1,1),                                              &
             exc(1,2,1),                                              &
             exc(2,2,1) ,mo_integrals_map) -                          &
-            get_mo_bielec_integral(                                  &
+            get_two_e_integral(                                  &
             exc(1,1,1),                                              &
             exc(2,1,1),                                              &
             exc(2,2,1),                                              &
             exc(1,2,1) ,mo_integrals_map) )
       else if (exc(0,1,2) == 2) then
         ! Double beta
-        hij = phase*(get_mo_bielec_integral(                         &
+        hij = phase*(get_two_e_integral(                         &
             exc(1,1,2),                                              &
             exc(2,1,2),                                              &
             exc(1,2,2),                                              &
             exc(2,2,2) ,mo_integrals_map) -                          &
-            get_mo_bielec_integral(                                  &
+            get_two_e_integral(                                  &
             exc(1,1,2),                                              &
             exc(2,1,2),                                              &
             exc(2,2,2),                                              &
@@ -677,7 +677,7 @@ subroutine i_H_j_verbose(key_i,key_j,Nint,hij,hmono,hdouble,phase)
   
   integer                        :: exc(0:2,2,2)
   integer                        :: degree
-  double precision               :: get_mo_bielec_integral
+  double precision               :: get_two_e_integral
   integer                        :: m,n,p,q
   integer                        :: i,j,k
   integer                        :: occ(Nint*bit_kind_size,2)
@@ -685,7 +685,7 @@ subroutine i_H_j_verbose(key_i,key_j,Nint,hij,hmono,hdouble,phase)
   integer                        :: n_occ_ab(2)
   logical                        :: has_mipi(Nint*bit_kind_size)
   double precision               :: mipi(Nint*bit_kind_size), miip(Nint*bit_kind_size)
-  PROVIDE mo_bielec_integrals_in_map mo_integrals_map
+  PROVIDE mo_two_e_integrals_in_map mo_integrals_map
   
   ASSERT (Nint > 0)
   ASSERT (Nint == N_int)
@@ -704,19 +704,19 @@ subroutine i_H_j_verbose(key_i,key_j,Nint,hij,hmono,hdouble,phase)
       call get_double_excitation(key_i,key_j,exc,phase,Nint)
       if (exc(0,1,1) == 1) then
         ! Mono alpha, mono beta
-        hij = phase*get_mo_bielec_integral(                          &
+        hij = phase*get_two_e_integral(                          &
             exc(1,1,1),                                              &
             exc(1,1,2),                                              &
             exc(1,2,1),                                              &
             exc(1,2,2) ,mo_integrals_map)
       else if (exc(0,1,1) == 2) then
         ! Double alpha
-        hij = phase*(get_mo_bielec_integral(                         &
+        hij = phase*(get_two_e_integral(                         &
             exc(1,1,1),                                              &
             exc(2,1,1),                                              &
             exc(1,2,1),                                              &
             exc(2,2,1) ,mo_integrals_map) -                          &
-            get_mo_bielec_integral(                                  &
+            get_two_e_integral(                                  &
             exc(1,1,1),                                              &
             exc(2,1,1),                                              &
             exc(2,2,1),                                              &
@@ -724,12 +724,12 @@ subroutine i_H_j_verbose(key_i,key_j,Nint,hij,hmono,hdouble,phase)
 
       else if (exc(0,1,2) == 2) then
         ! Double beta
-        hij = phase*(get_mo_bielec_integral(                         &
+        hij = phase*(get_two_e_integral(                         &
             exc(1,1,2),                                              &
             exc(2,1,2),                                              &
             exc(1,2,2),                                              &
             exc(2,2,2) ,mo_integrals_map) -                          &
-            get_mo_bielec_integral(                                  &
+            get_two_e_integral(                                  &
             exc(1,1,2),                                              &
             exc(2,1,2),                                              &
             exc(2,2,2),                                              &
@@ -747,15 +747,15 @@ subroutine i_H_j_verbose(key_i,key_j,Nint,hij,hmono,hdouble,phase)
         do k = 1, elec_alpha_num
           i = occ(k,1)
           if (.not.has_mipi(i)) then
-            mipi(i) = get_mo_bielec_integral(m,i,p,i,mo_integrals_map)
-            miip(i) = get_mo_bielec_integral(m,i,i,p,mo_integrals_map)
+            mipi(i) = get_two_e_integral(m,i,p,i,mo_integrals_map)
+            miip(i) = get_two_e_integral(m,i,i,p,mo_integrals_map)
             has_mipi(i) = .True.
           endif
         enddo
         do k = 1, elec_beta_num
           i = occ(k,2)
           if (.not.has_mipi(i)) then
-            mipi(i) = get_mo_bielec_integral(m,i,p,i,mo_integrals_map)
+            mipi(i) = get_two_e_integral(m,i,p,i,mo_integrals_map)
             has_mipi(i) = .True.
           endif
         enddo
@@ -774,15 +774,15 @@ subroutine i_H_j_verbose(key_i,key_j,Nint,hij,hmono,hdouble,phase)
         do k = 1, elec_beta_num
           i = occ(k,2)
           if (.not.has_mipi(i)) then
-            mipi(i) = get_mo_bielec_integral(m,i,p,i,mo_integrals_map)
-            miip(i) = get_mo_bielec_integral(m,i,i,p,mo_integrals_map)
+            mipi(i) = get_two_e_integral(m,i,p,i,mo_integrals_map)
+            miip(i) = get_two_e_integral(m,i,i,p,mo_integrals_map)
             has_mipi(i) = .True.
           endif
         enddo
         do k = 1, elec_alpha_num
           i = occ(k,1)
           if (.not.has_mipi(i)) then
-            mipi(i) = get_mo_bielec_integral(m,i,p,i,mo_integrals_map)
+            mipi(i) = get_two_e_integral(m,i,p,i,mo_integrals_map)
             has_mipi(i) = .True.
           endif
         enddo
@@ -795,7 +795,7 @@ subroutine i_H_j_verbose(key_i,key_j,Nint,hij,hmono,hdouble,phase)
         enddo
         
       endif
-      hmono = mo_mono_elec_integral(m,p)
+      hmono = mo_one_e_integrals(m,p)
       hij = phase*(hdouble + hmono)
       
     case (0)
@@ -1592,7 +1592,7 @@ double precision function diag_H_mat_elem_fock(det_ref,det_pert,fock_diag_tmp,Ni
   END_DOC
   integer,intent(in)             :: Nint
   integer(bit_kind),intent(in)   :: det_ref(Nint,2), det_pert(Nint,2)
-  double precision, intent(in)   :: fock_diag_tmp(2,mo_tot_num+1)
+  double precision, intent(in)   :: fock_diag_tmp(2,mo_num+1)
 
   integer                        :: degree
   double precision               :: phase, E0
@@ -1600,7 +1600,7 @@ double precision function diag_H_mat_elem_fock(det_ref,det_pert,fock_diag_tmp,Ni
   integer                        :: h1, p1, h2, p2, s1, s2
 
   call get_excitation_degree(det_ref,det_pert,degree,Nint)
-  E0 = fock_diag_tmp(1,mo_tot_num+1)
+  E0 = fock_diag_tmp(1,mo_num+1)
   if (degree == 2) then
     call get_double_excitation(det_ref,det_pert,exc,phase,Nint)
     call decode_exc(exc,2,h1,p1,h2,p2,s1,s2)
@@ -1608,29 +1608,29 @@ double precision function diag_H_mat_elem_fock(det_ref,det_pert,fock_diag_tmp,Ni
     if ( (s1 == 1).and.(s2 == 1) ) then      ! alpha/alpha
       diag_H_mat_elem_fock = E0 &
         - fock_diag_tmp(1,h1) &
-        + ( fock_diag_tmp(1,p1) - mo_bielec_integral_jj_anti(h1,p1) ) &
-        - ( fock_diag_tmp(1,h2) - mo_bielec_integral_jj_anti(h1,h2)   &
-            + mo_bielec_integral_jj_anti(p1,h2) )                     &
-        + ( fock_diag_tmp(1,p2) - mo_bielec_integral_jj_anti(h1,p2)   &
-            + mo_bielec_integral_jj_anti(p1,p2) - mo_bielec_integral_jj_anti(h2,p2) )
+        + ( fock_diag_tmp(1,p1) - mo_two_e_integrals_jj_anti(h1,p1) ) &
+        - ( fock_diag_tmp(1,h2) - mo_two_e_integrals_jj_anti(h1,h2)   &
+            + mo_two_e_integrals_jj_anti(p1,h2) )                     &
+        + ( fock_diag_tmp(1,p2) - mo_two_e_integrals_jj_anti(h1,p2)   &
+            + mo_two_e_integrals_jj_anti(p1,p2) - mo_two_e_integrals_jj_anti(h2,p2) )
 
     else if ( (s1 == 2).and.(s2 == 2) ) then ! beta/beta
       diag_H_mat_elem_fock = E0 &
         - fock_diag_tmp(2,h1) &
-        + ( fock_diag_tmp(2,p1) - mo_bielec_integral_jj_anti(h1,p1) ) &
-        - ( fock_diag_tmp(2,h2) - mo_bielec_integral_jj_anti(h1,h2)   &
-            + mo_bielec_integral_jj_anti(p1,h2) )                     &
-        + ( fock_diag_tmp(2,p2) - mo_bielec_integral_jj_anti(h1,p2)   &
-            + mo_bielec_integral_jj_anti(p1,p2) - mo_bielec_integral_jj_anti(h2,p2) )
+        + ( fock_diag_tmp(2,p1) - mo_two_e_integrals_jj_anti(h1,p1) ) &
+        - ( fock_diag_tmp(2,h2) - mo_two_e_integrals_jj_anti(h1,h2)   &
+            + mo_two_e_integrals_jj_anti(p1,h2) )                     &
+        + ( fock_diag_tmp(2,p2) - mo_two_e_integrals_jj_anti(h1,p2)   &
+            + mo_two_e_integrals_jj_anti(p1,p2) - mo_two_e_integrals_jj_anti(h2,p2) )
 
     else                                    ! alpha/beta
       diag_H_mat_elem_fock = E0 &
         - fock_diag_tmp(1,h1) &
-        + ( fock_diag_tmp(1,p1) - mo_bielec_integral_jj_anti(h1,p1) ) &
-        - ( fock_diag_tmp(2,h2) - mo_bielec_integral_jj(h1,h2)        &
-            + mo_bielec_integral_jj(p1,h2) )                          &
-        + ( fock_diag_tmp(2,p2) - mo_bielec_integral_jj(h1,p2)        &
-            + mo_bielec_integral_jj(p1,p2) - mo_bielec_integral_jj_anti(h2,p2) )
+        + ( fock_diag_tmp(1,p1) - mo_two_e_integrals_jj_anti(h1,p1) ) &
+        - ( fock_diag_tmp(2,h2) - mo_two_e_integrals_jj(h1,h2)        &
+            + mo_two_e_integrals_jj(p1,h2) )                          &
+        + ( fock_diag_tmp(2,p2) - mo_two_e_integrals_jj(h1,p2)        &
+            + mo_two_e_integrals_jj(p1,p2) - mo_two_e_integrals_jj_anti(h2,p2) )
 
     endif
 
@@ -1639,10 +1639,10 @@ double precision function diag_H_mat_elem_fock(det_ref,det_pert,fock_diag_tmp,Ni
     call decode_exc(exc,1,h1,p1,h2,p2,s1,s2)
     if (s1 == 1) then
       diag_H_mat_elem_fock = E0 - fock_diag_tmp(1,h1) &
-        + ( fock_diag_tmp(1,p1) - mo_bielec_integral_jj_anti(h1,p1) ) 
+        + ( fock_diag_tmp(1,p1) - mo_two_e_integrals_jj_anti(h1,p1) ) 
     else 
       diag_H_mat_elem_fock = E0 - fock_diag_tmp(2,h1) &
-        + ( fock_diag_tmp(2,p1) - mo_bielec_integral_jj_anti(h1,p1) ) 
+        + ( fock_diag_tmp(2,p1) - mo_two_e_integrals_jj_anti(h1,p1) ) 
     endif
 
   else if (degree == 0) then
@@ -1745,16 +1745,16 @@ subroutine a_operator(iorb,ispin,key,hjj,Nint,na,nb)
   call bitstring_to_list_ab(key, occ, tmp, Nint)
   na = na-1
   
-  hjj = hjj - mo_mono_elec_integral(iorb,iorb)
+  hjj = hjj - mo_one_e_integrals(iorb,iorb)
   
   ! Same spin
   do i=1,na
-    hjj = hjj - mo_bielec_integral_jj_anti(occ(i,ispin),iorb)
+    hjj = hjj - mo_two_e_integrals_jj_anti(occ(i,ispin),iorb)
   enddo
   
   ! Opposite spin
   do i=1,nb
-    hjj = hjj - mo_bielec_integral_jj(occ(i,other_spin),iorb)
+    hjj = hjj - mo_two_e_integrals_jj(occ(i,other_spin),iorb)
   enddo
   
 end
@@ -1793,21 +1793,21 @@ subroutine ac_operator(iorb,ispin,key,hjj,Nint,na,nb)
   key(k,ispin) = ibset(key(k,ispin),l)
   other_spin = iand(ispin,1)+1
   
-!  if (iorb > mo_tot_num) then
-!    print *,  irp_here, 'iorb > mo_tot_num'
-!    print *,  iorb, mo_tot_num
+!  if (iorb > mo_num) then
+!    print *,  irp_here, 'iorb > mo_num'
+!    print *,  iorb, mo_num
 !    stop -1
 !  endif
-  hjj = hjj + mo_mono_elec_integral(iorb,iorb)
+  hjj = hjj + mo_one_e_integrals(iorb,iorb)
   
   ! Same spin
   do i=1,na
-    hjj = hjj + mo_bielec_integral_jj_anti(occ(i,ispin),iorb)
+    hjj = hjj + mo_two_e_integrals_jj_anti(occ(i,ispin),iorb)
   enddo
   
   ! Opposite spin
   do i=1,nb
-    hjj = hjj + mo_bielec_integral_jj(occ(i,other_spin),iorb)
+    hjj = hjj + mo_two_e_integrals_jj(occ(i,other_spin),iorb)
   enddo
   na = na+1
 end
@@ -2183,7 +2183,7 @@ subroutine i_H_j_mono_spin(key_i,key_j,Nint,spin,hij)
   integer                        :: exc(0:2,2)
   double precision               :: phase
 
-  PROVIDE big_array_exchange_integrals mo_bielec_integrals_in_map
+  PROVIDE big_array_exchange_integrals mo_two_e_integrals_in_map
 
   call get_mono_excitation_spin(key_i(1,spin),key_j(1,spin),exc,phase,Nint)
   call get_mono_excitation_from_fock(key_i,key_j,exc(1,1),exc(1,2),spin,phase,hij)
@@ -2202,16 +2202,16 @@ subroutine i_H_j_double_spin(key_i,key_j,Nint,hij)
   
   integer                        :: exc(0:2,2)
   double precision               :: phase
-  double precision, external     :: get_mo_bielec_integral
+  double precision, external     :: get_two_e_integral
 
-  PROVIDE big_array_exchange_integrals mo_bielec_integrals_in_map
+  PROVIDE big_array_exchange_integrals mo_two_e_integrals_in_map
   call get_double_excitation_spin(key_i,key_j,exc,phase,Nint)
-  hij = phase*(get_mo_bielec_integral(                             &
+  hij = phase*(get_two_e_integral(                             &
       exc(1,1),                                                    &
       exc(2,1),                                                    &
       exc(1,2),                                                    &
       exc(2,2), mo_integrals_map) -                                &
-      get_mo_bielec_integral(                                      &
+      get_two_e_integral(                                      &
       exc(1,1),                                                    &
       exc(2,1),                                                    &
       exc(2,2),                                                    &
@@ -2231,9 +2231,9 @@ subroutine i_H_j_double_alpha_beta(key_i,key_j,Nint,hij)
   
   integer                        :: exc(0:2,2,2)
   double precision               :: phase, phase2
-  double precision, external     :: get_mo_bielec_integral
+  double precision, external     :: get_two_e_integral
 
-  PROVIDE big_array_exchange_integrals mo_bielec_integrals_in_map
+  PROVIDE big_array_exchange_integrals mo_two_e_integrals_in_map
 
   call get_mono_excitation_spin(key_i(1,1),key_j(1,1),exc(0,1,1),phase,Nint)
   call get_mono_excitation_spin(key_i(1,2),key_j(1,2),exc(0,1,2),phase2,Nint)
@@ -2243,7 +2243,7 @@ subroutine i_H_j_double_alpha_beta(key_i,key_j,Nint,hij)
   else if (exc(1,2,1) == exc(1,1,2)) then
     hij = phase * big_array_exchange_integrals(exc(1,2,1),exc(1,1,1),exc(1,2,2))
   else
-    hij = phase*get_mo_bielec_integral(                              &
+    hij = phase*get_two_e_integral(                              &
         exc(1,1,1),                                                  &
         exc(1,1,2),                                                  &
         exc(1,2,1),                                                  &

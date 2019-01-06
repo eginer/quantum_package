@@ -1,4 +1,4 @@
-BEGIN_PROVIDER [ double precision, mo_coef_begin_iteration, (ao_num,mo_tot_num) ]
+BEGIN_PROVIDER [ double precision, mo_coef_begin_iteration, (ao_num,mo_num) ]
    implicit none
    BEGIN_DOC
    ! Void provider to store the coefficients of the |MO| basis at the beginning of the SCF iteration
@@ -26,12 +26,12 @@ subroutine reorder_active_orb
  double precision, allocatable :: accu(:)
  integer, allocatable :: index_active_orb(:),iorder(:)
  double precision, allocatable :: mo_coef_tmp(:,:)
- allocate(accu(mo_tot_num),index_active_orb(n_act_orb),iorder(mo_tot_num))
- allocate(mo_coef_tmp(ao_num,mo_tot_num))
+ allocate(accu(mo_num),index_active_orb(n_act_orb),iorder(mo_num))
+ allocate(mo_coef_tmp(ao_num,mo_num))
  
  do i = 1, n_act_orb
   iorb = list_act(i)
-  do j = 1, mo_tot_num
+  do j = 1, mo_num
    accu(j) = 0.d0
    iorder(j) = j
    do k = 1, ao_num
@@ -41,7 +41,7 @@ subroutine reorder_active_orb
    enddo
    accu(j) = -dabs(accu(j))
   enddo
-  call dsort(accu,iorder,mo_tot_num)
+  call dsort(accu,iorder,mo_num)
   index_active_orb(i) = iorder(1) 
  enddo
 

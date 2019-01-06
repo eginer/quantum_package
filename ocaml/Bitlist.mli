@@ -23,7 +23,7 @@ val to_int64_list  : t -> int64 list
 val to_int64_array : t -> int64 array
 
 (** Get the number of needed int64 elements to encode the bit list *)
-val n_int_of_mo_tot_num : int -> Qptypes.N_int_number.t
+val n_int_of_mo_num : int -> Qptypes.N_int_number.t
 
 (** Conversion to MO numbers *)
 val to_mo_number_list : t -> Qptypes.MO_number.t list

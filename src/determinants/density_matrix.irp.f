@@ -1,5 +1,5 @@
- BEGIN_PROVIDER [ double precision, one_body_dm_mo_alpha_average, (mo_tot_num,mo_tot_num) ]
-&BEGIN_PROVIDER [ double precision, one_body_dm_mo_beta_average, (mo_tot_num,mo_tot_num) ]
+ BEGIN_PROVIDER [ double precision, one_body_dm_mo_alpha_average, (mo_num,mo_num) ]
+&BEGIN_PROVIDER [ double precision, one_body_dm_mo_beta_average, (mo_num,mo_num) ]
    implicit none
    BEGIN_DOC
    ! $\alpha$ and $\beta$ one-body density matrix for each state
@@ -13,7 +13,7 @@
    enddo
 END_PROVIDER
 
-BEGIN_PROVIDER [ double precision, one_body_dm_mo_diff, (mo_tot_num,mo_tot_num,2:N_states) ]
+BEGIN_PROVIDER [ double precision, one_body_dm_mo_diff, (mo_num,mo_num,2:N_states) ]
   implicit none
   BEGIN_DOC
   ! Difference of the one-body density matrix with respect to the ground state
@@ -21,8 +21,8 @@ BEGIN_PROVIDER [ double precision, one_body_dm_mo_diff, (mo_tot_num,mo_tot_num,2
   integer                        :: i,j, istate
   
   do istate=2,N_states
-    do j=1,mo_tot_num
-      do i=1,mo_tot_num
+    do j=1,mo_num
+      do i=1,mo_num
         one_body_dm_mo_diff(i,j,istate) =                            &
             one_body_dm_mo_alpha(i,j,istate) - one_body_dm_mo_alpha(i,j,1) +&
             one_body_dm_mo_beta (i,j,istate) - one_body_dm_mo_beta (i,j,1)
@@ -33,13 +33,13 @@ BEGIN_PROVIDER [ double precision, one_body_dm_mo_diff, (mo_tot_num,mo_tot_num,2
 END_PROVIDER
 
 
-BEGIN_PROVIDER [ double precision, one_body_dm_mo_spin_index, (mo_tot_num,mo_tot_num,N_states,2) ]
+BEGIN_PROVIDER [ double precision, one_body_dm_mo_spin_index, (mo_num,mo_num,N_states,2) ]
   implicit none
   integer                        :: i,j,ispin,istate
   ispin = 1
   do istate = 1, N_states
-    do j = 1, mo_tot_num
-      do i = 1, mo_tot_num
+    do j = 1, mo_num
+      do i = 1, mo_num
         one_body_dm_mo_spin_index(i,j,istate,ispin) = one_body_dm_mo_alpha(i,j,istate)
       enddo
     enddo
@@ -47,8 +47,8 @@ BEGIN_PROVIDER [ double precision, one_body_dm_mo_spin_index, (mo_tot_num,mo_tot
   
   ispin = 2
   do istate = 1, N_states
-    do j = 1, mo_tot_num
-      do i = 1, mo_tot_num
+    do j = 1, mo_num
+      do i = 1, mo_num
         one_body_dm_mo_spin_index(i,j,istate,ispin) = one_body_dm_mo_beta(i,j,istate)
       enddo
     enddo
@@ -57,14 +57,14 @@ BEGIN_PROVIDER [ double precision, one_body_dm_mo_spin_index, (mo_tot_num,mo_tot
 END_PROVIDER
 
 
-BEGIN_PROVIDER [ double precision, one_body_dm_dagger_mo_spin_index, (mo_tot_num,mo_tot_num,N_states,2) ]
+BEGIN_PROVIDER [ double precision, one_body_dm_dagger_mo_spin_index, (mo_num,mo_num,N_states,2) ]
    implicit none
    integer                        :: i,j,ispin,istate
    ispin = 1
    do istate = 1, N_states
-     do j = 1, mo_tot_num
+     do j = 1, mo_num
        one_body_dm_dagger_mo_spin_index(j,j,istate,ispin) = 1 - one_body_dm_mo_alpha(j,j,istate)
-       do i = j+1, mo_tot_num
+       do i = j+1, mo_num
          one_body_dm_dagger_mo_spin_index(i,j,istate,ispin) = -one_body_dm_mo_alpha(i,j,istate)
          one_body_dm_dagger_mo_spin_index(j,i,istate,ispin) = -one_body_dm_mo_alpha(i,j,istate)
        enddo
@@ -73,9 +73,9 @@ BEGIN_PROVIDER [ double precision, one_body_dm_dagger_mo_spin_index, (mo_tot_num
    
    ispin = 2
    do istate = 1, N_states
-     do j = 1, mo_tot_num
+     do j = 1, mo_num
        one_body_dm_dagger_mo_spin_index(j,j,istate,ispin) = 1 - one_body_dm_mo_beta(j,j,istate)
-       do i = j+1, mo_tot_num
+       do i = j+1, mo_num
          one_body_dm_dagger_mo_spin_index(i,j,istate,ispin) = -one_body_dm_mo_beta(i,j,istate)
          one_body_dm_dagger_mo_spin_index(j,i,istate,ispin) = -one_body_dm_mo_beta(i,j,istate)
        enddo
@@ -84,8 +84,8 @@ BEGIN_PROVIDER [ double precision, one_body_dm_dagger_mo_spin_index, (mo_tot_num
    
 END_PROVIDER
 
- BEGIN_PROVIDER [ double precision, one_body_dm_mo_alpha, (mo_tot_num,mo_tot_num,N_states) ]
-&BEGIN_PROVIDER [ double precision, one_body_dm_mo_beta, (mo_tot_num,mo_tot_num,N_states) ]
+ BEGIN_PROVIDER [ double precision, one_body_dm_mo_alpha, (mo_num,mo_num,N_states) ]
+&BEGIN_PROVIDER [ double precision, one_body_dm_mo_beta, (mo_num,mo_num,N_states) ]
   implicit none
   BEGIN_DOC
   ! $\alpha$ and $\beta$ one-body density matrix for each state
@@ -110,12 +110,12 @@ END_PROVIDER
       !$OMP  tmp_a, tmp_b, n_occ, krow, kcol, lrow, lcol, tmp_det, tmp_det2)&
       !$OMP SHARED(psi_det,psi_coef,N_int,N_states,elec_alpha_num,  &
       !$OMP  elec_beta_num,one_body_dm_mo_alpha,one_body_dm_mo_beta,N_det,&
-      !$OMP  mo_tot_num,psi_bilinear_matrix_rows,psi_bilinear_matrix_columns,&
+      !$OMP  mo_num,psi_bilinear_matrix_rows,psi_bilinear_matrix_columns,&
       !$OMP  psi_bilinear_matrix_transp_rows, psi_bilinear_matrix_transp_columns,&
       !$OMP  psi_bilinear_matrix_order_reverse, psi_det_alpha_unique, psi_det_beta_unique,&
       !$OMP  psi_bilinear_matrix_values, psi_bilinear_matrix_transp_values,&
       !$OMP  N_det_alpha_unique,N_det_beta_unique,irp_here)
-  allocate(tmp_a(mo_tot_num,mo_tot_num,N_states), tmp_b(mo_tot_num,mo_tot_num,N_states) )
+  allocate(tmp_a(mo_num,mo_num,N_states), tmp_b(mo_num,mo_num,N_states) )
   tmp_a = 0.d0
   !$OMP DO SCHEDULE(dynamic,64)
   do k_a=1,N_det
@@ -231,8 +231,8 @@ END_PROVIDER
    
 END_PROVIDER
  
- BEGIN_PROVIDER [ double precision, one_body_single_double_dm_mo_alpha, (mo_tot_num,mo_tot_num) ]
-&BEGIN_PROVIDER [ double precision, one_body_single_double_dm_mo_beta, (mo_tot_num,mo_tot_num) ]
+ BEGIN_PROVIDER [ double precision, one_body_single_double_dm_mo_alpha, (mo_num,mo_num) ]
+&BEGIN_PROVIDER [ double precision, one_body_single_double_dm_mo_beta, (mo_num,mo_num) ]
    implicit none
    BEGIN_DOC
    ! $\alpha$ and $\beta$ one-body density matrix for each state
@@ -257,8 +257,8 @@ END_PROVIDER
        !$OMP  tmp_a, tmp_b, n_occ_alpha,degree_respect_to_HF_k,degree_respect_to_HF_l)&
        !$OMP SHARED(ref_bitmask,psi_det,psi_coef,N_int,N_states,state_average_weight,elec_alpha_num,&
        !$OMP  elec_beta_num,one_body_single_double_dm_mo_alpha,one_body_single_double_dm_mo_beta,N_det,&
-       !$OMP  mo_tot_num)
-   allocate(tmp_a(mo_tot_num,mo_tot_num), tmp_b(mo_tot_num,mo_tot_num) )
+       !$OMP  mo_num)
+   allocate(tmp_a(mo_num,mo_num), tmp_b(mo_num,mo_num) )
    tmp_a = 0.d0
    tmp_b = 0.d0
    !$OMP DO SCHEDULE(dynamic)
@@ -314,7 +314,7 @@ END_PROVIDER
    !$OMP END PARALLEL
 END_PROVIDER
  
-BEGIN_PROVIDER [ double precision, one_body_dm_mo, (mo_tot_num,mo_tot_num) ]
+BEGIN_PROVIDER [ double precision, one_body_dm_mo, (mo_num,mo_num) ]
    implicit none
    BEGIN_DOC
    ! One-body density matrix
@@ -322,7 +322,7 @@ BEGIN_PROVIDER [ double precision, one_body_dm_mo, (mo_tot_num,mo_tot_num) ]
    one_body_dm_mo = one_body_dm_mo_alpha_average + one_body_dm_mo_beta_average
 END_PROVIDER
  
-BEGIN_PROVIDER [ double precision, one_body_spin_density_mo, (mo_tot_num,mo_tot_num) ]
+BEGIN_PROVIDER [ double precision, one_body_spin_density_mo, (mo_num,mo_num) ]
    implicit none
    BEGIN_DOC
    ! $\rho(\alpha) - \rho(\beta)$
@@ -340,7 +340,7 @@ subroutine set_natural_mos
    double precision, allocatable  :: tmp(:,:)
    
    label = "Natural"
-   call mo_as_svd_vectors_of_mo_matrix_eig(one_body_dm_mo,size(one_body_dm_mo,1),mo_tot_num,mo_tot_num,mo_occ,label)
+   call mo_as_svd_vectors_of_mo_matrix_eig(one_body_dm_mo,size(one_body_dm_mo,1),mo_num,mo_num,mo_occ,label)
    soft_touch mo_occ
    
 end
@@ -414,8 +414,8 @@ BEGIN_PROVIDER [ double precision, one_body_spin_density_ao, (ao_num,ao_num) ]
    one_body_spin_density_ao = 0.d0
    do k = 1, ao_num
      do l = 1, ao_num
-       do i = 1, mo_tot_num
-         do j = 1, mo_tot_num
+       do i = 1, mo_num
+         do j = 1, mo_num
            dm_mo = one_body_spin_density_mo(j,i)
            !    if(dabs(dm_mo).le.1.d-10)cycle
            one_body_spin_density_ao(l,k) += mo_coef(k,i) * mo_coef(l,j) * dm_mo
@@ -440,8 +440,8 @@ END_PROVIDER
    one_body_dm_ao_beta = 0.d0
    do k = 1, ao_num
      do l = 1, ao_num
-       do i = 1, mo_tot_num
-         do j = 1, mo_tot_num
+       do i = 1, mo_num
+         do j = 1, mo_num
            mo_alpha = one_body_dm_mo_alpha_average(j,i)
            mo_beta = one_body_dm_mo_beta_average(j,i)
            !    if(dabs(dm_mo).le.1.d-10)cycle

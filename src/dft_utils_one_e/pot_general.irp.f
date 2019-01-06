@@ -57,10 +57,10 @@ END_PROVIDER
 
 
 
- BEGIN_PROVIDER [double precision, potential_x_alpha_mo,(mo_tot_num,mo_tot_num,N_states)]
-&BEGIN_PROVIDER [double precision, potential_x_beta_mo,(mo_tot_num,mo_tot_num,N_states)]
-&BEGIN_PROVIDER [double precision, potential_c_alpha_mo,(mo_tot_num,mo_tot_num,N_states)]
-&BEGIN_PROVIDER [double precision, potential_c_beta_mo,(mo_tot_num,mo_tot_num,N_states)]
+ BEGIN_PROVIDER [double precision, potential_x_alpha_mo,(mo_num,mo_num,N_states)]
+&BEGIN_PROVIDER [double precision, potential_x_beta_mo,(mo_num,mo_num,N_states)]
+&BEGIN_PROVIDER [double precision, potential_c_alpha_mo,(mo_num,mo_num,N_states)]
+&BEGIN_PROVIDER [double precision, potential_c_beta_mo,(mo_num,mo_num,N_states)]
  implicit none
  BEGIN_DOC
 ! general providers for the alpha/beta exchange/correlation potentials on the MO basis
@@ -114,8 +114,8 @@ END_PROVIDER
  do istate = 1, N_states
   Trace_v_xc(istate) = 0.d0
   Trace_v_H(istate) = 0.d0
-  do i = 1, mo_tot_num
-   do j = 1, mo_tot_num
+  do i = 1, mo_num
+   do j = 1, mo_num
      Trace_v_xc(istate) += (potential_x_alpha_mo(j,i,istate) + potential_c_alpha_mo(j,i,istate)) * one_body_dm_mo_alpha_for_dft(j,i,istate) 
      Trace_v_xc(istate) += (potential_x_beta_mo(j,i,istate)  + potential_c_beta_mo(j,i,istate) ) * one_body_dm_mo_beta_for_dft(j,i,istate)
      dm = one_body_dm_mo_alpha_for_dft(j,i,istate) + one_body_dm_mo_beta_for_dft(j,i,istate)

@@ -26,8 +26,8 @@ let run ~multiplicity ezfio_file =
   let n_open_shells =
     alpha - beta
   in
-  let mo_tot_num = 
-    Ezfio.get_mo_basis_mo_tot_num ()
+  let mo_num = 
+    Ezfio.get_mo_basis_mo_num ()
   in
   let build_list_of_dets ne n_closed n_open =
     let init = 
@@ -60,7 +60,7 @@ let run ~multiplicity ezfio_file =
     in
     set_n_electrons init n_open ne
           |> List.filter ~f:(fun x -> List.length x <= n_closed+n_open) 
-          |> List.map ~f:(fun x -> extend x (((mo_tot_num-1)/64+1)*64 - List.length x))
+          |> List.map ~f:(fun x -> extend x (((mo_num-1)/64+1)*64 - List.length x))
   in
 
   let alpha_new = 
@@ -79,7 +79,7 @@ let run ~multiplicity ezfio_file =
   in
 
   let n_int = 
-    Bitlist.n_int_of_mo_tot_num mo_tot_num
+    Bitlist.n_int_of_mo_num mo_num
   in
   let determinants = 
     List.map l_alpha ~f:(fun x -> List.map l_beta ~f:(fun y -> (x,y) ))
@@ -94,7 +94,7 @@ let run ~multiplicity ezfio_file =
   in
  
   determinants 
-  |> List.map ~f:(fun x -> Determinant.to_string ~mo_tot_num:(MO_number.of_int mo_tot_num) x) 
+  |> List.map ~f:(fun x -> Determinant.to_string ~mo_num:(MO_number.of_int mo_num) x) 
   |> List.iter ~f:(fun x -> Printf.printf "%s\n\n%!" x);
 
   let l =

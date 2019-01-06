@@ -19,8 +19,8 @@ let () =
   let fetch_wf ~state filename =
     (* State 0 is the ground state *)
     Ezfio.set_file filename;
-    let mo_tot_num =
-      Ezfio.get_mo_basis_mo_tot_num ()
+    let mo_num =
+      Ezfio.get_mo_basis_mo_num ()
       |> MO_number.of_int
     in
     let d =
@@ -33,7 +33,7 @@ let () =
       state*n_det
     in
     let keys = 
-      Array.map (Determinant.to_string ~mo_tot_num) 
+      Array.map (Determinant.to_string ~mo_num) 
         d.Determinants_by_hand.psi_det
     and values =
       Array.map Det_coef.to_float
