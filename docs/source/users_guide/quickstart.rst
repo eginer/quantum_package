@@ -4,7 +4,7 @@ Quick-start guide
 
 This tutorial should teach you everything you need to get started with
 the the basics of the |qp|. 
-As an example, we will run a |CIPSI| calculation on the HCN molecule in the 631-G basis set.
+As an example, we will run a frozen core |CIPSI| calculation on the HCN molecule in the 631-G basis set.
 
 
 Demo video

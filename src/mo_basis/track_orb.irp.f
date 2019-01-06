@@ -47,11 +47,9 @@ subroutine reorder_active_orb
 
  double precision :: x
  integer :: i1,i2
- print*, 'swapping the active MOs'
  do j = 1, n_act_orb
   i1 = list_act(j)
   i2 = index_active_orb(j)
-  print*, i1,i2
   do i=1,ao_num
     x = mo_coef(i,i1)
     mo_coef(i,i1) = mo_coef(i,i2)
