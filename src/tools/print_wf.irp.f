@@ -25,7 +25,7 @@ subroutine routine
  integer          :: exc(0:2,2,2)
  double precision :: phase
  integer :: h1,p1,h2,p2,s1,s2
- double precision :: get_mo_bielec_integral
+ double precision :: get_two_e_integral
  double precision :: norm_mono_a,norm_mono_b
  double precision :: norm_mono_a_2,norm_mono_b_2
  double precision :: norm_mono_a_pert_2,norm_mono_b_pert_2

@@ -36,17 +36,17 @@ type t = MO_class.t option
 
 let set ~core ~inact ~act ~virt ~del =
 
-  let mo_tot_num =
-    Ezfio.get_mo_basis_mo_tot_num ()
+  let mo_num =
+    Ezfio.get_mo_basis_mo_num ()
   in
   let n_int =
     try  N_int_number.of_int (Ezfio.get_determinants_n_int ())
-    with _ -> Bitlist.n_int_of_mo_tot_num mo_tot_num 
+    with _ -> Bitlist.n_int_of_mo_num mo_num 
   in
 
 
   let mo_class =
-    Array.init mo_tot_num ~f:(fun i -> None)
+    Array.init mo_num ~f:(fun i -> None)
   in
 
   (* Check input data *)
@@ -74,7 +74,7 @@ let set ~core ~inact ~act ~virt ~del =
   let check f x = 
     try f x with Invalid_argument a ->
       begin
-        Printf.printf "Number of MOs: %d\n%!" mo_tot_num;
+        Printf.printf "Number of MOs: %d\n%!" mo_num;
         raise (Invalid_argument a) 
       end
   in
@@ -96,7 +96,7 @@ let set ~core ~inact ~act ~virt ~del =
   for i=1 to (Array.length mo_class)
   do
     if (mo_class.(i-1) = None) then
-      failwith (Printf.sprintf "Orbital %d is not specified (mo_tot_num = %d)" i mo_tot_num)
+      failwith (Printf.sprintf "Orbital %d is not specified (mo_num = %d)" i mo_num)
   done;
 
 
@@ -199,7 +199,7 @@ let set ~core ~inact ~act ~virt ~del =
         | Some x -> MO_class.to_string x
       )
   in
-  Ezfio.ezfio_array_of_list ~rank:1 ~dim:[| mo_tot_num |] ~data
+  Ezfio.ezfio_array_of_list ~rank:1 ~dim:[| mo_num |] ~data
   |> Ezfio.set_mo_basis_mo_class
 
 
@@ -223,18 +223,18 @@ let get () =
     | Some x -> x
   in
 
-  let mo_tot_num =
-    MO_number.to_int data.Input.Mo_basis.mo_tot_num
+  let mo_num =
+    MO_number.to_int data.Input.Mo_basis.mo_num
   in
 
 
   let n_int =
     try  N_int_number.of_int (Ezfio.get_determinants_n_int ())
-    with _ -> Bitlist.n_int_of_mo_tot_num mo_tot_num 
+    with _ -> Bitlist.n_int_of_mo_num mo_num 
   in
 
   Printf.printf "Electrons: %d %d\n" elec_alpha_num elec_beta_num;
-  Printf.printf "MO  : %d\n" mo_tot_num;
+  Printf.printf "MO  : %d\n" mo_num;
   Printf.printf "n_int: %d\n" (N_int_number.to_int n_int);
 
 
@@ -267,8 +267,8 @@ let get () =
 let run ~q ?(core="[]") ?(inact="[]") ?(act="[]") ?(virt="[]") ?(del="[]") ezfio_filename =
 
   Ezfio.set_file ezfio_filename ;
-  if not (Ezfio.has_mo_basis_mo_tot_num ()) then
-    failwith "mo_basis/mo_tot_num not found" ;
+  if not (Ezfio.has_mo_basis_mo_num ()) then
+    failwith "mo_basis/mo_num not found" ;
 
   if q then
      get ()

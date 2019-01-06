@@ -5,7 +5,7 @@ open Core
 
 module Mo_basis : sig
   type t = 
-      { mo_tot_num      : MO_number.t ;
+      { mo_num          : MO_number.t ;
         mo_label        : MO_label.t;
         mo_class        : MO_class.t array;
         mo_occ          : MO_occ.t array;
@@ -17,7 +17,7 @@ module Mo_basis : sig
   val to_rst : t -> Rst_string.t
 end = struct
   type t = 
-      { mo_tot_num      : MO_number.t ;
+      { mo_num          : MO_number.t ;
         mo_label        : MO_label.t;
         mo_class        : MO_class.t array;
         mo_occ          : MO_occ.t array;
@@ -54,21 +54,21 @@ end = struct
     result
 
 
-  let read_mo_tot_num () =
-    Ezfio.get_mo_basis_mo_tot_num ()
+  let read_mo_num () =
+    Ezfio.get_mo_basis_mo_num ()
     |> MO_number.of_int
 
 
   let read_mo_class () =
     if not (Ezfio.has_mo_basis_mo_class ()) then
       begin
-        let mo_tot_num = MO_number.to_int (read_mo_tot_num ()) in
+        let mo_num = MO_number.to_int (read_mo_num ()) in
         let data = 
-          Array.init mo_tot_num ~f:(fun _ -> MO_class.(to_string (Active [])))
+          Array.init mo_num ~f:(fun _ -> MO_class.(to_string (Active [])))
           |> Array.to_list
         in
         Ezfio.ezfio_array_of_list ~rank:1 
-          ~dim:[| mo_tot_num |] ~data:data
+          ~dim:[| mo_num |] ~data:data
         |> Ezfio.set_mo_basis_mo_class
       end;
     Ezfio.flattened_ezfio (Ezfio.get_mo_basis_mo_class () )
@@ -80,13 +80,13 @@ end = struct
       begin
         let elec_alpha_num = Ezfio.get_electrons_elec_alpha_num () 
         and elec_beta_num = Ezfio.get_electrons_elec_beta_num ()
-        and mo_tot_num = MO_number.to_int (read_mo_tot_num ()) in
-        let data = Array.init mo_tot_num ~f:(fun i ->
+        and mo_num = MO_number.to_int (read_mo_num ()) in
+        let data = Array.init mo_num ~f:(fun i ->
             if (i<elec_beta_num) then 2.
             else if (i < elec_alpha_num) then 1.
             else 0.) |> Array.to_list in
         Ezfio.ezfio_array_of_list ~rank:1 
-          ~dim:[| mo_tot_num |] ~data:data
+          ~dim:[| mo_num |] ~data:data
         |> Ezfio.set_mo_basis_mo_occ
       end;
     Ezfio.flattened_ezfio (Ezfio.get_mo_basis_mo_occ () )
@@ -98,17 +98,17 @@ end = struct
             |> Ezfio.flattened_ezfio
             |> Array.map ~f:MO_coef.of_float
     in
-    let mo_tot_num = read_mo_tot_num () |> MO_number.to_int in
-    let ao_num = (Array.length a)/mo_tot_num in
-    Array.init mo_tot_num ~f:(fun j ->
+    let mo_num = read_mo_num () |> MO_number.to_int in
+    let ao_num = (Array.length a)/mo_num in
+    Array.init mo_num ~f:(fun j ->
         Array.sub ~pos:(j*ao_num) ~len:(ao_num) a
       )
 
 
   let read () =
-    if (Ezfio.has_mo_basis_mo_tot_num ()) then
+    if (Ezfio.has_mo_basis_mo_num ()) then
       Some
-        { mo_tot_num      = read_mo_tot_num ();
+        { mo_num          = read_mo_num ();
           mo_label        = read_mo_label () ;
           mo_class        = read_mo_class ();
           mo_occ          = read_mo_occ ();
@@ -121,7 +121,7 @@ end = struct
 
   let mo_coef_to_string mo_coef =
     let ao_num = Array.length mo_coef.(0) 
-    and mo_tot_num = Array.length mo_coef in
+    and mo_num = Array.length mo_coef in
     let rec print_five imin imax =
       match (imax-imin+1) with 
       | 1 ->
@@ -175,10 +175,10 @@ end = struct
       | _ -> assert false
     in
     let rec create_list accu i = 
-      if (i+4 < mo_tot_num) then
+      if (i+4 < mo_num) then
         create_list ( (print_five i (i+3) |> String.concat ~sep:"\n")::accu ) (i+4)
       else
-        (print_five i (mo_tot_num-1) |> String.concat ~sep:"\n")::accu |> List.rev
+        (print_five i (mo_num-1) |> String.concat ~sep:"\n")::accu |> List.rev
     in
     create_list [] 0 |> String.concat ~sep:"\n\n"
 
@@ -191,14 +191,14 @@ Label of the molecular orbitals ::
 
 Total number of MOs ::
 
-  mo_tot_num = %s
+  mo_num = %s
 
 MO coefficients ::
 
 %s
 "
       (MO_label.to_string b.mo_label)
-      (MO_number.to_string b.mo_tot_num)
+      (MO_number.to_string b.mo_num)
       (mo_coef_to_string b.mo_coef)
     |> Rst_string.of_string
 
@@ -206,14 +206,14 @@ MO coefficients ::
 
   let to_string b =
     Printf.sprintf "
-mo_label        = %s
-mo_tot_num      = \"%s\"
+mo_label        = \"%s\"
+mo_num          = %s
 mo_clas         = %s
 mo_occ          = %s
 mo_coef         = %s
 "
       (MO_label.to_string b.mo_label)
-      (MO_number.to_string b.mo_tot_num)
+      (MO_number.to_string b.mo_num)
       (b.mo_class |> Array.to_list |> List.map
          ~f:(MO_class.to_string) |> String.concat ~sep:", " )
       (b.mo_occ |> Array.to_list |> List.map

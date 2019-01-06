@@ -14,7 +14,7 @@ subroutine do_mono_excitation(key_in,i_hole,i_particle,ispin,i_ok)
   integer                        :: k,j,i
   use bitmasks
   ASSERT (i_hole > 0 )
-  ASSERT (i_particle <= mo_tot_num)
+  ASSERT (i_particle <= mo_num)
   i_ok = 1
   ! hole
   k = shiftr(i_hole-1,bit_kind_shift)+1

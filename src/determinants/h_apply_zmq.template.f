@@ -20,7 +20,7 @@ subroutine $subroutine($params_main)
   double precision, allocatable  :: fock_diag_tmp(:,:)
 
   $initialization
-  PROVIDE H_apply_buffer_allocated mo_bielec_integrals_in_map psi_det_generators psi_coef_generators
+  PROVIDE H_apply_buffer_allocated mo_two_e_integrals_in_map psi_det_generators psi_coef_generators
 
   integer(ZMQ_PTR), external     :: new_zmq_pair_socket
   integer(ZMQ_PTR)               :: zmq_socket_pair, zmq_socket_pull
@@ -147,7 +147,7 @@ subroutine $subroutine_slave(thread, iproc)
 
   N_st = N_states
   allocate( pt2(N_st), norm_pert(N_st), H_pert_diag(N_st), &
-            mask(N_int,2,6), fock_diag_tmp(2,mo_tot_num+1) )
+            mask(N_int,2,6), fock_diag_tmp(2,mo_num+1) )
 
   do
     integer, external :: get_task_from_taskserver

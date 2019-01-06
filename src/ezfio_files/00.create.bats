@@ -19,7 +19,7 @@ function run {
   qp_edit -c $EZ
   ezfio set_file $EZ
   ezfio set scf_utils thresh_scf 1.e-12
-  echo "Write" > ${EZ}/ao_two_e_integrals/disk_access_ao_integrals
+  ezfio set ao_two_e_ints io_ao_two_e_integrals "Write" 
 }
 
 

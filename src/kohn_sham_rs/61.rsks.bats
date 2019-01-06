@@ -10,7 +10,7 @@ function run() {
   ezfio set scf_utils thresh_scf 1.e-10
   echo "short_range_PBE" > $1/dft_keywords/exchange_functional 
   echo "short_range_PBE" > $1/dft_keywords/correlation_functional 
-  echo "0.5"             > $1/ao_two_e_erf_integrals/mu_erf
+  echo "0.5"             > $1/ao_two_e_erf_ints/mu_erf
   echo "1"               > $1/becke_numerical_grid/grid_type_sgn 
   qp_run rs_ks_scf $1
   energy="$(ezfio get kohn_sham_rs energy)"

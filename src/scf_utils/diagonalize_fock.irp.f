@@ -1,4 +1,4 @@
-BEGIN_PROVIDER [ double precision, eigenvectors_Fock_matrix_mo, (ao_num,mo_tot_num) ]
+BEGIN_PROVIDER [ double precision, eigenvectors_Fock_matrix_mo, (ao_num,mo_num) ]
    implicit none
    BEGIN_DOC
    ! Eigenvector of the Fock matrix in the MO basis obtained with level shift.
@@ -11,11 +11,11 @@ BEGIN_PROVIDER [ double precision, eigenvectors_Fock_matrix_mo, (ao_num,mo_tot_n
    double precision, allocatable  :: diag(:) 
    
    
-   allocate( F(mo_tot_num,mo_tot_num) )
-   allocate (diag(mo_tot_num) )
+   allocate( F(mo_num,mo_num) )
+   allocate (diag(mo_num) )
 
-   do j=1,mo_tot_num
-     do i=1,mo_tot_num
+   do j=1,mo_num
+     do i=1,mo_num
        F(i,j) = Fock_matrix_mo(i,j)
      enddo
    enddo
@@ -47,11 +47,11 @@ BEGIN_PROVIDER [ double precision, eigenvectors_Fock_matrix_mo, (ao_num,mo_tot_n
      F(i,i) += 0.5d0*level_shift
    enddo
    
-   do i = elec_alpha_num+1, mo_tot_num
+   do i = elec_alpha_num+1, mo_num
      F(i,i) += level_shift
    enddo
    
-   n = mo_tot_num
+   n = mo_num
    lwork = 1+6*n + 2*n*n
    liwork = 3 + 5*n
    
@@ -61,7 +61,7 @@ BEGIN_PROVIDER [ double precision, eigenvectors_Fock_matrix_mo, (ao_num,mo_tot_n
    lwork = -1
    liwork = -1
    
-   call dsyevd( 'V', 'U', mo_tot_num, F,                             &
+   call dsyevd( 'V', 'U', mo_num, F,                             &
        size(F,1), diag, work, lwork, iwork, liwork, info)
    
    if (info /= 0) then
@@ -75,13 +75,13 @@ BEGIN_PROVIDER [ double precision, eigenvectors_Fock_matrix_mo, (ao_num,mo_tot_n
    
    allocate(work(lwork))
    allocate(iwork(liwork) )
-   call dsyevd( 'V', 'U', mo_tot_num, F,                             &
+   call dsyevd( 'V', 'U', mo_num, F,                             &
        size(F,1), diag, work, lwork, iwork, liwork, info)
    deallocate(iwork)
    
    
    if (info /= 0) then
-     call dsyev( 'V', 'L', mo_tot_num, F,                            &
+     call dsyev( 'V', 'L', mo_num, F,                            &
          size(F,1), diag, work, lwork, info)
      
      if (info /= 0) then
@@ -90,7 +90,7 @@ BEGIN_PROVIDER [ double precision, eigenvectors_Fock_matrix_mo, (ao_num,mo_tot_n
      endif
    endif
    
-   call dgemm('N','N',ao_num,mo_tot_num,mo_tot_num, 1.d0,            &
+   call dgemm('N','N',ao_num,mo_num,mo_num, 1.d0,            &
        mo_coef, size(mo_coef,1), F, size(F,1),                       &
        0.d0, eigenvectors_Fock_matrix_mo, size(eigenvectors_Fock_matrix_mo,1))
    deallocate(work, F, diag)

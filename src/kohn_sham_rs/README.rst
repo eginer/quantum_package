@@ -5,7 +5,7 @@ kohn_sham_rs
 
 The Range-separated Kohn-Sham module performs *Restricted* Kohn-Sham calculations (the
 spatial part of the |MOs| is common for alpha and beta spinorbitals) where the coulomb interaction is partially treated using exact exchange. 
-The splitting of the interaction between long- and short-range is determined by the range-separation parameter :option:`ao_two_e_erf_integrals mu_erf`. The long-range part of the interaction is explicitly treated with exact exchange, and the short-range part of the interaction is treated with appropriate DFT functionals. 
+The splitting of the interaction between long- and short-range is determined by the range-separation parameter :option:`ao_two_e_erf_ints mu_erf`. The long-range part of the interaction is explicitly treated with exact exchange, and the short-range part of the interaction is treated with appropriate DFT functionals. 
 
 The Range-separated Kohn-Sham in an SCF and therefore is based on the ``scf_utils`` structure. 
 It performs the following actions:

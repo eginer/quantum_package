@@ -89,7 +89,7 @@ class H_apply(object):
 #        !$OMP  occ_hole_tmp,key_idx,i_b,j_b,key,N_elec_in_key_part_1,&
 #        !$OMP  N_elec_in_key_hole_1,N_elec_in_key_part_2,            &
 #        !$OMP  N_elec_in_key_hole_2,ia_ja_pairs,key_union_hole_part) &
-#        !$OMP SHARED(key_in,N_int,elec_num_tab,mo_tot_num,           &
+#        !$OMP SHARED(key_in,N_int,elec_num_tab,mo_num,           &
 #        !$OMP  hole_1, particl_1, hole_2, particl_2,                 &
 #        !$OMP  elec_alpha_num,i_generator) FIRSTPRIVATE(iproc)"""
 #    s["omp_end_parallel"] = "!$OMP END PARALLEL"
@@ -107,7 +107,7 @@ class H_apply(object):
     s["filter_integrals"] = "array_pairs = .True."
     if SingleRef:
       s["filter_integrals"] = """
-      call get_mo_bielec_integrals_existing_ik(i_a,j_a,mo_tot_num,array_pairs,mo_integrals_map)
+      call get_mo_bielec_integrals_existing_ik(i_a,j_a,mo_num,array_pairs,mo_integrals_map)
       """
 
     s["generate_psi_guess"]  = """

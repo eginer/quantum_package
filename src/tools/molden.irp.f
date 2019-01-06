@@ -125,7 +125,7 @@ subroutine write_Mo_basis(i_unit_output)
   write(i_unit_output,*) '          ----------------------'
   write(i_unit_output,*) '                                '
   
-  do j = 1, mo_tot_num
+  do j = 1, mo_num
     write(i_unit_output,'(18X,I3)')j
     write(i_unit_output,*)''
     write(i_unit_output,'(18X,F8.5)')-1.d0

@@ -57,7 +57,7 @@ subroutine example_bitmask
  integer :: i_orb
  character*(2048) :: output
  
- do i_orb = 1, min(4,mo_tot_num) ! you set the first four bits to 1 in key
+ do i_orb = 1, min(4,mo_num) ! you set the first four bits to 1 in key
   call set_bit_to_integer(i_orb,key,N_int)
  enddo
  print*,'print a human readable representation of the bitstring'

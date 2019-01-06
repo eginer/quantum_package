@@ -1,17 +1,17 @@
-BEGIN_PROVIDER [ double precision, psi_energy_bielec, (N_states) ]
+BEGIN_PROVIDER [ double precision, psi_energy_two_e, (N_states) ]
   implicit none
   BEGIN_DOC
 ! Energy of the current wave function
   END_DOC
   integer :: i,j
-  call u_0_H_u_0_bielec(psi_energy_bielec,psi_coef,N_det,psi_det,N_int,N_states,psi_det_size)
+  call u_0_H_u_0_two_e(psi_energy_two_e,psi_coef,N_det,psi_det,N_int,N_states,psi_det_size)
   do i=N_det+1,N_states
     psi_energy(i) = 0.d0
   enddo
 END_PROVIDER
 
 
-subroutine H_S2_u_0_bielec_nstates_openmp(v_0,s_0,u_0,N_st,sze)
+subroutine H_S2_u_0_two_e_nstates_openmp(v_0,s_0,u_0,N_st,sze)
   use bitmasks
   implicit none
   BEGIN_DOC
@@ -39,7 +39,7 @@ subroutine H_S2_u_0_bielec_nstates_openmp(v_0,s_0,u_0,N_st,sze)
       size(u_t, 1),                                                  &
       N_det, N_st)
 
-  call H_S2_u_0_bielec_nstates_openmp_work(v_t,s_t,u_t,N_st,sze,1,N_det,0,1)
+  call H_S2_u_0_two_e_nstates_openmp_work(v_t,s_t,u_t,N_st,sze,1,N_det,0,1)
   deallocate(u_t)
 
   call dtranspose(                                                   &
@@ -65,7 +65,7 @@ subroutine H_S2_u_0_bielec_nstates_openmp(v_0,s_0,u_0,N_st,sze)
 end
 
 
-subroutine H_S2_u_0_bielec_nstates_openmp_work(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
+subroutine H_S2_u_0_two_e_nstates_openmp_work(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
   use bitmasks
   implicit none
   BEGIN_DOC
@@ -82,20 +82,20 @@ subroutine H_S2_u_0_bielec_nstates_openmp_work(v_t,s_t,u_t,N_st,sze,istart,iend,
 
   select case (N_int)
     case (1)
-      call H_S2_u_0_bielec_nstates_openmp_work_1(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
+      call H_S2_u_0_two_e_nstates_openmp_work_1(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
     case (2)
-      call H_S2_u_0_bielec_nstates_openmp_work_2(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
+      call H_S2_u_0_two_e_nstates_openmp_work_2(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
     case (3)
-      call H_S2_u_0_bielec_nstates_openmp_work_3(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
+      call H_S2_u_0_two_e_nstates_openmp_work_3(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
     case (4)
-      call H_S2_u_0_bielec_nstates_openmp_work_4(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
+      call H_S2_u_0_two_e_nstates_openmp_work_4(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
     case default
-      call H_S2_u_0_bielec_nstates_openmp_work_N_int(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
+      call H_S2_u_0_two_e_nstates_openmp_work_N_int(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
   end select
 end
 BEGIN_TEMPLATE
 
-subroutine H_S2_u_0_bielec_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
+subroutine H_S2_u_0_two_e_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,istep)
   use bitmasks
   implicit none
   BEGIN_DOC
@@ -457,7 +457,7 @@ N_int;;
 END_TEMPLATE
 
 
-subroutine u_0_H_u_0_bielec(e_0,u_0,n,keys_tmp,Nint,N_st,sze)
+subroutine u_0_H_u_0_two_e(e_0,u_0,n,keys_tmp,Nint,N_st,sze)
   use bitmasks
   implicit none
   BEGIN_DOC
@@ -477,7 +477,7 @@ subroutine u_0_H_u_0_bielec(e_0,u_0,n,keys_tmp,Nint,N_st,sze)
 
   allocate (v_0(n,N_st),s_0(n,N_st),u_1(n,N_st))
   u_1(1:n,:) = u_0(1:n,:)
-  call H_S2_u_0_bielec_nstates_openmp(v_0,s_0,u_1,N_st,n)
+  call H_S2_u_0_two_e_nstates_openmp(v_0,s_0,u_1,N_st,n)
   u_0(1:n,:) = u_1(1:n,:)
   deallocate(u_1)
   double precision :: norm

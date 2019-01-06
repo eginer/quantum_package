@@ -26,9 +26,9 @@ program fcidump
   integer(key_kind), allocatable :: keys(:)
   double precision, allocatable  :: values(:)
   integer(cache_map_size_kind)   :: n_elements, n_elements_max
-  PROVIDE mo_bielec_integrals_in_map
+  PROVIDE mo_two_e_integrals_in_map
 
-  double precision :: get_mo_bielec_integral, integral
+  double precision :: get_two_e_integral, integral
 
   do l=1,n_act_orb
    l1 = list_act(l)
@@ -39,7 +39,7 @@ program fcidump
      do i=k,n_act_orb
       i1 = list_act(i)
        if (i1>=j1) then
-          integral = get_mo_bielec_integral(i1,j1,k1,l1,mo_integrals_map)
+          integral = get_two_e_integral(i1,j1,k1,l1,mo_integrals_map)
           if (dabs(integral) > mo_integrals_threshold) then 
             write(i_unit_output,*) integral, i,k,j,l
           endif
@@ -53,7 +53,7 @@ program fcidump
    j1 = list_act(j)
    do i=j,n_act_orb
     i1 = list_act(i)
-      integral = mo_mono_elec_integral(i1,j1) + core_fock_operator(i1,j1)
+      integral = mo_one_e_integrals(i1,j1) + core_fock_operator(i1,j1)
       if (dabs(integral) > mo_integrals_threshold) then 
         write(i_unit_output,*) integral, i,j,0,0
       endif

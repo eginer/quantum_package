@@ -1,4 +1,4 @@
- BEGIN_PROVIDER [double precision, short_range_Hartree_operator, (mo_tot_num,mo_tot_num,N_states)]
+ BEGIN_PROVIDER [double precision, short_range_Hartree_operator, (mo_num,mo_num,N_states)]
 &BEGIN_PROVIDER [double precision, short_range_Hartree, (N_states)]
  implicit none
  BEGIN_DOC
@@ -9,19 +9,19 @@
 !                     = $1/2  \int dr \int r' \rho(r) \rho(r') W_{ee}^{sr}$
  END_DOC
  integer :: i,j,k,l,m,n,istate
- double precision :: get_mo_bielec_integral,get_mo_bielec_integral_erf
+ double precision :: get_two_e_integral,get_mo_two_e_integral_erf
  double precision :: integral, integral_erf, contrib
- double precision :: integrals_array(mo_tot_num,mo_tot_num),integrals_erf_array(mo_tot_num,mo_tot_num)
+ double precision :: integrals_array(mo_num,mo_num),integrals_erf_array(mo_num,mo_num)
  short_range_Hartree_operator = 0.d0
  short_range_Hartree = 0.d0
- do i = 1, mo_tot_num
-  do j = 1, mo_tot_num
+ do i = 1, mo_num
+  do j = 1, mo_num
    if(dabs(one_body_dm_average_mo_for_dft(j,i)).le.1.d-12)cycle
-   call get_mo_bielec_integrals_i1j1(i,j,mo_tot_num,integrals_array,mo_integrals_map)
-   call get_mo_bielec_integrals_erf_i1j1(i,j,mo_tot_num,integrals_erf_array,mo_integrals_erf_map)
+   call get_mo_two_e_integrals_i1j1(i,j,mo_num,integrals_array,mo_integrals_map)
+   call get_mo_two_e_integrals_erf_i1j1(i,j,mo_num,integrals_erf_array,mo_integrals_erf_map)
    do istate = 1, N_states
-    do k = 1, mo_tot_num
-     do l = 1, mo_tot_num
+    do k = 1, mo_num
+     do l = 1, mo_num
       integral = integrals_array(l,k)
       integral_erf = integrals_erf_array(l,k)
       contrib = one_body_dm_mo_for_dft(i,j,istate) * (integral  - integral_erf)
@@ -37,8 +37,8 @@
 END_PROVIDER
 
 
- BEGIN_PROVIDER [double precision, effective_one_e_potential, (mo_tot_num, mo_tot_num,N_states)]
-&BEGIN_PROVIDER [double precision, effective_one_e_potential_without_kin, (mo_tot_num, mo_tot_num,N_states)]
+ BEGIN_PROVIDER [double precision, effective_one_e_potential, (mo_num, mo_num,N_states)]
+&BEGIN_PROVIDER [double precision, effective_one_e_potential_without_kin, (mo_num, mo_num,N_states)]
  implicit none
  integer :: i,j,istate
  effective_one_e_potential = 0.d0
@@ -52,12 +52,12 @@ END_PROVIDER
 ! shifted_effective_one_e_potential_without_kin = effective_one_e_potential_without_kin + shifting_constant on the diagonal
  END_DOC
  do istate = 1, N_states
-  do i = 1, mo_tot_num
-   do j = 1, mo_tot_num
-    effective_one_e_potential(i,j,istate) = short_range_Hartree_operator(i,j,istate) + mo_nucl_elec_integral(i,j) + mo_kinetic_integral(i,j)    & 
+  do i = 1, mo_num
+   do j = 1, mo_num
+    effective_one_e_potential(i,j,istate) = short_range_Hartree_operator(i,j,istate) + mo_integrals_n_e(i,j) + mo_kinetic_integrals(i,j)    & 
                                    + 0.5d0 * (potential_x_alpha_mo(i,j,istate) + potential_c_alpha_mo(i,j,istate)                               &
                                    +          potential_x_beta_mo(i,j,istate)  + potential_c_beta_mo(i,j,istate)   )
-    effective_one_e_potential_without_kin(i,j,istate) = short_range_Hartree_operator(i,j,istate) + mo_nucl_elec_integral(i,j)                   & 
+    effective_one_e_potential_without_kin(i,j,istate) = short_range_Hartree_operator(i,j,istate) + mo_integrals_n_e(i,j)                   & 
                                    + 0.5d0 * (potential_x_alpha_mo(i,j,istate) + potential_c_alpha_mo(i,j,istate)                               &
                                    +          potential_x_beta_mo(i,j,istate)  + potential_c_beta_mo(i,j,istate)   )
    enddo

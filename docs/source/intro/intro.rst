@@ -20,7 +20,7 @@ From the **user** point of view, the |qp| proposes a stand-alone path
 to use optimized selected configuration interaction |sCI| based on the 
 |CIPSI| algorithm that can efficiently reach near-full configuration interaction 
 |FCI| quality for relatively large systems (see for instance :cite:`Caffarel_2016,Caffarel_2016.2,Loos_2018,Scemama_2018,Dash_2018,Garniron_2017.2,Loos_2018,Garniron_2018,Giner2018Oct`). 
-To have a simple example of how to use the |CIPSI| program, go to the `users_guide/quickstart. 
+To have a simple example of how to use the |CIPSI| program, go to the `users_guide/quickstart`. 
 
 
 The main goal is the development of selected configuration interaction |sCI|
