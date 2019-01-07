@@ -1,4 +1,4 @@
-program slave
+subroutine run_slave_cipsi
   implicit none
   BEGIN_DOC
 ! Helper program for distributed parallelism
@@ -10,7 +10,7 @@ program slave
   SOFT_TOUCH read_wf distributed_davidson
   call provide_everything
   call switch_qp_run_to_master
-  call run_wf
+  call run_slave_main
 end
 
 subroutine provide_everything
@@ -20,7 +20,7 @@ subroutine provide_everything
   PROVIDE N_det_selectors pt2_stoch_istate N_det 
 end
 
-subroutine run_wf
+subroutine run_slave_main
   use f77_zmq
   
   implicit none

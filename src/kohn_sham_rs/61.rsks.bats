@@ -19,7 +19,6 @@ function run() {
 }
 
 
-
 @test "H3COH" {
   run h3coh.ezfio short_range_PBE -115.50238225208
 }
@@ -35,4 +34,5 @@ function run() {
 @test "SiH2_3B1" {
   run sih2_3b1.ezfio short_range_LDA -289.4398733527755
 }
+
 

@@ -5,6 +5,7 @@ ao_two_e_ints
 aux_quantities
 becke_numerical_grid
 bitmask
+cipsi
 cis
 cisd
 davidson
@@ -41,7 +42,6 @@ selectors_cassd
 selectors_full
 selectors_utils
 single_ref_method
-slave
 tools
 utils
 zmq

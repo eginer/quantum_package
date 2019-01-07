@@ -18,6 +18,19 @@ Providers
 ---------
 
 
+.. c:var:: is_zmq_slave
+
+    .. code:: text
+
+        logical	:: is_zmq_slave
+
+    File: :file:`utils.irp.f`
+
+    If |true|, the current process is a |ZeroMQ| slave.
+
+
+
+
 .. c:var:: qp_run_address
 
     .. code:: text

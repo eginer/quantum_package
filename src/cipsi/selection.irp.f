@@ -1,5 +1,27 @@
 use bitmasks
 
+BEGIN_PROVIDER [ double precision, selection_weight, (N_states) ]
+   implicit none
+   BEGIN_DOC
+   ! Weights in the state-average calculation of the density matrix
+   END_DOC
+   logical                        :: exists
+   
+   selection_weight(:) = 1.d0
+   if (used_weight == 0) then
+     selection_weight(:) = c0_weight(:)
+   else if (used_weight == 1) then
+     selection_weight(:) = 1./N_states
+   else
+     call ezfio_has_determinants_state_average_weight(exists)
+     if (exists) then
+       call ezfio_get_determinants_state_average_weight(selection_weight)
+     endif
+   endif
+   selection_weight(:) = selection_weight(:)+1.d-31
+   selection_weight(:) = selection_weight(:)/(sum(selection_weight(:)))
+END_PROVIDER
+
 
 subroutine get_mask_phase(det1, pm, Nint)
   use bitmasks
@@ -719,9 +741,9 @@ subroutine fill_buffer_double(i_generator, sp, h1, h2, bannedOrb, banned, fock_d
         norm(istate) = norm(istate) + coef * coef 
 
         if (h0_type == "Variance") then
-          sum_e_pert = sum_e_pert - alpha_h_psi * alpha_h_psi * state_average_weight(istate)
+          sum_e_pert = sum_e_pert - alpha_h_psi * alpha_h_psi * selection_weight(istate)
         else
-          sum_e_pert = sum_e_pert + e_pert * state_average_weight(istate)
+          sum_e_pert = sum_e_pert + e_pert * selection_weight(istate)
         endif
       end do
       

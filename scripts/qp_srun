@@ -78,7 +78,7 @@ then
         sleep 1
     done
     echo "Starting slaves"
-    srun -n $((${SLURM_NTASKS}-1)) qp_run -slave slave_cipsi $INPUT > $INPUT.slaves.out
+    srun -n $((${SLURM_NTASKS}-1)) qp_run -slave $PROG $INPUT > $INPUT.slaves.out
 fi
 wait
 

@@ -1,10 +1,11 @@
-subroutine print_summary(e_,pt2_,error_,variance_,norm_)
+subroutine print_summary(e_,pt2_,error_,variance_,norm_,n_det_,n_occ_pattern_)
   implicit none
   BEGIN_DOC
 ! Print the extrapolated energy in the output
   END_DOC
 
   double precision, intent(in)   :: e_(N_states), pt2_(N_states), variance_(N_states), norm_(N_states), error_(N_states)
+  integer, intent(in)            :: n_det_, n_occ_pattern_
   integer                        :: i, k
   integer                        :: N_states_p
   character*(9)                  :: pt2_string
@@ -17,14 +18,14 @@ subroutine print_summary(e_,pt2_,error_,variance_,norm_)
     pt2_string = '(approx)'
   endif
 
-  N_states_p = min(N_det,N_states)
+  N_states_p = min(N_det_,N_states)
 
   do i=1,N_states_p
     f(i) = 1.d0/(1.d0+norm_(i))
   enddo
 
   print *, ''
-  print '(A,I12)',  'Summary at N_det = ', N_det
+  print '(A,I12)',  'Summary at N_det = ', N_det_
   print '(A)',      '-----------------------------------'
   print *, ''
 
@@ -55,10 +56,10 @@ subroutine print_summary(e_,pt2_,error_,variance_,norm_)
   write(*,fmt)
   print *,  ''
 
-  print *,  'N_det             = ', N_det
+  print *,  'N_det             = ', N_det_
   print *,  'N_states          = ', N_states
   if (s2_eig) then
-    print *,  'N_sop             = ', N_occ_pattern
+    print *,  'N_sop             = ', N_occ_pattern_
   endif
   print *,  ''
 

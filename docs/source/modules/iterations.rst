@@ -77,7 +77,7 @@ Subroutines / functions
 
     .. code:: text
 
-        subroutine print_extrapolated_energy(e_,pt2_)
+        subroutine print_extrapolated_energy
 
     File: :file:`print_extrapolation.irp.f`
 
@@ -91,7 +91,7 @@ Subroutines / functions
 
     .. code:: text
 
-        subroutine print_summary(e_,pt2_,error_,variance_,norm_)
+        subroutine print_summary(e_,pt2_,error_,variance_,norm_,n_det_,n_occ_pattern_)
 
     File: :file:`print_summary.irp.f`
 

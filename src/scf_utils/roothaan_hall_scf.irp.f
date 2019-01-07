@@ -289,7 +289,7 @@ END_DOC
   ! Compute extrapolated Fock matrix
 
 
-      !$OMP PARALLEL DO PRIVATE(i,j,k) DEFAULT(SHARED)
+      !$OMP PARALLEL DO PRIVATE(i,j,k) DEFAULT(SHARED) if (ao_num > 200)
       do j=1,ao_num
         do i=1,ao_num
           Fock_matrix_AO_(i,j) = 0.d0

@@ -11,7 +11,7 @@ in order to write a new program is the name of the required |IRPF90| entities
 which may already exist in other modules.  For example, writing a program which
 prints the Hartree-Fock energy is as simple as:
 
-.. code:: irpf90
+.. code:: fortran
 
     program print_hf_energy
       implicit none
