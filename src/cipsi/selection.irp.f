@@ -29,20 +29,28 @@ subroutine get_mask_phase(det1, pm, Nint)
   integer, intent(in) :: Nint
   integer(bit_kind), intent(in) :: det1(Nint,2)
   integer(bit_kind), intent(out) :: pm(Nint,2)
-  integer(bit_kind) :: tmp
- integer :: ispin, i
-  do ispin=1,2
-  tmp = 0_8
+  integer(bit_kind) :: tmp1, tmp2
+  integer :: i
+  pm(1:Nint,1:2) = det1(1:Nint,1:2)
+  tmp1 = 0_8
+  tmp2 = 0_8
   do i=1,Nint
-    pm(i,ispin) = ieor(det1(i,ispin), shiftl(det1(i,ispin), 1))
-    pm(i,ispin) = ieor(pm(i,ispin), shiftl(pm(i,ispin), 2))
-    pm(i,ispin) = ieor(pm(i,ispin), shiftl(pm(i,ispin), 4))
-    pm(i,ispin) = ieor(pm(i,ispin), shiftl(pm(i,ispin), 8))
-    pm(i,ispin) = ieor(pm(i,ispin), shiftl(pm(i,ispin), 16))
-    pm(i,ispin) = ieor(pm(i,ispin), shiftl(pm(i,ispin), 32))
-    pm(i,ispin) = ieor(pm(i,ispin), tmp)
-    if(iand(popcnt(det1(i,ispin)), 1) == 1) tmp = not(tmp)
-  end do
+    pm(i,1) = ieor(pm(i,1), shiftl(pm(i,1), 1))
+    pm(i,2) = ieor(pm(i,2), shiftl(pm(i,2), 1))
+    pm(i,1) = ieor(pm(i,1), shiftl(pm(i,1), 2))
+    pm(i,2) = ieor(pm(i,2), shiftl(pm(i,2), 2))
+    pm(i,1) = ieor(pm(i,1), shiftl(pm(i,1), 4))
+    pm(i,2) = ieor(pm(i,2), shiftl(pm(i,2), 4))
+    pm(i,1) = ieor(pm(i,1), shiftl(pm(i,1), 8))
+    pm(i,2) = ieor(pm(i,2), shiftl(pm(i,2), 8))
+    pm(i,1) = ieor(pm(i,1), shiftl(pm(i,1), 16))
+    pm(i,2) = ieor(pm(i,2), shiftl(pm(i,2), 16))
+    pm(i,1) = ieor(pm(i,1), shiftl(pm(i,1), 32))
+    pm(i,2) = ieor(pm(i,2), shiftl(pm(i,2), 32))
+    pm(i,1) = ieor(pm(i,1), tmp1)
+    pm(i,2) = ieor(pm(i,2), tmp2)
+    if(iand(popcnt(det1(i,1)), 1) == 1) tmp1 = not(tmp1)
+    if(iand(popcnt(det1(i,2)), 1) == 1) tmp2 = not(tmp2)
   end do
 
 end subroutine
@@ -687,9 +695,6 @@ subroutine fill_buffer_double(i_generator, sp, h1, h2, bannedOrb, banned, fock_d
   double precision :: e_pert, delta_E, val, Hii, sum_e_pert, tmp, alpha_h_psi, coef
   double precision, external :: diag_H_mat_elem_fock
   double precision :: E_shift
-!  double precision, allocatable :: mat_inv(:,:,:)
-!
-!  allocate(mat_inv(N_states,mo_num,mo_num))
   
   logical, external :: detEq
   
@@ -735,7 +740,6 @@ subroutine fill_buffer_double(i_generator, sp, h1, h2, bannedOrb, banned, fock_d
         endif
         e_pert = 0.5d0 * (tmp - delta_E)
         coef = e_pert / alpha_h_psi
-!        coef = e_pert * mat_inv(istate,p1,p2)
         pt2(istate) = pt2(istate) + e_pert
         variance(istate) = variance(istate) + alpha_h_psi * alpha_h_psi 
         norm(istate) = norm(istate) + coef * coef 
@@ -780,7 +784,7 @@ subroutine splash_pq(mask, sp, det, i_gen, N_sel, bannedOrb, banned, mat, intere
   do i=1, N_sel ! interesting(0)
     !i = interesting(ii)
     if (interesting(i) < 0) then
-      stop 'prefetch interesting(i)'
+      stop 'prefetch interesting(i) and det(i)'
     endif
 
     
@@ -992,7 +996,6 @@ subroutine get_d1(gen, phasemask, bannedOrb, banned, mat, mask, h, p, sp, coefs)
   double precision, intent(in)   :: coefs(N_states)
   double precision, intent(inout) :: mat(N_states, mo_num, mo_num)
   integer, intent(in)            :: h(0:2,2), p(0:4,2), sp
-  double precision               :: hij, tmp_row(N_states, mo_num), tmp_row2(N_states, mo_num)
   double precision, external     :: get_phase_bi, mo_two_e_integral
   logical                        :: ok
 
@@ -1005,6 +1008,7 @@ subroutine get_d1(gen, phasemask, bannedOrb, banned, mat, mask, h, p, sp, coefs)
   
   integer                        :: bant
   double precision, allocatable :: hij_cache(:,:)
+  double precision               :: hij, tmp_row(N_states, mo_num), tmp_row2(N_states, mo_num)
   PROVIDE mo_integrals_map N_int
   
   allocate (lbanned(mo_num, 2))
@@ -1041,9 +1045,7 @@ subroutine get_d1(gen, phasemask, bannedOrb, banned, mat, mask, h, p, sp, coefs)
         hij = hij_cache(putj,1) - hij_cache(putj,2)
         if (hij /= 0.d0) then
           hij = hij * get_phase_bi(phasemask, ma, ma, putj, p1, hfix, p2, N_int)
-          do k=1,N_states
-            tmp_row(k,putj) = tmp_row(k,putj) + hij * coefs(k)
-          enddo
+          tmp_row(1:N_states,putj) = tmp_row(1:N_states,putj) + hij * coefs(1:N_states)
         endif
       end do
       do putj=hfix+1, mo_num
@@ -1069,22 +1071,23 @@ subroutine get_d1(gen, phasemask, bannedOrb, banned, mat, mask, h, p, sp, coefs)
     tmp_row2 = 0d0
     call get_mo_two_e_integrals(hfix,pfix,p1,mo_num,hij_cache(1,1),mo_integrals_map)
     call get_mo_two_e_integrals(hfix,pfix,p2,mo_num,hij_cache(1,2),mo_integrals_map)
+    putj = p1
     do puti=1,mo_num
-      if(lbanned(puti,mi)) cycle
       !p1 fixed
-      putj = p1
-      if(.not. banned(putj,puti,bant)) then
+      if(.not.(banned(putj,puti,bant).or.lbanned(puti,mi))) then
         hij = hij_cache(puti,2)
         if (hij /= 0.d0) then
           hij = hij * get_phase_bi(phasemask, ma, mi, hfix, p2, puti, pfix, N_int)
           do k=1,N_states
-            tmp_row(k,puti) = tmp_row(k,puti) + hij * coefs(k)  ! HOTSPOT
+            tmp_row(k,puti) = tmp_row(k,puti) + hij * coefs(k)  
           enddo
         endif
       end if
+    enddo
       
-      putj = p2
-      if(.not. banned(putj,puti,bant)) then
+    putj = p2
+    do puti=1,mo_num
+      if(.not.(banned(putj,puti,bant)).or.(lbanned(puti,mi))) then
         hij = hij_cache(puti,1)
         if (hij /= 0.d0) then
           hij = hij * get_phase_bi(phasemask, ma, mi, hfix, p1, puti, pfix, N_int)
@@ -1115,8 +1118,8 @@ subroutine get_d1(gen, phasemask, bannedOrb, banned, mat, mask, h, p, sp, coefs)
         call get_mo_two_e_integrals(hfix,p2,p1,mo_num,hij_cache(1,2),mo_integrals_map)
         tmp_row = 0d0
         do putj=1,hfix-1
-          if(lbanned(putj,ma)) cycle
           if(banned(putj,puti,1)) cycle
+          if(lbanned(putj,ma)) cycle
           hij = hij_cache(putj,1) - hij_cache(putj,2)
           if (hij /= 0.d0) then
             hij = hij * get_phase_bi(phasemask, ma, ma, putj, p1, hfix, p2, N_int)
@@ -1124,8 +1127,8 @@ subroutine get_d1(gen, phasemask, bannedOrb, banned, mat, mask, h, p, sp, coefs)
           endif
         end do
         do putj=hfix+1,mo_num
-          if(lbanned(putj,ma)) cycle
           if(banned(putj,puti,1)) cycle
+          if(lbanned(putj,ma)) cycle
           hij = hij_cache(putj,2) - hij_cache(putj,1)
           if (hij /= 0.d0) then
             hij = hij * get_phase_bi(phasemask, ma, ma, hfix, p1, putj, p2, N_int)
@@ -1145,10 +1148,10 @@ subroutine get_d1(gen, phasemask, bannedOrb, banned, mat, mask, h, p, sp, coefs)
       tmp_row2 = 0d0
       call get_mo_two_e_integrals(hfix,p1,pfix,mo_num,hij_cache(1,1),mo_integrals_map)
       call get_mo_two_e_integrals(hfix,p2,pfix,mo_num,hij_cache(1,2),mo_integrals_map)
+      putj = p2
       do puti=1,mo_num
-        if(lbanned(puti,ma)) cycle
-        putj = p2
         if(.not. banned(puti,putj,1)) then
+          if(lbanned(puti,ma)) cycle
           hij = hij_cache(puti,1)
           if (hij /= 0.d0) then
             hij = hij * get_phase_bi(phasemask, mi, ma, hfix, pfix, puti, p1, N_int)
@@ -1157,9 +1160,12 @@ subroutine get_d1(gen, phasemask, bannedOrb, banned, mat, mask, h, p, sp, coefs)
             enddo
           endif
         end if
+      enddo
         
-        putj = p1
+      putj = p1
+      do puti=1,mo_num
         if(.not. banned(puti,putj,1)) then
+          if(lbanned(puti,ma)) cycle
           hij = hij_cache(puti,2)
           if (hij /= 0.d0) then
             hij = hij * get_phase_bi(phasemask, mi, ma, hfix, pfix, puti, p2, N_int)
@@ -1188,8 +1194,8 @@ subroutine get_d1(gen, phasemask, bannedOrb, banned, mat, mask, h, p, sp, coefs)
 
     do i1=1,p(0,s1)
       ib = 1
-      if(s1 == s2) ib = i1+1
       p1 = p(i1,s1)
+      if(s1 == s2) ib = i1+1
       if(bannedOrb(p1, s1)) cycle
       do i2=ib,p(0,s2)
         p2 = p(i2,s2)
@@ -1221,10 +1227,9 @@ subroutine get_d0(gen, phasemask, bannedOrb, banned, mat, mask, h, p, sp, coefs)
   double precision, external :: get_phase_bi, mo_two_e_integral
   logical :: ok
   
-  integer :: bant
+  integer, parameter :: bant=1
   double precision, allocatable :: hij_cache1(:), hij_cache2(:)
   allocate (hij_cache1(mo_num),hij_cache2(mo_num))
-  bant = 1
   
 
   if(sp == 3) then ! AB
