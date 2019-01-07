@@ -45,13 +45,18 @@ function test_exe() {
 }
 
 run_only_test() {
-  if [[ "$BATS_TEST_DESCRIPTION" != "$1" ]] && [[ "$BATS_TEST_NUMBER" -ne "$1" ]]; then
-    skip
+  if [[ "$BATS_TEST_DESCRIPTION" != "$1" ]] && [[ "$BATS_TEST_NUMBER" != "$1" ]]; then
+    if [[ -z $BATS_TEST_FILENAME ]] ; then
+      exit 0
+    else
+      skip
+    fi
   fi
+  sleep 3
 }
 
 setup() {
   if [[ -n $TEST ]] ; then
-    run_only_test $TEST
+    run_only_test $TEST || exit 0
   fi
 }

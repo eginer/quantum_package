@@ -311,7 +311,7 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error,  &
   
   double precision, external :: omp_get_wtime
   double precision :: v, x, x2, x3, avg, avg2, avg3, eqt, E0, v0, n0
-  double precision :: time, time0
+  double precision :: time, time1, time0
   
   integer, allocatable :: f(:)
   logical, allocatable :: d(:) 
@@ -363,7 +363,8 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error,  &
   v0 = 0.d0
   n0 = 0.d0
   more = 1
-  time0 = omp_get_wtime()
+  call wall_time(time0) 
+  time1 = time0
 
   do_exit = .false.
   do while (n <= N_det_generators)
@@ -421,7 +422,8 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error,  &
           eqt = dabs((S2(t) / c) - (S(t)/c)**2) ! dabs for numerical stability
           eqt = sqrt(eqt / (dble(c) - 1.5d0))  
           error(pt2_stoch_istate) = eqt
-          if(mod(c,10)==0 .or. n==N_det_generators) then
+          if ((time - time1 > 1.d0) .or. (n==N_det_generators)) then
+            time1 = time
             print '(G10.3, 2X, F16.10, 2X, G10.3, 2X, F14.10, 2X, F14.10, 2X, F10.4, A10)', c, avg+E, eqt, avg2, avg3, time-time0, ''
             if(do_exit .and. (dabs(error(pt2_stoch_istate)) / (1.d-20 + dabs(pt2(pt2_stoch_istate)) ) <= relative_error)) then 
               if (zmq_abort(zmq_to_qp_run_socket) == -1) then
@@ -433,7 +435,7 @@ subroutine pt2_collector(zmq_socket_pull, E, relative_error, pt2, error,  &
             endif
           endif
         endif
-        time = omp_get_wtime()
+        call wall_time(time)
       end if
       n += 1
     else if(more == 0) then
