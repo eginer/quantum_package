@@ -34,7 +34,7 @@
    ao_two_e_integral_beta_tmp  = 0.d0
 
    q = ao_num*ao_num*ao_num*ao_num
-   !$OMP DO SCHEDULE(static,1)
+   !$OMP DO SCHEDULE(static,64)
    do p=1_8,q
            call two_e_integrals_index_reverse(kk,ii,ll,jj,p)
            if ( (kk(1)>ao_num).or. &
@@ -90,8 +90,6 @@
    !$OMP END DO NOWAIT
    !$OMP CRITICAL
    ao_two_e_integral_alpha += ao_two_e_integral_alpha_tmp
-   !$OMP END CRITICAL
-   !$OMP CRITICAL
    ao_two_e_integral_beta  += ao_two_e_integral_beta_tmp
    !$OMP END CRITICAL
    deallocate(keys,values,ao_two_e_integral_alpha_tmp,ao_two_e_integral_beta_tmp)
@@ -143,13 +141,9 @@
        enddo
      enddo
    enddo
-   !$OMP END DO 
-   !$OMP BARRIER
+   !$OMP END DO NOWAIT
    !$OMP CRITICAL
    ao_two_e_integral_alpha += ao_two_e_integral_alpha_tmp
-   !$OMP END CRITICAL
-   !$OMP BARRIER
-   !$OMP CRITICAL
    ao_two_e_integral_beta  += ao_two_e_integral_beta_tmp
    !$OMP END CRITICAL
    deallocate(keys,values,ao_two_e_integral_alpha_tmp,ao_two_e_integral_beta_tmp)

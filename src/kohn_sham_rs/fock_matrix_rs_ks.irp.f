@@ -35,7 +35,7 @@
    ao_two_e_integral_beta_tmp  = 0.d0
 
    q = ao_num*ao_num*ao_num*ao_num
-   !$OMP DO SCHEDULE(dynamic)
+   !$OMP DO SCHEDULE(static,64)
    do p=1_8,q
            call two_e_integrals_index_reverse(kk,ii,ll,jj,p)
            if ( (kk(1)>ao_num).or. &
@@ -91,8 +91,6 @@
    !$OMP END DO NOWAIT
    !$OMP CRITICAL
    ao_two_e_integral_alpha += ao_two_e_integral_alpha_tmp
-   !$OMP END CRITICAL
-   !$OMP CRITICAL
    ao_two_e_integral_beta  += ao_two_e_integral_beta_tmp
    !$OMP END CRITICAL
    deallocate(keys,values,ao_two_e_integral_alpha_tmp,ao_two_e_integral_beta_tmp)
@@ -111,7 +109,7 @@
    integer(key_kind), allocatable :: keys_erf(:)
    double precision, allocatable  :: values_erf(:)
 
-   !$OMP PARALLEL DEFAULT(NONE)                                      &
+   !$OMP PARALLEL DEFAULT(NONE) if (ao_num > 100) &
        !$OMP PRIVATE(i,j,l,k1,k,integral,ii,jj,kk,ll,i8,keys,values,n_elements_max, &
        !$OMP  n_elements,ao_two_e_integral_alpha_tmp,ao_two_e_integral_beta_tmp)&
        !$OMP SHARED(ao_num,SCF_density_matrix_ao_alpha,SCF_density_matrix_ao_beta,&
@@ -124,7 +122,7 @@
    ao_two_e_integral_alpha_tmp = 0.d0
    ao_two_e_integral_beta_tmp  = 0.d0
 
-   !$OMP DO SCHEDULE(dynamic,64)
+   !$OMP DO SCHEDULE(static,1)
    !DIR$ NOVECTOR
    do i8=0_8,ao_integrals_map%map_size
      n_elements = n_elements_max
@@ -147,16 +145,14 @@
      enddo
    enddo
    !$OMP END DO NOWAIT
-   !$OMP CRITICAL
+   !$OMP CRITICAL 
    ao_two_e_integral_alpha += ao_two_e_integral_alpha_tmp
-   !$OMP END CRITICAL
-   !$OMP CRITICAL
    ao_two_e_integral_beta  += ao_two_e_integral_beta_tmp
    !$OMP END CRITICAL
    deallocate(keys,values,ao_two_e_integral_alpha_tmp,ao_two_e_integral_beta_tmp)
    !$OMP END PARALLEL
 
-   !$OMP PARALLEL DEFAULT(NONE)                                      &
+   !$OMP PARALLEL DEFAULT(NONE) if (ao_num > 100) &
        !$OMP PRIVATE(i,j,l,k1,k,integral_erf,ii,jj,kk,ll,i8,keys_erf,values_erf,n_elements_max_erf, &
        !$OMP  n_elements_erf,ao_two_e_integral_alpha_tmp,ao_two_e_integral_beta_tmp)&
        !$OMP SHARED(ao_num,SCF_density_matrix_ao_alpha,SCF_density_matrix_ao_beta,&
@@ -170,7 +166,7 @@
 
    ao_two_e_integral_alpha_tmp = 0.d0
    ao_two_e_integral_beta_tmp  = 0.d0
-   !$OMP DO SCHEDULE(dynamic,64)
+   !$OMP DO SCHEDULE(static,1)
    !DIR$ NOVECTOR
    do i8=0_8,ao_integrals_erf_map%map_size
      n_elements_erf = n_elements_max_erf
@@ -197,8 +193,6 @@
    !$OMP END DO NOWAIT
    !$OMP CRITICAL
    ao_two_e_integral_alpha  =  ao_two_e_integral_alpha + ao_two_e_integral_alpha_tmp
-   !$OMP END CRITICAL
-   !$OMP CRITICAL
    ao_two_e_integral_beta   =  ao_two_e_integral_beta  + ao_two_e_integral_beta_tmp
    !$OMP END CRITICAL
    deallocate(ao_two_e_integral_alpha_tmp,ao_two_e_integral_beta_tmp)
