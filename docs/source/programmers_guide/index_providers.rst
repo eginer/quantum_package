@@ -1156,6 +1156,7 @@ Index of Subroutines/Functions
 * :c:func:`perturb_buffer_by_mono_dummy`
 * :c:func:`perturb_buffer_by_mono_epstein_nesbet`
 * :c:func:`perturb_buffer_by_mono_epstein_nesbet_2x2`
+* :c:func:`perturb_buffer_by_mono_epstein_nesbet_2x2_no_ci_diag`
 * :c:func:`perturb_buffer_by_mono_h_core`
 * :c:func:`perturb_buffer_by_mono_moller_plesset`
 * :c:func:`perturb_buffer_by_mono_moller_plesset_general`
@@ -1163,12 +1164,14 @@ Index of Subroutines/Functions
 * :c:func:`perturb_buffer_dummy`
 * :c:func:`perturb_buffer_epstein_nesbet`
 * :c:func:`perturb_buffer_epstein_nesbet_2x2`
+* :c:func:`perturb_buffer_epstein_nesbet_2x2_no_ci_diag`
 * :c:func:`perturb_buffer_h_core`
 * :c:func:`perturb_buffer_moller_plesset`
 * :c:func:`perturb_buffer_moller_plesset_general`
 * :c:func:`perturb_buffer_qdpt`
 * :c:func:`primitive_value`
 * :c:func:`print_det`
+* :c:func:`print_e_conv`
 * :c:func:`print_extrapolated_energy`
 * :c:func:`print_generators_bitmasks_holes`
 * :c:func:`print_generators_bitmasks_holes_for_one_generator`
@@ -1184,6 +1187,7 @@ Index of Subroutines/Functions
 * :c:func:`pt2_dummy`
 * :c:func:`pt2_epstein_nesbet`
 * :c:func:`pt2_epstein_nesbet_2x2`
+* :c:func:`pt2_epstein_nesbet_2x2_no_ci_diag`
 * :c:func:`pt2_find_sample`
 * :c:func:`pt2_find_sample_lr`
 * :c:func:`pt2_h_core`

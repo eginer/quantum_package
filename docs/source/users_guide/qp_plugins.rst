@@ -25,15 +25,15 @@ Usage
 
     List all the available plugins.
 
-.. option:: list -i 
+.. option:: -i 
 
     List all the *installed* plugins.
 
-.. option:: list -u 
+.. option:: -u
 
     List all the *uninstalled* plugins.
 
-.. option:: list -q 
+.. option:: -q 
 
     List all the downloaded repositories.
 
@@ -53,12 +53,12 @@ Usage
 
     Uninstall the plugin ``plugin_name``.
 
-.. option:: create -n <plugin_name>
+.. option:: -n <plugin_name>
 
-    Create a new plugin named ``plugin_name`` in local repository.
+    Create a new plugin named ``plugin_name`` (in local repository by default).
 
-.. option:: create -n <plugin_name> -r <repository>
+.. option:: -r <repository>
 
-    Create a new plugin named ``plugin_name`` in the specified repository.
+    Specify in which repository the new plugin will be created.
 
 

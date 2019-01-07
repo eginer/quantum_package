@@ -43,7 +43,7 @@ double precision function NAI_pol_mult_erf_ao(i_ao,j_ao,mu_in,C_center)
       NAI_pol_mult_erf_ao += integral * ao_coef_normalized_ordered_transp(j,j_ao)*ao_coef_normalized_ordered_transp(i,i_ao)
     enddo
   enddo
-  
+
 end
 
 

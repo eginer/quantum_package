@@ -59,6 +59,8 @@ subroutine routine
     else
       coef_2_2 = 0.5d0 * (delta_e + dsqrt(delta_e * delta_e + 4.d0 * hij * hij )) /hij 
     endif
+   else 
+    coef_2_2 = 0.d0
    endif
    call get_excitation(psi_det(1,1,1),psi_det(1,1,i),exc,degree,phase,N_int)
    call decode_exc(exc,degree,h1,p1,h2,p2,s1,s2)
@@ -83,7 +85,7 @@ subroutine routine
     print*,'hdouble       = ',hdouble
     print*,'hmono+hdouble = ',hmono+hdouble
     print*,'hij           = ',hij
-   else
+   else if(degree ==2)then
     print*,'s1',s1
     print*,'h1,p1 = ',h1,p1
     print*,'s2',s2

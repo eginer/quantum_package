@@ -73,6 +73,20 @@ Subroutines / functions
 
 
 
+.. c:function:: print_e_conv
+
+    .. code:: text
+
+        subroutine print_e_conv
+
+    File: :file:`print_e_conv.irp.f`
+
+    program that prints in a human readable format the convergence of the CIPSI algorithm
+
+
+
+
+
 .. c:function:: print_wf
 
     .. code:: text

@@ -245,6 +245,20 @@ Subroutines / functions
 
 
 
+.. c:function:: perturb_buffer_by_mono_epstein_nesbet_2x2_no_ci_diag
+
+    .. code:: text
+
+        subroutine perturb_buffer_by_mono_epstein_nesbet_2x2_no_ci_diag(i_generator,buffer,buffer_size,e_2_pert_buffer,coef_pert_buffer,sum_e_2_pert,sum_norm_pert,sum_H_pert_diag,N_st,Nint,key_mask,fock_diag_tmp,electronic_energy)
+
+    File: :file:`perturbation.irp.f_shell_13`
+
+    Applly pertubration ``epstein_nesbet_2x2_no_ci_diag`` to the buffer of determinants generated in the H_apply routine.
+
+
+
+
+
 .. c:function:: perturb_buffer_by_mono_h_core
 
     .. code:: text
@@ -343,6 +357,20 @@ Subroutines / functions
 
 
 
+.. c:function:: perturb_buffer_epstein_nesbet_2x2_no_ci_diag
+
+    .. code:: text
+
+        subroutine perturb_buffer_epstein_nesbet_2x2_no_ci_diag(i_generator,buffer,buffer_size,e_2_pert_buffer,coef_pert_buffer,sum_e_2_pert,sum_norm_pert,sum_H_pert_diag,N_st,Nint,key_mask,fock_diag_tmp,electronic_energy)
+
+    File: :file:`perturbation.irp.f_shell_13`
+
+    Applly pertubration ``epstein_nesbet_2x2_no_ci_diag`` to the buffer of determinants generated in the H_apply routine.
+
+
+
+
+
 .. c:function:: perturb_buffer_h_core
 
     .. code:: text
@@ -405,7 +433,7 @@ Subroutines / functions
 
         subroutine pt2_dummy (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
 
-    File: :file:`pt2_equations.irp.f_template_309`
+    File: :file:`pt2_equations.irp.f_template_360`
 
     Dummy perturbation to add all connected determinants.
 
@@ -419,7 +447,7 @@ Subroutines / functions
 
         subroutine pt2_epstein_nesbet (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
 
-    File: :file:`pt2_equations.irp.f_template_309`
+    File: :file:`pt2_equations.irp.f_template_360`
 
     Compute the standard Epstein-Nesbet perturbative first order coefficient and second order energetic contribution for the various N_st states. 
 
@@ -439,13 +467,35 @@ Subroutines / functions
 
         subroutine pt2_epstein_nesbet_2x2 (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
 
-    File: :file:`pt2_equations.irp.f_template_309`
+    File: :file:`pt2_equations.irp.f_template_360`
 
     Computes the Epstein-Nesbet 2x2 diagonalization coefficient and energetic contribution for the various N_st states. 
 
     `e_2_pert(i)` =  :math:`\frac{1}{2} ( \langle \alpha|H|\alpha \rangle -  E_n) - \sqrt{ (\langle \alpha|H|\alpha \rangle -  E_n)^2 + 4 \langle i|H|\alpha \rangle^2 }` . 
 
     `c_pert(i)` = `e_2_pert(i)`  :math:`\times \frac{1}{ \langle i|H|\alpha \rangle}` . 
+
+
+
+
+
+
+
+.. c:function:: pt2_epstein_nesbet_2x2_no_ci_diag
+
+    .. code:: text
+
+        subroutine pt2_epstein_nesbet_2x2_no_ci_diag(electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
+
+    File: :file:`pt2_equations.irp.f_template_360`
+
+    compute the Epstein-Nesbet 2x2 diagonalization coefficient and energetic contribution 
+
+    for the various N_st states. 
+
+    e_2_pert(i) = 0.5 * (( <det_pert|H|det_pert> -  E(i) )  - sqrt( ( <det_pert|H|det_pert> -  E(i)) ^2 + 4 <psi(i)|H|det_pert>^2  ) 
+
+    c_pert(i) = e_2_pert(i)/ <psi(i)|H|det_pert> 
 
 
 
@@ -481,7 +531,7 @@ Subroutines / functions
 
         subroutine pt2_moller_plesset (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
 
-    File: :file:`pt2_equations.irp.f_template_309`
+    File: :file:`pt2_equations.irp.f_template_360`
 
     Computes the standard Moller-Plesset perturbative first order coefficient and second order energetic contribution for the various N_st states. 
 
@@ -501,7 +551,7 @@ Subroutines / functions
 
         subroutine pt2_moller_plesset_general (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
 
-    File: :file:`pt2_equations.irp.f_template_309`
+    File: :file:`pt2_equations.irp.f_template_360`
 
     Computes the standard Moller-Plesset perturbative first order coefficient and second order energetic contribution for the various N_st states. 
 
@@ -521,7 +571,7 @@ Subroutines / functions
 
         subroutine pt2_qdpt (electronic_energy,det_ref,det_pert,fock_diag_tmp,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minilist,idx_minilist,N_minilist)
 
-    File: :file:`pt2_equations.irp.f_template_309`
+    File: :file:`pt2_equations.irp.f_template_360`
 
     Computes the QDPT first order coefficient and second order energetic contribution for the various N_st states. 
 
