@@ -2,6 +2,17 @@
 # This script loads the Quantum Package environment. It should be invoked as
 # source quantum_package.rc
 
+QP_ROOT="/NOT/FOUND"
+case "$(ps -p $$ -ocomm=)" in
+  zsh)
+    QP_ROOT=$(dirname $0)
+    ;;
+  bash)
+    QP_ROOT=$(dirname ${BASH_SOURCE}[0])
+    ;;
+esac
+export QP_ROOT="$( cd $QP_ROOT ; pwd -P )"
+
 WD=$PWD
 cd $QP_ROOT/etc
 for SCRIPT in *.rc
