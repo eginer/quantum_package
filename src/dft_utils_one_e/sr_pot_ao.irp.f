@@ -36,24 +36,39 @@
 
  BEGIN_PROVIDER [double precision, potential_sr_x_alpha_ao_LDA,(ao_num,ao_num,N_states)]
 &BEGIN_PROVIDER [double precision, potential_sr_x_beta_ao_LDA,(ao_num,ao_num,N_states)]
-&BEGIN_PROVIDER [double precision, potential_sr_c_alpha_ao_LDA,(ao_num,ao_num,N_states)]
+  implicit none
+  BEGIN_DOC 
+  ! short range exchange alpha/beta potentials with LDA functional on the |AO| basis
+  END_DOC
+  ! Second dimension is given as ao_num * N_states so that Lapack does the loop over N_states.
+  call dgemm('N','N',ao_num,ao_num*N_states,n_points_final_grid,1.d0,         &
+      aos_in_r_array,size(aos_in_r_array,1),                         &
+      aos_sr_vx_alpha_LDA_w,size(aos_sr_vx_alpha_LDA_w,1),0.d0,&
+      potential_sr_x_alpha_ao_LDA,size(potential_sr_x_alpha_ao_LDA,1))
+  call dgemm('N','N',ao_num,ao_num*N_states,n_points_final_grid,1.d0,         &
+      aos_in_r_array,size(aos_in_r_array,1),                         &
+      aos_sr_vx_beta_LDA_w,size(aos_sr_vx_beta_LDA_w,1),0.d0,&
+      potential_sr_x_beta_ao_LDA,size(potential_sr_x_beta_ao_LDA,1))
+
+END_PROVIDER 
+
+ BEGIN_PROVIDER [double precision, potential_sr_c_alpha_ao_LDA,(ao_num,ao_num,N_states)]
 &BEGIN_PROVIDER [double precision, potential_sr_c_beta_ao_LDA,(ao_num,ao_num,N_states)]
  implicit none
  BEGIN_DOC 
-! short range exchange/correlation alpha/beta potentials with LDA functional on the AO basis
+! short range correlation alpha/beta potentials with LDA functional on the |AO| basis
  END_DOC
- integer :: istate
- double precision :: wall_1,wall_2
- call wall_time(wall_1)
- do istate = 1, N_states 
-  call dgemm('N','N',ao_num,ao_num,n_points_final_grid,1.d0,aos_in_r_array,ao_num,aos_sr_vc_alpha_LDA_w(1,1,istate),n_points_final_grid,0.d0,potential_sr_c_alpha_ao_LDA(1,1,istate),ao_num)
-  call dgemm('N','N',ao_num,ao_num,n_points_final_grid,1.d0,aos_in_r_array,ao_num,aos_sr_vc_beta_LDA_w(1,1,istate) ,n_points_final_grid,0.d0,potential_sr_c_beta_ao_LDA(1,1,istate),ao_num)
-  call dgemm('N','N',ao_num,ao_num,n_points_final_grid,1.d0,aos_in_r_array,ao_num,aos_sr_vx_alpha_LDA_w(1,1,istate),n_points_final_grid,0.d0,potential_sr_x_alpha_ao_LDA(1,1,istate),ao_num)
-  call dgemm('N','N',ao_num,ao_num,n_points_final_grid,1.d0,aos_in_r_array,ao_num,aos_sr_vx_beta_LDA_w(1,1,istate) ,n_points_final_grid,0.d0,potential_sr_x_beta_ao_LDA(1,1,istate),ao_num)
- enddo
- call wall_time(wall_2)
+ ! Second dimension is given as ao_num * N_states so that Lapack does the loop over N_states.
+ call dgemm('N','N',ao_num,ao_num*N_states,n_points_final_grid,1.d0,         &
+      aos_in_r_array,size(aos_in_r_array,1),                         &
+      aos_sr_vc_alpha_LDA_w,size(aos_sr_vc_alpha_LDA_w,1),0.d0,&
+      potential_sr_c_alpha_ao_LDA,size(potential_sr_c_alpha_ao_LDA,1))
+ call dgemm('N','N',ao_num,ao_num*N_states,n_points_final_grid,1.d0,         &
+      aos_in_r_array,size(aos_in_r_array,1),                         &
+      aos_sr_vc_beta_LDA_w,size(aos_sr_vc_beta_LDA_w,1),0.d0,&
+      potential_sr_c_beta_ao_LDA,size(potential_sr_c_beta_ao_LDA,1))
 
- END_PROVIDER 
+END_PROVIDER 
 
  BEGIN_PROVIDER[double precision, aos_sr_vc_alpha_PBE_w  , (ao_num,n_points_final_grid,N_states)] !(n_points_final_grid,ao_num,N_states)]
 &BEGIN_PROVIDER[double precision, aos_sr_vc_beta_PBE_w   , (ao_num,n_points_final_grid,N_states)]!(n_points_final_grid,ao_num,N_states)]
@@ -69,20 +84,20 @@
 &BEGIN_PROVIDER[double precision, grad_aos_dsr_vx_beta_PBE_w  ,  (ao_num,n_points_final_grid,3,N_states)]
  implicit none
  BEGIN_DOC
-! aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
+ ! aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
  END_DOC
- integer :: istate,i,j,m
- double precision :: r(3)
- double precision :: mu,weight
- double precision, allocatable :: ex(:), ec(:)
- double precision, allocatable :: rho_a(:),rho_b(:),grad_rho_a(:,:),grad_rho_b(:,:),grad_rho_a_2(:),grad_rho_b_2(:),grad_rho_a_b(:)
- double precision, allocatable :: contrib_grad_xa(:,:),contrib_grad_xb(:,:),contrib_grad_ca(:,:),contrib_grad_cb(:,:)
- double precision, allocatable :: sr_vc_rho_a(:), sr_vc_rho_b(:), sr_vx_rho_a(:), sr_vx_rho_b(:)
- double precision, allocatable :: sr_vx_grad_rho_a_2(:), sr_vx_grad_rho_b_2(:), sr_vx_grad_rho_a_b(:), sr_vc_grad_rho_a_2(:), sr_vc_grad_rho_b_2(:), sr_vc_grad_rho_a_b(:)
+ integer                        :: istate,i,j,m
+ double precision               :: r(3)
+ double precision               :: mu,weight
+ double precision, allocatable  :: ex(:), ec(:)
+ double precision, allocatable  :: rho_a(:),rho_b(:),grad_rho_a(:,:),grad_rho_b(:,:),grad_rho_a_2(:),grad_rho_b_2(:),grad_rho_a_b(:)
+ double precision, allocatable  :: contrib_grad_xa(:,:),contrib_grad_xb(:,:),contrib_grad_ca(:,:),contrib_grad_cb(:,:)
+ double precision, allocatable  :: sr_vc_rho_a(:), sr_vc_rho_b(:), sr_vx_rho_a(:), sr_vx_rho_b(:)
+ double precision, allocatable  :: sr_vx_grad_rho_a_2(:), sr_vx_grad_rho_b_2(:), sr_vx_grad_rho_a_b(:), sr_vc_grad_rho_a_2(:), sr_vc_grad_rho_b_2(:), sr_vc_grad_rho_a_b(:)
  allocate(sr_vc_rho_a(N_states), sr_vc_rho_b(N_states), sr_vx_rho_a(N_states), sr_vx_rho_b(N_states))
  allocate(sr_vx_grad_rho_a_2(N_states), sr_vx_grad_rho_b_2(N_states), sr_vx_grad_rho_a_b(N_states), sr_vc_grad_rho_a_2(N_states), sr_vc_grad_rho_b_2(N_states), sr_vc_grad_rho_a_b(N_states))
-
-
+ 
+ 
  allocate(rho_a(N_states), rho_b(N_states),grad_rho_a(3,N_states),grad_rho_b(3,N_states))
  allocate(grad_rho_a_2(N_states),grad_rho_b_2(N_states),grad_rho_a_b(N_states), ex(N_states), ec(N_states))
  allocate(contrib_grad_xa(3,N_states),contrib_grad_xb(3,N_states),contrib_grad_ca(3,N_states),contrib_grad_cb(3,N_states))
@@ -152,36 +167,69 @@
  END_DOC
  integer :: istate, m
  double precision :: wall_1,wall_2
- call wall_time(wall_1)
   potential_sr_c_alpha_ao_PBE = 0.d0
   potential_sr_x_alpha_ao_PBE = 0.d0
   potential_sr_c_beta_ao_PBE = 0.d0
   potential_sr_x_beta_ao_PBE = 0.d0
   do istate = 1, N_states
     ! correlation alpha 
-    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,aos_sr_vc_alpha_PBE_w(1,1,istate),size(aos_sr_vc_alpha_PBE_w,1),aos_in_r_array,size(aos_in_r_array,1),1.d0,potential_sr_c_alpha_ao_PBE(1,1,istate),size(potential_sr_c_alpha_ao_PBE,1))
+    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,       &
+        aos_sr_vc_alpha_PBE_w(1,1,istate),size(aos_sr_vc_alpha_PBE_w,1),&
+        aos_in_r_array,size(aos_in_r_array,1),1.d0,                  &
+        potential_sr_c_alpha_ao_PBE(1,1,istate),size(potential_sr_c_alpha_ao_PBE,1))
     ! correlation beta  
-    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,aos_sr_vc_beta_PBE_w(1,1,istate),size(aos_sr_vc_beta_PBE_w,1),aos_in_r_array,size(aos_in_r_array,1),1.d0,potential_sr_c_beta_ao_PBE(1,1,istate),size(potential_sr_c_beta_ao_PBE,1))
+    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,       &
+        aos_sr_vc_beta_PBE_w(1,1,istate),size(aos_sr_vc_beta_PBE_w,1),&
+        aos_in_r_array,size(aos_in_r_array,1),1.d0,                  &
+        potential_sr_c_beta_ao_PBE(1,1,istate),size(potential_sr_c_beta_ao_PBE,1))
     ! exchange alpha 
-    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,aos_sr_vx_alpha_PBE_w(1,1,istate),size(aos_sr_vx_alpha_PBE_w,1),aos_in_r_array,size(aos_in_r_array,1),1.d0,potential_sr_x_alpha_ao_PBE(1,1,istate),size(potential_sr_x_alpha_ao_PBE,1))
+    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,       &
+        aos_sr_vx_alpha_PBE_w(1,1,istate),size(aos_sr_vx_alpha_PBE_w,1),&
+        aos_in_r_array,size(aos_in_r_array,1),1.d0,                  &
+        potential_sr_x_alpha_ao_PBE(1,1,istate),size(potential_sr_x_alpha_ao_PBE,1))
     ! exchange beta
-    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,aos_sr_vx_beta_PBE_w(1,1,istate),size(aos_sr_vx_beta_PBE_w,1),  aos_in_r_array,size(aos_in_r_array,1),1.d0,potential_sr_x_beta_ao_PBE(1,1,istate), size(potential_sr_x_beta_ao_PBE,1))
+    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,       &
+        aos_sr_vx_beta_PBE_w(1,1,istate),size(aos_sr_vx_beta_PBE_w,1),&
+        aos_in_r_array,size(aos_in_r_array,1),1.d0,                  &
+        potential_sr_x_beta_ao_PBE(1,1,istate), size(potential_sr_x_beta_ao_PBE,1))
    do m= 1,3
     ! correlation alpha 
-    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,aos_dsr_vc_alpha_PBE_w(1,1,m,istate),size(aos_dsr_vc_alpha_PBE_w,1),aos_grad_in_r_array(1,1,m),size(aos_grad_in_r_array,1),1.d0,potential_sr_c_alpha_ao_PBE(1,1,istate),size(potential_sr_c_alpha_ao_PBE,1))
-    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,grad_aos_dsr_vc_alpha_PBE_w(1,1,m,istate),size(grad_aos_dsr_vc_alpha_PBE_w,1),aos_in_r_array,size(aos_in_r_array,1),1.d0,potential_sr_c_alpha_ao_PBE(1,1,istate),size(potential_sr_c_alpha_ao_PBE,1))
+    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,       &
+        aos_dsr_vc_alpha_PBE_w(1,1,m,istate),size(aos_dsr_vc_alpha_PBE_w,1),&
+        aos_grad_in_r_array(1,1,m),size(aos_grad_in_r_array,1),1.d0, &
+        potential_sr_c_alpha_ao_PBE(1,1,istate),size(potential_sr_c_alpha_ao_PBE,1))
+    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,       &
+        grad_aos_dsr_vc_alpha_PBE_w(1,1,m,istate),size(grad_aos_dsr_vc_alpha_PBE_w,1),&
+        aos_in_r_array,size(aos_in_r_array,1),1.d0,                  &
+        potential_sr_c_alpha_ao_PBE(1,1,istate),size(potential_sr_c_alpha_ao_PBE,1))
     ! correlation beta
-    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,aos_dsr_vc_beta_PBE_w(1,1,m,istate),size(aos_dsr_vc_beta_PBE_w,1),aos_grad_in_r_array(1,1,m),size(aos_grad_in_r_array,1),1.d0,potential_sr_c_beta_ao_PBE(1,1,istate),size(potential_sr_c_beta_ao_PBE,1))
-    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,grad_aos_dsr_vc_beta_PBE_w(1,1,m,istate),size(grad_aos_dsr_vc_beta_PBE_w,1),aos_in_r_array,size(aos_in_r_array,1),1.d0,potential_sr_c_beta_ao_PBE(1,1,istate),size(potential_sr_c_beta_ao_PBE,1))
+    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,       &
+        aos_dsr_vc_beta_PBE_w(1,1,m,istate),size(aos_dsr_vc_beta_PBE_w,1),&
+        aos_grad_in_r_array(1,1,m),size(aos_grad_in_r_array,1),1.d0, &
+        potential_sr_c_beta_ao_PBE(1,1,istate),size(potential_sr_c_beta_ao_PBE,1))
+    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,       &
+        grad_aos_dsr_vc_beta_PBE_w(1,1,m,istate),size(grad_aos_dsr_vc_beta_PBE_w,1),&
+        aos_in_r_array,size(aos_in_r_array,1),1.d0,                  &
+        potential_sr_c_beta_ao_PBE(1,1,istate),size(potential_sr_c_beta_ao_PBE,1))
     ! exchange alpha 
-    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,aos_dsr_vx_alpha_PBE_w(1,1,m,istate),size(aos_dsr_vx_alpha_PBE_w,1),aos_grad_in_r_array(1,1,m),size(aos_grad_in_r_array,1),1.d0,potential_sr_x_alpha_ao_PBE(1,1,istate),size(potential_sr_x_alpha_ao_PBE,1))
-    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,grad_aos_dsr_vx_alpha_PBE_w(1,1,m,istate),size(grad_aos_dsr_vx_alpha_PBE_w,1),aos_in_r_array,size(aos_in_r_array,1),1.d0,potential_sr_x_alpha_ao_PBE(1,1,istate),size(potential_sr_x_alpha_ao_PBE,1))
+    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,       &
+        aos_dsr_vx_alpha_PBE_w(1,1,m,istate),size(aos_dsr_vx_alpha_PBE_w,1),&
+        aos_grad_in_r_array(1,1,m),size(aos_grad_in_r_array,1),1.d0, &
+        potential_sr_x_alpha_ao_PBE(1,1,istate),size(potential_sr_x_alpha_ao_PBE,1))
+    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,       &
+        grad_aos_dsr_vx_alpha_PBE_w(1,1,m,istate),size(grad_aos_dsr_vx_alpha_PBE_w,1),&
+        aos_in_r_array,size(aos_in_r_array,1),1.d0,                  &
+        potential_sr_x_alpha_ao_PBE(1,1,istate),size(potential_sr_x_alpha_ao_PBE,1))
     ! exchange beta
-    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,aos_dsr_vx_beta_PBE_w(1,1,m,istate),size(aos_dsr_vx_beta_PBE_w,1),aos_grad_in_r_array(1,1,m),size(aos_grad_in_r_array,1),1.d0,potential_sr_x_beta_ao_PBE(1,1,istate),size(potential_sr_x_beta_ao_PBE,1))
-    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,grad_aos_dsr_vx_beta_PBE_w(1,1,m,istate),size(grad_aos_dsr_vx_beta_PBE_w,1),aos_in_r_array,size(aos_in_r_array,1),1.d0,potential_sr_x_beta_ao_PBE(1,1,istate),size(potential_sr_x_beta_ao_PBE,1))
+    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,       &
+        aos_dsr_vx_beta_PBE_w(1,1,m,istate),size(aos_dsr_vx_beta_PBE_w,1),&
+        aos_grad_in_r_array(1,1,m),size(aos_grad_in_r_array,1),1.d0, &
+        potential_sr_x_beta_ao_PBE(1,1,istate),size(potential_sr_x_beta_ao_PBE,1))
+    call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,       &
+        grad_aos_dsr_vx_beta_PBE_w(1,1,m,istate),size(grad_aos_dsr_vx_beta_PBE_w,1),&
+        aos_in_r_array,size(aos_in_r_array,1),1.d0,                  &
+        potential_sr_x_beta_ao_PBE(1,1,istate),size(potential_sr_x_beta_ao_PBE,1))
    enddo
   enddo
 
- call wall_time(wall_2)
- 
 END_PROVIDER 

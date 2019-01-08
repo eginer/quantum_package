@@ -58,11 +58,16 @@ def main(arguments):
         print "Running tests for %s"%(bats_file)
         print ""
         if arguments["-v"]:
-            p1 = subprocess.Popen(["python2", "bats_to_sh.py", bats_file], \
-                    stdout=subprocess.PIPE, env=os.environ)
-            p2 = subprocess.Popen(["bash"], stdin=p1.stdout, env=os.environ)
-            _, _ = os.waitpid(p2.pid,0)
-            _, _ = os.waitpid(p1.pid,0)
+            p = None
+            if arguments["TEST"]:
+                TEST="export TEST=%s\n"%arguments["TEST"]
+            else:
+                TEST=""
+            script = TEST+(subprocess.check_output(["python2", "bats_to_sh.py", bats_file]) )
+            try:
+                p = subprocess.check_call(script, shell=True, env=os.environ)
+            except:
+                if p: p.terminate()
         else:
             subprocess.check_call(["bats", bats_file], env=os.environ)
             

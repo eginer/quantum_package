@@ -132,7 +132,6 @@ END_PROVIDER
            nucl_dist_vec_y(ie1,ie2)*nucl_dist_vec_y(ie1,ie2) +       &
            nucl_dist_vec_z(ie1,ie2)*nucl_dist_vec_z(ie1,ie2)
        nucl_dist(ie1,ie2) = sqrt(nucl_dist_2(ie1,ie2))
-       ASSERT (nucl_dist(ie1,ie2) > 0.d0)
      enddo
    enddo
 END_PROVIDER
