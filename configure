@@ -48,7 +48,7 @@ while : ; do
         -i|--install)
             PACKAGES="${PACKAGE} $2"
             shift;;
-        -h|--help)
+        -h|-help|--help)
             help;;
         *)
             echo "unknown option $1, try --help"
