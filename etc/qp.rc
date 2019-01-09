@@ -45,7 +45,11 @@ function qp()
       shift
       [[ -n $EZFIO_FILE ]] && ezfio unset_file
       NAME=$(qp_create_ezfio_from_xyz $@)
-      ezfio set_file $NAME
+      if [[ -d $NAME ]] ; then
+        ezfio set_file $NAME
+      else
+        echo $NAME | more
+      fi
       ;;
 
     "set_mo_class")
