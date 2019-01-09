@@ -660,7 +660,7 @@ let run ?o b au c d m p cart xyz_file =
         end; 
         raise ex;
       end
-  in ()
+  in print_endline ezfio_file
  
 
 

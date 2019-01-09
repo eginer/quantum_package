@@ -1,0 +1,11 @@
+#!/bin/bash
+
+export QP_ROOT=$(dirname $0)
+
+exec bash --init-file <(cat << EOF
+PS1="[\u@\h \W] |\\\${EZFIO_FILE}> "
+source $QP_ROOT/quantum_package.rc
+EOF
+)
+
+

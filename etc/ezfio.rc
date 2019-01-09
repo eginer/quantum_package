@@ -1,0 +1,12 @@
+# Configuration of EZFIO package
+
+export QP_EZFIO=${QP_ROOT}/external/ezfio
+
+if [[ -f ${QP_EZFIO}/Bash/ezfio.sh ]]; then
+      if [[ "$(ps -p $$ -ocomm=)" == "zsh" ]] ; then
+        autoload bashcompinit
+        bashcompinit
+      fi
+      source ${QP_EZFIO}/Bash/ezfio.sh
+fi
+
