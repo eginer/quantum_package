@@ -129,6 +129,8 @@ BEGIN_TEMPLATE
  enddo
  N_det_$alpha_unique = j
 
+ call write_int(6,N_det_$alpha_unique,'Number of unique $alpha determinants')
+
  deallocate (iorder, bit_tmp, duplicate)
 
 END_PROVIDER
@@ -1002,14 +1004,15 @@ subroutine get_all_spin_singles_1(buffer, idx, spindet, size_buffer, singles, n_
   integer, intent(out)           :: singles(size_buffer)
   integer, intent(out)           :: n_singles
   integer                        :: i
+  integer(bit_kind)              :: v
   integer                        :: degree
   include 'utils/constants.include.F'
 
   n_singles = 1
   do i=1,size_buffer
     degree = popcnt(xor( spindet, buffer(i) )) 
-    singles(n_singles) = idx(i)
     if (degree == 2) then
+      singles(n_singles) = idx(i)
       n_singles = n_singles+1
     endif
   enddo

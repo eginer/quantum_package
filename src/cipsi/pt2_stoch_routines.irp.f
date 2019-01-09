@@ -136,7 +136,8 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error, variance, norm, N_in)
       state_average_weight(pt2_stoch_istate) = 1.d0
       TOUCH state_average_weight pt2_stoch_istate
 
-      provide nproc pt2_F mo_two_e_integrals_in_map mo_one_e_integrals pt2_w psi_selectors 
+      PROVIDE nproc pt2_F mo_two_e_integrals_in_map mo_one_e_integrals pt2_w
+      PROVIDE psi_selectors pt2_u pt2_J pt2_R
       call new_parallel_job(zmq_to_qp_run_socket, zmq_socket_pull, 'pt2')
 
       integer, external              :: zmq_put_psi
@@ -239,6 +240,12 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error, variance, norm, N_in)
               + 1.d0*pt2_n_tasks_max            & ! i_generator, subset
               + 2.d0*(N_int*2.d0*N_in + N_in)   & ! selection buffers
               + 1.d0*(N_int*2.d0*N_in + N_in)   & ! sort/merge selection buffers
+              + 1.d0*(N_int*2.d0*N_det)         & ! preinteresting_det
+              + 2.0d0*(N_det+1)                 & ! preinteresting, interesting,
+                                                  ! prefullinteresting, fullinteresting
+              + 1.0d0*(N_int*2*N_det_selectors) & ! minilist
+              + 1.0d0*(N_int*2*N_det)           & ! fullminilist
+              + 1.0d0*(N_states*mo_num*mo_num)  & ! mat
               ) / 1024.d0**3
 
         if (nproc_target == 0) then
