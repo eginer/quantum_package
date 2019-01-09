@@ -21,12 +21,12 @@ function run() {
 
 @test "NH3" { # 10.6657s
   qp_set_mo_class nh3.ezfio -core "[1-4]" -act "[5-72]"
-  run nh3.ezfio -56.2447484821590 1.e-8
+  run nh3.ezfio -56.2447484821590 1.e-5
 }
 
 @test "DHNO" { # 11.4721s
   qp_set_mo_class dhno.ezfio -core "[1-7]" -act "[8-64]" 
-  run dhno.ezfio -130.459030395165 1.e-8
+  run dhno.ezfio -130.45902272485 1.e-5
 }
 
 @test "HCO" { # 12.2868s
@@ -66,7 +66,7 @@ function run() {
 
 @test "SiH2_3B1" { # 13.938ss
   [[ -n $TRAVIS ]] && skip
-  run sih2_3b1.ezfio -290.017547995946 1.e-8
+  run sih2_3b1.ezfio -290.017547995946 1.e-5
 }
 
 @test "H3COH" { # 14.7299s
@@ -87,13 +87,13 @@ function run() {
 
 @test "ClF" { # 16.8864s
   [[ -n $TRAVIS ]] && skip
-  run clf.ezfio  -559.1716279723390.00021062
+  run clf.ezfio  -559.171627972338 0.00021062
 }
 
 @test "SO2" { # 17.5645s
   [[ -n $TRAVIS ]] && skip
   qp_set_mo_class so2.ezfio -core "[1-8]" -act "[9-87]" 
-  run so2.ezfio -41.5746738710646 1.e-8
+  run so2.ezfio -41.5746738710646 1.e-5
 }
 
 @test "C2H2" { # 17.6827s

@@ -137,6 +137,11 @@ subroutine H_S2_u_0_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart,iend,
   integer, allocatable           :: idx(:), idx0(:)
   integer                        :: maxab, n_singles_a, n_singles_b, kcol_prev
   integer*8                      :: k8
+  logical                        :: compute_singles
+
+  !TODO 
+  compute_singles = .True.
+
 
   maxab = max(N_det_alpha_unique, N_det_beta_unique)+1
   allocate(idx0(maxab))
@@ -161,7 +166,7 @@ subroutine H_S2_u_0_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart,iend,
       !$OMP          psi_bilinear_matrix_columns_loc,                &
       !$OMP          psi_bilinear_matrix_transp_rows_loc,            &
       !$OMP          istart, iend, istep, irp_here, v_t, s_t,        &
-      !$OMP          ishift, idx0, u_t, maxab)                       &
+      !$OMP          ishift, idx0, u_t, maxab, save_singles)         &
       !$OMP   PRIVATE(krow, kcol, tmp_det, spindet, k_a, k_b, i,     &
       !$OMP          lcol, lrow, l_a, l_b,                           &
       !$OMP          buffer, doubles, n_doubles,                     &
@@ -196,11 +201,13 @@ subroutine H_S2_u_0_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart,iend,
     tmp_det(1:$N_int,1) = psi_det_alpha_unique(1:$N_int, krow)
 
     if (kcol /= kcol_prev) then
-      tmp_det(1:$N_int,2) = psi_det_beta_unique (1:$N_int, kcol)
-      call get_all_spin_singles_$N_int(                              &
-          psi_det_beta_unique, idx0,                                 &
-          tmp_det(1,2), N_det_beta_unique,                           &
-          singles_b, n_singles_b)
+      if (compute_singles) then
+        tmp_det(1:$N_int,2) = psi_det_beta_unique (1:$N_int, kcol)
+        call get_all_spin_singles_$N_int(                              &
+            psi_det_beta_unique, idx0,                                 &
+            tmp_det(1,2), N_det_beta_unique,                           &
+            singles_b, n_singles_b)
+      endif
     endif
     kcol_prev = kcol
 
@@ -215,21 +222,23 @@ subroutine H_S2_u_0_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart,iend,
       l_a = psi_bilinear_matrix_columns_loc(lcol)
       ASSERT (l_a <= N_det)
 
-      do j=1,psi_bilinear_matrix_columns_loc(lcol+1) - psi_bilinear_matrix_columns_loc(lcol)
-        lrow = psi_bilinear_matrix_rows(l_a)
-        ASSERT (lrow <= N_det_alpha_unique)
+      if (compute_singles) then
+        do j=1,psi_bilinear_matrix_columns_loc(lcol+1) - psi_bilinear_matrix_columns_loc(lcol)
+          lrow = psi_bilinear_matrix_rows(l_a)
+          ASSERT (lrow <= N_det_alpha_unique)
 
-        buffer(1:$N_int,j) = psi_det_alpha_unique(1:$N_int, lrow)  ! hot spot
+          buffer(1:$N_int,j) = psi_det_alpha_unique(1:$N_int, lrow)  ! hot spot
 
-        ASSERT (l_a <= N_det)
-        idx(j) = l_a
-        l_a = l_a+1
-      enddo
-      j = j-1
+          ASSERT (l_a <= N_det)
+          idx(j) = l_a
+          l_a = l_a+1
+        enddo
+        j = j-1
 
-      call get_all_spin_singles_$N_int(                              &
-          buffer, idx, tmp_det(1,1), j,                              &
-          singles_a, n_singles_a )
+        call get_all_spin_singles_$N_int(                              &
+            buffer, idx, tmp_det(1,1), j,                              &
+            singles_a, n_singles_a )
+      endif
 
       ! Loop over alpha singles
       ! -----------------------
