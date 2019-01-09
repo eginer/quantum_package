@@ -94,7 +94,7 @@ subroutine run
   call Roothaan_Hall_SCF
   call ezfio_set_kohn_sham_rs_energy(SCF_energy)
 
- write(*, '(A22,X,F16.10)') 'one_electron_energy = ',one_electron_energy
+ write(*, '(A22,X,F16.10)') 'one_e_energy = ',one_e_energy
  write(*, '(A22,X,F16.10)') 'two_electron_energy = ',two_electron_energy
  write(*, '(A22,X,F16.10)') 'e_exchange_dft      = ',e_exchange_dft
  write(*, '(A22,X,F16.10)') 'e_correlation_dft   = ',e_correlation_dft

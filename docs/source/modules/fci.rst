@@ -36,6 +36,23 @@ EZFIO parameters
 
 
 
+Providers
+---------
+
+
+.. c:var:: nthreads_pt2
+
+    .. code:: text
+
+        integer	:: nthreads_pt2
+
+    File: :file:`environment.irp.f`
+
+    Number of threads for Davidson
+
+
+
+
 Subroutines / functions
 -----------------------
 
@@ -64,6 +81,20 @@ Subroutines / functions
     File: :file:`pt2.irp.f`
 
     Second order perturbative correction to the wave function contained in the EZFIO directory.
+
+
+
+
+
+.. c:function:: run
+
+    .. code:: text
+
+        subroutine run
+
+    File: :file:`pt2.irp.f`
+
+    
 
 
 

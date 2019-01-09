@@ -16,7 +16,7 @@ The main providers for this module are:
 
 * `aos_in_r_array`: values of the |AO| basis on the grid point.
 * `mos_in_r_array`: values of the |MO| basis on the grid point.
-* `one_dm_and_grad_alpha_in_r`: values of the density and its gradienst on the grid points.
+* `one_e_dm_and_grad_alpha_in_r`: values of the density and its gradienst on the grid points.
 
 
 
@@ -195,72 +195,26 @@ Providers
 
 
 
-.. c:var:: one_body_dm_alpha_at_r
+.. c:var:: one_e_dm_alpha_at_r
 
     .. code:: text
 
-        double precision, allocatable	:: one_body_dm_alpha_at_r	(n_points_final_grid,N_states)
-        double precision, allocatable	:: one_body_dm_beta_at_r	(n_points_final_grid,N_states)
+        double precision, allocatable	:: one_e_dm_alpha_at_r	(n_points_final_grid,N_states)
+        double precision, allocatable	:: one_e_dm_beta_at_r	(n_points_final_grid,N_states)
 
     File: :file:`dm_in_r.irp.f`
 
-    one_body_dm_alpha_at_r(i,istate) = n_alpha(r_i,istate) one_body_dm_beta_at_r(i,istate) =  n_beta(r_i,istate) where r_i is the ith point of the grid and istate is the state number
+    one_e_dm_alpha_at_r(i,istate) = n_alpha(r_i,istate) one_e_dm_beta_at_r(i,istate) =  n_beta(r_i,istate) where r_i is the ith point of the grid and istate is the state number
 
 
 
 
-.. c:var:: one_body_dm_beta_at_r
-
-    .. code:: text
-
-        double precision, allocatable	:: one_body_dm_alpha_at_r	(n_points_final_grid,N_states)
-        double precision, allocatable	:: one_body_dm_beta_at_r	(n_points_final_grid,N_states)
-
-    File: :file:`dm_in_r.irp.f`
-
-    one_body_dm_alpha_at_r(i,istate) = n_alpha(r_i,istate) one_body_dm_beta_at_r(i,istate) =  n_beta(r_i,istate) where r_i is the ith point of the grid and istate is the state number
-
-
-
-
-.. c:var:: one_body_grad_2_dm_alpha_at_r
+.. c:var:: one_e_dm_alpha_in_r
 
     .. code:: text
 
-        double precision, allocatable	:: one_dm_and_grad_alpha_in_r	(4,n_points_final_grid,N_states)
-        double precision, allocatable	:: one_dm_and_grad_beta_in_r	(4,n_points_final_grid,N_states)
-        double precision, allocatable	:: one_body_grad_2_dm_alpha_at_r	(n_points_final_grid,N_states)
-        double precision, allocatable	:: one_body_grad_2_dm_beta_at_r	(n_points_final_grid,N_states)
-
-    File: :file:`dm_in_r.irp.f`
-
-    one_dm_and_grad_alpha_in_r(1,i,i_state) = d\dx n_alpha(r_i,istate) one_dm_and_grad_alpha_in_r(2,i,i_state) = d\dy n_alpha(r_i,istate) one_dm_and_grad_alpha_in_r(3,i,i_state) = d\dz n_alpha(r_i,istate) one_dm_and_grad_alpha_in_r(4,i,i_state) = n_alpha(r_i,istate) one_body_grad_2_dm_alpha_at_r(i,istate)      = d\dx n_alpha(r_i,istate)^2 + d\dy n_alpha(r_i,istate)^2 + d\dz n_alpha(r_i,istate)^2 where r_i is the ith point of the grid and istate is the state number
-
-
-
-
-.. c:var:: one_body_grad_2_dm_beta_at_r
-
-    .. code:: text
-
-        double precision, allocatable	:: one_dm_and_grad_alpha_in_r	(4,n_points_final_grid,N_states)
-        double precision, allocatable	:: one_dm_and_grad_beta_in_r	(4,n_points_final_grid,N_states)
-        double precision, allocatable	:: one_body_grad_2_dm_alpha_at_r	(n_points_final_grid,N_states)
-        double precision, allocatable	:: one_body_grad_2_dm_beta_at_r	(n_points_final_grid,N_states)
-
-    File: :file:`dm_in_r.irp.f`
-
-    one_dm_and_grad_alpha_in_r(1,i,i_state) = d\dx n_alpha(r_i,istate) one_dm_and_grad_alpha_in_r(2,i,i_state) = d\dy n_alpha(r_i,istate) one_dm_and_grad_alpha_in_r(3,i,i_state) = d\dz n_alpha(r_i,istate) one_dm_and_grad_alpha_in_r(4,i,i_state) = n_alpha(r_i,istate) one_body_grad_2_dm_alpha_at_r(i,istate)      = d\dx n_alpha(r_i,istate)^2 + d\dy n_alpha(r_i,istate)^2 + d\dz n_alpha(r_i,istate)^2 where r_i is the ith point of the grid and istate is the state number
-
-
-
-
-.. c:var:: one_dm_alpha_in_r
-
-    .. code:: text
-
-        double precision, allocatable	:: one_dm_alpha_in_r	(n_points_integration_angular,n_points_radial_grid,nucl_num,N_states)
-        double precision, allocatable	:: one_dm_beta_in_r	(n_points_integration_angular,n_points_radial_grid,nucl_num,N_states)
+        double precision, allocatable	:: one_e_dm_alpha_in_r	(n_points_integration_angular,n_points_radial_grid,nucl_num,N_states)
+        double precision, allocatable	:: one_e_dm_beta_in_r	(n_points_integration_angular,n_points_radial_grid,nucl_num,N_states)
 
     File: :file:`dm_in_r.irp.f`
 
@@ -269,48 +223,94 @@ Providers
 
 
 
-.. c:var:: one_dm_and_grad_alpha_in_r
+.. c:var:: one_e_dm_and_grad_alpha_in_r
 
     .. code:: text
 
-        double precision, allocatable	:: one_dm_and_grad_alpha_in_r	(4,n_points_final_grid,N_states)
-        double precision, allocatable	:: one_dm_and_grad_beta_in_r	(4,n_points_final_grid,N_states)
-        double precision, allocatable	:: one_body_grad_2_dm_alpha_at_r	(n_points_final_grid,N_states)
-        double precision, allocatable	:: one_body_grad_2_dm_beta_at_r	(n_points_final_grid,N_states)
+        double precision, allocatable	:: one_e_dm_and_grad_alpha_in_r	(4,n_points_final_grid,N_states)
+        double precision, allocatable	:: one_e_dm_and_grad_beta_in_r	(4,n_points_final_grid,N_states)
+        double precision, allocatable	:: one_e_grad_2_dm_alpha_at_r	(n_points_final_grid,N_states)
+        double precision, allocatable	:: one_e_grad_2_dm_beta_at_r	(n_points_final_grid,N_states)
 
     File: :file:`dm_in_r.irp.f`
 
-    one_dm_and_grad_alpha_in_r(1,i,i_state) = d\dx n_alpha(r_i,istate) one_dm_and_grad_alpha_in_r(2,i,i_state) = d\dy n_alpha(r_i,istate) one_dm_and_grad_alpha_in_r(3,i,i_state) = d\dz n_alpha(r_i,istate) one_dm_and_grad_alpha_in_r(4,i,i_state) = n_alpha(r_i,istate) one_body_grad_2_dm_alpha_at_r(i,istate)      = d\dx n_alpha(r_i,istate)^2 + d\dy n_alpha(r_i,istate)^2 + d\dz n_alpha(r_i,istate)^2 where r_i is the ith point of the grid and istate is the state number
+    one_e_dm_and_grad_alpha_in_r(1,i,i_state) = d\dx n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(2,i,i_state) = d\dy n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(3,i,i_state) = d\dz n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(4,i,i_state) = n_alpha(r_i,istate) one_e_grad_2_dm_alpha_at_r(i,istate)      = d\dx n_alpha(r_i,istate)^2 + d\dy n_alpha(r_i,istate)^2 + d\dz n_alpha(r_i,istate)^2 where r_i is the ith point of the grid and istate is the state number
 
 
 
 
-.. c:var:: one_dm_and_grad_beta_in_r
+.. c:var:: one_e_dm_and_grad_beta_in_r
 
     .. code:: text
 
-        double precision, allocatable	:: one_dm_and_grad_alpha_in_r	(4,n_points_final_grid,N_states)
-        double precision, allocatable	:: one_dm_and_grad_beta_in_r	(4,n_points_final_grid,N_states)
-        double precision, allocatable	:: one_body_grad_2_dm_alpha_at_r	(n_points_final_grid,N_states)
-        double precision, allocatable	:: one_body_grad_2_dm_beta_at_r	(n_points_final_grid,N_states)
+        double precision, allocatable	:: one_e_dm_and_grad_alpha_in_r	(4,n_points_final_grid,N_states)
+        double precision, allocatable	:: one_e_dm_and_grad_beta_in_r	(4,n_points_final_grid,N_states)
+        double precision, allocatable	:: one_e_grad_2_dm_alpha_at_r	(n_points_final_grid,N_states)
+        double precision, allocatable	:: one_e_grad_2_dm_beta_at_r	(n_points_final_grid,N_states)
 
     File: :file:`dm_in_r.irp.f`
 
-    one_dm_and_grad_alpha_in_r(1,i,i_state) = d\dx n_alpha(r_i,istate) one_dm_and_grad_alpha_in_r(2,i,i_state) = d\dy n_alpha(r_i,istate) one_dm_and_grad_alpha_in_r(3,i,i_state) = d\dz n_alpha(r_i,istate) one_dm_and_grad_alpha_in_r(4,i,i_state) = n_alpha(r_i,istate) one_body_grad_2_dm_alpha_at_r(i,istate)      = d\dx n_alpha(r_i,istate)^2 + d\dy n_alpha(r_i,istate)^2 + d\dz n_alpha(r_i,istate)^2 where r_i is the ith point of the grid and istate is the state number
+    one_e_dm_and_grad_alpha_in_r(1,i,i_state) = d\dx n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(2,i,i_state) = d\dy n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(3,i,i_state) = d\dz n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(4,i,i_state) = n_alpha(r_i,istate) one_e_grad_2_dm_alpha_at_r(i,istate)      = d\dx n_alpha(r_i,istate)^2 + d\dy n_alpha(r_i,istate)^2 + d\dz n_alpha(r_i,istate)^2 where r_i is the ith point of the grid and istate is the state number
 
 
 
 
-.. c:var:: one_dm_beta_in_r
+.. c:var:: one_e_dm_beta_at_r
 
     .. code:: text
 
-        double precision, allocatable	:: one_dm_alpha_in_r	(n_points_integration_angular,n_points_radial_grid,nucl_num,N_states)
-        double precision, allocatable	:: one_dm_beta_in_r	(n_points_integration_angular,n_points_radial_grid,nucl_num,N_states)
+        double precision, allocatable	:: one_e_dm_alpha_at_r	(n_points_final_grid,N_states)
+        double precision, allocatable	:: one_e_dm_beta_at_r	(n_points_final_grid,N_states)
+
+    File: :file:`dm_in_r.irp.f`
+
+    one_e_dm_alpha_at_r(i,istate) = n_alpha(r_i,istate) one_e_dm_beta_at_r(i,istate) =  n_beta(r_i,istate) where r_i is the ith point of the grid and istate is the state number
+
+
+
+
+.. c:var:: one_e_dm_beta_in_r
+
+    .. code:: text
+
+        double precision, allocatable	:: one_e_dm_alpha_in_r	(n_points_integration_angular,n_points_radial_grid,nucl_num,N_states)
+        double precision, allocatable	:: one_e_dm_beta_in_r	(n_points_integration_angular,n_points_radial_grid,nucl_num,N_states)
 
     File: :file:`dm_in_r.irp.f`
 
     
+
+
+
+
+.. c:var:: one_e_grad_2_dm_alpha_at_r
+
+    .. code:: text
+
+        double precision, allocatable	:: one_e_dm_and_grad_alpha_in_r	(4,n_points_final_grid,N_states)
+        double precision, allocatable	:: one_e_dm_and_grad_beta_in_r	(4,n_points_final_grid,N_states)
+        double precision, allocatable	:: one_e_grad_2_dm_alpha_at_r	(n_points_final_grid,N_states)
+        double precision, allocatable	:: one_e_grad_2_dm_beta_at_r	(n_points_final_grid,N_states)
+
+    File: :file:`dm_in_r.irp.f`
+
+    one_e_dm_and_grad_alpha_in_r(1,i,i_state) = d\dx n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(2,i,i_state) = d\dy n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(3,i,i_state) = d\dz n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(4,i,i_state) = n_alpha(r_i,istate) one_e_grad_2_dm_alpha_at_r(i,istate)      = d\dx n_alpha(r_i,istate)^2 + d\dy n_alpha(r_i,istate)^2 + d\dz n_alpha(r_i,istate)^2 where r_i is the ith point of the grid and istate is the state number
+
+
+
+
+.. c:var:: one_e_grad_2_dm_beta_at_r
+
+    .. code:: text
+
+        double precision, allocatable	:: one_e_dm_and_grad_alpha_in_r	(4,n_points_final_grid,N_states)
+        double precision, allocatable	:: one_e_dm_and_grad_beta_in_r	(4,n_points_final_grid,N_states)
+        double precision, allocatable	:: one_e_grad_2_dm_alpha_at_r	(n_points_final_grid,N_states)
+        double precision, allocatable	:: one_e_grad_2_dm_beta_at_r	(n_points_final_grid,N_states)
+
+    File: :file:`dm_in_r.irp.f`
+
+    one_e_dm_and_grad_alpha_in_r(1,i,i_state) = d\dx n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(2,i,i_state) = d\dy n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(3,i,i_state) = d\dz n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(4,i,i_state) = n_alpha(r_i,istate) one_e_grad_2_dm_alpha_at_r(i,istate)      = d\dx n_alpha(r_i,istate)^2 + d\dy n_alpha(r_i,istate)^2 + d\dz n_alpha(r_i,istate)^2 where r_i is the ith point of the grid and istate is the state number
 
 
 
