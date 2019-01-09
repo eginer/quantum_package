@@ -12,9 +12,8 @@ program rs_ks_scf
   touch io_ao_one_e_integrals
 
   read_wf = .False.
-  density_for_dft ="WFT"
+  density_for_dft ="KS"
   touch density_for_dft
-  touch read_wf
   print*, '**************************'
   print*, 'mu_erf_dft = ',mu_erf_dft
   print*, '**************************'

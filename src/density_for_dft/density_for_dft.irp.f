@@ -12,6 +12,9 @@ BEGIN_PROVIDER [double precision, one_body_dm_mo_alpha_for_dft, (mo_num,mo_num, 
  else if (density_for_dft .EQ. "WFT")then
   provide mo_coef
   one_body_dm_mo_alpha_for_dft = one_body_dm_mo_alpha
+ else if (density_for_dft .EQ. "KS")then
+  provide mo_coef
+  one_body_dm_mo_alpha_for_dft = one_body_dm_mo_alpha_one_det
  endif
 
 END_PROVIDER 
@@ -30,6 +33,9 @@ BEGIN_PROVIDER [double precision, one_body_dm_mo_beta_for_dft, (mo_num,mo_num, N
  else if (density_for_dft .EQ. "WFT")then
   provide mo_coef
   one_body_dm_mo_beta_for_dft = one_body_dm_mo_beta
+ else if (density_for_dft .EQ. "KS")then
+  provide mo_coef
+  one_body_dm_mo_beta_for_dft = one_body_dm_mo_beta_one_det
  endif
 END_PROVIDER 
 
@@ -53,25 +59,37 @@ END_PROVIDER
 ! one body density matrix on the AO basis based on one_body_dm_mo_alpha_for_dft
  END_DOC
  implicit none
- integer :: i,j,k,l,istate
+ integer :: istate
  double precision :: mo_alpha,mo_beta
 
  one_body_dm_alpha_ao_for_dft = 0.d0
  one_body_dm_beta_ao_for_dft = 0.d0
- do k = 1, ao_num
-  do l = 1, ao_num
-   do i = 1, mo_num
-    do j = 1, mo_num
-     do istate = 1, N_states
-      mo_alpha = one_body_dm_mo_alpha_for_dft(j,i,istate)
-      mo_beta  = one_body_dm_mo_beta_for_dft(j,i,istate)
-      one_body_dm_alpha_ao_for_dft(l,k,istate) += mo_coef(k,i) * mo_coef(l,j) *  mo_alpha
-      one_body_dm_beta_ao_for_dft(l,k,istate)  += mo_coef(k,i) * mo_coef(l,j)  *  mo_beta        
-     enddo
-    enddo
-   enddo
-  enddo
+ do istate = 1, N_states
+  call mo_to_ao_no_overlap( one_body_dm_mo_alpha_for_dft(1,1,istate), &
+                            size(one_body_dm_mo_alpha_for_dft,1),     & 
+                            one_body_dm_alpha_ao_for_dft(1,1,istate), &
+                            size(one_body_dm_alpha_ao_for_dft,1) ) 
+  call mo_to_ao_no_overlap( one_body_dm_mo_beta_for_dft(1,1,istate), &
+                            size(one_body_dm_mo_beta_for_dft,1),     & 
+                            one_body_dm_beta_ao_for_dft(1,1,istate), &
+                            size(one_body_dm_beta_ao_for_dft,1) ) 
  enddo
 
 END_PROVIDER
 
+ BEGIN_PROVIDER [double precision, one_body_dm_mo_alpha_one_det, (mo_num,mo_num, N_states)]
+&BEGIN_PROVIDER [double precision, one_body_dm_mo_beta_one_det, (mo_num,mo_num, N_states)]
+ implicit none
+ BEGIN_DOC 
+! One body density matrix on the |MO| basis for a single determinant 
+ END_DOC
+ integer :: i
+ one_body_dm_mo_alpha_one_det = 0.d0
+ one_body_dm_mo_beta_one_det = 0.d0
+ do i =1, elec_alpha_num
+  one_body_dm_mo_alpha_one_det(i,i, 1:N_states) = 1.d0
+ enddo
+ do i =1, elec_beta_num
+  one_body_dm_mo_beta_one_det(i,i, 1:N_states) = 1.d0
+ enddo
+END_PROVIDER 
