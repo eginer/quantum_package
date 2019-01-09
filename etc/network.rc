@@ -1,5 +1,0 @@
-  # Choose the correct network interface if the default one is incorrect
-#   export QP_NIC=ib0
-#   export QP_NIC=eth0
-
-

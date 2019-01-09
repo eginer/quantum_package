@@ -1,3 +1,5 @@
+# Configuration of IRPF90 package
+
 export IRPF90=${QP_ROOT}/bin/irpf90
 
 # Load irpman shell completion

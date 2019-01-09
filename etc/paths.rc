@@ -1,3 +1,5 @@
+# Configuration of all the paths to executables and libraries
+
 if [[ -z $QP_PYTHON ]]
 then
 
