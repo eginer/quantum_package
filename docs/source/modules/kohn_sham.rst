@@ -58,7 +58,7 @@ Providers
 
         double precision	:: ks_energy
         double precision	:: two_electron_energy
-        double precision	:: one_electron_energy
+        double precision	:: one_e_energy
         double precision	:: fock_matrix_energy
         double precision	:: trace_potential_xc
 

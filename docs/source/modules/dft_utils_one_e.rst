@@ -1344,7 +1344,7 @@ Providers
 
     File: :file:`one_e_energy_dft.irp.f`
 
-    kinetic, electron-nuclear and total h_core energy computed with the density matrix one_body_dm_mo_beta_for_dft+one_body_dm_mo_alpha_for_dft
+    kinetic, electron-nuclear and total h_core energy computed with the density matrix one_e_dm_mo_beta_for_dft+one_e_dm_mo_alpha_for_dft
 
 
 
@@ -1359,7 +1359,7 @@ Providers
 
     File: :file:`one_e_energy_dft.irp.f`
 
-    kinetic, electron-nuclear and total h_core energy computed with the density matrix one_body_dm_mo_beta_for_dft+one_body_dm_mo_alpha_for_dft
+    kinetic, electron-nuclear and total h_core energy computed with the density matrix one_e_dm_mo_beta_for_dft+one_e_dm_mo_alpha_for_dft
 
 
 
@@ -1374,7 +1374,7 @@ Providers
 
     File: :file:`one_e_energy_dft.irp.f`
 
-    kinetic, electron-nuclear and total h_core energy computed with the density matrix one_body_dm_mo_beta_for_dft+one_body_dm_mo_alpha_for_dft
+    kinetic, electron-nuclear and total h_core energy computed with the density matrix one_e_dm_mo_beta_for_dft+one_e_dm_mo_alpha_for_dft
 
 
 

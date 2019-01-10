@@ -148,7 +148,7 @@ Providers
 
         double precision	:: rs_ks_energy
         double precision	:: two_electron_energy
-        double precision	:: one_electron_energy
+        double precision	:: one_e_energy
         double precision	:: fock_matrix_energy
         double precision	:: trace_potential_xc
 
@@ -159,13 +159,13 @@ Providers
 
 
 
-.. c:var:: one_electron_energy
+.. c:var:: one_e_energy
 
     .. code:: text
 
         double precision	:: rs_ks_energy
         double precision	:: two_electron_energy
-        double precision	:: one_electron_energy
+        double precision	:: one_e_energy
         double precision	:: fock_matrix_energy
         double precision	:: trace_potential_xc
 
@@ -182,7 +182,41 @@ Providers
 
         double precision	:: rs_ks_energy
         double precision	:: two_electron_energy
-        double precision	:: one_electron_energy
+        double precision	:: one_e_energy
+        double precision	:: fock_matrix_energy
+        double precision	:: trace_potential_xc
+
+    File: :file:`rs_ks_energy.irp.f`
+
+    Range-separated Kohn-Sham energy containing the nuclear repulsion energy, and the various components of this quantity.
+
+
+
+
+.. c:var:: trace_potential_xc
+
+    .. code:: text
+
+        double precision	:: rs_ks_energy
+        double precision	:: two_electron_energy
+        double precision	:: one_e_energy
+        double precision	:: fock_matrix_energy
+        double precision	:: trace_potential_xc
+
+    File: :file:`rs_ks_energy.irp.f`
+
+    Range-separated Kohn-Sham energy containing the nuclear repulsion energy, and the various components of this quantity.
+
+
+
+
+.. c:var:: two_electron_energy
+
+    .. code:: text
+
+        double precision	:: rs_ks_energy
+        double precision	:: two_electron_energy
+        double precision	:: one_e_energy
         double precision	:: fock_matrix_energy
         double precision	:: trace_potential_xc
 
