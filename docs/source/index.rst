@@ -38,6 +38,7 @@
    programmers_guide/programming
    programmers_guide/ezfio
    programmers_guide/index
+   programmers_guide/plugins
 
 
 .. toctree::
