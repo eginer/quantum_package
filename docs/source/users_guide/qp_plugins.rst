@@ -96,7 +96,7 @@ Now let us install the plugin `rsdft_cipsi`:
     qp_plugins install rsdft_cipsi
 
 This will link this directory to the |QP| which means that when the code will be compiled, this plugin will be compiled to and therefore 
-all the executables/scripts contained in this module will be available. 
+all the executables/scripts/input keywords contained in this module will be available as if there were part of the core of the |QP|. 
 
 
 Then, to compile the new plugin, just recompile the |QP| as usual by going at the root of the |QP| directory: 
@@ -106,4 +106,5 @@ Then, to compile the new plugin, just recompile the |QP| as usual by going at th
     cd $QP_ROOT
     ninja 
 
-Then, when executing 
+Then, if you go back to the plugin directory you just installed, you should see all the executables/scripts which have been created and 
+which are now available with the `qp_run` command. 

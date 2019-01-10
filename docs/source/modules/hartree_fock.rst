@@ -200,7 +200,6 @@ Subroutines / functions
 
 
 
-<<<<<<< HEAD
 .. c:function:: run
 
     .. code:: text
