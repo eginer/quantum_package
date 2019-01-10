@@ -99,4 +99,11 @@ This will link this directory to the |QP| which means that when the code will be
 all the executables/scripts contained in this module will be available. 
 
 
+Then, to compile the new plugin, just recompile the |QP| as usual by going at the root of the |QP| directory: 
 
+.. code:: bash
+
+    cd $QP_ROOT
+    ninja 
+
+Then, when executing 
