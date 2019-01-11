@@ -1,3 +1,9 @@
+# qpsh
+ 
+* reconnaitre les executables en vert en mode qpsh
+* qp set_file ls: cannot access '*/': No such file or directory
+
+
 * Mettre le fichier LIB
 * Faire que le slave de Hartree-fock est le calcul des integrales AO en parallele
 
