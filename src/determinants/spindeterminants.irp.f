@@ -135,33 +135,6 @@ BEGIN_TEMPLATE
   
 END_PROVIDER
 
-BEGIN_PROVIDER [ integer, n_singles_max_$alpha ]
-  implicit none
-  BEGIN_DOC
-  ! Maximum number of single excitations with the $\\$alpha$ spin
-  END_DOC
-  n_singles_max_$alpha = elec_$alpha_num * (mo_num - elec_$alpha_num)
-  
-END_PROVIDER
-
-BEGIN_PROVIDER [ integer, psi_det_$alpha_unique_singles, (n_singles_max_$alpha,N_det_$alpha_unique) ]
-  implicit none
-  BEGIN_DOC
-  ! For each unique spin-determinant, the list of indices of spin-determinant that
-  ! are singly excited.
-  END_DOC
-  integer                        :: i
-  integer, allocatable           :: idx0(:)
-  
-  allocate( idx0(N_det_$alpha_unique) )
-  
-  call get_all_spin_singles_$N_int(                                  &
-      psi_det_beta_unique, idx0,                                     &
-      tmp_det(1,2), N_det_beta_unique,                               &
-      singles_b, n_singles_b)
-endif
-
-END_PROVIDER
 
 SUBST [ alpha ]
 
@@ -789,9 +762,7 @@ subroutine get_all_spin_singles_and_doubles(buffer, idx, spindet, Nint, size_buf
   ! Returns the indices of all the single and double excitations in the list of
   ! unique $\alpha$ determinants.
   !
-  ! ..warning::
-  ! 
-  !     The buffer is transposed.
+  ! Warning: The buffer is transposed.
   !
   END_DOC
   integer, intent(in)            :: Nint, size_buffer, idx(size_buffer)

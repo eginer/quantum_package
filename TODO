@@ -1,3 +1,7 @@
+============
+Probleme with EMSL
+
+
 * Mettre le fichier LIB
 * Faire que le slave de Hartree-fock est le calcul des integrales AO en parallele
 
