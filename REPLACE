@@ -180,3 +180,4 @@ qp_name data_one_body_dm_beta_mo -r data_one_e_dm_beta_mo
 qp_name save_one_body_dm -r save_one_e_dm
 qp_name ezfio_set_aux_quantities_data_one_e_alpha_dm_mo -r ezfio_set_aux_quantities_data_one_e_dm_alpha_mo
 qp_name ezfio_set_aux_quantities_data_one_e_beta_dm_mo -r ezfio_set_aux_quantities_data_one_e_dm_beta_mo
+qp_name two_electron_energy -r two_e_energy
