@@ -451,7 +451,7 @@ Providers
         integer(bit_kind), allocatable	:: psi_det_alpha_unique	(N_int,psi_det_size)
         integer	:: n_det_alpha_unique
 
-    File: :file:`spindeterminants.irp.f_template_141`
+    File: :file:`spindeterminants.irp.f_template_143`
 
     Unique  :math:`\alpha`  determinants
 
@@ -465,7 +465,7 @@ Providers
         integer(bit_kind), allocatable	:: psi_det_beta_unique	(N_int,psi_det_size)
         integer	:: n_det_beta_unique
 
-    File: :file:`spindeterminants.irp.f_template_141`
+    File: :file:`spindeterminants.irp.f_template_143`
 
     Unique  :math:`\beta`  determinants
 
@@ -732,6 +732,168 @@ Providers
     .. code:: text
 
         double precision, allocatable	:: one_body_spin_density_mo	(mo_num,mo_num)
+
+    File: :file:`density_matrix.irp.f`
+
+     :math:`\rho(\alpha) - \rho(\beta)`
+
+
+
+
+.. c:var:: one_e_dm_ao_alpha
+
+    .. code:: text
+
+        double precision, allocatable	:: one_e_dm_ao_alpha	(ao_num,ao_num)
+        double precision, allocatable	:: one_e_dm_ao_beta	(ao_num,ao_num)
+
+    File: :file:`density_matrix.irp.f`
+
+    One body density matrix on the |AO| basis :  :math:`\rho_{AO}(\alpha), \rho_{AO}(\beta)` .
+
+
+
+
+.. c:var:: one_e_dm_ao_beta
+
+    .. code:: text
+
+        double precision, allocatable	:: one_e_dm_ao_alpha	(ao_num,ao_num)
+        double precision, allocatable	:: one_e_dm_ao_beta	(ao_num,ao_num)
+
+    File: :file:`density_matrix.irp.f`
+
+    One body density matrix on the |AO| basis :  :math:`\rho_{AO}(\alpha), \rho_{AO}(\beta)` .
+
+
+
+
+.. c:var:: one_e_dm_dagger_mo_spin_index
+
+    .. code:: text
+
+        double precision, allocatable	:: one_e_dm_dagger_mo_spin_index	(mo_num,mo_num,N_states,2)
+
+    File: :file:`density_matrix.irp.f`
+
+    
+
+
+
+
+.. c:var:: one_e_dm_mo
+
+    .. code:: text
+
+        double precision, allocatable	:: one_e_dm_mo	(mo_num,mo_num)
+
+    File: :file:`density_matrix.irp.f`
+
+    One-body density matrix
+
+
+
+
+.. c:var:: one_e_dm_mo_alpha
+
+    .. code:: text
+
+        double precision, allocatable	:: one_e_dm_mo_alpha	(mo_num,mo_num,N_states)
+        double precision, allocatable	:: one_e_dm_mo_beta	(mo_num,mo_num,N_states)
+
+    File: :file:`density_matrix.irp.f`
+
+     :math:`\alpha`  and  :math:`\beta`  one-body density matrix for each state
+
+
+
+
+.. c:var:: one_e_dm_mo_alpha_average
+
+    .. code:: text
+
+        double precision, allocatable	:: one_e_dm_mo_alpha_average	(mo_num,mo_num)
+        double precision, allocatable	:: one_e_dm_mo_beta_average	(mo_num,mo_num)
+
+    File: :file:`density_matrix.irp.f`
+
+     :math:`\alpha`  and  :math:`\beta`  one-body density matrix for each state
+
+
+
+
+.. c:var:: one_e_dm_mo_beta
+
+    .. code:: text
+
+        double precision, allocatable	:: one_e_dm_mo_alpha	(mo_num,mo_num,N_states)
+        double precision, allocatable	:: one_e_dm_mo_beta	(mo_num,mo_num,N_states)
+
+    File: :file:`density_matrix.irp.f`
+
+     :math:`\alpha`  and  :math:`\beta`  one-body density matrix for each state
+
+
+
+
+.. c:var:: one_e_dm_mo_beta_average
+
+    .. code:: text
+
+        double precision, allocatable	:: one_e_dm_mo_alpha_average	(mo_num,mo_num)
+        double precision, allocatable	:: one_e_dm_mo_beta_average	(mo_num,mo_num)
+
+    File: :file:`density_matrix.irp.f`
+
+     :math:`\alpha`  and  :math:`\beta`  one-body density matrix for each state
+
+
+
+
+.. c:var:: one_e_dm_mo_diff
+
+    .. code:: text
+
+        double precision, allocatable	:: one_e_dm_mo_diff	(mo_num,mo_num,2:N_states)
+
+    File: :file:`density_matrix.irp.f`
+
+    Difference of the one-body density matrix with respect to the ground state
+
+
+
+
+.. c:var:: one_e_dm_mo_spin_index
+
+    .. code:: text
+
+        double precision, allocatable	:: one_e_dm_mo_spin_index	(mo_num,mo_num,N_states,2)
+
+    File: :file:`density_matrix.irp.f`
+
+    
+
+
+
+
+.. c:var:: one_e_spin_density_ao
+
+    .. code:: text
+
+        double precision, allocatable	:: one_e_spin_density_ao	(ao_num,ao_num)
+
+    File: :file:`density_matrix.irp.f`
+
+    One body spin density matrix on the |AO| basis :  :math:`\rho_{AO}(\alpha) - \rho_{AO}(\beta)`
+
+
+
+
+.. c:var:: one_e_spin_density_mo
+
+    .. code:: text
+
+        double precision, allocatable	:: one_e_spin_density_mo	(mo_num,mo_num)
 
     File: :file:`density_matrix.irp.f`
 
@@ -1215,7 +1377,7 @@ Providers
         integer(bit_kind), allocatable	:: psi_det_alpha_unique	(N_int,psi_det_size)
         integer	:: n_det_alpha_unique
 
-    File: :file:`spindeterminants.irp.f_template_141`
+    File: :file:`spindeterminants.irp.f_template_143`
 
     Unique  :math:`\alpha`  determinants
 
@@ -1242,7 +1404,7 @@ Providers
         integer(bit_kind), allocatable	:: psi_det_beta_unique	(N_int,psi_det_size)
         integer	:: n_det_beta_unique
 
-    File: :file:`spindeterminants.irp.f_template_141`
+    File: :file:`spindeterminants.irp.f_template_143`
 
     Unique  :math:`\beta`  determinants
 
@@ -1335,7 +1497,7 @@ Providers
 
     psi_energy_h_core =  :math:`\langle \Psi | h_{core} |\Psi \rangle` 
 
-    computed using the :c:data:`one_body_dm_mo_alpha` + :c:data:`one_body_dm_mo_beta` and :c:data:`mo_one_e_integrals`
+    computed using the :c:data:`one_e_dm_mo_alpha` + :c:data:`one_e_dm_mo_beta` and :c:data:`mo_one_e_integrals`
 
 
 
@@ -2337,7 +2499,7 @@ Subroutines / functions
 
         subroutine get_all_spin_doubles_2(buffer, idx, spindet, size_buffer, doubles, n_doubles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2355,7 +2517,7 @@ Subroutines / functions
 
         subroutine get_all_spin_doubles_3(buffer, idx, spindet, size_buffer, doubles, n_doubles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2373,7 +2535,7 @@ Subroutines / functions
 
         subroutine get_all_spin_doubles_4(buffer, idx, spindet, size_buffer, doubles, n_doubles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2391,7 +2553,7 @@ Subroutines / functions
 
         subroutine get_all_spin_doubles_N_int(buffer, idx, spindet, size_buffer, doubles, n_doubles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2445,7 +2607,7 @@ Subroutines / functions
 
         subroutine get_all_spin_singles_2(buffer, idx, spindet, size_buffer, singles, n_singles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2463,7 +2625,7 @@ Subroutines / functions
 
         subroutine get_all_spin_singles_3(buffer, idx, spindet, size_buffer, singles, n_singles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2481,7 +2643,7 @@ Subroutines / functions
 
         subroutine get_all_spin_singles_4(buffer, idx, spindet, size_buffer, singles, n_singles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2539,7 +2701,7 @@ Subroutines / functions
 
         subroutine get_all_spin_singles_and_doubles_2(buffer, idx, spindet, size_buffer, singles, doubles, n_singles, n_doubles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2559,7 +2721,7 @@ Subroutines / functions
 
         subroutine get_all_spin_singles_and_doubles_3(buffer, idx, spindet, size_buffer, singles, doubles, n_singles, n_doubles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2579,7 +2741,7 @@ Subroutines / functions
 
         subroutine get_all_spin_singles_and_doubles_4(buffer, idx, spindet, size_buffer, singles, doubles, n_singles, n_doubles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2599,7 +2761,7 @@ Subroutines / functions
 
         subroutine get_all_spin_singles_and_doubles_N_int(buffer, idx, spindet, size_buffer, singles, doubles, n_singles, n_doubles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2619,7 +2781,7 @@ Subroutines / functions
 
         subroutine get_all_spin_singles_N_int(buffer, idx, spindet, size_buffer, singles, n_singles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -3586,6 +3748,20 @@ Subroutines / functions
         subroutine tamiser(key, idx, no, n, Nint, N_key)
 
     File: :file:`sort_dets_ab.irp.f`
+
+    
+
+
+
+
+
+.. c:function:: test_det
+
+    .. code:: text
+
+        subroutine test_det
+
+    File: :file:`test_det.irp.f`
 
     
 

@@ -36,6 +36,23 @@ EZFIO parameters
 
 
 
+Providers
+---------
+
+
+.. c:var:: nthreads_pt2
+
+    .. code:: text
+
+        integer	:: nthreads_pt2
+
+    File: :file:`environment.irp.f`
+
+    Number of threads for Davidson
+
+
+
+
 Subroutines / functions
 -----------------------
 

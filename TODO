@@ -2,6 +2,7 @@
  
 * reconnaitre les executables en vert en mode qpsh
 * qp set_file ls: cannot access '*/': No such file or directory
+Problem with EMSL
 
 
 * Mettre le fichier LIB

@@ -329,15 +329,15 @@ Subroutines / functions
 
 
 
-.. c:function:: reorder_active_orb
+.. c:function:: reorder_core_orb
 
     .. code:: text
 
-        subroutine reorder_active_orb
+        subroutine reorder_core_orb
 
     File: :file:`track_orb.irp.f`
 
-    routines that takes the current :c:data:`mo_coef` and reorder the active orbitals (see :c:data:`list_act` and :c:data:`n_act_orb`) according to the overlap with :c:data:`mo_coef_begin_iteration`
+    routines that takes the current :c:data:`mo_coef` and reorder the core orbitals (see :c:data:`list_core` and :c:data:`n_core_orb`) according to the overlap with :c:data:`mo_coef_begin_iteration`
 
 
 
