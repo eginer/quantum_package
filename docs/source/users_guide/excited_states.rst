@@ -1,3 +1,5 @@
+.. _excited_states:
+
 ==============
 Excited states
 ==============
@@ -27,4 +29,8 @@ Usually, it is good practice to use state-averaged natural |MOs| so that all
 states have |MOs| of comparable quality. This allows for a faster convergence
 of excitation energies. 
 
+
+.. seealso:: 
+
+    The documentation of the :c:func:`scf`, :c:func:`cis` and  :c:func:`fci` programs.
 

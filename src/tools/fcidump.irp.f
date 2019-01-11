@@ -1,9 +1,9 @@
 program fcidump
   implicit none
   BEGIN_DOC
-! Produce a regular FCIDUMP file from the MOs stored in the EZFIO folder.
+! Produce a regular FCIDUMP file from the |MOs| stored in the |EZFIO| folder.
 !
-! To specify an active space, the class of the mos have to set in the EZFIO folder (see set_mo_class/qp_set_mo_class).
+! To specify an active space, the class of the mos have to set in the |EZFIO| folder (see :ref:`qp_set_mo_class`).
 !
 ! The fcidump program supports 3 types of MO_class : 
 !

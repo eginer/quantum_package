@@ -5,7 +5,7 @@ program print_e_conv
 !
 ! for all istate, this program produces 
 !
-! * a file "EZFIO.$istate.conv" containing the variational and var+PT2 energies as a function of N_det
+! * a file "EZFIO.istate.conv" containing the variational and var+PT2 energies as a function of N_det
 !
 ! * for istate > 1, a file EZFIO.$istate.delta_e.conv containing the energy difference (both var and var+PT2) with the ground state as a function of N_det
  END_DOC
@@ -14,8 +14,11 @@ program print_e_conv
   call routine
  end
 
-subroutine routine
+subroutine routine_e_conv
  implicit none
+ BEGIN_DOC
+! routine called by :c:func:`print_e_conv`
+ END_DOC
  integer :: N_iter_tmp
  integer :: i,istate
  character*(128) :: output

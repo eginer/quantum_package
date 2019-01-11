@@ -15,8 +15,11 @@ program save_one_e_dm
 
 end
 
-subroutine routine
- 
+subroutine routine_save_one_e_dm
+ implicit none 
+ BEGIN_DOC 
+ ! routine called by :c:func:`save_one_e_dm`
+ END_DOC
  call ezfio_set_aux_quantities_data_one_e_dm_alpha_mo(one_e_dm_mo_alpha)
  call ezfio_set_aux_quantities_data_one_e_dm_beta_mo(one_e_dm_mo_beta)
 end

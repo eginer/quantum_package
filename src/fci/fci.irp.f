@@ -1,7 +1,7 @@
 program fci
   implicit none
   BEGIN_DOC
-! Selected Full Configuration Interaction with stochastic selection and PT2.
+! Selected Full Configuration Interaction with stochastic selection and PT2 .
 ! 
 ! This program performs a CIPSI-like selected CI using a stochastic scheme for both 
 !
@@ -33,7 +33,7 @@ program fci
 ! 
 !
 !
-! For excited states calculations, it is recommended to start with a cis or cisd guess wave functions 
+! For excited states calculations, it is recommended to start with a :c:func:`cis` or :c:func:`cisd` guess wave functions 
 !
 ! for the "n_states", and to set "s2_eig" = True. 
   END_DOC

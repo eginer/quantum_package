@@ -26,4 +26,8 @@ interactively in :ref:`qp_edit` mode. An alternative is to use the :command:`pri
 
 This program will, by default, print out the first :math:`10^4` determinants whatever the size of the wave function stored in the |EZFIO| folder. If you want to change the number of printed Slater determinants, just change the :option:`determinants n_det_print_wf` keyword using the :ref:`qp_edit` tool. 
 
+.. seealso:: 
+
+    The documentation of the :ref:`print_wf` program. 
+
 

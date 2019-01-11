@@ -48,4 +48,7 @@ Hands on
    Also, all the keywords to read the one- and two-electron integrals on the |MO| basis are set to "None" 
    in order to be sure not to read integrals not corresponding to the current set of |MOs|. 
 
+.. seealso:: 
 
+    The documentation of the :ref:`save_natorb` program. 
+ 
