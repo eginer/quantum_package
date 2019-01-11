@@ -47,5 +47,7 @@ To remove the module, run
         qp_plugins uninstall ext_module
 
 
-For a more detailed explanation and an example, see :ref:`qp_plugins`. 
+.. seealso:: 
+
+     For a more detailed explanation and an example, see :ref:`qp_plugins`. 
 
