@@ -86,11 +86,10 @@ subroutine run
    
   EHF = KS_energy 
 
-  mo_label = "Canonical"
+  mo_label = "Orthonormalized"
 
 ! Choose SCF algorithm
 
-!    call damping_SCF   ! Deprecated routine
   call Roothaan_Hall_SCF
   
 end
