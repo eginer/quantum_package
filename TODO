@@ -55,3 +55,12 @@ Refaire les benchmarks
 # Documentation de qpsh
 
 # Documentation de /etc
+
+# Toto
+Selection d'etats avec qp_edit --state
+singles_alpha_csc_idx, singles_alpha_size  | git diff 
+Environment variables dans qp_run (prefix,etc)
+
+Si un provider est un programme, generer une page a lui tout seul avec le man
+
+Options obligatoires dans Command_line.ml

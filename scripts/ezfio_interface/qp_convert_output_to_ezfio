@@ -3,11 +3,11 @@
 convert output of gamess/GAU$$IAN to ezfio
 
 Usage:
-    qp_convert_output_to_ezfio.py <file.out> [-o <ezfio_directory>]
+    qp_convert_output_to_ezfio.py <file.out> [-o|--output <EZFIO_DIRECTORY>]
 
 Option:
     file.out is the file to check (like gamess.out)
-    folder.ezfio is the name you whant for the ezfio
+    EZFIO_DIRECTORY is the name of the produced directory
         (by default is file.out.ezfio)
 
 """

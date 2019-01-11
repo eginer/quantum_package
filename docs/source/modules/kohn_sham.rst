@@ -52,6 +52,7 @@ Providers
 ---------
 
 
+<<<<<<< HEAD
 .. c:var:: ao_potential_alpha_xc
 
     .. code:: text

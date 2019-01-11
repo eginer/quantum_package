@@ -246,7 +246,7 @@ OCaml
 
   .. code:: bash
 
-      opam install cryptokit zmq core sexplib ppx_sexp_conv ppx_deriving
+      opam install ocamlbuild cryptokit zmq core sexplib ppx_sexp_conv ppx_deriving getopt
 
 
 EZFIO

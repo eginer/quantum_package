@@ -29,11 +29,19 @@ Usage:
 "
 }
 
+#function test_ezfio()
+#{
+#      if [[ ! -d ${EZFIO_FILE} ]] ; then
+#        echo "qp: cannot access ${EZFIO_FILE}: No such file or directory"
+#        return 1
+#      fi
+#}
+
 function qp()
 {
   case $1 in
     "has"|"set"|"get"|"set_file"|"unset_file")
-      ezfio $@
+        ezfio $@
       ;;
 
     "set_frozen_core")
@@ -43,9 +51,9 @@ function qp()
 
     "create_ezfio_from_xyz")
       shift
-      [[ -n $EZFIO_FILE ]] && ezfio unset_file
       NAME=$(qp_create_ezfio_from_xyz $@)
       if [[ -d $NAME ]] ; then
+        [[ -d $EZFIO_FILE ]] && ezfio unset_file
         ezfio set_file $NAME
       else
         echo $NAME | more
@@ -75,6 +83,11 @@ function qp()
     "mpirun")
       shift
       qp_mpirun $@ ${EZFIO_FILE}
+      ;;
+
+    "man")
+      shift
+      man $QP_ROOT/man/${1}.?
       ;;
 
     *)
@@ -125,6 +138,10 @@ _Complete()
         COMPREPLY=( $(compgen -W "-h -core -inact -act -virt -del" -- $cur ) )
         return 0
         ;;
+      man)
+        COMPREPLY=( $(compgen -W "$(cd ${QP_ROOT}/man ; \ls | sed '/\.[1-9] / /')" -- $cur ) )
+        return 0
+        ;;
       set|has|get)
         COMPREPLY=( $(compgen -W "$(cd ${EZFIO_FILE} ; \ls -d */ | sed 's|/||g')" -- $cur ) )
         return 0
@@ -141,6 +158,10 @@ _Complete()
   else
 
     case "${prev}" in
+      man)
+        COMPREPLY=( $(compgen -W "$(cd ${QP_ROOT}/man ; echo * | sed 's|\.[1-9] | |g')" -- $cur ) )
+        return 0
+        ;;
       set_file)
         COMPREPLY=( $(compgen -W "$(\ls -d */ | sed 's|/||g')" -- ${cur} ) )
         return 0
@@ -151,6 +172,7 @@ _Complete()
         ;;
       *)
         COMPREPLY=( $(compgen -W 'set_file \
+                                  man \
                                   create_ezfio_from_xyz \
                                   -h' -- $cur ) )
         return 0
