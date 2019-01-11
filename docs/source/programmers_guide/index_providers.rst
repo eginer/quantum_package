@@ -231,6 +231,7 @@ Index of Providers
 * :c:data:`fock_wee_closed_shell`
 * :c:data:`fps_spf_matrix_ao`
 * :c:data:`fps_spf_matrix_mo`
+* :c:data:`frozen_orb_scf`
 * :c:data:`full_ijkl_bitmask`
 * :c:data:`full_ijkl_bitmask_4`
 * :c:data:`gauleg_t2`
@@ -438,6 +439,7 @@ Index of Providers
 * :c:data:`no_vvvv_integrals`
 * :c:data:`nproc`
 * :c:data:`nthreads_davidson`
+* :c:data:`nthreads_pt2`
 * :c:data:`nucl_aos`
 * :c:data:`nucl_aos_transposed`
 * :c:data:`nucl_charge`
@@ -1213,8 +1215,10 @@ Index of Subroutines/Functions
 * :c:func:`read_dets`
 * :c:func:`recentered_poly2`
 * :c:func:`remove_duplicates_in_psi_det`
+* :c:func:`remove_duplicates_in_selection_buffer`
 * :c:func:`remove_small_contributions`
 * :c:func:`reorder_active_orb`
+* :c:func:`reorder_core_orb`
 * :c:func:`repeat_all_e_corr`
 * :c:func:`reset_zmq_addresses`
 * :c:func:`resident_memory`

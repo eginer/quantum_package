@@ -451,7 +451,7 @@ Providers
         integer(bit_kind), allocatable	:: psi_det_alpha_unique	(N_int,psi_det_size)
         integer	:: n_det_alpha_unique
 
-    File: :file:`spindeterminants.irp.f_template_141`
+    File: :file:`spindeterminants.irp.f_template_143`
 
     Unique  :math:`\alpha`  determinants
 
@@ -465,7 +465,7 @@ Providers
         integer(bit_kind), allocatable	:: psi_det_beta_unique	(N_int,psi_det_size)
         integer	:: n_det_beta_unique
 
-    File: :file:`spindeterminants.irp.f_template_141`
+    File: :file:`spindeterminants.irp.f_template_143`
 
     Unique  :math:`\beta`  determinants
 
@@ -1215,7 +1215,7 @@ Providers
         integer(bit_kind), allocatable	:: psi_det_alpha_unique	(N_int,psi_det_size)
         integer	:: n_det_alpha_unique
 
-    File: :file:`spindeterminants.irp.f_template_141`
+    File: :file:`spindeterminants.irp.f_template_143`
 
     Unique  :math:`\alpha`  determinants
 
@@ -1242,7 +1242,7 @@ Providers
         integer(bit_kind), allocatable	:: psi_det_beta_unique	(N_int,psi_det_size)
         integer	:: n_det_beta_unique
 
-    File: :file:`spindeterminants.irp.f_template_141`
+    File: :file:`spindeterminants.irp.f_template_143`
 
     Unique  :math:`\beta`  determinants
 
@@ -2337,7 +2337,7 @@ Subroutines / functions
 
         subroutine get_all_spin_doubles_2(buffer, idx, spindet, size_buffer, doubles, n_doubles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2355,7 +2355,7 @@ Subroutines / functions
 
         subroutine get_all_spin_doubles_3(buffer, idx, spindet, size_buffer, doubles, n_doubles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2373,7 +2373,7 @@ Subroutines / functions
 
         subroutine get_all_spin_doubles_4(buffer, idx, spindet, size_buffer, doubles, n_doubles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2391,7 +2391,7 @@ Subroutines / functions
 
         subroutine get_all_spin_doubles_N_int(buffer, idx, spindet, size_buffer, doubles, n_doubles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2445,7 +2445,7 @@ Subroutines / functions
 
         subroutine get_all_spin_singles_2(buffer, idx, spindet, size_buffer, singles, n_singles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2463,7 +2463,7 @@ Subroutines / functions
 
         subroutine get_all_spin_singles_3(buffer, idx, spindet, size_buffer, singles, n_singles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2481,7 +2481,7 @@ Subroutines / functions
 
         subroutine get_all_spin_singles_4(buffer, idx, spindet, size_buffer, singles, n_singles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2539,7 +2539,7 @@ Subroutines / functions
 
         subroutine get_all_spin_singles_and_doubles_2(buffer, idx, spindet, size_buffer, singles, doubles, n_singles, n_doubles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2559,7 +2559,7 @@ Subroutines / functions
 
         subroutine get_all_spin_singles_and_doubles_3(buffer, idx, spindet, size_buffer, singles, doubles, n_singles, n_doubles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2579,7 +2579,7 @@ Subroutines / functions
 
         subroutine get_all_spin_singles_and_doubles_4(buffer, idx, spindet, size_buffer, singles, doubles, n_singles, n_doubles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2599,7 +2599,7 @@ Subroutines / functions
 
         subroutine get_all_spin_singles_and_doubles_N_int(buffer, idx, spindet, size_buffer, singles, doubles, n_singles, n_doubles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 
@@ -2619,7 +2619,7 @@ Subroutines / functions
 
         subroutine get_all_spin_singles_N_int(buffer, idx, spindet, size_buffer, singles, n_singles)
 
-    File: :file:`spindeterminants.irp.f_template_1218`
+    File: :file:`spindeterminants.irp.f_template_1221`
 
     
 

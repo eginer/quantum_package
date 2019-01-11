@@ -37,6 +37,7 @@ EOF
 }
 
 PACKAGES=""
+OCAML_PACKAGES="ocamlbuild cryptokit zmq core sexplib ppx_sexp_conv ppx_deriving getopt"
 
 while : ; do
     case "$1" in
@@ -233,8 +234,7 @@ EOF
                  --yes --comp=4.07.0
 
             eval $(${QP_ROOT}/bin/opam env)
-            opam install -y ocamlbuild cryptokit zmq core sexplib \
-                 ppx_sexp_conv ppx_deriving
+            opam install -y ${OCAML_PACKAGES}
 
             
     elif [[ ${PACKAGE} = ezfio ]] ; then

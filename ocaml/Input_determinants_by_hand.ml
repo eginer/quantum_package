@@ -80,7 +80,10 @@ end = struct
   ;;
 
   let write_n_det n =
-    Det_number.to_int n
+    let n_det_old =
+      Ezfio.get_determinants_n_det ()
+    in
+    min n_det_old (Det_number.to_int n)
     |> Ezfio.set_determinants_n_det
   ;;
 
