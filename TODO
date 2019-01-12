@@ -52,7 +52,6 @@ Refaire les benchmarks
 # Documentation de /etc
 
 # Toto
-singles_alpha_csc_idx, singles_alpha_size  | git diff 
 Environment variables dans qp_run (prefix,etc)
 
 Si un provider est un programme, generer une page a lui tout seul avec le man

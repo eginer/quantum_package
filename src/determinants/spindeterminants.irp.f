@@ -149,7 +149,7 @@ END_TEMPLATE
 integer function get_index_in_psi_det_alpha_unique(key,Nint)
   use bitmasks
   BEGIN_DOC
-  ! Returns the index of the determinant in the ``psi_det_alpha_unique`` array
+  ! Returns the index of the determinant in the :c:data:`psi_det_alpha_unique` array
   END_DOC
   implicit none
   
@@ -230,7 +230,7 @@ end
 integer function get_index_in_psi_det_beta_unique(key,Nint)
   use bitmasks
   BEGIN_DOC
-  ! Returns the index of the determinant in the ``psi_det_beta_unique`` array
+  ! Returns the index of the determinant in the :c:data:`psi_det_beta_unique` array
   END_DOC
   implicit none
   
@@ -466,7 +466,7 @@ BEGIN_PROVIDER [ integer, psi_bilinear_matrix_order_reverse , (N_det) ]
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Order which allows to go from ``psi_bilinear_matrix`` to ``psi_det``
+  ! Order which allows to go from :c:data:`psi_bilinear_matrix` to :c:data:`psi_det`
   END_DOC
   integer                        :: k
   !$OMP PARALLEL DO DEFAULT(SHARED) PRIVATE(k)
@@ -489,7 +489,7 @@ BEGIN_PROVIDER [ integer, psi_bilinear_matrix_columns_loc, (N_det_beta_unique+1)
   !
   ! Rows are $\alpha$ determinants and columns are $\beta$.
   !
-  ! Order refers to ``psi_det``
+  ! Order refers to :c:data:`psi_det`
   END_DOC
   integer                        :: i,j,k, l
   
@@ -521,7 +521,7 @@ END_PROVIDER
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Transpose of ``psi_bilinear_matrix``
+  ! Transpose of :c:data:`psi_bilinear_matrix`
   !
   ! $D_\beta^\dagger.C^\dagger.D_\alpha$
   !
@@ -582,7 +582,7 @@ BEGIN_PROVIDER [ integer, psi_bilinear_matrix_transp_rows_loc, (N_det_alpha_uniq
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Location of the columns in the ``psi_bilinear_matrix``
+  ! Location of the columns in the :c:data:`psi_bilinear_matrix`
   END_DOC
   integer                        :: i,j,k, l
   
@@ -608,8 +608,8 @@ BEGIN_PROVIDER [ integer, psi_bilinear_matrix_order_transp_reverse , (N_det) ]
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Order which allows to go from ``psi_bilinear_matrix_order_transp`` to
-  ! ``psi_bilinear_matrix``
+  ! Order which allows to go from :c:data:`psi_bilinear_matrix_order_transp` to
+  ! :c:data:`psi_bilinear_matrix`
   END_DOC
   integer                        :: k
   psi_bilinear_matrix_order_transp_reverse = -1
@@ -730,7 +730,7 @@ subroutine generate_all_alpha_beta_det_products
       !$OMP PRIVATE(i,j,k,l,tmp_det,iproc)
   !$ iproc = omp_get_thread_num()
   allocate (tmp_det(N_int,2,N_det_alpha_unique))
-  !$OMP DO SCHEDULE(static,1)
+  !$OMP DO SCHEDULE(static,8)
   do j=1,N_det_beta_unique
     l = 1
     do i=1,N_det_alpha_unique
@@ -858,7 +858,8 @@ end
 subroutine copy_psi_bilinear_to_psi(psi, isize)
   implicit none
   BEGIN_DOC
-  ! Overwrites ``psi_det`` and ``psi_coef`` with the wave function in bilinear order
+  ! Overwrites :c:data:`psi_det` and :c:data:`psi_coef` with the wave function
+  ! in bilinear order
   END_DOC
   integer, intent(in)            :: isize
   integer(bit_kind), intent(out) :: psi(N_int,2,isize)
@@ -871,19 +872,14 @@ subroutine copy_psi_bilinear_to_psi(psi, isize)
   enddo
 end
 
-BEGIN_PROVIDER [ integer, singles_alpha_size ]
-  implicit none
-  BEGIN_DOC
-  ! Dimension of the ``singles_alpha`` array
-  END_DOC
-  singles_alpha_size = elec_alpha_num * (mo_num - elec_alpha_num)
-END_PROVIDER
 
  BEGIN_PROVIDER [ integer*8, singles_alpha_csc_idx, (N_det_alpha_unique+1) ]
 &BEGIN_PROVIDER [ integer*8, singles_alpha_csc_size ]
   implicit none
   BEGIN_DOC
-  ! Dimension of the ``singles_alpha`` array
+  ! singles_alpha_csc_size : Dimension of the :c:data:`singles_alpha_csc` array
+  !
+  ! singles_alpha_csc_idx  : Index where the single excitations of determinant i start
   END_DOC
   integer                        :: i,j
   integer, allocatable           :: idx0(:), s(:)
@@ -895,10 +891,10 @@ END_PROVIDER
   !$OMP PARALLEL DEFAULT(NONE)                                       &
       !$OMP   SHARED(N_det_alpha_unique, psi_det_alpha_unique,       &
       !$OMP          idx0, N_int, singles_alpha_csc,                 &
-      !$OMP          singles_alpha_size, singles_alpha_csc_idx)      &
+      !$OMP          elec_alpha_num, mo_num, singles_alpha_csc_idx)      &
       !$OMP   PRIVATE(i,s,j)
-  allocate (s(singles_alpha_size))
-  !$OMP DO SCHEDULE(static,1)
+  allocate (s(elec_alpha_num * (mo_num-elec_alpha_num) ))
+  !$OMP DO SCHEDULE(static,64)
   do i=1, N_det_alpha_unique
     call get_all_spin_singles(                                       &
         psi_det_alpha_unique, idx0, psi_det_alpha_unique(1,i), N_int,&
@@ -921,7 +917,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ integer, singles_alpha_csc, (singles_alpha_csc_size) ]
   implicit none
   BEGIN_DOC
-  ! Dimension of the singles_alpha array
+  ! Indices of all single excitations
   END_DOC
   integer                        :: i, k
   integer, allocatable           :: idx0(:)
@@ -944,6 +940,78 @@ BEGIN_PROVIDER [ integer, singles_alpha_csc, (singles_alpha_csc_size) ]
   deallocate(idx0)
   
 END_PROVIDER
+
+
+
+
+ BEGIN_PROVIDER [ integer*8, singles_beta_csc_idx, (N_det_beta_unique+1) ]
+&BEGIN_PROVIDER [ integer*8, singles_beta_csc_size ]
+  implicit none
+  BEGIN_DOC
+  ! singles_beta_csc_size : Dimension of the :c:data:`singles_beta_csc` array
+  !
+  ! singles_beta_csc_idx  : Index where the single excitations of determinant i start
+  END_DOC
+  integer                        :: i,j
+  integer, allocatable           :: idx0(:), s(:)
+  allocate (idx0(N_det_beta_unique))
+  do i=1, N_det_beta_unique
+    idx0(i) = i
+  enddo
+  
+  !$OMP PARALLEL DEFAULT(NONE)                                       &
+      !$OMP   SHARED(N_det_beta_unique, psi_det_beta_unique,       &
+      !$OMP          idx0, N_int, singles_beta_csc,                 &
+      !$OMP          elec_beta_num, mo_num, singles_beta_csc_idx)      &
+      !$OMP   PRIVATE(i,s,j)
+  allocate (s(elec_beta_num*(mo_num-elec_beta_num)))
+  !$OMP DO SCHEDULE(static,1)
+  do i=1, N_det_beta_unique
+    call get_all_spin_singles(                                       &
+        psi_det_beta_unique, idx0, psi_det_beta_unique(1,i), N_int,&
+        N_det_beta_unique, s, j)
+    singles_beta_csc_idx(i+1) = int(j,8)
+  enddo
+  !$OMP END DO
+  deallocate(s)
+  !$OMP END PARALLEL
+  deallocate(idx0)
+  
+  singles_beta_csc_idx(1) = 1_8
+  do i=2, N_det_beta_unique+1
+    singles_beta_csc_idx(i) = singles_beta_csc_idx(i) + singles_beta_csc_idx(i-1)
+  enddo
+  singles_beta_csc_size = singles_beta_csc_idx(N_det_beta_unique+1)
+END_PROVIDER
+
+
+BEGIN_PROVIDER [ integer, singles_beta_csc, (singles_beta_csc_size) ]
+  implicit none
+  BEGIN_DOC
+  ! Indices of all single excitations
+  END_DOC
+  integer                        :: i, k
+  integer, allocatable           :: idx0(:)
+  allocate (idx0(N_det_beta_unique))
+  do i=1, N_det_beta_unique
+    idx0(i) = i
+  enddo
+  
+  !$OMP PARALLEL DO DEFAULT(NONE)                                    &
+      !$OMP   SHARED(N_det_beta_unique, psi_det_beta_unique,       &
+      !$OMP          idx0, N_int, singles_beta_csc, singles_beta_csc_idx)&
+      !$OMP   PRIVATE(i,k) SCHEDULE(static,64)
+  do i=1, N_det_beta_unique
+    call get_all_spin_singles(                                       &
+        psi_det_beta_unique, idx0, psi_det_beta_unique(1,i), N_int,&
+        N_det_beta_unique, singles_beta_csc(singles_beta_csc_idx(i)),&
+        k)
+  enddo
+  !$OMP END PARALLEL DO
+  deallocate(idx0)
+  
+END_PROVIDER
+
 
 
 

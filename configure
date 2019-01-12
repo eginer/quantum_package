@@ -3,7 +3,7 @@
 # Quantum Package configuration script
 #
 
-export QP_ROOT="$( cd "$(dirname "$0")" ; pwd --physical )"
+export QP_ROOT="$( cd "$(dirname "$0")" ; pwd -P )"
 echo "QP_ROOT="$QP_ROOT
 
 
@@ -234,7 +234,7 @@ EOF
                  --yes --comp=4.07.0
 
             eval $(${QP_ROOT}/bin/opam env)
-            opam install -y ${OCAML_PACKAGES}
+            opam install -y ${OCAML_PACKAGES}  || exit 1
 
             
     elif [[ ${PACKAGE} = ezfio ]] ; then
