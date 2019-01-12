@@ -773,7 +773,7 @@ subroutine search_key_value_big_interval(key,value,X,Y,sze,idx,ibegin_in,iend_in
     
     istep = shiftr(iend-ibegin,1)
     idx = ibegin + istep
-    do while (istep > 64)
+    do while (istep > 4)
       idx = ibegin + istep
       if (cache_key < X(idx)) then
         iend = idx
@@ -813,20 +813,17 @@ subroutine search_key_value_big_interval(key,value,X,Y,sze,idx,ibegin_in,iend_in
       endif
     enddo
     idx = ibegin
-    value = Y(idx)
-    if (min(iend_in,sze) > ibegin+64) then
-      iend = ibegin+64
+    if (min(iend_in,sze) > ibegin+4) then
+      iend = ibegin+4
+      !DIR$ LOOP COUNT MAX(4)
       do while (cache_key > X(idx))
         idx = idx+1
-        value = Y(idx)
       end do
     else
+      !DIR$ LOOP COUNT MAX(4)
       do while (cache_key > X(idx))
         idx = idx+1
-        value = Y(idx)
-        if (idx /= iend) then
-          cycle
-        else
+        if (idx == iend) then
           exit
         endif
       end do
@@ -834,6 +831,8 @@ subroutine search_key_value_big_interval(key,value,X,Y,sze,idx,ibegin_in,iend_in
     if (cache_key /= X(idx)) then
       idx = 1-idx
       value = 0.d0
+    else
+      value = Y(idx)
     endif
     return
     
