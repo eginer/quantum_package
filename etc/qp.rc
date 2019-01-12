@@ -96,6 +96,18 @@ function qp()
       man $QP_ROOT/man/${1}.?
       ;;
 
+    "prompt")
+      shift
+      function _check_ezfio() {
+        if [[ -d ${EZFIO_FILE} ]] ; then
+          printf "\e[0;32m|${EZFIO_FILE}>\e[m"
+        else
+          printf "\e[0;31m|${EZFIO_FILE}>\e[m"
+        fi
+      }
+      PS1="${PS1%\\\$ } \$(_check_ezfio) $ "
+      ;;
+      
     *)
       _qp_usage
       ;;
