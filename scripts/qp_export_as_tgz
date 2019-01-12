@@ -43,7 +43,7 @@ QPACKAGE_STATIC=${QP_ROOT}/quantum_package_static
 
 function find_libs ()
 {
-  for i in $@
+  for i in "$@"
   do
       ldd $i
   done | sort | grep '/' | cut --delimiter=' ' --fields=3 | uniq

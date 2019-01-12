@@ -147,6 +147,8 @@ subroutine H_S2_u_0_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart,iend,
   compute_singles = (mem+rss > qp_max_mem)
 !  compute_singles = (iend-istart < 100000).and.(mem+rss < qp_max_mem)
 
+!  compute_singles = .True.
+
   if (.not.compute_singles) then
 !    provide singles_alpha_csc 
     provide singles_beta_csc
