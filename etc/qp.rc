@@ -105,7 +105,8 @@ function qp()
           printf "\e[0;31m|${EZFIO_FILE}>\e[m"
         fi
       }
-      PS1="${PS1%\\\$ } \$(_check_ezfio) $ "
+#      PS1="${PS1%\\\$ } \$(_check_ezfio) $ "
+      PS1="\$(_check_ezfio)\n$PS1"
       ;;
       
     *)
