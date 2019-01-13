@@ -2,7 +2,6 @@ open Qputils
 
 (* Environment variables :
 
-   QP_PREFIX=gdb   : to run gdb (or valgrind, or whatever)
    QP_TASK_DEBUG=1 : debug task server
 
 *)
@@ -14,7 +13,7 @@ let print_list () =
 let () = 
   Random.self_init ()
 
-let run slave exe ezfio_file =
+let run slave ?prefix exe ezfio_file =
 
   (** Check availability of the ports *)
   let port_number = 
@@ -113,8 +112,9 @@ let run slave exe ezfio_file =
 
   (** Run executable *)
   let prefix = 
-    try (Sys.getenv "QP_PREFIX")^" " with
-    | Not_found -> ""
+    match prefix with
+    | Some x -> x^" "
+    | None -> ""
   and exe =
     match (List.find (fun (x,_) -> x = exe) executables) with
     | (_,exe) -> exe^" "
@@ -147,11 +147,12 @@ let () =
     |> String.concat "\n"
   ) |> Command_line.set_header_doc;
 
-  [ (
-      's', "slave", "Required to run slave tasks in distributed environments",
+  [ ( 's', "slave", "Required to run slave tasks in distributed environments",
         Command_line.Without_arg);
-      Command_line.anonymous "<EXECUTABLE>" "Name of the QP program to be run";
-      Command_line.anonymous "<EZFIO_FILE>" "EZFIO directory";
+    ( 'p', "prefix", "<string> Prefix before running the program, like gdb or valgrind",
+        Command_line.With_arg );
+      Command_line.anonymous "PROGRAM" "Name of the QP program to be run";
+      Command_line.anonymous "EZFIO_DIR" "EZFIO directory";
     ]
   |> Command_line.set_specs ;
 
@@ -166,9 +167,13 @@ let () =
     | _ -> true
   in
 
+  let prefix = 
+    Command_line.get "prefix"
+  in
+
   (* Run the program *)
   match Command_line.anon_args () with
-  | exe :: ezfio_file :: [] -> run slave exe ezfio_file
+  | exe :: ezfio_file :: [] -> run slave ?prefix exe ezfio_file
   | _ ->  (Command_line.help () ; failwith "Inconsistent command line")
   
 
