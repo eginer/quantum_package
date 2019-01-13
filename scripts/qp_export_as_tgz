@@ -173,8 +173,9 @@ cp --recursive -- ${QP_ROOT}/external/ezfio/Bash   ${QPACKAGE_STATIC}/external/e
 echo "Creating quantum_package.rc"
 #     ---------------------------
 
-cp ${QP_ROOT}/quantum_package.rc ${QP_ROOT}/etc/* ${QPACKAGE_STATIC}/
-echo 'export QP_ROOT="$( cd $(dirname \${BASH_SOURCE}) ; pwd -P )"' > ${QPACKAGE_STATIC}/etc/00.qp_root 
+cp ${QP_ROOT}/quantum_package.rc ${QPACKAGE_STATIC}/
+cp ${QP_ROOT}/etc/* ${QPACKAGE_STATIC}/etc/
+echo 'export QP_ROOT="$( cd $(dirname \${BASH_SOURCE}) ; pwd -P )"' > ${QPACKAGE_STATIC}/etc/00.qp_root.rc
 
 
 

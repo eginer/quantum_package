@@ -149,6 +149,7 @@ for PACKAGE in ${PACKAGES} ; do
 
     elif [[ ${PACKAGE} = irpf90 ]] ; then
 
+            # When changing version of irpf90, don't forget to update etc/irpf90.rc
             download \
               "https://gitlab.com/scemama/irpf90/-/archive/v1.7.4/irpf90-v1.7.4.tar.gz" \
               "${QP_ROOT}"/external/irpf90.tar.gz
@@ -158,15 +159,6 @@ for PACKAGE in ${PACKAGES} ; do
               rm irpf90.tar.gz
               cd irpf90-*
               make
-              for i in irpf90 irpman irpf90_indent
-              do
-                      cat << EOF > "${QP_ROOT}"/bin/$i
-#!/bin/sh
-exec $PWD/bin/$i \$@
-EOF
-
-                      chmod +x "${QP_ROOT}"/bin/$i
-              done
             )
     
 
