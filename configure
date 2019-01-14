@@ -302,19 +302,19 @@ done
 
 NINJA=$(find_exe ninja)
 if [[ ${NINJA} = not_found ]] ; then
-        echo "Ninja is not installed."
+        echo "ninja is not installed."
         fail
 fi
 
 IRPF90=$(find_exe irpf90)
 if [[ ${IRPF90} = not_found ]] ; then
-        echo "IRPf90 is not installed."
+        echo "irpf90 is not installed."
         fail
 fi
 
 ZEROMQ=$(find_lib -lzmq)
 if [[ ${ZEROMQ} = not_found ]] ; then
-        echo "ZeroMQ is not installed."
+        echo "zeromq is not installed."
         fail
 fi
 
@@ -338,13 +338,13 @@ fi
 
 EZFIO=$(find_dir "${QP_ROOT}"/external/ezfio)
 if [[ ${EZFIO} = not_found ]] ; then
-        echo "EZFIO is not installed."
+        echo "ezfio is not installed."
         fail
 fi
 
 EMSL=$(find_dir "${QP_ROOT}"/external/emsl)
 if [[ ${EMSL} = not_found ]] ; then
-        echo "EMSL is not installed."
+        echo "emsl is not installed."
         fail
 fi
 
