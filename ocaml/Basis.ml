@@ -11,7 +11,7 @@ let read in_channel at_number =
       read ( (gto,at_number)::result)
     with
     | Gto.End_Of_Basis -> List.rev result
-  in read []  
+  in read []
 
 
 (** Find an element in the basis set file *)
@@ -32,22 +32,22 @@ let find in_channel element =
 (** Read an element from the file *)
 let read_element in_channel at_number element =
   ignore (find in_channel element) ;
-  read in_channel at_number 
+  read in_channel at_number
 
 
 
 let to_string_general ~fmt ~atom_sep ?ele_array b =
-  let new_nucleus n = 
+  let new_nucleus n =
     match ele_array with
     | None -> Printf.sprintf "Atom %d" n
     | Some x -> Printf.sprintf "%s" (Element.to_string x.(n-1))
   in
   let rec do_work accu current_nucleus = function
   | [] -> List.rev accu
-  | (g,n)::tail -> 
+  | (g,n)::tail ->
     let n = Nucl_number.to_int n
     in
-    let accu = 
+    let accu =
        if (n <> current_nucleus) then
          (new_nucleus n)::atom_sep::accu
        else

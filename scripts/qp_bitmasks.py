@@ -60,7 +60,7 @@ def int_to_bitmask(s,bit_kind_size=BIT_KIND_SIZE):
     ['0000000000000000000000000000000000000000000000000000000000001010']
     >>> int_to_bitmask(-10)
     ['1111111111111111111111111111111111111111111111111111111111110110']
-    >>> 
+    >>>
     """
     assert type(s) in (int, long)
     if s < 0:
@@ -90,7 +90,7 @@ class BitMask(object):
   >>> print A[1]
   -127
   """
-  
+
 
   def __init__(self,l=[],bit_kind_size=BIT_KIND_SIZE):
     self.bit_kind_size = bit_kind_size

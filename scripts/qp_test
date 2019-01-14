@@ -19,7 +19,7 @@ import subprocess
 
 try:
     from docopt import docopt
-    from qp_path import QP_SRC, QP_PLUGINS, QP_ROOT, QP_TESTS
+    from qp_path import QP_SRC, QP_TESTS
 except ImportError:
     print "Please check if you have sourced the ${QP_ROOT}/quantum_package.rc"
     print "(`source ${QP_ROOT}/quantum_package.rc`)"
@@ -27,26 +27,28 @@ except ImportError:
 
 
 def main(arguments):
+    """Main function"""
+
     # Fetch all *.bats files
     l_bats = []
     def append_bats(dirname, filenames):
         for f in filenames:
             if f.endswith(".bats"):
-                number, _ = f.split('.',1)
-                l_bats.append( (int(number), os.path.join(dirname,f)) )
+                number, _ = f.split('.', 1)
+                l_bats.append((int(number), os.path.join(dirname, f)))
 
     if arguments["TEST"]:
-       os.environ["TEST"] = arguments["TEST"]
+        os.environ["TEST"] = arguments["TEST"]
 
     if arguments["-a"]:
-        for (dirname, _, filenames) in os.walk(QP_SRC, followlinks=False) :
+        for (dirname, _, filenames) in os.walk(QP_SRC, followlinks=False):
             if "IRPF90_temp" not in dirname:
                 append_bats(dirname, filenames)
     else:
-        for (dirname, _, filenames) in os.walk(os.getcwd(), followlinks=False) :
+        for (dirname, _, filenames) in os.walk(os.getcwd(), followlinks=False):
             if "IRPF90_temp" not in dirname:
                 append_bats(dirname, filenames)
-    l_bats = [ y for x,y in sorted(l_bats) ]
+    l_bats = [y for _, y in sorted(l_bats)]
 
     # Execute tests
     os.chdir(QP_TESTS)
@@ -60,21 +62,23 @@ def main(arguments):
         if arguments["-v"]:
             p = None
             if arguments["TEST"]:
-                TEST="export TEST=%s\n"%arguments["TEST"]
+                test = "export TEST=%s\n"%arguments["TEST"]
             else:
-                TEST=""
-            script = TEST+(subprocess.check_output(["python2", "bats_to_sh.py", bats_file]) )
+                test = ""
+            script = test+(subprocess.check_output(["python2", \
+                       "bats_to_sh.py", bats_file]))
             try:
                 p = subprocess.check_call(script, shell=True, env=os.environ)
             except:
-                if p: p.terminate()
+                if p:
+                    p.terminate()
         else:
             subprocess.check_call(["bats", bats_file], env=os.environ)
-            
+
 
 
 if __name__ == '__main__':
-    arguments = docopt(__doc__)
-    main(arguments)
+    ARGS = docopt(__doc__)
+    main(ARGS)
 
 

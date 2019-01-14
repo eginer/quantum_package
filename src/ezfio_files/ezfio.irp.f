@@ -6,7 +6,7 @@ BEGIN_PROVIDER [ character*(128), ezfio_filename ]
   END_DOC
 
   PROVIDE mpi_initialized
-  
+
   ! Get the QPACKAGE_INPUT environment variable
   call getenv('QPACKAGE_INPUT',ezfio_filename)
   if (ezfio_filename == '') then
@@ -32,7 +32,7 @@ BEGIN_PROVIDER [ character*(128), ezfio_filename ]
   call ezfio_set_file(ezfio_filename)
 
   ! Adjust out-of-memory killer flag such that the current process will be
-  ! killed first by the OOM killer, allowing compute nodes to survive 
+  ! killed first by the OOM killer, allowing compute nodes to survive
   integer :: getpid
   character*(64) :: command, pidc
   write(pidc,*) getpid()

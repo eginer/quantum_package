@@ -1,11 +1,11 @@
 BEGIN_PROVIDER [double precision, one_e_dm_mo_alpha_for_dft, (mo_num,mo_num, N_states)]
  implicit none
  BEGIN_DOC
-! density matrix for alpha electrons in the MO basis used for all DFT calculations based on the density 
+! density matrix for alpha electrons in the MO basis used for all DFT calculations based on the density
  END_DOC
  double precision :: delta_alpha(mo_num,mo_num,N_states)
  if(density_for_dft .EQ. "damping_rs_dft")then
-  delta_alpha = one_e_dm_mo_alpha - data_one_e_dm_alpha_mo 
+  delta_alpha = one_e_dm_mo_alpha - data_one_e_dm_alpha_mo
   one_e_dm_mo_alpha_for_dft = data_one_e_dm_alpha_mo + damping_for_rs_dft * delta_alpha
  else if (density_for_dft .EQ. "input_density")then
   one_e_dm_mo_alpha_for_dft = data_one_e_dm_alpha_mo
@@ -17,16 +17,16 @@ BEGIN_PROVIDER [double precision, one_e_dm_mo_alpha_for_dft, (mo_num,mo_num, N_s
   one_e_dm_mo_alpha_for_dft = one_body_dm_mo_alpha_one_det
  endif
 
-END_PROVIDER 
+END_PROVIDER
 
 BEGIN_PROVIDER [double precision, one_e_dm_mo_beta_for_dft, (mo_num,mo_num, N_states)]
  implicit none
  BEGIN_DOC
-! density matrix for beta  electrons in the MO basis used for all DFT calculations based on the density 
+! density matrix for beta  electrons in the MO basis used for all DFT calculations based on the density
  END_DOC
  double precision :: delta_beta(mo_num,mo_num,N_states)
  if(density_for_dft .EQ. "damping_rs_dft")then
-  delta_beta = one_e_dm_mo_beta - data_one_e_dm_beta_mo 
+  delta_beta = one_e_dm_mo_beta - data_one_e_dm_beta_mo
   one_e_dm_mo_beta_for_dft = data_one_e_dm_beta_mo + damping_for_rs_dft * delta_beta
  else if (density_for_dft .EQ. "input_density")then
   one_e_dm_mo_beta_for_dft = data_one_e_dm_beta_mo
@@ -37,12 +37,12 @@ BEGIN_PROVIDER [double precision, one_e_dm_mo_beta_for_dft, (mo_num,mo_num, N_st
   provide mo_coef
   one_e_dm_mo_beta_for_dft = one_body_dm_mo_beta_one_det
  endif
-END_PROVIDER 
+END_PROVIDER
 
 BEGIN_PROVIDER [double precision, one_e_dm_mo_for_dft, (mo_num,mo_num, N_states)]
  implicit none
  one_e_dm_mo_for_dft = one_e_dm_mo_beta_for_dft + one_e_dm_mo_alpha_for_dft
-END_PROVIDER 
+END_PROVIDER
 
 BEGIN_PROVIDER [double precision, one_e_dm_average_mo_for_dft, (mo_num,mo_num)]
  implicit none
@@ -51,7 +51,7 @@ BEGIN_PROVIDER [double precision, one_e_dm_average_mo_for_dft, (mo_num,mo_num)]
  do i = 1, N_states
   one_e_dm_average_mo_for_dft(:,:) +=  one_e_dm_mo_for_dft(:,:,i) * state_average_weight(i)
  enddo
-END_PROVIDER 
+END_PROVIDER
 
  BEGIN_PROVIDER [ double precision, one_e_dm_alpha_ao_for_dft, (ao_num,ao_num,N_states) ]
 &BEGIN_PROVIDER [ double precision, one_e_dm_beta_ao_for_dft, (ao_num,ao_num,N_states) ]
@@ -66,13 +66,13 @@ END_PROVIDER
  one_e_dm_beta_ao_for_dft = 0.d0
  do istate = 1, N_states
   call mo_to_ao_no_overlap( one_e_dm_mo_alpha_for_dft(1,1,istate), &
-                            size(one_e_dm_mo_alpha_for_dft,1),     & 
+                            size(one_e_dm_mo_alpha_for_dft,1),     &
                             one_e_dm_alpha_ao_for_dft(1,1,istate), &
-                            size(one_e_dm_alpha_ao_for_dft,1) ) 
+                            size(one_e_dm_alpha_ao_for_dft,1) )
   call mo_to_ao_no_overlap( one_e_dm_mo_beta_for_dft(1,1,istate), &
-                            size(one_e_dm_mo_beta_for_dft,1),     & 
+                            size(one_e_dm_mo_beta_for_dft,1),     &
                             one_e_dm_beta_ao_for_dft(1,1,istate), &
-                            size(one_e_dm_beta_ao_for_dft,1) ) 
+                            size(one_e_dm_beta_ao_for_dft,1) )
  enddo
 
 END_PROVIDER
@@ -80,8 +80,8 @@ END_PROVIDER
  BEGIN_PROVIDER [double precision, one_body_dm_mo_alpha_one_det, (mo_num,mo_num, N_states)]
 &BEGIN_PROVIDER [double precision, one_body_dm_mo_beta_one_det, (mo_num,mo_num, N_states)]
  implicit none
- BEGIN_DOC 
-! One body density matrix on the |MO| basis for a single determinant 
+ BEGIN_DOC
+! One body density matrix on the |MO| basis for a single determinant
  END_DOC
  integer :: i
  one_body_dm_mo_alpha_one_det = 0.d0
@@ -92,4 +92,4 @@ END_PROVIDER
  do i =1, elec_beta_num
   one_body_dm_mo_beta_one_det(i,i, 1:N_states) = 1.d0
  enddo
-END_PROVIDER 
+END_PROVIDER

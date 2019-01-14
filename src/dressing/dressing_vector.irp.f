@@ -16,7 +16,7 @@
  do k=1,N_states
    l = dressed_column_idx(k)
    do j = 1, n_det
-     dressing_column_h(j,k) = delta_ij(k,j,1) 
+     dressing_column_h(j,k) = delta_ij(k,j,1)
      dressing_column_s(j,k) = delta_ij(k,j,2)
      dressing_column_h(l,k) -= 0.5d0 * psi_coef(j,k) * delta_ij(k,j,1) /psi_coef(l,k)
      dressing_column_s(l,k) -= 0.5d0 * psi_coef(j,k) * delta_ij(k,j,2) /psi_coef(l,k)

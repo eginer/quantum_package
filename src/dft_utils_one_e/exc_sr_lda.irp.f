@@ -21,7 +21,7 @@ subroutine ec_lda(rho_a,rho_b,ec,vc_a,vc_b)
       double precision, intent(in)  ::  rho_a,rho_b
 
 ! Double precision numbers
-      
+
       double precision :: rsfac,rho,rs,rhoa,rhob,z
       double precision :: eccoul, ecd, ecz, ecdd, eczd
       double precision :: vcup,vcdown
@@ -61,7 +61,7 @@ subroutine ec_lda_sr(mu,rho_a,rho_b,ec,vc_a,vc_b)
       double precision, intent(in)  ::  mu,rho_a,rho_b
 
 ! Double precision numbers
-      
+
       double precision :: rsfac,rho,rs,rhoa,rhob,z
       double precision :: eccoul, ecd, ecz, ecdd, eczd
       double precision :: eclr,vcup,vcdown,vclrup,vclrdown,vclrupd,vclrdownd
@@ -89,19 +89,19 @@ subroutine ec_lda_sr(mu,rho_a,rho_b,ec,vc_a,vc_b)
       call vcorrlr(rs,z,mu,vclrup,vclrdown,vclrupd,vclrdownd)
       vc_a = vcup-vclrup
       vc_b = vcdown-vclrdown
-      
+
       else
        ec = 1.d-15
        vc_a = 1.d-15
        vc_b = 1.d-15
-       
+
       endif
 
 end
 
 subroutine ex_lda_sr(mu,rho_a,rho_b,ex,vx_a,vx_b)
  include 'constants.include.F'
- implicit none 
+ implicit none
  double precision, intent(out) ::  ex
  double precision, intent(out) ::  vx_a,vx_b
  double precision, intent(in)  ::  rho_a,rho_b,mu
@@ -112,7 +112,7 @@ subroutine ex_lda_sr(mu,rho_a,rho_b,ex,vx_a,vx_b)
  double precision :: ex_a,ex_b
 
  double precision :: f12,f13,f14,f32,f23,f43,f16
- double precision :: ckf 
+ double precision :: ckf
  double precision :: a, akf,a2, a3
 
  z0  = 0.D0
@@ -207,7 +207,7 @@ subroutine ec_only_lda_sr(mu,rho_a,rho_b,ec)
       double precision, intent(in)  ::  mu,rho_a,rho_b
 
 ! Double precision numbers
-      
+
       double precision :: rsfac,rho,rs,rhoa,rhob,z
       double precision :: eccoul, ecd, ecz, ecdd, eczd
       double precision :: eclr
@@ -357,7 +357,7 @@ subroutine ecorrlr(rs,z,mu,eclr)
   pi=dacos(-1.d0)
   alpha=(4.d0/9.d0/pi)**(1.d0/3.d0)
   cf=1.d0/alpha
-  
+
   phi=((1.d0+z)**(2.d0/3.d0)+(1.d0-z)**(2.d0/3.d0))/2.d0
   !c parameters from the fit
   adib   = 0.784949d0
@@ -367,45 +367,45 @@ subroutine ecorrlr(rs,z,mu,eclr)
   t1a    = -4.95d0
   t2a    = 1.d0
   t3a    = 0.31d0
-  
+
   b0=adib*rs
-  
+
   d2anti=(q1a*rs+q2a*rs**2)*exp(-abs(q3a)*rs)/rs**2
   d3anti=(t1a*rs+t2a*rs**2)*exp(-abs(t3a)*rs)/rs**3
-  
+
   coe2=-3.d0/8.d0/rs**3*(1.d0-z**2)*(g0f(rs)-0.5d0)
-  
+
   coe3=-(1.d0-z**2)*g0f(rs)/(sqrt(2.d0*pi)*rs**3)
-  
+
   if(abs(z).eq.1.d0) then
-    
+
     coe4=-9.d0/64.d0/rs**3*(dpol(rs) -cf**2*2d0**(5.d0/3.d0)/5.d0/rs**2)
     coe5=-9.d0/40.d0/(sqrt(2.d0*pi)*rs**3)*dpol(rs)
-    
+
   else
-    
+
     coe4=-9.d0/64.d0/rs**3*(((1.d0+z)/2.d0)**2*                      &
         dpol(rs*(2d0/(1.d0+z))**(1.d0/3.d0))+((1.d0-z)/2.d0)**2      &
         *dpol(rs*(2.d0/(1.d0-z))**(1.d0/3.d0))+                      &
         (1.-z**2)*d2anti-cf**2/10.d0*((1.d0+z)**(8.d0/3.d0)          &
         +(1.-z)**(8.d0/3.d0))/rs**2)
-    
+
     coe5=-9.d0/40.d0/(sqrt(2.d0*pi)*rs**3)*(((1.d0+z)/2.d0)**2       &
         *dpol(rs*(2.d0/(1.d0+z))**(1.d0/3.d0))+((1.d0-z)/2.d0)**2    &
         *dpol(rs*(2.d0/(1.d0-z))**(1.d0/3.d0))+(1.d0-z**2)*          &
         d3anti)
   end if
-  
+
   !     call ecPW(rs,z,ec,ecd,ecz)
   !SCD
   call ecPW(rs,z,ec,ecd,ecz,ecdd,eczd)
   !SCF
-  
+
   a1=4.d0*b0**6*coe3+b0**8*coe5
   a2=4.d0*b0**6*coe2+b0**8*coe4+6.d0*b0**4*ec
   a3=b0**8*coe3
   a4=b0**6*(b0**2*coe2+4.d0*ec)
-  
+
   if(mu*sqrt(rs)/phi.lt.0.d0)then
     print*,'phi',phi
     print*,'mu ',mu
@@ -414,7 +414,7 @@ subroutine ecorrlr(rs,z,mu,eclr)
   endif
   eclr=(phi**3*Qrpa(mu*sqrt(rs)/phi)+a1*mu**3+a2*mu**4+a3*mu**5+     &
       a4*mu**6+b0**8*mu**8*ec)/((1.d0+b0**2*mu**2)**4)
-  
+
   return
 end
 
@@ -474,7 +474,7 @@ subroutine vcorrlr(rs,z,mu,vclrup,vclrdown,vclrupd,vclrdownd)
 !SCD
       d2antidd = exp(-q3a*rs)/rs**3*(                      &
                  q3a**2*q1a*rs**2+q2a*q3a**2*rs**3         &
-                +2.d0*q3a*q1a*rs+2.d0*q1a)                  
+                +2.d0*q3a*q1a*rs+2.d0*q1a)
       d3antidd = exp(-t3a*rs)/rs**4*                       &
                 (2.d0*t3a*t2a*rs**2 + 2.d0*t2a*rs          &
                  + t1a*t3a**2*rs**2 + t2a*t3a**2*rs**3     &
@@ -603,7 +603,7 @@ subroutine vcorrlr(rs,z,mu,vclrup,vclrdown,vclrupd,vclrdownd)
             +27.d0/(40.d0*sqrt2pi*rs**4)*             &
             (2d0**(-2.d0/3.d0)*dpold(2d0**(1.d0/3.d0)*rs)+d3antid) &
             -9.d0/(40.d0*sqrt2pi*rs**3)*(2d0**(-1.d0/3.d0)*        &
-            dpoldd(2d0**(1.d0/3.d0)*rs)+d3antidd)            
+            dpoldd(2d0**(1.d0/3.d0)*rs)+d3antidd)
          coe5zd = 0.d0
 !SCF
 
@@ -638,7 +638,7 @@ subroutine vcorrlr(rs,z,mu,vclrup,vclrdown,vclrupd,vclrdownd)
 !SCD
       a1rsd = 120.d0*adib**2*b0**4*coe3 + 48.d0*adib*b0**5*coe3rs &
             + 4.d0*b0**6*coe3rsd + 56.d0*adib**2*b0**6*coe5       &
-            + 16.d0*adib*b0**7*coe5rs + b0**8*coe5rsd          
+            + 16.d0*adib*b0**7*coe5rs + b0**8*coe5rsd
 !     a1zd = 4.d0*b0**6*coe3zd+b0**8*coe5zd
       a1zd = 0.d0
 !
@@ -905,7 +905,7 @@ subroutine vcorrlr(rs,z,mu,vclrup,vclrdown,vclrupd,vclrdownd)
       Qrpadd = Acoul*(dduQ/uQ - (duQ/uQ)**2 -ddvQ/vQ +(dvQ/vQ)**2)
       return
       end
-!SCF                   
+!SCF
 
 !ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 ! correlation energy and its derivative w.r.t. rs and z at mu=infinity

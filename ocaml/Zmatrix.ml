@@ -18,36 +18,36 @@ let rec in_range (xmin, xmax) x =
    else
      x
 
-let atom_id_of_int : int -> atom_id = 
+let atom_id_of_int : int -> atom_id =
   fun x -> ( assert (x>0) ; x)
 
-let distance_of_float : float -> distance = 
+let distance_of_float : float -> distance =
   fun x -> ( assert (x>=0.) ; Value x)
 
-let angle_of_float : float -> angle = 
+let angle_of_float : float -> angle =
   fun x -> Value (in_range (-180., 180.) x)
 
-let dihedral_of_float : float -> dihedral = 
+let dihedral_of_float : float -> dihedral =
   fun x -> Value (in_range (-360., 360.) x)
 
 
-let atom_id_of_string : string -> atom_id = 
+let atom_id_of_string : string -> atom_id =
   fun i -> atom_id_of_int @@ int_of_string  i
 
 let distance_of_string : string -> distance =
-  fun s -> 
+  fun s ->
     try
       distance_of_float @@ float_of_string s
     with _ -> Label s
 
 let angle_of_string : string -> angle =
-  fun s -> 
+  fun s ->
     try
       angle_of_float @@ float_of_string s
     with _ -> Label s
 
 let dihedral_of_string : string -> dihedral =
-  fun s -> 
+  fun s ->
     try
       dihedral_of_float @@ float_of_string s
     with _ -> Label s
@@ -55,7 +55,7 @@ let dihedral_of_string : string -> dihedral =
 
 let int_of_atom_id : atom_id -> int = fun x -> x
 
-let float_of_distance : float StringMap.t -> distance -> float = 
+let float_of_distance : float StringMap.t -> distance -> float =
   fun map -> function
   | Value x -> x
   | Label s -> StringMap.find s map
@@ -71,7 +71,7 @@ let float_of_dihedral : float StringMap.t -> dihedral -> float =
   | Label s -> StringMap.find s map
 
 
-type line = 
+type line =
 | First  of  Element.t
 | Second of (Element.t * distance)
 | Third  of (Element.t * atom_id * distance * atom_id * angle)
@@ -79,7 +79,7 @@ type line =
 | Coord  of (string * float)
 
 
-let string_of_line map = 
+let string_of_line map =
   let f_r = float_of_distance map
   and f_a = float_of_angle    map
   and f_d = float_of_dihedral map
@@ -102,7 +102,7 @@ let line_of_string l =
   | e :: i :: r :: [] -> Second
     (Element.of_string e,
      distance_of_string r)
-  | e :: i :: r :: j :: a :: [] -> Third 
+  | e :: i :: r :: j :: a :: [] -> Third
     (Element.of_string e,
      atom_id_of_string i,
      distance_of_string r,
@@ -130,7 +130,7 @@ let of_string t =
     |> List.map line_of_string
   in
 
-  let l = 
+  let l =
     match l with
     | First _ :: Second _ :: Third _ :: _
     | First _ :: Second _ :: Coord _ :: []
@@ -151,7 +151,7 @@ let of_string t =
     work [] (StringMap.empty) l
   in
   (Array.of_list l, m)
- 
+
 
 (** Linear algebra *)
 
@@ -176,17 +176,17 @@ let normalized u =
 let cross (x,y,z) (x',y',z') =
   ((y *. z' -. z *. y'), -. (x *. z' -. z *. x'), (x *. y' -. y *. x'))
 
-let rotation_matrix axis angle = 
+let rotation_matrix axis angle =
    (* Euler-Rodrigues formula for rotation matrix, taken from
       https://github.com/jevandezande/zmatrix/blob/master/converter.py
    *)
-   let a = 
+   let a =
       (cos (angle *. to_radian *. 0.5))
    in
-   let (b, c, d) = 
+   let (b, c, d) =
       (-. sin (angle *. to_radian *. 0.5)) |. (normalized axis)
    in
-   Array.of_list @@ 
+   Array.of_list @@
      [(a *. a +. b *. b -. c *. c -. d *. d,
        2. *. (b *. c -. a *. d),
        2. *. (b *. d +. a *. c));
@@ -196,12 +196,12 @@ let rotation_matrix axis angle =
       (2. *. (b *. d -. a *. c),
        2. *. (c *. d +. a *. b),
        a *. a +. d *. d -. b *. b -. c *. c)]
-      
+
 
 
 let apply_rotation_matrix rot u =
   (dot rot.(0) u, dot rot.(1) u, dot rot.(2) u)
-  
+
 let center_of_mass l =
 let (x,y,z) =
   let sum_mass, com =
@@ -209,7 +209,7 @@ let (x,y,z) =
       let mass =
          Positive_float.to_float @@ Element.mass e
       in
-      (s +. mass, ( mass |. (x,y,z) ) |+ com) ) 
+      (s +. mass, ( mass |. (x,y,z) ) |+ com) )
       (0., (0.,0.,0.)) l
   in
   (1. /. sum_mass) |. com
@@ -219,7 +219,7 @@ Printf.printf "%f %f %f\n" x y z ; (x,y,z)
 let to_xyz (z,map) =
   let result =
     Array.make (Array.length z) None
-  in 
+  in
 
   let get_cartesian_coord i =
     match result.(i-1) with
@@ -230,14 +230,14 @@ let to_xyz (z,map) =
 
   let append_line i' =
     match z.(i') with
-    | First e -> 
+    | First e ->
         result.(i') <- Some (e, 0., 0., 0.)
-    | Second (e, r) -> 
+    | Second (e, r) ->
         let r =
           float_of_distance map r
         in
         result.(i') <- Some (e, 0., 0., r)
-    | Third  (e, i, r, j, a) -> 
+    | Third  (e, i, r, j, a) ->
       begin
         let i, r, j, a =
           int_of_atom_id i,
@@ -246,13 +246,13 @@ let to_xyz (z,map) =
           float_of_angle map a
         in
         let ui, uj =
-          get_cartesian_coord i, 
+          get_cartesian_coord i,
           get_cartesian_coord j
         in
-        let u_ij = 
+        let u_ij =
           (uj |- ui)
         in
-        let rot = 
+        let rot =
           rotation_matrix (0., 1., 0.) a
         in
         let new_vec =
@@ -263,7 +263,7 @@ let to_xyz (z,map) =
         in
         result.(i') <- Some (e, x, y, z)
       end
-    | Other  (e, i, r, j, a, k, d) -> 
+    | Other  (e, i, r, j, a, k, d) ->
       begin
         let i, r, j, a, k, d =
           int_of_atom_id i,
@@ -274,7 +274,7 @@ let to_xyz (z,map) =
           float_of_dihedral map d
         in
         let ui, uj, uk =
-          get_cartesian_coord i, 
+          get_cartesian_coord i,
           get_cartesian_coord j,
           get_cartesian_coord k
         in
@@ -284,7 +284,7 @@ let to_xyz (z,map) =
         let normal =
           cross u_ij u_kj
         in
-        let new_vec = 
+        let new_vec =
           r |. (normalized u_ij)
           |> apply_rotation_matrix (rotation_matrix normal a)
           |> apply_rotation_matrix (rotation_matrix u_ij d)
@@ -297,7 +297,7 @@ let to_xyz (z,map) =
     | Coord _ -> ()
   in
   Array.iteri (fun i _ -> append_line i) z;
-  let result = 
+  let result =
     Array.map (function
     | Some x -> x
     | None -> failwith "Some atoms were not defined" ) result
@@ -306,9 +306,9 @@ let to_xyz (z,map) =
 
 
 let to_xyz_string (l,map) =
-  String.concat "\n" 
-    ( to_xyz (l,map) 
-      |> List.map (fun (e,x,y,z) -> 
+  String.concat "\n"
+    ( to_xyz (l,map)
+      |> List.map (fun (e,x,y,z) ->
         Printf.sprintf "%s %f %f %f\n" (Element.to_string e) x y z)  )
 
 

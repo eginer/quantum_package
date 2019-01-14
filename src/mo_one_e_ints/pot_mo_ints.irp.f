@@ -33,7 +33,7 @@ BEGIN_PROVIDER [double precision, mo_integrals_n_e_per_atom, (mo_num,mo_num,nucl
 
  integer :: k
  mo_integrals_n_e_per_atom = 0.d0
- do k = 1, nucl_num 
+ do k = 1, nucl_num
    call ao_to_mo(                                                    &
        ao_integrals_n_e_per_atom(1,1,k),                        &
        size(ao_integrals_n_e_per_atom,1),                       &

@@ -19,7 +19,7 @@ integer function zmq_put_dvector(zmq_to_qp_run_socket, worker_id, name, x, size_
   if (rc /= len(trim(msg))) then
     print *,  trim(msg)
     zmq_put_dvector = -1
-    return 
+    return
   endif
 
   rc = f77_zmq_send(zmq_to_qp_run_socket,x,size_x*8,0)
@@ -125,7 +125,7 @@ integer function zmq_put_ivector(zmq_to_qp_run_socket, worker_id, name, x, size_
   if (rc /= len(trim(msg))) then
     print *,  trim(msg)
     zmq_put_ivector = -1
-    return 
+    return
   endif
 
   rc = f77_zmq_send(zmq_to_qp_run_socket,x,size_x*4,0)
@@ -228,7 +228,7 @@ integer function zmq_put8_dvector(zmq_to_qp_run_socket, worker_id, name, x, size
     print *,  trim(msg)
     zmq_put8_dvector = -1
     print *,  'Failed in put_data'
-    return 
+    return
   endif
 
   rc = f77_zmq_send8(zmq_to_qp_run_socket,x,size_x*8_8,0)
@@ -344,7 +344,7 @@ integer function zmq_put_dmatrix(zmq_to_qp_run_socket, worker_id, name, x, size_
       print *,  trim(msg)
       zmq_put_dmatrix = -1
       print *,  'Failed in put_data', rc, j
-      return 
+      return
     endif
 
     rc = f77_zmq_send8(zmq_to_qp_run_socket,x(1,j),ni*8_8,0)
@@ -461,7 +461,7 @@ integer function zmq_put8_ivector(zmq_to_qp_run_socket, worker_id, name, x, size
   if (rc /= len(trim(msg))) then
     print *,  trim(msg)
     zmq_put8_ivector = -1
-    return 
+    return
   endif
 
   rc = f77_zmq_send8(zmq_to_qp_run_socket,x,size_x*4_8,0)
@@ -563,7 +563,7 @@ integer function zmq_put_int(zmq_to_qp_run_socket, worker_id, name, x)
   if (rc /= len(trim(msg))) then
     print *,  trim(msg)
     zmq_put_int = -1
-    return 
+    return
   endif
 
   rc = f77_zmq_send(zmq_to_qp_run_socket,x,4,0)
@@ -718,7 +718,7 @@ integer function zmq_put_i8matrix(zmq_to_qp_run_socket, worker_id, name, x, size
       print *,  trim(msg)
       zmq_put_i8matrix = -1
       print *,  irp_here, 'Failed in put_data', rc, j
-      return 
+      return
     endif
 
     rc = f77_zmq_send8(zmq_to_qp_run_socket,x(1,j),ni*8_8,0)
@@ -844,7 +844,7 @@ integer function zmq_put_imatrix(zmq_to_qp_run_socket, worker_id, name, x, size_
       print *,  trim(msg)
       zmq_put_imatrix = -1
       print *,  irp_here, 'Failed in put_data', rc, j
-      return 
+      return
     endif
 
     rc = f77_zmq_send8(zmq_to_qp_run_socket,x(1,j),ni*4_8,0)

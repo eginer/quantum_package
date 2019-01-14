@@ -25,4 +25,4 @@ transforming a bit string to a list of integers for example.
    bit_kind = bit_kind_size / 8
 
 
-For an example of how to use the bitmaks, see the file :file:`example.irp.f`. 
+For an example of how to use the bitmaks, see the file :file:`example.irp.f`.

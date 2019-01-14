@@ -70,17 +70,17 @@ When the deterministic algorithm is chosen (:option:`perturbation do_pt2`
 is set to |false|), :math:`Psi_G` is a truncation of |Psi| using
 :option:`determinants threshold_generators`, and :math:`Psi_S` is a truncation
 of |Psi| using :option:`determinants threshold_selectors`, and re-weighted
-by :math:`1/\langle \Psi_s | \Psi_s \rangle`. 
+by :math:`1/\langle \Psi_s | \Psi_s \rangle`.
 
 At every iteration, while computing the |PT2|, the variance of the wave
 function is also computed:
 
-.. math:: 
+.. math::
 
   \sigma^2 & = \langle \Psi | \hat{H}^2 | \Psi \rangle -
                \langle  \Psi | \hat{H}   | \Psi \rangle^2 \\
            & = \sum_{i \in \text{FCI}}
-               \langle \Psi | \hat{H} | i \rangle 
+               \langle \Psi | \hat{H} | i \rangle
                \langle i | \hat{H} | \Psi \rangle -
                \langle  \Psi | \hat{H} | \Psi \rangle^2 \\
            & = \sum_{ \alpha }
@@ -95,7 +95,7 @@ a selection method by minimization of the energy.
 
 If :option:`perturbation do_pt2` is set to |false|, then the stochastic
 |PT2| is not computed, and an approximate value is obtained from the |CIPSI|
-selection. The calculation is faster, but the extrapolated |FCI| value is 
+selection. The calculation is faster, but the extrapolated |FCI| value is
 less accurate. This way of running the code should be used when the only
 goal is to generate a wave function, as for using |CIPSI| wave functions as
 trial wave functions of |QMC| calculations for example.

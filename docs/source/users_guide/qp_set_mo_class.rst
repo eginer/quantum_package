@@ -38,38 +38,32 @@ Usage
 
 .. code:: bash
 
-   qp_set_mo_class [FLAGS] <EZFIO_DIRECTORY>
-   Flags:
-      [-act range]    [-core range]   [-del range]    
-      [-inact range]  [-q]            [-virt range]   
-      [-help]         
+  qp_set_mo_class [-a <range>] [-c <range>] [-d <range>] [-h] [-i <range>]
+      [-q] [-v <range>] [--] EZFIO_DIR
 
-
-.. option:: -act <range>
+.. option:: -a, --act=<range>
 
    Range of active orbitals
 
-.. option:: -core <range>
+.. option:: -c, --core=<range>
 
    Range of core orbitals
 
-.. option:: -del <range>
+.. option:: -d, --del=<range>
 
    Range of deleted orbitals
 
-.. option:: -inact <range>
+.. option:: -i, --inact=<range>
 
    Range of inactive orbitals
 
-.. option:: -q
+.. option:: -q, --query
 
-   Query: print the current masks
+   Print the |MO| classes
 
-.. option:: -virt <range>
+.. option:: -v, --virt=<range>
 
    Range of virtual orbitals
-
-.. option:: -help, -?
 
 
 

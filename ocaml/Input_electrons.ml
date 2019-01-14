@@ -3,7 +3,7 @@ open Qputils;;
 open Core;;
 
 module Electrons : sig
-  type t = 
+  type t =
     { elec_alpha_num     : Elec_alpha_number.t;
       elec_beta_num      : Elec_beta_number.t;
     } [@@deriving sexp]
@@ -15,7 +15,7 @@ module Electrons : sig
   val to_rst : t -> Rst_string.t
   val of_rst : Rst_string.t -> t option
 end = struct
-  type t = 
+  type t =
     { elec_alpha_num     : Elec_alpha_number.t;
       elec_beta_num      : Elec_beta_number.t;
     } [@@deriving sexp]
@@ -23,28 +23,28 @@ end = struct
 
   let get_default = Qpackage.get_ezfio_default "electrons";;
 
-  let read_elec_alpha_num() = 
+  let read_elec_alpha_num() =
     Ezfio.get_electrons_elec_alpha_num ()
     |> Elec_alpha_number.of_int
   ;;
 
-  let write_elec_alpha_num n = 
+  let write_elec_alpha_num n =
     Elec_alpha_number.to_int n
-    |> Ezfio.set_electrons_elec_alpha_num 
+    |> Ezfio.set_electrons_elec_alpha_num
   ;;
 
 
-  let read_elec_beta_num() = 
+  let read_elec_beta_num() =
     Ezfio.get_electrons_elec_beta_num ()
     |> Elec_beta_number.of_int
   ;;
 
-  let write_elec_beta_num n = 
+  let write_elec_beta_num n =
     Elec_beta_number.to_int n
-    |> Ezfio.set_electrons_elec_beta_num 
+    |> Ezfio.set_electrons_elec_beta_num
   ;;
 
-  let read_elec_num () = 
+  let read_elec_num () =
     let na = Ezfio.get_electrons_elec_alpha_num ()
     and nb = Ezfio.get_electrons_elec_beta_num  ()
     in assert (na >= nb);
@@ -52,7 +52,7 @@ end = struct
   ;;
 
 
-  let read () = 
+  let read () =
     if (Ezfio.has_electrons_elec_alpha_num ()) then
       Some
       { elec_alpha_num      = read_elec_alpha_num ();

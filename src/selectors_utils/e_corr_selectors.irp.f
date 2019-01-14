@@ -8,7 +8,7 @@ use bitmasks
  ! for the all the selectors determinants.
  !
  ! double_index_selectors = list of the index of the double excitations
- ! 
+ !
  ! n_double_selectors = number of double excitations in the selectors determinants
  END_DOC
  integer :: i,degree
@@ -37,8 +37,8 @@ END_PROVIDER
  ! for the all the double excitations in the selectors determinants.
  !
  ! E_corr_per_selectors(i) = :math:`\langle D_i | H | \text{HF}\rangle  c(D_i)/c(HF)` if :math:`| D_i \rangle` is a double excitation.
- ! 
- ! E_corr_per_selectors(i) = -1000.d0 if it is not a double excitation 
+ !
+ ! E_corr_per_selectors(i) = -1000.d0 if it is not a double excitation
  !
  ! coef_hf_selector = coefficient of the Hartree Fock determinant in the selectors determinants
  END_DOC

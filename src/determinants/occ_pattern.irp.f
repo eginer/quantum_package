@@ -6,7 +6,7 @@ subroutine occ_pattern_of_det(d,o,Nint)
   ! Transforms a determinant to an occupation pattern
   !
   ! occ(:,1) : Single occupations
-  ! 
+  !
   ! occ(:,2) : Double occupations
   !
   END_DOC
@@ -60,7 +60,7 @@ subroutine occ_pattern_to_dets(o,d,sze,n_alpha,Nint)
   integer         ,intent(inout) :: sze            ! Dimension of the output dets
   integer(bit_kind),intent(in)   :: o(Nint,2)      ! Occ patters
   integer(bit_kind),intent(out)  :: d(Nint,2,sze)  ! Output determinants
-  
+
   integer                        :: i, k, n, ispin, ispin2
 
   ! Extract list of singly occupied MOs as (int,pos) pairs
@@ -228,7 +228,7 @@ end
  !$OMP END DO
 
  ! Find duplicates
- !$OMP DO 
+ !$OMP DO
  do i=1,N_det-1
   if (duplicate(i)) then
     cycle
@@ -301,7 +301,7 @@ end
 !-
  deallocate(iorder,duplicate,bit_tmp,tmp_array)
 
-END_PROVIDER 
+END_PROVIDER
 
 BEGIN_PROVIDER [ integer, det_to_occ_pattern, (N_det) ]
  implicit none

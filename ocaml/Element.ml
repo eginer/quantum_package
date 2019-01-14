@@ -10,10 +10,10 @@ type t =
 |Na|Mg                              |Al|Si|P |S |Cl|Ar
 |K |Ca|Sc|Ti|V |Cr|Mn|Fe|Co|Ni|Cu|Zn|Ga|Ge|As|Se|Br|Kr
 |Rb|Sr|Y |Zr|Nb|Mo|Tc|Ru|Rh|Pd|Ag|Cd|In|Sn|Sb|Te|I |Xe
-                           |Pt          
+                           |Pt
 [@@deriving sexp]
 
-let of_string x = 
+let of_string x =
   match (String.capitalize (String.lowercase x)) with
 |  "X"   |  "Dummy"       ->  X
 |  "H"   |  "Hydrogen"    ->  H
@@ -192,7 +192,7 @@ let to_long_string = function
 | Pt  ->  "Platinum"
 
 
-let to_charge c = 
+let to_charge c =
   let result = match c with
   | X   -> 0
   | H   -> 1
@@ -254,43 +254,43 @@ let to_charge c =
 
 
 let of_charge c = match (Charge.to_int c) with
-|  0   -> X   
-|  1   -> H   
-|  2   -> He  
-|  3   -> Li  
-|  4   -> Be  
-|  5   -> B   
-|  6   -> C   
-|  7   -> N   
-|  8   -> O   
-|  9   -> F   
-|  10  -> Ne  
-|  11  -> Na  
-|  12  -> Mg  
-|  13  -> Al  
-|  14  -> Si  
-|  15  -> P   
-|  16  -> S   
-|  17  -> Cl  
-|  18  -> Ar  
-|  19  -> K   
-|  20  -> Ca  
-|  21  -> Sc  
-|  22  -> Ti  
-|  23  -> V   
-|  24  -> Cr  
-|  25  -> Mn  
-|  26  -> Fe  
-|  27  -> Co  
-|  28  -> Ni  
-|  29  -> Cu  
-|  30  -> Zn  
-|  31  -> Ga  
-|  32  -> Ge  
-|  33  -> As  
-|  34  -> Se  
-|  35  -> Br  
-|  36  -> Kr  
+|  0   -> X
+|  1   -> H
+|  2   -> He
+|  3   -> Li
+|  4   -> Be
+|  5   -> B
+|  6   -> C
+|  7   -> N
+|  8   -> O
+|  9   -> F
+|  10  -> Ne
+|  11  -> Na
+|  12  -> Mg
+|  13  -> Al
+|  14  -> Si
+|  15  -> P
+|  16  -> S
+|  17  -> Cl
+|  18  -> Ar
+|  19  -> K
+|  20  -> Ca
+|  21  -> Sc
+|  22  -> Ti
+|  23  -> V
+|  24  -> Cr
+|  25  -> Mn
+|  26  -> Fe
+|  27  -> Co
+|  28  -> Ni
+|  29  -> Cu
+|  30  -> Zn
+|  31  -> Ga
+|  32  -> Ge
+|  33  -> As
+|  34  -> Se
+|  35  -> Br
+|  36  -> Kr
 |  37  -> Rb
 |  38  -> Sr
 |  39  -> Y
@@ -313,7 +313,7 @@ let of_charge c = match (Charge.to_int c) with
 | x -> raise (ElementError ("Element of charge "^(string_of_int x)^" unknown"))
 
 
-let covalent_radius x = 
+let covalent_radius x =
   let result = function
   | X   -> 0.
   | H   -> 0.37
@@ -354,13 +354,13 @@ let covalent_radius x =
   | Kr  -> 1.91
   | Rb  -> 2.20
   | Sr  -> 1.95
-  | Y   -> 1.90 
+  | Y   -> 1.90
   | Zr  -> 1.75
   | Nb  -> 1.64
   | Mo  -> 1.54
   | Tc  -> 1.47
-  | Ru  -> 1.46 
-  | Rh  -> 1.42 
+  | Ru  -> 1.46
+  | Rh  -> 1.42
   | Pd  -> 1.39
   | Ag  -> 1.45
   | Cd  -> 1.44
@@ -375,7 +375,7 @@ let covalent_radius x =
   Units.angstrom_to_bohr *. (result x)
   |> Positive_float.of_float
 
-let vdw_radius x = 
+let vdw_radius x =
   let result = function
   | X    -> 0.
   | H    -> 1.20

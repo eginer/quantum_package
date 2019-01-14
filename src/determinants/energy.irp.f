@@ -5,7 +5,7 @@ BEGIN_PROVIDER [ double precision, diagonal_H_matrix_on_psi_det, (N_det) ]
  END_DOC
  double precision, external     :: diag_h_mat_elem
  integer                        :: i
- 
+
  do i=1,N_det
    diagonal_H_matrix_on_psi_det(i) = diag_h_mat_elem(psi_det(1,1,i),N_int)
  enddo

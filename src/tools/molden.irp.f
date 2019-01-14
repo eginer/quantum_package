@@ -6,7 +6,7 @@ program molden
   character*(128)                :: output
   integer                        :: i_unit_output,getUnitAndOpen
   provide ezfio_filename
-  
+
   integer                        :: i
   print*,trim(ezfio_filename)
   output=trim(ezfio_filename)//'.mol'
@@ -17,12 +17,12 @@ program molden
   call write_geometry(i_unit_output)
   call write_Ao_basis(i_unit_output)
   call write_Mo_basis(i_unit_output)
-  
-  
+
+
   write(i_unit_output,*)''
   write(i_unit_output,*)''
   write(i_unit_output,*)'          ------------------------'
-  
+
   close(i_unit_output)
 end
 
@@ -30,7 +30,7 @@ subroutine write_intro_gamess(i_unit_output)
   implicit none
   integer, intent(in)            :: i_unit_output
   integer                        :: i,j,k,l
-  
+
   write(i_unit_output,*)'         *         GAMESS VERSION = 22 FEB 2006 (R5)          *'
   write(i_unit_output,*)'         *             FROM IOWA STATE UNIVERSITY             *'
   write(i_unit_output,*)'         * M.W.SCHMIDT, K.K.BALDRIDGE, J.A.BOATZ, S.T.ELBERT, *'
@@ -39,7 +39,7 @@ subroutine write_intro_gamess(i_unit_output)
   write(i_unit_output,*)'         *       TOGETHER WITH M.DUPUIS, J.A.MONTGOMERY       *'
   write(i_unit_output,*)'         *         J.COMPUT.CHEM.  14, 1347-1363(1993)        *'
   write(i_unit_output,*)''
-  
+
 end
 
 
@@ -49,9 +49,9 @@ subroutine write_geometry(i_unit_output)
   implicit none
   integer, intent(in)            :: i_unit_output
   integer                        :: i,j,k,l, getUnitAndOpen
-  
-  
-  
+
+
+
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   write(i_unit_output,*)'ATOM      ATOMIC                      COORDINATES (BOHR)          '
   write(i_unit_output,*)'          CHARGE         X                   Y                   Z'
@@ -80,7 +80,7 @@ subroutine write_Ao_basis(i_unit_output)
   write(i_unit_output,*)'SHELL TYPE  PRIMITIVE        EXPONENT          CONTRACTION COEFFICIENT(S)'
   write(i_unit_output,*)''
   write(i_unit_output,*)''
-  
+
   i_shell = 0
   i_prim = 0
   do i = 1, Nucl_num
@@ -103,15 +103,15 @@ subroutine write_Ao_basis(i_unit_output)
       write(i_unit_output,*)''
     enddo
   enddo
-  
+
   write(i_unit_output,*)''
   write(i_unit_output,'(A47,2X,I3)')'TOTAL NUMBER OF BASIS SET SHELLS             =', i_shell
   write(i_unit_output,'(A47,2X,I3)')'NUMBER OF CARTESIAN GAUSSIAN BASIS FUNCTIONS =', ao_num
   ! this is for the new version of molden
   write(i_unit_output,'(A12)')'PP    =NONE'
   write(i_unit_output,*)''
-  
-  
+
+
 end
 
 subroutine write_Mo_basis(i_unit_output)
@@ -119,12 +119,12 @@ subroutine write_Mo_basis(i_unit_output)
   integer, intent(in)            :: i_unit_output
   integer                        :: i,j,k,l, getUnitAndOpen
   integer                        :: i_5,i_mod
-  
+
   write(i_unit_output,*) '          ----------------------'
   write(i_unit_output,*) '          MCSCF NATURAL ORBITALS'
   write(i_unit_output,*) '          ----------------------'
   write(i_unit_output,*) '                                '
-  
+
   do j = 1, mo_num
     write(i_unit_output,'(18X,I3)')j
     write(i_unit_output,*)''
@@ -138,5 +138,5 @@ subroutine write_Mo_basis(i_unit_output)
     enddo
     write(i_unit_output,*)''
   enddo
-  
+
 end

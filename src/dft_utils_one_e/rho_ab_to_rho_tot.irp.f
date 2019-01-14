@@ -19,7 +19,7 @@ end
 subroutine grad_rho_ab_to_grad_rho_oc(grad_rho_a_2,grad_rho_b_2,grad_rho_a_b,grad_rho_o_2,grad_rho_c_2,grad_rho_o_c)
  implicit none
  double precision, intent(in)  :: grad_rho_a_2,grad_rho_b_2,grad_rho_a_b
- double precision, intent(out) :: grad_rho_o_2,grad_rho_c_2,grad_rho_o_c 
+ double precision, intent(out) :: grad_rho_o_2,grad_rho_c_2,grad_rho_o_c
  grad_rho_c_2 = grad_rho_a_2 + grad_rho_b_2 + 2d0*grad_rho_a_b
  grad_rho_o_2 = grad_rho_a_2 + grad_rho_b_2 - 2d0*grad_rho_a_b
  grad_rho_o_c = grad_rho_a_2 - grad_rho_b_2

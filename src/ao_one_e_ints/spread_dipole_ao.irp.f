@@ -61,7 +61,7 @@
       accu_z +=  c*tmp*overlap_y*overlap_x
      enddo
     enddo
-    ao_spread_x(i,j) = accu_x 
+    ao_spread_x(i,j) = accu_x
     ao_spread_y(i,j) = accu_y
     ao_spread_z(i,j) = accu_z
    enddo
@@ -359,7 +359,7 @@
   overlap_x = 0.d0
   return
  endif
- 
+
  pouet_timy = dsqrt(lower_exp_val/p)
   x_min = P_center - pouet_timy
   x_max = P_center + pouet_timy

@@ -14,9 +14,9 @@
        gauleg_t2(j,l) *= gauleg_t2(j,l)
      enddo
    enddo
-   
+
 END_PROVIDER
- 
+
 subroutine gauleg(x1,x2,x,w,n)
    implicit none
    BEGIN_DOC
@@ -26,7 +26,7 @@ subroutine gauleg(x1,x2,x,w,n)
    double precision, intent(in)   :: x1, x2
    double precision, intent (out) :: x(n),w(n)
    double precision, parameter    :: eps=3.d-14
-   
+
    integer                        :: m,i,j
    double precision               :: xm, xl, z, z1, p1, p2, p3, pp, dn
    m=(n+1)/2
@@ -54,4 +54,4 @@ subroutine gauleg(x1,x2,x,w,n)
      w(n+1-i)=w(i)
    enddo
 end
- 
+

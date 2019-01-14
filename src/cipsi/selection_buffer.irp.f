@@ -35,7 +35,7 @@ subroutine delete_selection_buffer(b)
   endif
 end
 
-  
+
 subroutine add_to_selection_buffer(b, det, val)
   use selection_types
   implicit none
@@ -83,7 +83,7 @@ subroutine merge_selection_buffers(b1, b2)
   i2=1
   do i=1,nmwen
     if ( (i1 > b1%cur).and.(i2 > b2%cur) ) then
-      exit 
+      exit
     else if (i1 > b1%cur) then
         val(i) = b2%val(i2)
         detmp(1:N_int,1,i) = b2%det(1:N_int,1,i2)
@@ -161,7 +161,7 @@ subroutine make_selection_buffer_s2(b)
   integer :: n_d
   integer :: i,k,sze,n_alpha,j,n
   logical                        :: dup
- 
+
   ! Sort
   integer, allocatable           :: iorder(:)
   integer*8, allocatable         :: bit_tmp(:)
@@ -198,7 +198,7 @@ subroutine make_selection_buffer_s2(b)
     val(i) = b%val(iorder(i))
     duplicate(i) = .False.
   enddo
-  
+
   ! Find duplicates
   do i=1,n_d-1
     if (duplicate(i)) then
@@ -231,7 +231,7 @@ subroutine make_selection_buffer_s2(b)
       endif
     enddo
   enddo
-  
+
   deallocate (b%val)
   ! Copy filtered result
   integer :: n_p
@@ -247,7 +247,7 @@ subroutine make_selection_buffer_s2(b)
     enddo
     val(n_p) = val(i)
   enddo
-  
+
   ! Sort by importance
   do i=1,n_p
     iorder(i) = i
@@ -265,7 +265,7 @@ subroutine make_selection_buffer_s2(b)
       o(k,2,i) = tmp_array(k,2,i)
     enddo
   enddo
-  
+
   ! Create determinants
   n_d = 0
   do i=1,n_p
@@ -311,7 +311,7 @@ subroutine remove_duplicates_in_selection_buffer(b)
   integer :: n_d
   integer :: i,k,sze,n_alpha,j,n
   logical                        :: dup
- 
+
   ! Sort
   integer, allocatable           :: iorder(:)
   integer*8, allocatable         :: bit_tmp(:)
@@ -345,7 +345,7 @@ subroutine remove_duplicates_in_selection_buffer(b)
     val(i) = b%val(iorder(i))
     duplicate(i) = .False.
   enddo
-  
+
   ! Find duplicates
   do i=1,n_d-1
     if (duplicate(i)) then
@@ -378,7 +378,7 @@ subroutine remove_duplicates_in_selection_buffer(b)
       endif
     enddo
   enddo
-  
+
   if (found_duplicates) then
 
     ! Copy filtered result
@@ -399,7 +399,7 @@ subroutine remove_duplicates_in_selection_buffer(b)
     b%N=n_p
 
   endif
-  
+
 end
 
 

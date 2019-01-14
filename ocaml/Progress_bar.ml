@@ -1,7 +1,7 @@
 open Core
 
 type t =
-{ 
+{
   title: string;
   start_value: float;
   cur_value  : float;
@@ -14,7 +14,7 @@ type t =
 
 let init ?(bar_length=20) ?(start_value=0.) ?(end_value=1.) ~title =
   { title ; start_value ; end_value ; bar_length ; cur_value=start_value ;
-    init_time= Time.now () ; dirty = false ; next = Time.now () } 
+    init_time= Time.now () ; dirty = false ; next = Time.now () }
 
 let update ~cur_value bar =
   { bar with cur_value ; dirty=true }
@@ -22,7 +22,7 @@ let update ~cur_value bar =
 let increment_end bar =
   { bar with end_value=(bar.end_value +. 1.) ; dirty=false }
 
-let clear bar = 
+let clear bar =
     Printf.eprintf "                                                                           \r%!";
     None
 
@@ -34,12 +34,12 @@ let display_tty bar =
     let percent =
       100. *. (bar.cur_value -. bar.start_value) /.
               (bar.end_value -. bar.start_value)
-    in  
+    in
     let n_hashes =
       (Float.of_int bar.bar_length) *. percent /. 100.
       |> Float.to_int
     in
-    let hashes = 
+    let hashes =
       String.init bar.bar_length ~f:(fun i ->
         if (i < n_hashes) then '#'
         else ' '
@@ -48,11 +48,11 @@ let display_tty bar =
     let now =
       Time.now ()
     in
-    let running_time = 
+    let running_time =
       Time.abs_diff now bar.init_time
     in
     let stop_time =
-      let x = 
+      let x =
         Time.Span.to_sec running_time
       in
       if (percent > 0.) then
@@ -68,18 +68,18 @@ let display_tty bar =
       (Time.Span.to_string running_time)
       (stop_time |> Time.Span.to_string );
     { bar with dirty = false ; next = Time.add now (Time.Span.of_sec 0.1) }
-  
+
 
 let display_file bar =
     let percent =
       100. *. (bar.cur_value -. bar.start_value) /.
               (bar.end_value -. bar.start_value)
-    in  
-    let running_time = 
+    in
+    let running_time =
       Time.abs_diff (Time.now ()) bar.init_time
     in
     let stop_time =
-      let x = 
+      let x =
         Time.Span.to_sec running_time
       in
       if (percent > 0.) then
@@ -93,7 +93,7 @@ let display_file bar =
       (Time.Span.to_string running_time)
       (Time.Span.to_string stop_time);
     { bar with dirty = false ; next = Time.add (Time.now ()) (Time.Span.of_sec 2.) }
-  
+
 
 
 let display bar =

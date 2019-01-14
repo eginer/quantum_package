@@ -6,10 +6,10 @@ subroutine run_stochastic_cipsi
   integer                        :: i,j,k
   double precision, allocatable  :: pt2(:), variance(:), norm(:), rpt2(:)
   integer                        :: to_select
-  
+
   double precision :: rss
   double precision, external :: memory_of_double
-  threshold_generators = 1.d0 
+  threshold_generators = 1.d0
   SOFT_TOUCH threshold_generators
 
   rss = memory_of_double(N_states)*4.d0
@@ -35,7 +35,7 @@ subroutine run_stochastic_cipsi
   endif
   call diagonalize_CI
   call save_wavefunction
-  
+
   call ezfio_has_hartree_fock_energy(has)
   if (has) then
     call ezfio_get_hartree_fock_energy(hf_energy_ref)
@@ -54,7 +54,7 @@ subroutine run_stochastic_cipsi
     call diagonalize_CI
     call save_wavefunction
   endif
-  
+
   double precision :: correlation_energy_ratio
   double precision :: error(N_states)
 
@@ -86,10 +86,10 @@ subroutine run_stochastic_cipsi
     call print_summary(psi_energy_with_nucl_rep,pt2,error,variance,norm,N_det,N_occ_pattern,N_states)
 
     do k=1,N_states
-      rpt2(:) = pt2(:)/(1.d0 + norm(k)) 
+      rpt2(:) = pt2(:)/(1.d0 + norm(k))
     enddo
 
-    call save_iterations(psi_energy_with_nucl_rep(1:N_states),rpt2,N_det) 
+    call save_iterations(psi_energy_with_nucl_rep(1:N_states),rpt2,N_det)
     call print_extrapolated_energy()
     N_iter += 1
 
@@ -122,11 +122,11 @@ subroutine run_stochastic_cipsi
   call save_energy(psi_energy_with_nucl_rep, pt2)
 
   do k=1,N_states
-    rpt2(:) = pt2(:)/(1.d0 + norm(k)) 
+    rpt2(:) = pt2(:)/(1.d0 + norm(k))
   enddo
 
   call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm,N_det,N_occ_pattern,N_states)
-  call save_iterations(psi_energy_with_nucl_rep(1:N_states),rpt2,N_det) 
+  call save_iterations(psi_energy_with_nucl_rep(1:N_states),rpt2,N_det)
   call print_extrapolated_energy()
 
 end

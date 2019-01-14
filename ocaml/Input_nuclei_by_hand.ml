@@ -3,7 +3,7 @@ open Qputils;;
 open Core;;
 
 module Nuclei_by_hand : sig
-  type t = 
+  type t =
     { nucl_num        : Nucl_number.t ;
       nucl_label      : Element.t array;
       nucl_charge     : Charge.t array;
@@ -11,13 +11,13 @@ module Nuclei_by_hand : sig
     } [@@deriving sexp]
   ;;
   val read  : unit -> t option
-  val write : t -> unit 
+  val write : t -> unit
   val to_string : t -> string
   val to_atom_list : t -> Atom.t list
   val to_rst : t -> Rst_string.t
   val of_rst : Rst_string.t -> t option
 end = struct
-  type t = 
+  type t =
     { nucl_num        : Nucl_number.t ;
       nucl_label      : Element.t array;
       nucl_charge     : Charge.t array;
@@ -27,32 +27,32 @@ end = struct
 
   let get_default = Qpackage.get_ezfio_default "nuclei";;
 
-  let read_nucl_num () = 
+  let read_nucl_num () =
     let nmax = Nucl_number.get_max () in
     Nucl_number.of_int ~max:nmax nmax
   ;;
 
-  let write_nucl_num n = 
+  let write_nucl_num n =
     Nucl_number.to_int n
     |> Ezfio.set_nuclei_nucl_num
   ;;
-    
+
 
   let read_nucl_label () =
     Ezfio.get_nuclei_nucl_label ()
     |> Ezfio.flattened_ezfio
-    |> Array.map ~f:Element.of_string 
+    |> Array.map ~f:Element.of_string
   ;;
 
   let write_nucl_label ~nucl_num labels =
-    let nucl_num = 
+    let nucl_num =
        Nucl_number.to_int nucl_num
     in
     let labels =
-       Array.to_list labels 
+       Array.to_list labels
        |> List.map ~f:Element.to_string
     in
-    Ezfio.ezfio_array_of_list ~rank:1 
+    Ezfio.ezfio_array_of_list ~rank:1
        ~dim:[| nucl_num |] ~data:labels
     |> Ezfio.set_nuclei_nucl_label
   ;;
@@ -65,14 +65,14 @@ end = struct
   ;;
 
   let write_nucl_charge ~nucl_num charges =
-    let nucl_num = 
+    let nucl_num =
        Nucl_number.to_int nucl_num
     in
     let charges =
        Array.to_list charges
        |> List.map ~f:Charge.to_float
     in
-    Ezfio.ezfio_array_of_list ~rank:1 
+    Ezfio.ezfio_array_of_list ~rank:1
        ~dim:[| nucl_num |] ~data:charges
     |> Ezfio.set_nuclei_nucl_charge
   ;;
@@ -80,7 +80,7 @@ end = struct
 
   let read_nucl_coord () =
     let nucl_num = Nucl_number.to_int (read_nucl_num ()) in
-    let raw_data = 
+    let raw_data =
     Ezfio.get_nuclei_nucl_coord()
     |> Ezfio.flattened_ezfio
     in
@@ -96,16 +96,16 @@ end = struct
   ;;
 
   let write_nucl_coord ~nucl_num coord =
-    let nucl_num = 
+    let nucl_num =
        Nucl_number.to_int nucl_num
     in
     let coord = Array.to_list coord in
-    let coord = 
+    let coord =
        (List.map ~f:(fun x-> x.Point3d.x) coord) @
        (List.map ~f:(fun x-> x.Point3d.y) coord) @
-       (List.map ~f:(fun x-> x.Point3d.z) coord) 
+       (List.map ~f:(fun x-> x.Point3d.z) coord)
     in
-    Ezfio.ezfio_array_of_list ~rank:2 
+    Ezfio.ezfio_array_of_list ~rank:2
        ~dim:[| nucl_num ; 3 |] ~data:coord
     |> Ezfio.set_nuclei_nucl_coord
   ;;
@@ -132,23 +132,23 @@ end = struct
     write_nucl_label  ~nucl_num:nucl_num nucl_label;
     write_nucl_charge ~nucl_num:nucl_num nucl_charge;
     write_nucl_coord  ~nucl_num:nucl_num nucl_coord;
-  ;;         
+  ;;
 
 
   let to_atom_list b =
-     let rec loop accu (coord, charge, label) = function 
-        | -1 -> accu 
-        | i ->  
-            let atom = 
-               { Atom.element = label.(i) ; 
-                 Atom.charge  = charge.(i) ; 
-                 Atom.coord   = coord.(i) ; 
-               } 
-            in 
-            loop (atom::accu)  (coord, charge, label) (i-1) 
-     in 
-     loop [] (b.nucl_coord, b.nucl_charge, b.nucl_label) 
-          ( (Nucl_number.to_int b.nucl_num) - 1) 
+     let rec loop accu (coord, charge, label) = function
+        | -1 -> accu
+        | i ->
+            let atom =
+               { Atom.element = label.(i) ;
+                 Atom.charge  = charge.(i) ;
+                 Atom.coord   = coord.(i) ;
+               }
+            in
+            loop (atom::accu)  (coord, charge, label) (i-1)
+     in
+     loop [] (b.nucl_coord, b.nucl_charge, b.nucl_label)
+          ( (Nucl_number.to_int b.nucl_num) - 1)
   ;;
 
   let to_string b =
@@ -168,11 +168,11 @@ nucl_coord       = %s
   ;;
 
 
-   let to_rst b = 
+   let to_rst b =
      let nucl_num = Nucl_number.to_int b.nucl_num in
-     let text = 
+     let text =
        ( Printf.sprintf "  %d\n  "
-         nucl_num 
+         nucl_num
        ) :: (
        List.init nucl_num ~f:(fun i->
          Printf.sprintf "  %-3s  %d   %s"
@@ -189,9 +189,9 @@ Nuclear coordinates in xyz format (Angstroms) ::
 " text
      |> Rst_string.of_string
   ;;
-     
+
   let of_rst s =
-    let l = Rst_string.to_string s 
+    let l = Rst_string.to_string s
     |> String.split ~on:'\n'
     in
     (* Find lines containing the xyz data *)
@@ -208,8 +208,8 @@ Nuclear coordinates in xyz format (Angstroms) ::
     in
     (* Create a list of Atom.t *)
     let nmax = Nucl_number.get_max () in
-    let atom_list = 
-      match (extract_begin l) with 
+    let atom_list =
+      match (extract_begin l) with
       | _ :: nucl_num :: title :: lines ->
         begin
           let nucl_num = nucl_num
@@ -224,7 +224,7 @@ Nuclear coordinates in xyz format (Angstroms) ::
       | _ -> failwith "Error in xyz format"
     in
     (* Create the Nuclei.t data structure *)
-    let result = 
+    let result =
       { nucl_num = List.length atom_list
           |> Nucl_number.of_int ~max:nmax;
         nucl_label = List.map atom_list ~f:(fun x ->

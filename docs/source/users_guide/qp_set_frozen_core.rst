@@ -21,7 +21,7 @@ Usage
 
 .. code:: bash
 
-      qp_set_frozen_core [-q]  <EZFIO_DIRECTORY>
+      qp_set_frozen_core [-q]  EZFIO_DIR
 
 
 .. option:: -q 

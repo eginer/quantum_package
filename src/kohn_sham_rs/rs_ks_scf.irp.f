@@ -1,6 +1,6 @@
 program rs_ks_scf
   BEGIN_DOC
-! Produce `Range_separated_Kohn_Sham` MO orbital 
+! Produce `Range_separated_Kohn_Sham` MO orbital
 ! output: mo_basis.mo_num mo_basis.mo_label mo_basis.ao_md5 mo_basis.mo_coef mo_basis.mo_occ
 ! output: kohn_sham.energy
 ! optional: mo_basis.mo_coef
@@ -86,8 +86,8 @@ subroutine run
   implicit none
 
   double precision               :: EHF
-   
-  EHF = RS_KS_energy 
+
+  EHF = RS_KS_energy
 
   mo_label = "Orthonormalized"
 
@@ -102,7 +102,7 @@ subroutine run
  write(*, '(A22,X,F16.10)') 'e_correlation_dft   = ',e_correlation_dft
  write(*, '(A22,X,F16.10)') 'Fock_matrix_energy  = ',Fock_matrix_energy
 
-  
+
 end
 
 

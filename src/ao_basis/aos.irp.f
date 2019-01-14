@@ -60,7 +60,7 @@ BEGIN_PROVIDER [ double precision, ao_coef_normalization_libint_factor, (ao_num)
     powA(1) = ao_l(i)
     powA(2) = 0
     powA(3) = 0
- 
+
     ! Normalization of the contracted basis functions
     norm = 0.d0
     do j=1,ao_prim_num(i)
@@ -82,7 +82,7 @@ END_PROVIDER
   BEGIN_DOC
   ! Sorted primitives to accelerate 4 index |MO| transformation
   END_DOC
-  
+
   integer                        :: iorder(ao_prim_num_max)
   double precision               :: d(ao_prim_num_max,2)
   integer                        :: i,j
@@ -113,7 +113,7 @@ BEGIN_PROVIDER [ double precision, ao_coef_normalized_ordered_transp, (ao_prim_n
       ao_coef_normalized_ordered_transp(i,j) = ao_coef_normalized_ordered(j,i)
     enddo
   enddo
-  
+
 END_PROVIDER
 
 BEGIN_PROVIDER [ double precision, ao_expo_ordered_transp, (ao_prim_num_max,ao_num) ]
@@ -127,7 +127,7 @@ BEGIN_PROVIDER [ double precision, ao_expo_ordered_transp, (ao_prim_num_max,ao_n
       ao_expo_ordered_transp(i,j) = ao_expo_ordered(j,i)
     enddo
   enddo
-  
+
 END_PROVIDER
 
  BEGIN_PROVIDER [ integer, ao_l, (ao_num) ]
@@ -139,7 +139,7 @@ END_PROVIDER
  END_DOC
  integer :: i
  do i=1,ao_num
-   ao_l(i) = ao_power(i,1) + ao_power(i,2) + ao_power(i,3) 
+   ao_l(i) = ao_power(i,1) + ao_power(i,2) + ao_power(i,3)
    ao_l_char(i) = l_to_charater(ao_l(i))
  enddo
  ao_l_max = maxval(ao_l)
@@ -213,7 +213,7 @@ END_PROVIDER
  integer :: i,j,k
  BEGIN_DOC
  ! Index of the shell type |AOs| and of the corresponding |AOs|
- ! By convention, for p,d,f and g |AOs|, we take the index 
+ ! By convention, for p,d,f and g |AOs|, we take the index
  ! of the |AO| with the the corresponding power in the x axis
  END_DOC
  do i = 1, nucl_num
@@ -274,7 +274,7 @@ BEGIN_PROVIDER [ character*(4), ao_l_char_space, (ao_num) ]
     give_ao_character_space = 'X   '
    elseif(ao_power(i,2) == 1)then
     give_ao_character_space = 'Y   '
-   else 
+   else
     give_ao_character_space = 'Z   '
    endif
   elseif(ao_l(i) == 2)then

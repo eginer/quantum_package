@@ -6,7 +6,7 @@ type t = int64 array [@@deriving sexp]
 let to_int64_array (x:t) = (x:int64 array)
 
 
-let to_alpha_beta x = 
+let to_alpha_beta x =
   let x = to_int64_array x in
   let n_int = (Array.length x)/2 in
   ( Array.init n_int (fun i -> x.(i)) ,
@@ -18,30 +18,30 @@ let to_bitlist_couple x =
   let xa =
     to_int64_array xa
     |> Bitlist.of_int64_array
-  and xb = 
+  and xb =
     to_int64_array xb
     |> Bitlist.of_int64_array
   in (xa,xb)
 
 
 let bitlist_to_string ~mo_num x =
-  let len = 
+  let len =
     MO_number.to_int mo_num
   in
-  let s = 
+  let s =
     List.map (function
         | Bit.Zero -> "-"
-        | Bit.One  -> "+" 
+        | Bit.One  -> "+"
     ) x
     |> String.concat ""
   in
-  String.sub s 0 len 
+  String.sub s 0 len
 
 
 
 let of_int64_array ~n_int ~alpha ~beta x =
    assert ((Array.length x) = (N_int_number.to_int n_int)*2) ;
-   let (a,b) = to_bitlist_couple x 
+   let (a,b) = to_bitlist_couple x
    and alpha = Elec_alpha_number.to_int alpha
    and beta  = Elec_beta_number.to_int beta
    in
@@ -66,8 +66,8 @@ let of_int64_array_no_check x = x
 let of_bitlist_couple ?n_int ~alpha ~beta (xa,xb) =
   let ba, bb =
     Bitlist.to_int64_array xa ,
-    Bitlist.to_int64_array xb 
-  and n_int = 
+    Bitlist.to_int64_array xb
+  and n_int =
     match n_int with
     | Some x -> x
     | None -> Bitlist.n_int_of_mo_num (List.length xa)
@@ -75,7 +75,7 @@ let of_bitlist_couple ?n_int ~alpha ~beta (xa,xb) =
   of_int64_array ~n_int ~alpha ~beta (Array.concat [ba;bb])
 
 
-let to_string ~mo_num x = 
+let to_string ~mo_num x =
   let (xa,xb) = to_bitlist_couple x in
   [ "  " ; bitlist_to_string ~mo_num xa ; "\n" ;
     "  " ; bitlist_to_string ~mo_num xb ]

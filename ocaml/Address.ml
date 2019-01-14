@@ -1,8 +1,8 @@
 
 module Tcp : sig
-  type t 
+  type t
   val of_string : string -> t
-  val to_string : t -> string 
+  val to_string : t -> string
   val create    : host:string -> port:int -> t
 end = struct
   type t = string
@@ -18,9 +18,9 @@ end = struct
 end
 
 module Ipc : sig
-  type t 
+  type t
   val of_string : string -> t
-  val to_string : t -> string 
+  val to_string : t -> string
   val create    : string -> t
 end = struct
   type t = string
@@ -33,9 +33,9 @@ end = struct
 end
 
 module Inproc : sig
-  type t 
+  type t
   val of_string : string -> t
-  val to_string : t -> string 
+  val to_string : t -> string
   val create    : string -> t
 end = struct
   type t = string

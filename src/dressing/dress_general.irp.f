@@ -1,14 +1,14 @@
 subroutine run_dressing(N_st,energy)
   implicit none
-  
-  integer, intent(in) :: N_st 
-  double precision, intent(out) :: energy(N_st) 
+
+  integer, intent(in) :: N_st
+  double precision, intent(out) :: energy(N_st)
 
   integer :: i,j
 
   double precision :: E_new, E_old, delta_e
   integer :: iteration
-  
+
   integer :: n_it_dress_max
   double precision :: thresh_dress, dummy
 
@@ -29,9 +29,9 @@ subroutine run_dressing(N_st,energy)
     delta_E = 1.d0
     iteration = 0
     do iteration=1,n_it_dress_max
-      print *,  '===============================================' 
+      print *,  '==============================================='
       print *,  'Iteration', iteration, '/', n_it_dress_max
-      print *,  '===============================================' 
+      print *,  '==============================================='
       print *,  ''
       E_old = sum(psi_energy(:))
       print *,  'Variational energy <Psi|H|Psi>'
@@ -65,6 +65,6 @@ subroutine run_dressing(N_st,energy)
       print *,  i, ci_energy_dressed(i)
     enddo
   endif
-  
+
 end
 

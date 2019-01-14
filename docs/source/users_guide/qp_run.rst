@@ -1,5 +1,6 @@
 .. _qp_run:
 
+======
 qp_run
 ======
 
@@ -14,8 +15,7 @@ Usage
 
 .. code:: bash
 
-  qp_run [-h|--help] [-p <string>|--prefix=<string>] [-s|--slave] [--]
-      PROGRAM EZFIO_DIR
+  qp_run [-h] [-p <string>] [-s] [--] PROGRAM EZFIO_DIR
 
 ``PROGRAM`` is the name of the |QP| program to be run, and ``EZFIO_DIR`` is
 the name of the |EZFIO| directory containing the data.

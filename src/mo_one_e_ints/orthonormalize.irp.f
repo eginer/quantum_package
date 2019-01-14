@@ -5,7 +5,7 @@ subroutine orthonormalize_mos
   p = size(mo_overlap,1)
   call ortho_lowdin(mo_overlap,p,mo_num,mo_coef,m,ao_num)
   mo_label = 'Orthonormalized'
-  SOFT_TOUCH mo_coef mo_label 
+  SOFT_TOUCH mo_coef mo_label
 end
 
 

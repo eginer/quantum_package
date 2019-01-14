@@ -27,7 +27,7 @@ subroutine run_pt2_slave(thread,iproc,energy)
 
   double precision :: rss
   double precision, external :: memory_of_double, memory_of_int
-  rss  = memory_of_int(pt2_n_tasks_max)*67.d0 
+  rss  = memory_of_int(pt2_n_tasks_max)*67.d0
   rss += memory_of_double(pt2_n_tasks_max)*(N_states*3)
   call check_mem(rss,irp_here)
 
@@ -43,7 +43,7 @@ subroutine run_pt2_slave(thread,iproc,energy)
     call end_zmq_to_qp_run_socket(zmq_to_qp_run_socket)
     return
   endif
-           
+
   zmq_socket_push      = new_zmq_push_socket(thread)
 
   b%N = 0
@@ -326,4 +326,4 @@ IRP_ELSE
 IRP_ENDIF
 
 end subroutine
- 
+

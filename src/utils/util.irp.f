@@ -1,7 +1,7 @@
 double precision function binom_func(i,j)
   implicit none
   BEGIN_DOC
-  !.. math                       :: 
+  !.. math                       ::
   !
   !  \frac{i!}{j!(i-j)!}
   !
@@ -70,7 +70,7 @@ double precision function fact(n)
   integer                        :: n
   double precision, save         :: memo(1:100)
   integer, save                  :: memomax = 1
-  
+
   if (n<=memomax) then
     if (n<2) then
       fact = 1.d0
@@ -79,7 +79,7 @@ double precision function fact(n)
     endif
     return
   endif
-  
+
   integer                        :: i
   memo(1) = 1.d0
   do i=memomax+1,min(n,100)
@@ -98,7 +98,7 @@ double precision function logfact(n)
   integer                        :: n
   double precision, save         :: memo(1:100)
   integer, save                  :: memomax = 1
-  
+
   if (n<=memomax) then
     if (n<2) then
       logfact = 0.d0
@@ -107,7 +107,7 @@ double precision function logfact(n)
     endif
     return
   endif
-  
+
   integer                        :: i
   memo(1) = 0.d0
   do i=memomax+1,min(n,100)
@@ -188,7 +188,7 @@ double precision function dble_fact_even(n) result(fact2)
   enddo
   memomax = min(n,100)
   fact2 = memo(memomax)
-  
+
   if (n > 100) then
     double precision :: dble_logfact
     fact2 = dexp(dble_logfact(n))
@@ -204,7 +204,7 @@ double precision function dble_fact_odd(n) result(fact2)
   integer                        :: n
   double precision, save         :: memo(1:100)
   integer, save                  :: memomax = 1
-  
+
   ASSERT (iand(n,1) /= 0)
   if (n<=memomax) then
     if (n<3) then
@@ -214,7 +214,7 @@ double precision function dble_fact_odd(n) result(fact2)
     endif
     return
   endif
-  
+
   integer                        :: i
   memo(1) = 1.d0
   do i=memomax+2,min(n,99),2
@@ -222,7 +222,7 @@ double precision function dble_fact_odd(n) result(fact2)
   enddo
   memomax = min(n,99)
   fact2 = memo(memomax)
-  
+
   if (n > 99) then
     double precision :: dble_logfact
     fact2 = dexp(dble_logfact(n))
@@ -244,7 +244,7 @@ double precision function dble_logfact(n) result(logfact2)
   enddo
   logfact2=prod
   return
-  
+
 end function
 
 subroutine write_git_log(iunit)
@@ -292,7 +292,7 @@ BEGIN_PROVIDER [ integer, nproc ]
   BEGIN_DOC
   ! Number of current OpenMP threads
   END_DOC
-  
+
   integer                        :: omp_get_num_threads
   nproc = 1
   !$OMP PARALLEL
@@ -311,10 +311,10 @@ double precision function u_dot_v(u,v,sze)
   integer, intent(in)            :: sze
   double precision, intent(in)   :: u(sze),v(sze)
   double precision, external     :: ddot
-  
+
   !DIR$ FORCEINLINE
   u_dot_v = ddot(sze,u,1,v,1)
-  
+
 end
 
 double precision function u_dot_u(u,sze)
@@ -325,10 +325,10 @@ double precision function u_dot_u(u,sze)
   integer, intent(in)            :: sze
   double precision, intent(in)   :: u(sze)
   double precision, external     :: ddot
-  
+
   !DIR$ FORCEINLINE
   u_dot_u = ddot(sze,u,1,u,1)
-  
+
 end
 
 subroutine normalize(u,sze)
@@ -341,7 +341,7 @@ subroutine normalize(u,sze)
   double precision               :: d
   double precision, external     :: dnrm2
   integer                        :: i
-  
+
   !DIR$ FORCEINLINE
   d = dnrm2(sze,u,1)
   if (d /= 0.d0) then

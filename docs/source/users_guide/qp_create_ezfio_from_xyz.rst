@@ -13,12 +13,16 @@ Usage
 
 .. code:: bash
 
-   qp_create_ezfio_from_xyz [FLAGS] (<xyz_file> | <zmt_file>) 
-   Flags :
-      -b [-au] [-c int] [-cart] [-d float] 
-      [-m int] [-o file] [-p string] [-help]
+   qp_create_ezfio_from_xyz [-a] -b <string> [-c <int>] [-d <float>] 
+      [-h] [-m <int>] [-o EZFIO_DIR] [-p <string>] [-x] [--] FILE
 
-.. option:: -b <basis_name>
+
+.. option:: -a, --au
+
+   If present, input geometry is in atomic units.
+
+
+.. option:: -b, --basis=<string>
 
    Name of basis set.  The basis set is defined as a single string if all the
    atoms are taken from the same basis set, otherwise specific elements can be
@@ -28,39 +32,45 @@ Usage
       -b "cc-pvtz | 1,H:sto-3g | 3,H:6-31g"
 
    By default, the basis set is obtained from the local database of the |qp|.
+   This option is mandatory.
+
+   If  ``<string>`` is set to ``show``, the list of all available basis sets is
+   displayed.
 
 
-.. option:: -au
-
-   If present, input geometry is in atomic units.
-
-.. option:: -c <float>
+.. option:: -c, --charge=<int>
 
    Total charge of the molecule. Default is 0.
 
-.. option:: -cart
 
-   Compute |AOs| in the Cartesian basis set (6d, 10f, ...)
+.. option:: -d, --dummy=<float>
 
-.. option:: -d <float>
+   Add dummy atoms (X) between atoms when the distance between two atoms
+   is less than :math:`x \times \sum R_\mathrm{cov}`, the covalent radii
+   of the atoms. The default is x=0, so no dummy atom is added.
 
-   Add dummy atoms. x * (covalent radii of the atoms)
 
-.. option:: -m <int>
+.. option:: -h, --help
 
-   Spin multiplicity (2S+1) of the molecule. Default is 1.
+   Print the help text and exit
 
-.. option:: -o <EZFIO_DIRECTORY>
+
+.. option:: -m, --multiplicity=<int>
+
+   Spin multiplicity :math:`2S+1` of the molecule. Default is 1.
+
+
+.. option:: -o, --output=EZFIO_DIR
 
    Name of the created |EZFIO| directory.
 
-.. option:: -p <string>
+.. option:: -p <string>, --pseudo=<string>
 
-   Name of the pseudo-potential
+   Name of the pseudo-potential. Follows the same conventions as the basis set.
 
-.. option:: -help, -?
+.. option:: -x, --cart
 
-   Print the help text and exit
+   Compute |AOs| in the Cartesian basis set (6d, 10f, ...)
 
 
 Using custom atomic basis sets
@@ -73,8 +83,8 @@ and the *xyz* geometry is in ``molecule.xyz``, the following should be used::
     qp_create_ezfio_from_xyz -b custom.basis molecule.xyz
 
 Basis set files should be given in |GAMESS| format, where the full names of the
-atoms are given, and the basis sets for each element are separated by a blank line.
-Here is an example ::
+atoms are given, and the basis sets for each element are separated by a blank
+line.  Here is an example ::
 
       HYDROGEN
       S   3
@@ -121,22 +131,21 @@ Using custom pseudo-potentials
 ------------------------------
 
 As for the basis set, if a file with the same name as the pseudo-potential
-exists, this file will be read.
-For example, if the file containing the custom pseudo-potential is named
-``custom.pseudo``, the basis set is named ``custom.basis``, and the *xyz*
-geometry is in ``molecule.xyz``, the following command should be used
+exists, this file will be read.  For example, if the file containing the custom
+pseudo-potential is named ``custom.pseudo``, the basis set is named
+``custom.basis``, and the *xyz* geometry is in ``molecule.xyz``, the following
+command should be used
 
 .. code:: bash
 
     qp_create_ezfio_from_xyz -b custom.basis -p custom.pseudo molecule.xyz
 
 Pseudo-potential files should be given in a format very close to |GAMESS|
-format. The first line should be formatted as ``%s GEN %d %d`` where the
-first string is the chemical symbol, the first integer is the number of
-core electrons to be removed and the second integer is LMAX+1 as in |GAMESS|
-format.
-The pseudo-potential for each element are separated by a blank line.
-Here is an example ::
+format.  The first line should be formatted as ``%s GEN %d %d`` where the first
+string is the chemical symbol, the first integer is the number of core
+electrons to be removed and the second integer is LMAX+1 as in |GAMESS| format.
+The pseudo-potential for each element are separated by a blank line.  Here is
+an example ::
 
       Ne GEN 2 1
       3

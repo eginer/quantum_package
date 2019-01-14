@@ -50,7 +50,7 @@ type(H_apply_buffer_type), pointer :: H_apply_buffer(:)
       stop
     endif
   enddo
-  
+
 END_PROVIDER
 
 
@@ -68,16 +68,16 @@ subroutine resize_H_apply_buffer(new_size,iproc)
 ! be set before calling this function.
   END_DOC
   PROVIDE H_apply_buffer_allocated
-  
+
   ASSERT (new_size > 0)
   ASSERT (iproc >= 0)
   ASSERT (iproc < nproc)
-  
+
   allocate ( buffer_det(N_int,2,new_size),                           &
       buffer_coef(new_size,N_states),                                &
       buffer_e2(new_size,N_states) )
-  buffer_coef = 0.d0 
-  buffer_e2 = 0.d0 
+  buffer_coef = 0.d0
+  buffer_e2 = 0.d0
   do i=1,min(new_size,H_apply_buffer(iproc)%N_det)
     do k=1,N_int
       buffer_det(k,1,i) = H_apply_buffer(iproc)%det(k,1,i)
@@ -88,7 +88,7 @@ subroutine resize_H_apply_buffer(new_size,iproc)
   enddo
   deallocate(H_apply_buffer(iproc)%det)
   H_apply_buffer(iproc)%det => buffer_det
-  
+
   do k=1,N_states
     do i=1,min(new_size,H_apply_buffer(iproc)%N_det)
       buffer_coef(i,k) = H_apply_buffer(iproc)%coef(i,k)
@@ -96,7 +96,7 @@ subroutine resize_H_apply_buffer(new_size,iproc)
   enddo
   deallocate(H_apply_buffer(iproc)%coef)
   H_apply_buffer(iproc)%coef => buffer_coef
-  
+
   do k=1,N_states
     do i=1,min(new_size,H_apply_buffer(iproc)%N_det)
       buffer_e2(i,k)   = H_apply_buffer(iproc)%e2(i,k)
@@ -104,10 +104,10 @@ subroutine resize_H_apply_buffer(new_size,iproc)
   enddo
   deallocate(H_apply_buffer(iproc)%e2)
   H_apply_buffer(iproc)%e2 => buffer_e2
-  
+
   H_apply_buffer(iproc)%sze = new_size
   H_apply_buffer(iproc)%N_det = min(new_size,H_apply_buffer(iproc)%N_det)
-  
+
 end
 
 subroutine copy_H_apply_buffer_to_wf
@@ -121,14 +121,14 @@ subroutine copy_H_apply_buffer_to_wf
   double precision, allocatable  :: buffer_coef(:,:)
   integer                        :: i,j,k
   integer                        :: N_det_old
-  
+
   PROVIDE H_apply_buffer_allocated
-  
+
   ASSERT (N_int > 0)
   ASSERT (N_det > 0)
-  
+
   allocate ( buffer_det(N_int,2,N_det), buffer_coef(N_det,N_states) )
-  
+
   do i=1,N_det
     do k=1,N_int
       ASSERT (sum(popcnt(psi_det(:,1,i))) == elec_alpha_num)
@@ -142,12 +142,12 @@ subroutine copy_H_apply_buffer_to_wf
       buffer_coef(i,k) = psi_coef(i,k)
     enddo
   enddo
-  
+
   N_det_old = N_det
   do j=0,nproc-1
     N_det = N_det + H_apply_buffer(j)%N_det
   enddo
-  
+
   if (psi_det_size < N_det) then
     psi_det_size = N_det
     TOUCH psi_det_size
@@ -190,14 +190,14 @@ subroutine copy_H_apply_buffer_to_wf
   H_apply_buffer(j)%N_det = 0
   !$OMP END PARALLEL
   SOFT_TOUCH N_det psi_det psi_coef
-  
+
   logical :: found_duplicates
   call remove_duplicates_in_psi_det(found_duplicates)
   do k=1,N_states
     call normalize(psi_coef(1,k),N_det)
   enddo
   SOFT_TOUCH N_det psi_det psi_coef
-  
+
 end
 
 subroutine remove_duplicates_in_psi_det(found_duplicates)
@@ -293,7 +293,7 @@ subroutine fill_H_apply_buffer_no_selection(n_selected,det_buffer,Nint,iproc)
   BEGIN_DOC
   !  Fill the H_apply buffer with determiants for |CISD|
   END_DOC
-  
+
   integer, intent(in)            :: n_selected, Nint, iproc
   integer(bit_kind), intent(in)  :: det_buffer(Nint,2,n_selected)
   integer                        :: i,j,k

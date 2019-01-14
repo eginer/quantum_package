@@ -33,7 +33,7 @@ let make_contrl ?(maxit=100) ?(ispher=1) ?(mplevl=0) ~mult ~charge scftyp =
 
 
 (** Vec *)
-type vec_t = 
+type vec_t =
 | Canonical of string
 | Natural of string
 
@@ -69,20 +69,20 @@ let read_mos guide filename =
     Str.search_forward re_eol text i
   in
   String.sub text start (finish-start)
-  
+
 let read_until_found f tries =
-  let result = 
+  let result =
     List.fold_left (fun accu x ->
       match accu with
       | Some mos -> Some mos
       | None ->
-        begin 
+        begin
           try
             Some (read_mos x f)
           with Caml.Not_found ->
             None
         end
-        ) None tries 
+        ) None tries
   in
   match result with
   | Some mos -> mos
@@ -94,7 +94,7 @@ let read_natural_mos f =
     "MP2 NATURAL ORBITALS" ]
   in
   read_until_found f tries
-  
+
 let read_canonical_mos f =
   let tries = [
     "--- OPTIMIZED MCSCF MO-S ---"  ;
@@ -103,7 +103,7 @@ let read_canonical_mos f =
     ]
   in
   read_until_found f tries
-  
+
 let string_of_vec = function
 | Natural filename -> read_natural_mos filename
 | Canonical filename -> read_canonical_mos filename
@@ -111,7 +111,7 @@ let string_of_vec = function
 (** GUESS *)
 type guess_t =
 | Huckel
-| Hcore 
+| Hcore
 | Canonical of (int*string)
 | Natural   of (int*string)
 
@@ -123,7 +123,7 @@ let guess_of_string s =
 
 let string_of_guess g =
  [
- " $GUESS\n" ; "  GUESS=" ; 
+ " $GUESS\n" ; "  GUESS=" ;
  begin
   match g with
     | Hcore  -> "HCORE\n"
@@ -143,11 +143,11 @@ let string_of_guess g =
 let string_of_basis =
   Printf.sprintf " $BASIS
   GBASIS=%s
- $END" 
+ $END"
 
 
 (** DATA *)
-type coord_t = 
+type coord_t =
 | Atom          of Element.t
 | Diatomic_homo of (Element.t*float)
 | Diatomic      of (Element.t*Element.t*float)
@@ -214,7 +214,7 @@ let data_of_xyz l =
       List.map (fun (e,x,y,z) -> Printf.sprintf "%s %f  %f %f %f"
       (Element.to_string e) (Element.to_charge e)
       x y z) l ) ;
-    nucl_charge = List.fold_left (fun accu (e,_,_,_) -> 
+    nucl_charge = List.fold_left (fun accu (e,_,_,_) ->
       accu + (int_of_float @@ Element.to_charge e) ) 0 l
   }
 
@@ -229,7 +229,7 @@ let string_of_data d =
     d.title ;
     Sym.to_data d.sym ;
   ]  ^ d.xyz ^ "\n $END"
-    
+
 
 (** GUGDM *)
 type gugdm2_t = int
@@ -250,7 +250,7 @@ let string_of_gugdm2 = function
 " s
 
 
-type gugdia_t = 
+type gugdia_t =
 { nstate : int ;
   itermx : int ;
 }
@@ -275,7 +275,7 @@ let make_gugdia ?(itermx=500) nstate =
 type mcscf_t = FULLNR | SOSCF | FOCAS
 
 let string_of_mcscf m =
-  " $MCSCF\n" ^ 
+  " $MCSCF\n" ^
   begin
    match m with
    | FOCAS  -> "   FOCAS=.T.    SOSCF=.F.   FULLNR=.F."
@@ -287,7 +287,7 @@ let string_of_mcscf m =
  $END"
 
 
-type drt_t = 
+type drt_t =
 { nmcc: int ;
   ndoc: int ;
   nalp: int ;
@@ -303,9 +303,9 @@ let make_drt ?(istsym=1) n_elec_alpha n_elec_beta n_e n_act =
   let nmcc =
      (n_elec_tot - n_e)/2
   in
-  let ndoc = 
+  let ndoc =
      n_elec_beta - nmcc
-  in 
+  in
   let nalp =
      (n_elec_alpha - nmcc - ndoc)
   in
@@ -327,7 +327,7 @@ let string_of_drt drt sym =
   MXNINT= 600000
   NPRT=2
  $END"
- drt.nmcc drt.ndoc drt.nalp drt.nval drt.istsym 
+ drt.nmcc drt.ndoc drt.nalp drt.nval drt.istsym
 
 (** MP2 *)
 let string_of_mp2 = " $MP2
@@ -342,26 +342,26 @@ type system =
 { mult: int ; charge: int ; basis: string ; coord: coord_t }
 
 let n_elec system =
-  let data = 
+  let data =
     make_data system.coord
   in
   data.nucl_charge - system.charge
 
 let n_elec_alpha_beta system =
-  let n = 
-    n_elec system 
-  and m = 
+  let n =
+    n_elec system
+  and m =
     system.mult
   in
-  let alpha = 
+  let alpha =
     (n+m-1)/2
   in
-  let beta = 
+  let beta =
     n - alpha
   in
   (alpha, beta)
 
-  
+
 let create_single_det_input ~mp2 ~guess ?(vecfile="") s =
   let scftyp =
     match s.mult with
@@ -369,14 +369,14 @@ let create_single_det_input ~mp2 ~guess ?(vecfile="") s =
     | _ -> ROHF
   and mult = s.mult
   and charge = s.charge
-  and n_elec_alpha, _ = 
+  and n_elec_alpha, _ =
     n_elec_alpha_beta s
   and mplevl =
     if mp2 then 2 else 0
   in
   [
     make_contrl ~mult ~charge ~mplevl scftyp
-    |> string_of_contrl 
+    |> string_of_contrl
   ;
     begin
       match vecfile with
@@ -394,7 +394,7 @@ let create_single_det_input ~mp2 ~guess ?(vecfile="") s =
     make_data s.coord
     |> string_of_data
   ] |> String.concat "\n\n"
-  
+
 
 let create_hf_input ~guess =
   create_single_det_input ~mp2:false ~guess
@@ -408,23 +408,23 @@ let create_cas_input ?(vecfile="") ~guess ~nstate s n_e n_a =
   and mult = s.mult
   and charge = s.charge
   in
-  let n_elec_alpha, n_elec_beta = 
+  let n_elec_alpha, n_elec_beta =
     n_elec_alpha_beta s
   in
-  let drt = 
+  let drt =
     make_drt n_elec_alpha n_elec_beta n_e n_a
   in
-  let data = 
+  let data =
     make_data s.coord
   in
   [
     make_contrl ~mult ~charge scftyp
-    |> string_of_contrl 
+    |> string_of_contrl
   ;
     begin
       match vecfile with
       | "" ->     string_of_guess guess
-      | vecfile -> 
+      | vecfile ->
           let norb =
             drt.nmcc + drt.ndoc + drt.nval + drt.nalp
           in
@@ -441,17 +441,17 @@ let create_cas_input ?(vecfile="") ~guess ~nstate s n_e n_a =
     string_of_drt drt data.sym
   ;
     make_gugdia nstate
-    |> string_of_gugdia  
+    |> string_of_gugdia
   ;
     string_of_gugdm2 nstate
   ;
     string_of_data data
   ] |> String.concat "\n\n"
-  
+
 
 let create_input ?(vecfile="") ?(guess=Huckel) ~system ~nstate = function
 | HF   -> create_hf_input ~vecfile ~guess system
 | MP2  -> create_mp2_input ~vecfile  ~guess system
-| CAS (n_e,n_a) -> create_cas_input ~vecfile ~nstate ~guess system n_e n_a 
+| CAS (n_e,n_a) -> create_cas_input ~vecfile ~nstate ~guess system n_e n_a
 
 

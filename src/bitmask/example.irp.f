@@ -1,7 +1,7 @@
 subroutine example_bitmask
  use bitmasks ! you need to include the bitmasks_module.f90 features
  implicit none
- BEGIN_DOC 
+ BEGIN_DOC
 ! subroutine that illustrates the main features available in bitmask
  END_DOC
  integer :: i,j
@@ -56,7 +56,7 @@ subroutine example_bitmask
  print *,  trim(output)
  integer :: i_orb
  character*(2048) :: output
- 
+
  do i_orb = 1, min(4,mo_num) ! you set the first four bits to 1 in key
   call set_bit_to_integer(i_orb,key,N_int)
  enddo

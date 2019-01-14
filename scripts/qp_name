@@ -28,13 +28,14 @@ import os
 
 try:
     from docopt import docopt
-    from qp_path import QP_SRC, QP_ROOT, QP_PLUGINS
+    from qp_path import QP_SRC, QP_ROOT
 except ImportError:
     print "source .quantum_package.rc"
     raise
 
 
 def main(arguments):
+    """Main function"""
 
     # Check that name exist in */IRPF90_man
     print "Checking that name exists..."
@@ -43,25 +44,25 @@ def main(arguments):
     f = arguments["<name>"]+".l"
     found = False
     for mod in all_modules:
-        if os.path.isdir( os.path.join(QP_SRC,mod,"IRPF90_man") ):
-            for filename in os.listdir( os.path.join(QP_SRC,mod,"IRPF90_man") ):
+        if os.path.isdir(os.path.join(QP_SRC, mod, "IRPF90_man")):
+            for filename in os.listdir(os.path.join(QP_SRC, mod, "IRPF90_man")):
                 if filename == f:
                     found = True
                     break
         if found: break
-    
+
     if not found:
         print "Error:"
         print "The variable/subroutine/function \""+arguments["<name>"] \
         + "\" was not found in the sources."
         print "Did you compile the code at the root?"
-        print "Continue? [y/N]  ", 
-        cont = sys.stdin.read(1).strip() in [ "y", "Y" ]
+        print "Continue? [y/N]  ",
+        cont = sys.stdin.read(1).strip() in ["y", "Y"]
         if not cont:
             print "Aborted"
             sys.exit(1)
 
-    # Now search in all the files 
+    # Now search in all the files
     if arguments["--rename"]:
         print "Replacing..."
     else:
@@ -70,14 +71,14 @@ def main(arguments):
     name = re.compile(r"\b"+arguments["<name>"]+r"\b", re.IGNORECASE)
 
     for mod in all_modules:
-        dirname = os.path.join(QP_SRC,mod)
+        dirname = os.path.join(QP_SRC, mod)
         if not os.path.isdir(dirname):
             continue
 
         for filename in os.listdir(dirname):
             if "." not in filename:
                 continue
-            filename = os.path.join(dirname,filename)
+            filename = os.path.join(dirname, filename)
             if not os.path.isfile(filename):
                 continue
             with open(filename, "r") as f:
@@ -90,15 +91,14 @@ def main(arguments):
                         f.write(f_new)
 
     print "Done"
-    with open( os.path.join(QP_ROOT,"REPLACE"), 'a') as f:
-       print >>f, "qp_name "+" ".join(sys.argv[1:])
-    
+    with open(os.path.join(QP_ROOT, "REPLACE"), 'a') as f:
+        print >>f, "qp_name "+" ".join(sys.argv[1:])
+
 
 
 
 
 if __name__ == '__main__':
-  arguments = docopt(__doc__)
-  main(arguments)
-
+    ARGS = docopt(__doc__)
+    main(ARGS)
 

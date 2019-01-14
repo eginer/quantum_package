@@ -3,7 +3,7 @@ open Qputils;;
 open Core;;
 
 module Bielec_integrals : sig
-  type t = 
+  type t =
     { read_ao_integrals  : bool;
       read_mo_integrals  : bool;
       write_ao_integrals : bool;
@@ -17,9 +17,9 @@ module Bielec_integrals : sig
   val write : t -> unit
   val to_string : t -> string
   val to_rst : t -> Rst_string.t
-  val of_rst : Rst_string.t -> t option 
+  val of_rst : Rst_string.t -> t option
 end = struct
-  type t = 
+  type t =
     { read_ao_integrals  : bool;
       read_mo_integrals  : bool;
       write_ao_integrals : bool;
@@ -32,11 +32,11 @@ end = struct
 
   let get_default = Qpackage.get_ezfio_default "bielec_integrals";;
 
-  let read_read_ao_integrals () = 
+  let read_read_ao_integrals () =
     if not (Ezfio.has_bielec_integrals_read_ao_integrals ()) then
        get_default "read_ao_integrals"
        |> Bool.of_string
-       |> Ezfio.set_bielec_integrals_read_ao_integrals 
+       |> Ezfio.set_bielec_integrals_read_ao_integrals
     ;
     Ezfio.get_bielec_integrals_read_ao_integrals ()
   ;;
@@ -46,11 +46,11 @@ end = struct
   ;;
 
 
-  let read_read_mo_integrals () = 
+  let read_read_mo_integrals () =
     if not (Ezfio.has_bielec_integrals_read_mo_integrals ()) then
        get_default "read_mo_integrals"
        |> Bool.of_string
-       |> Ezfio.set_bielec_integrals_read_mo_integrals 
+       |> Ezfio.set_bielec_integrals_read_mo_integrals
     ;
     Ezfio.get_bielec_integrals_read_mo_integrals ()
   ;;
@@ -60,11 +60,11 @@ end = struct
   ;;
 
 
-  let read_write_ao_integrals () = 
+  let read_write_ao_integrals () =
     if not (Ezfio.has_bielec_integrals_write_ao_integrals ()) then
        get_default "write_ao_integrals"
        |> Bool.of_string
-       |> Ezfio.set_bielec_integrals_write_ao_integrals 
+       |> Ezfio.set_bielec_integrals_write_ao_integrals
     ;
     Ezfio.get_bielec_integrals_write_ao_integrals ()
   ;;
@@ -74,11 +74,11 @@ end = struct
   ;;
 
 
-  let read_write_mo_integrals () = 
+  let read_write_mo_integrals () =
     if not (Ezfio.has_bielec_integrals_write_mo_integrals ()) then
        get_default "write_mo_integrals"
        |> Bool.of_string
-       |> Ezfio.set_bielec_integrals_write_mo_integrals 
+       |> Ezfio.set_bielec_integrals_write_mo_integrals
     ;
     Ezfio.get_bielec_integrals_write_mo_integrals ()
   ;;
@@ -88,7 +88,7 @@ end = struct
   ;;
 
 
-  let read_direct () = 
+  let read_direct () =
     if not (Ezfio.has_bielec_integrals_direct ()) then
        get_default "direct"
        |> Bool.of_string
@@ -102,7 +102,7 @@ end = struct
   ;;
 
 
-  let read_threshold_ao () = 
+  let read_threshold_ao () =
     if not (Ezfio.has_bielec_integrals_threshold_ao ()) then
        get_default "threshold_ao"
        |> Float.of_string
@@ -118,7 +118,7 @@ end = struct
   ;;
 
 
-  let read_threshold_mo () = 
+  let read_threshold_mo () =
     if not (Ezfio.has_bielec_integrals_threshold_mo ()) then
        get_default "threshold_mo"
        |> Float.of_string
@@ -134,8 +134,8 @@ end = struct
   ;;
 
 
-  let read ()= 
-    let result = 
+  let read ()=
+    let result =
     { read_ao_integrals  = read_read_ao_integrals();
       read_mo_integrals  = read_read_mo_integrals () ;
       write_ao_integrals = read_write_ao_integrals ();

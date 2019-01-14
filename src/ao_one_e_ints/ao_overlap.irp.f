@@ -3,7 +3,7 @@
 &BEGIN_PROVIDER [ double precision, ao_overlap_y,(ao_num,ao_num) ]
 &BEGIN_PROVIDER [ double precision, ao_overlap_z,(ao_num,ao_num) ]
   implicit none
-  BEGIN_DOC  
+  BEGIN_DOC
 ! Overlap between atomic basis functions:
 !
 ! :math:`\int \chi_i(r) \chi_j(r) dr`
@@ -73,7 +73,7 @@ END_PROVIDER
 
 BEGIN_PROVIDER [ double precision, ao_overlap_abs,(ao_num,ao_num) ]
   implicit none
-  BEGIN_DOC  
+  BEGIN_DOC
 ! Overlap between absolute values of atomic basis functions:
 !
 ! :math:`\int |\chi_i(r)| |\chi_j(r)| dr`
@@ -147,10 +147,10 @@ BEGIN_PROVIDER [ double precision, S_half_inv, (AO_num,AO_num) ]
   double precision, allocatable   :: U(:,:),Vt(:,:), D(:)
   integer                         :: info, i, j, k
   double precision, parameter     :: threshold_overlap_AO_eigenvalues = 1.d-6
- 
+
   LDA = size(AO_overlap,1)
   LDC = size(S_half_inv,1)
- 
+
   allocate(         &
     U(LDC,AO_num),  &
     Vt(LDA,AO_num), &
@@ -188,7 +188,7 @@ BEGIN_PROVIDER [ double precision, S_half_inv, (AO_num,AO_num) ]
       enddo
     endif
   enddo
-  
+
 
 END_PROVIDER
 
@@ -203,7 +203,7 @@ BEGIN_PROVIDER [ double precision, S_half, (ao_num,ao_num)  ]
   double precision, allocatable  :: U(:,:)
   double precision, allocatable  :: Vt(:,:)
   double precision, allocatable  :: D(:)
-  
+
   allocate(U(ao_num,ao_num),Vt(ao_num,ao_num),D(ao_num))
 
   call svd(ao_overlap,size(ao_overlap,1),U,size(U,1),D,Vt,size(Vt,1),ao_num,ao_num)
@@ -222,7 +222,7 @@ BEGIN_PROVIDER [ double precision, S_half, (ao_num,ao_num)  ]
         enddo
       enddo
   enddo
-  
+
   deallocate(U,Vt,D)
 
 END_PROVIDER

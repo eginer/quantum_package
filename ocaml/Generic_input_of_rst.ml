@@ -2,7 +2,7 @@ open Core;;
 open Qptypes;;
 
 
-let fail_msg str (ex,range) = 
+let fail_msg str (ex,range) =
     let msg = match ex with
     | Failure msg -> msg
     | _ -> raise ex
@@ -24,8 +24,8 @@ let fail_msg str (ex,range) =
     in
     let str = String.tr str ~target:'(' ~replacement:' '
       |> String.split ~on:')'
-      |> List.map ~f:String.strip 
-      |> List.filter ~f:(fun x -> 
+      |> List.map ~f:String.strip
+      |> List.filter ~f:(fun x ->
           match String.substr_index x ~pos:0 ~pattern:"##" with
           | None -> false
           | Some _ -> true

@@ -29,9 +29,9 @@ subroutine run_selection_slave(thread,iproc,energy)
 
   zmq_to_qp_run_socket = new_zmq_to_qp_run_socket()
 
-  integer, external :: connect_to_taskserver 
-  if (connect_to_taskserver(zmq_to_qp_run_socket,worker_id,thread) == -1) then 
-    call end_zmq_to_qp_run_socket(zmq_to_qp_run_socket) 
+  integer, external :: connect_to_taskserver
+  if (connect_to_taskserver(zmq_to_qp_run_socket,worker_id,thread) == -1) then
+    call end_zmq_to_qp_run_socket(zmq_to_qp_run_socket)
     return
   endif
 
@@ -56,7 +56,7 @@ subroutine run_selection_slave(thread,iproc,energy)
       integer :: i_generator, N, subset
       read(task,*) subset, i_generator, N
       if(buf%N == 0) then
-        ! Only first time 
+        ! Only first time
         call create_selection_buffer(N, N*2, buf)
         call create_selection_buffer(N, N*2, buf2)
         buffer_ready = .True.
@@ -97,10 +97,10 @@ subroutine run_selection_slave(thread,iproc,energy)
   end do
 
 
-  integer, external :: disconnect_from_taskserver 
-  if (disconnect_from_taskserver(zmq_to_qp_run_socket,worker_id) == -1) then 
-    continue 
-  endif 
+  integer, external :: disconnect_from_taskserver
+  if (disconnect_from_taskserver(zmq_to_qp_run_socket,worker_id) == -1) then
+    continue
+  endif
 
   call end_zmq_to_qp_run_socket(zmq_to_qp_run_socket)
   call end_zmq_push_socket(zmq_socket_push,thread)
@@ -249,6 +249,6 @@ IRP_ELSE
   endif
 IRP_ENDIF
 end subroutine
- 
- 
+
+
 

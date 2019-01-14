@@ -8,7 +8,7 @@ subroutine svd(A,LDA,U,LDU,D,Vt,LDVt,m,n)
   ! Dimsneion of A is m x n
   !
   END_DOC
-  
+
   integer, intent(in)             :: LDA, LDU, LDVt, m, n
   double precision, intent(in)    :: A(LDA,n)
   double precision, intent(out)   :: U(LDU,m)
@@ -16,11 +16,11 @@ subroutine svd(A,LDA,U,LDU,D,Vt,LDVt,m,n)
   double precision,intent(out)    :: D(min(m,n))
   double precision,allocatable    :: work(:)
   integer                         :: info, lwork, i, j, k
-  
+
   double precision,allocatable    :: A_tmp(:,:)
   allocate (A_tmp(LDA,n))
   A_tmp = A
-  
+
   ! Find optimal size for temp arrays
   allocate(work(1))
   lwork = -1
@@ -38,7 +38,7 @@ subroutine svd(A,LDA,U,LDU,D,Vt,LDVt,m,n)
     print *,  info, ': SVD failed'
     stop
   endif
-  
+
 end
 
 
@@ -47,7 +47,7 @@ subroutine ortho_canonical(overlap,LDA,N,C,LDC,m)
   BEGIN_DOC
   ! Compute C_new=C_old.U.s^-1/2 canonical orthogonalization.
   !
-  ! overlap : overlap matrix 
+  ! overlap : overlap matrix
   !
   ! LDA : leftmost dimension of overlap array
   !
@@ -61,7 +61,7 @@ subroutine ortho_canonical(overlap,LDA,N,C,LDC,m)
   ! m : Coefficients matrix is MxN, ( array is (LDC,N) )
   !
   END_DOC
-  
+
   integer, intent(in)            :: lda, ldc, n
   integer, intent(out)           :: m
   double precision, intent(in)   :: overlap(lda,n)
@@ -72,7 +72,7 @@ subroutine ortho_canonical(overlap,LDA,N,C,LDC,m)
   double precision, allocatable  :: S(:,:)
   !DIR$ ATTRIBUTES ALIGN : 64    :: U, Vt, D
   integer                        :: info, i, j
-  
+
   if (n < 2) then
     return
   endif
@@ -113,10 +113,10 @@ subroutine ortho_canonical(overlap,LDA,N,C,LDC,m)
       U(i,j) = C(i,j)
     enddo
   enddo
-  
+
   call dgemm('N','N',n,n,n,1.d0,U,size(U,1),S,size(S,1),0.d0,C,size(C,1))
   deallocate (U, Vt, D, S)
-  
+
 end
 
 
@@ -184,7 +184,7 @@ subroutine ortho_lowdin(overlap,LDA,N,C,LDC,m)
   BEGIN_DOC
   ! Compute C_new=C_old.S^-1/2 orthogonalization.
   !
-  ! overlap : overlap matrix 
+  ! overlap : overlap matrix
   !
   ! LDA : leftmost dimension of overlap array
   !
@@ -198,7 +198,7 @@ subroutine ortho_lowdin(overlap,LDA,N,C,LDC,m)
   ! M : Coefficients matrix is MxN, ( array is (LDC,N) )
   !
   END_DOC
-  
+
   integer, intent(in)            :: LDA, ldc, n, m
   double precision, intent(in)   :: overlap(lda,n)
   double precision, intent(inout) :: C(ldc,n)
@@ -207,7 +207,7 @@ subroutine ortho_lowdin(overlap,LDA,N,C,LDC,m)
   double precision, allocatable  :: D(:)
   double precision, allocatable  :: S(:,:)
   integer                        :: info, i, j, k
-  
+
   if (n < 2) then
     return
   endif
@@ -244,7 +244,7 @@ subroutine ortho_lowdin(overlap,LDA,N,C,LDC,m)
       !$OMP END DO NOWAIT
     endif
   enddo
-  
+
   !$OMP BARRIER
   !$OMP DO
   do j=1,n
@@ -253,11 +253,11 @@ subroutine ortho_lowdin(overlap,LDA,N,C,LDC,m)
     enddo
   enddo
   !$OMP END DO
-  
+
   !$OMP END PARALLEL
 
   call dgemm('N','N',m,n,n,1.d0,U,size(U,1),S,size(S,1),0.d0,C,size(C,1))
-  
+
   deallocate(U,Vt,S,D)
 end
 
@@ -299,7 +299,7 @@ subroutine get_pseudo_inverse(A,LDA,m,n,C,LDC)
   integer, intent(in)            :: m,n, LDA, LDC
   double precision, intent(in)   :: A(LDA,n)
   double precision, intent(out)  :: C(LDC,m)
-  
+
   double precision, allocatable  :: U(:,:), D(:), Vt(:,:), work(:), A_tmp(:,:)
   integer                        :: info, lwork
   integer                        :: i,j,k
@@ -323,7 +323,7 @@ subroutine get_pseudo_inverse(A,LDA,m,n,C,LDC)
     print *,  info, ':: SVD failed'
     stop 1
   endif
-  
+
   do i=1,n
     if (D(i)/D(1) > 1.d-10) then
       D(i) = 1.d0/D(i)
@@ -331,7 +331,7 @@ subroutine get_pseudo_inverse(A,LDA,m,n,C,LDC)
       D(i) = 0.d0
     endif
   enddo
-  
+
   C = 0.d0
   do i=1,m
     do j=1,n
@@ -340,9 +340,9 @@ subroutine get_pseudo_inverse(A,LDA,m,n,C,LDC)
       enddo
     enddo
   enddo
-  
+
   deallocate(U,D,Vt,work,A_tmp)
-  
+
 end
 
 subroutine find_rotation(A,LDA,B,m,C,n)
@@ -353,11 +353,11 @@ subroutine find_rotation(A,LDA,B,m,C,n)
   integer, intent(in)            :: m,n, LDA
   double precision, intent(in)   :: A(LDA,n), B(LDA,n)
   double precision, intent(out)  :: C(n,n)
-  
+
   double precision, allocatable  :: A_inv(:,:)
   allocate(A_inv(LDA,n))
   call get_pseudo_inverse(A,LDA,m,n,A_inv,LDA)
-  
+
   integer                        :: i,j,k
   call dgemm('N','N',n,n,m,1.d0,A_inv,n,B,LDA,0.d0,C,n)
   deallocate(A_inv)
@@ -397,16 +397,16 @@ subroutine lapack_diagd(eigvalues,eigvectors,H,nmax,n)
   integer         ,allocatable   :: iwork(:)
   double precision,allocatable   :: A(:,:)
   integer                        :: lwork, info, i,j,l,k, liwork
-  
+
   allocate(A(nmax,n),eigenvalues(n))
   ! print*,'Diagonalization by jacobi'
   ! print*,'n = ',n
-  
+
   A=H
   lwork = max(1000,2*n*n + 6*n+ 1)
   liwork = max(5*n + 3,1000)
   allocate (work(lwork),iwork(liwork))
-  
+
   lwork = -1
   liwork = -1
   call DSYEVD( 'V', 'U', n, A, nmax, eigenvalues, work, lwork,       &
@@ -418,12 +418,12 @@ subroutine lapack_diagd(eigvalues,eigvectors,H,nmax,n)
   lwork  = int( work( 1 ) )
   liwork = iwork(1)
   deallocate (work,iwork)
-  
+
   allocate (work(lwork),iwork(liwork))
   call DSYEVD( 'V', 'U', n, A, nmax, eigenvalues, work, lwork,       &
       iwork, liwork, info )
   deallocate(work,iwork)
-  
+
   if (info < 0) then
     print *, irp_here, ': DSYEVD: the ',-info,'-th argument had an illegal value'
     stop 2
@@ -431,7 +431,7 @@ subroutine lapack_diagd(eigvalues,eigvectors,H,nmax,n)
     write(*,*)'DSYEVD Failed'
     stop 1
   end if
-  
+
   eigvectors = 0.d0
   eigvalues = 0.d0
   do j = 1, n

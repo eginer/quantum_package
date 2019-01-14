@@ -2,9 +2,9 @@
 &BEGIN_PROVIDER [double precision, big_array_exchange_integrals,(mo_num,mo_num, mo_num)]
  implicit none
  BEGIN_DOC
- ! big_array_coulomb_integrals(i,j)  = <ij|ij> = (ii|jj) 
+ ! big_array_coulomb_integrals(i,j)  = <ij|ij> = (ii|jj)
  !
- ! big_array_exchange_integrals(i,j) = <ij|ji> = (ij|ij) 
+ ! big_array_exchange_integrals(i,j) = <ij|ji> = (ij|ij)
  END_DOC
  integer :: i,j,k,l
  double precision :: get_two_e_integral
@@ -23,5 +23,5 @@
   enddo
  enddo
 
-END_PROVIDER 
+END_PROVIDER
 

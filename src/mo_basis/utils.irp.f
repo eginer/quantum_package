@@ -2,9 +2,9 @@ subroutine save_mos
   implicit none
   double precision, allocatable  :: buffer(:,:)
   integer                        :: i,j
-  
+
   call system('$QP_ROOT/scripts/save_current_mos.sh '//trim(ezfio_filename))
-  
+
   call ezfio_set_mo_basis_mo_num(mo_num)
   call ezfio_set_mo_basis_mo_label(mo_label)
   call ezfio_set_mo_basis_ao_md5(ao_md5)
@@ -18,16 +18,16 @@ subroutine save_mos
   call ezfio_set_mo_basis_mo_coef(buffer)
   call ezfio_set_mo_basis_mo_occ(mo_occ)
   deallocate (buffer)
-  
+
 end
 
 subroutine save_mos_truncated(n)
   implicit none
   double precision, allocatable  :: buffer(:,:)
   integer                        :: i,j,n
-  
+
   call system('$QP_ROOT/scripts/save_current_mos.sh '//trim(ezfio_filename))
-  
+
   call ezfio_set_mo_basis_mo_num(n)
   call ezfio_set_mo_basis_mo_label(mo_label)
   call ezfio_set_mo_basis_ao_md5(ao_md5)
@@ -41,7 +41,7 @@ subroutine save_mos_truncated(n)
   call ezfio_set_mo_basis_mo_coef(buffer)
   call ezfio_set_mo_basis_mo_occ(mo_occ)
   deallocate (buffer)
-  
+
 end
 
 subroutine mo_as_eigvectors_of_mo_matrix(matrix,n,m,label,sign,output)
@@ -50,11 +50,11 @@ subroutine mo_as_eigvectors_of_mo_matrix(matrix,n,m,label,sign,output)
   character*(64), intent(in)     :: label
   double precision, intent(in)   :: matrix(n,m)
   logical, intent(in)            :: output
-  
+
   integer :: i,j
   double precision, allocatable  :: mo_coef_new(:,:), R(:,:),eigvalues(:), A(:,:)
   !DIR$ ATTRIBUTES ALIGN : $IRP_ALIGN :: mo_coef_new, R
-  
+
   call write_time(6)
   if (m /= mo_num) then
     print *, irp_here, ': Error : m/= mo_num'
@@ -75,7 +75,7 @@ subroutine mo_as_eigvectors_of_mo_matrix(matrix,n,m,label,sign,output)
     enddo
   endif
   mo_coef_new = mo_coef
-  
+
   call lapack_diag(eigvalues,R,A,n,m)
   if (output) then
     write (6,'(A)')  'MOs are now **'//trim(label)//'**'
@@ -97,11 +97,11 @@ subroutine mo_as_eigvectors_of_mo_matrix(matrix,n,m,label,sign,output)
     write (6,'(A)') '======== ================'
     write (6,'(A)')  ''
   endif
-  
+
   call dgemm('N','N',ao_num,m,m,1.d0,mo_coef_new,size(mo_coef_new,1),R,size(R,1),0.d0,mo_coef,size(mo_coef,1))
   deallocate(A,mo_coef_new,R,eigvalues)
   call write_time(6)
-  
+
   mo_label = label
 end
 
@@ -110,12 +110,12 @@ subroutine mo_as_svd_vectors_of_mo_matrix(matrix,lda,m,n,label)
   integer,intent(in)             :: lda,m,n
   character*(64), intent(in)     :: label
   double precision, intent(in)   :: matrix(lda,n)
-  
+
   integer :: i,j
   double precision :: accu
   double precision, allocatable  :: mo_coef_new(:,:), U(:,:),D(:), A(:,:), Vt(:,:), work(:)
   !DIR$ ATTRIBUTES ALIGN : $IRP_ALIGN :: mo_coef_new, U, Vt, A
-  
+
   call write_time(6)
   if (m /= mo_num) then
     print *, irp_here, ': Error : m/= mo_num'
@@ -130,7 +130,7 @@ subroutine mo_as_svd_vectors_of_mo_matrix(matrix,lda,m,n,label)
     enddo
   enddo
   mo_coef_new = mo_coef
-  
+
   call svd(A,lda,U,lda,D,Vt,lda,m,n)
 
   write (6,'(A)') 'MOs are now **'//trim(label)//'**'
@@ -149,11 +149,11 @@ subroutine mo_as_svd_vectors_of_mo_matrix(matrix,lda,m,n,label)
   enddo
   write (6,'(A)')  '======== ================ ================'
   write (6,'(A)')  ''
-  
+
   call dgemm('N','N',ao_num,m,m,1.d0,mo_coef_new,size(mo_coef_new,1),U,size(U,1),0.d0,mo_coef,size(mo_coef,1))
   deallocate(A,mo_coef_new,U,Vt,D)
   call write_time(6)
-  
+
   mo_label = label
 end
 
@@ -163,12 +163,12 @@ subroutine mo_as_svd_vectors_of_mo_matrix_eig(matrix,lda,m,n,eig,label)
   character*(64), intent(in)     :: label
   double precision, intent(in)   :: matrix(lda,n)
   double precision, intent(out)  :: eig(m)
-  
+
   integer :: i,j
   double precision :: accu
   double precision, allocatable  :: mo_coef_new(:,:), U(:,:),D(:), A(:,:), Vt(:,:), work(:)
   !DIR$ ATTRIBUTES ALIGN : $IRP_ALIGN :: mo_coef_new, U, Vt, A
-  
+
   call write_time(6)
   if (m /= mo_num) then
     print *, irp_here, ': Error : m/= mo_num'
@@ -183,7 +183,7 @@ subroutine mo_as_svd_vectors_of_mo_matrix_eig(matrix,lda,m,n,eig,label)
     enddo
   enddo
   mo_coef_new = mo_coef
-  
+
   call svd(A,lda,U,lda,D,Vt,lda,m,n)
 
   write (6,'(A)') 'MOs are now **'//trim(label)//'**'
@@ -202,7 +202,7 @@ subroutine mo_as_svd_vectors_of_mo_matrix_eig(matrix,lda,m,n,eig,label)
   enddo
   write (6,'(A)')  '======== ================ ================'
   write (6,'(A)')  ''
-  
+
   call dgemm('N','N',ao_num,m,m,1.d0,mo_coef_new,size(mo_coef_new,1),U,size(U,1),0.d0,mo_coef,size(mo_coef,1))
 
   do i=1,m
@@ -211,7 +211,7 @@ subroutine mo_as_svd_vectors_of_mo_matrix_eig(matrix,lda,m,n,eig,label)
 
   deallocate(A,mo_coef_new,U,Vt,D)
   call write_time(6)
-  
+
   mo_label = label
 
 end

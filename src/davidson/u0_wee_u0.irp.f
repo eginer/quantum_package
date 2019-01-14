@@ -75,9 +75,9 @@ subroutine H_S2_u_0_two_e_nstates_openmp_work(v_t,s_t,u_t,N_st,sze,istart,iend,i
   END_DOC
   integer, intent(in)            :: N_st,sze,istart,iend,ishift,istep
   double precision, intent(in)   :: u_t(N_st,N_det)
-  double precision, intent(out)  :: v_t(N_st,sze), s_t(N_st,sze) 
+  double precision, intent(out)  :: v_t(N_st,sze), s_t(N_st,sze)
 
-  
+
   PROVIDE ref_bitmask_energy N_int
 
   select case (N_int)
@@ -105,7 +105,7 @@ subroutine H_S2_u_0_two_e_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart
   END_DOC
   integer, intent(in)            :: N_st,sze,istart,iend,ishift,istep
   double precision, intent(in)   :: u_t(N_st,N_det)
-  double precision, intent(out)  :: v_t(N_st,sze), s_t(N_st,sze) 
+  double precision, intent(out)  :: v_t(N_st,sze), s_t(N_st,sze)
 
   double precision               :: hij, sij
   integer                        :: i,j,k,l
@@ -129,7 +129,7 @@ subroutine H_S2_u_0_two_e_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart
 
   maxab = max(N_det_alpha_unique, N_det_beta_unique)+1
   allocate(idx0(maxab))
-  
+
   do i=1,maxab
     idx0(i) = i
   enddo
@@ -157,10 +157,10 @@ subroutine H_S2_u_0_two_e_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart
       !$OMP          tmp_det2, hij, sij, idx, l, kcol_prev,          &
       !$OMP          singles_a, n_singles_a, singles_b,              &
       !$OMP          n_singles_b, k8)
-  
+
   ! Alpha/Beta double excitations
   ! =============================
-    
+
   allocate( buffer($N_int,maxab),                                     &
       singles_a(maxab),                                              &
       singles_b(maxab),                                              &
@@ -242,7 +242,7 @@ subroutine H_S2_u_0_two_e_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart
     enddo
 
   enddo
-  !$OMP END DO 
+  !$OMP END DO
 
   !$OMP DO SCHEDULE(dynamic,64)
   do k_a=istart+ishift,iend,istep
@@ -250,28 +250,28 @@ subroutine H_S2_u_0_two_e_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart
 
     ! Single and double alpha excitations
     ! ===================================
-    
-    
+
+
     ! Initial determinant is at k_a in alpha-major representation
     ! -----------------------------------------------------------------------
-    
+
     krow = psi_bilinear_matrix_rows(k_a)
     ASSERT (krow <= N_det_alpha_unique)
 
     kcol = psi_bilinear_matrix_columns(k_a)
     ASSERT (kcol <= N_det_beta_unique)
-    
+
     tmp_det(1:$N_int,1) = psi_det_alpha_unique(1:$N_int, krow)
     tmp_det(1:$N_int,2) = psi_det_beta_unique (1:$N_int, kcol)
-    
+
     ! Initial determinant is at k_b in beta-major representation
     ! ----------------------------------------------------------------------
-    
+
     k_b = psi_bilinear_matrix_order_transp_reverse(k_a)
     ASSERT (k_b <= N_det)
 
     spindet(1:$N_int) = tmp_det(1:$N_int,1)
-    
+
     ! Loop inside the beta column to gather all the connected alphas
     lcol = psi_bilinear_matrix_columns(k_a)
     l_a = psi_bilinear_matrix_columns_loc(lcol)
@@ -287,7 +287,7 @@ subroutine H_S2_u_0_two_e_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart
       l_a = l_a+1
     enddo
     i = i-1
-    
+
     call get_all_spin_singles_and_doubles_$N_int(                    &
         buffer, idx, spindet, i,                                     &
         singles_a, doubles, n_singles_a, n_doubles )
@@ -304,18 +304,18 @@ subroutine H_S2_u_0_two_e_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart
       ASSERT (lrow <= N_det_alpha_unique)
 
       tmp_det2(1:$N_int,1) = psi_det_alpha_unique(1:$N_int, lrow)
-      call i_Wee_j_mono( tmp_det, tmp_det2, $N_int, 1, hij) 
+      call i_Wee_j_mono( tmp_det, tmp_det2, $N_int, 1, hij)
 
       do l=1,N_st
         v_t(l,k_a) = v_t(l,k_a) + hij * u_t(l,l_a)
-        ! single => sij = 0 
+        ! single => sij = 0
       enddo
     enddo
 
-    
+
     ! Compute Hij for all alpha doubles
     ! ----------------------------------
-    
+
     do i=1,n_doubles
       l_a = doubles(i)
       ASSERT (l_a <= N_det)
@@ -329,29 +329,29 @@ subroutine H_S2_u_0_two_e_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart
         ! same spin => sij = 0
       enddo
     enddo
-    
+
 
     ! Single and double beta excitations
     ! ==================================
 
-    
+
     ! Initial determinant is at k_a in alpha-major representation
     ! -----------------------------------------------------------------------
-    
+
     krow = psi_bilinear_matrix_rows(k_a)
     kcol = psi_bilinear_matrix_columns(k_a)
-    
+
     tmp_det(1:$N_int,1) = psi_det_alpha_unique(1:$N_int, krow)
     tmp_det(1:$N_int,2) = psi_det_beta_unique (1:$N_int, kcol)
-    
+
     spindet(1:$N_int) = tmp_det(1:$N_int,2)
-    
+
     ! Initial determinant is at k_b in beta-major representation
     ! -----------------------------------------------------------------------
 
-    k_b = psi_bilinear_matrix_order_transp_reverse(k_a) 
+    k_b = psi_bilinear_matrix_order_transp_reverse(k_a)
     ASSERT (k_b <= N_det)
-    
+
     ! Loop inside the alpha row to gather all the connected betas
     lrow = psi_bilinear_matrix_transp_rows(k_b)
     l_b = psi_bilinear_matrix_transp_rows_loc(lrow)
@@ -367,14 +367,14 @@ subroutine H_S2_u_0_two_e_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart
       l_b = l_b+1
     enddo
     i = i-1
-  
+
     call get_all_spin_singles_and_doubles_$N_int(                    &
         buffer, idx, spindet, i,                                     &
         singles_b, doubles, n_singles_b, n_doubles )
-    
+
     ! Compute Hij for all beta singles
     ! ----------------------------------
-    
+
     tmp_det2(1:$N_int,1) = psi_det_alpha_unique(1:$N_int, krow)
     do i=1,n_singles_b
       l_b = singles_b(i)
@@ -389,13 +389,13 @@ subroutine H_S2_u_0_two_e_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart
       ASSERT (l_a <= N_det)
       do l=1,N_st
         v_t(l,k_a) = v_t(l,k_a) + hij * u_t(l,l_a)
-        ! single => sij = 0 
+        ! single => sij = 0
       enddo
     enddo
-    
+
     ! Compute Hij for all beta doubles
     ! ----------------------------------
-    
+
     do i=1,n_doubles
       l_b = doubles(i)
       ASSERT (l_b <= N_det)
@@ -409,7 +409,7 @@ subroutine H_S2_u_0_two_e_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart
 
       do l=1,N_st
         v_t(l,k_a) = v_t(l,k_a) + hij * u_t(l,l_a)
-        ! same spin => sij = 0 
+        ! same spin => sij = 0
       enddo
     enddo
 
@@ -417,22 +417,22 @@ subroutine H_S2_u_0_two_e_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart
     ! Diagonal contribution
     ! =====================
 
-    
+
     ! Initial determinant is at k_a in alpha-major representation
     ! -----------------------------------------------------------------------
-    
+
     krow = psi_bilinear_matrix_rows(k_a)
     ASSERT (krow <= N_det_alpha_unique)
 
     kcol = psi_bilinear_matrix_columns(k_a)
     ASSERT (kcol <= N_det_beta_unique)
-    
+
     tmp_det(1:$N_int,1) = psi_det_alpha_unique(1:$N_int, krow)
     tmp_det(1:$N_int,2) = psi_det_beta_unique (1:$N_int, kcol)
-    
+
     double precision, external :: diag_wee_mat_elem, diag_S_mat_elem
-  
-    hij = diag_wee_mat_elem(tmp_det,$N_int) 
+
+    hij = diag_wee_mat_elem(tmp_det,$N_int)
     sij = diag_S_mat_elem(tmp_det,$N_int)
     do l=1,N_st
       v_t(l,k_a) = v_t(l,k_a) + hij * u_t(l,k_a)
@@ -440,7 +440,7 @@ subroutine H_S2_u_0_two_e_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart
     enddo
 
   end do
-  !$OMP END DO 
+  !$OMP END DO
   deallocate(buffer, singles_a, singles_b, doubles, idx)
   !$OMP END PARALLEL
 

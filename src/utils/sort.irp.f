@@ -11,7 +11,7 @@ BEGIN_TEMPLATE
   integer,intent(inout)          :: iorder(isize)
   $type                          :: xtmp
   integer                        :: i, i0, j, jmax
-  
+
   do i=2,isize
     xtmp = x(i)
     i0 = iorder(i)
@@ -39,7 +39,7 @@ BEGIN_TEMPLATE
   integer,intent(inout)          :: iorder(isize)
   integer, external              :: omp_get_num_threads
   if (omp_get_num_threads() == 1) then
-    !$OMP PARALLEL DEFAULT(SHARED) 
+    !$OMP PARALLEL DEFAULT(SHARED)
     !$OMP SINGLE
     call rec_$X_quicksort(x,iorder,isize,1,isize,nproc)
     !$OMP END SINGLE
@@ -57,7 +57,7 @@ BEGIN_TEMPLATE
   $type                          :: c, tmp
   integer                        :: itmp
   integer                        :: i, j
-   
+
   c = x( shiftr(first+last,1) )
   i = first
   j = last
@@ -87,12 +87,12 @@ BEGIN_TEMPLATE
     endif
   else
     if (first < i-1) then
-      !$OMP TASK DEFAULT(SHARED) FIRSTPRIVATE(isize,first,i,level) 
+      !$OMP TASK DEFAULT(SHARED) FIRSTPRIVATE(isize,first,i,level)
       call rec_$X_quicksort(x, iorder, isize, first, i-1,level/2)
       !$OMP END TASK
     endif
     if (j+1 < last) then
-      !$OMP TASK DEFAULT(SHARED) FIRSTPRIVATE(isize,last,j,level) 
+      !$OMP TASK DEFAULT(SHARED) FIRSTPRIVATE(isize,last,j,level)
       call rec_$X_quicksort(x, iorder, isize, j+1, last,level/2)
       !$OMP END TASK
     endif
@@ -110,10 +110,10 @@ BEGIN_TEMPLATE
   integer,intent(in)             :: isize
   $type,intent(inout)            :: x(isize)
   integer,intent(inout)          :: iorder(isize)
-  
+
   integer                        :: i, k, j, l, i0
   $type                          :: xtemp
-  
+
   l = isize/2+1
   k = isize
   do while (.True.)
@@ -175,10 +175,10 @@ BEGIN_TEMPLATE
   integer*8,intent(in)           :: isize
   $type,intent(inout)            :: x(isize)
   integer*8,intent(inout)        :: iorder(isize)
-  
+
   integer*8                      :: i, k, j, l, i0
   $type                          :: xtemp
-  
+
   l = isize/2+1
   k = isize
   do while (.True.)
@@ -226,7 +226,7 @@ BEGIN_TEMPLATE
     x(i) = xtemp
     iorder(i) = i0
   enddo
-  
+
  end subroutine heap_$Xsort_big
 
  subroutine sorted_$Xnumber(x,isize,n)
@@ -326,12 +326,12 @@ BEGIN_TEMPLATE
   $type,allocatable              :: xtmp(:)
   integer                        :: iorder(*)
   integer                        :: i
-  
+
   allocate(xtmp(isize))
   do i=1,isize
     xtmp(i) = x(iorder(i))
   enddo
-  
+
   do i=1,isize
     x(i) = xtmp(i)
   enddo
@@ -362,12 +362,12 @@ BEGIN_TEMPLATE
   integer*8,intent(inout)        :: iorder(isize)
   $type                          :: xtmp
   integer*8                      :: i, i0, j, jmax
-  
+
   do i=2_8,isize
     xtmp = x(i)
     i0 = iorder(i)
     j = i-1_8
-    do while (j>0_8) 
+    do while (j>0_8)
       if (x(j)<=xtmp) exit
       x(j+1_8) = x(j)
       iorder(j+1_8) = iorder(j)
@@ -376,7 +376,7 @@ BEGIN_TEMPLATE
     x(j+1_8) = xtmp
     iorder(j+1_8) = i0
   enddo
-  
+
  end subroutine insertion_$Xsort_big
 
  subroutine $Xset_order_big(x,iorder,isize)
@@ -396,7 +396,7 @@ BEGIN_TEMPLATE
   do i=1_8,isize
     xtmp(i) = x(iorder(i))
   enddo
-  
+
   do i=1_8,isize
     x(i) = xtmp(i)
   enddo
@@ -411,7 +411,7 @@ SUBST [ X, type ]
  i2; integer*2 ;;
 END_TEMPLATE
 
-BEGIN_TEMPLATE 
+BEGIN_TEMPLATE
 
  recursive subroutine $Xradix_sort$big(x,iorder,isize,iradix)
   implicit none
@@ -433,10 +433,10 @@ BEGIN_TEMPLATE
   integer*$type                  :: mask
   integer                        :: err
   !DIR$ ATTRIBUTES ALIGN : 128   :: iorder1,iorder2, x2, x1
-  
+
   if (isize < 2) then
     return
-  endif 
+  endif
 
   if (iradix == -1) then ! Sort Positive and negative
 
@@ -445,7 +445,7 @@ BEGIN_TEMPLATE
       print *,  irp_here, ': Unable to allocate arrays'
       stop
     endif
-    
+
     i1=1_$int_type
     i2=1_$int_type
     do i=1_$int_type,isize
@@ -471,7 +471,7 @@ BEGIN_TEMPLATE
       print *,  irp_here, ': Unable to deallocate arrays x2, iorder2'
       stop
     endif
-    
+
 
     if (i1 > 1_$int_type) then
       call $Xradix_sort$big(x1,iorder1,i1,-2)
@@ -480,11 +480,11 @@ BEGIN_TEMPLATE
         iorder(i) = iorder1(1_$int_type+i1-i)
       enddo
     endif
-    
+
     if (i2>1_$int_type) then
       call $Xradix_sort$big(x(i1+1_$int_type),iorder(i1+1_$int_type),i2,-2)
     endif
-    
+
     deallocate(x1,iorder1,stat=err)
     if (err /= 0) then
       print *,  irp_here, ': Unable to deallocate arrays x1, iorder1'
@@ -493,24 +493,24 @@ BEGIN_TEMPLATE
     return
 
   else if (iradix == -2) then ! Positive
-    
+
     ! Find most significant bit
-    
+
     i0 = 0_$int_type
     i4 = maxval(x)
-    
+
     iradix_new = max($integer_size-1-leadz(i4),1)
     mask = ibset(0_$type,iradix_new)
-    
+
     allocate(x1(isize),iorder1(isize), x2(isize),iorder2(isize),stat=err)
     if (err /= 0) then
       print *,  irp_here, ': Unable to allocate arrays'
       stop
     endif
-    
+
     i1=1_$int_type
     i2=1_$int_type
-    
+
     do i=1_$int_type,isize
       if (iand(mask,x(i)) == 0_$type) then
         iorder1(i1) = iorder(i)
@@ -524,7 +524,7 @@ BEGIN_TEMPLATE
     enddo
     i1=i1-1_$int_type
     i2=i2-1_$int_type
-    
+
     do i=1_$int_type,i1
       iorder(i0+i) = iorder1(i)
       x(i0+i) = x1(i)
@@ -536,8 +536,8 @@ BEGIN_TEMPLATE
       print *,  irp_here, ': Unable to deallocate arrays x1, iorder1'
       stop
     endif
-    
-    
+
+
     do i=1_$int_type,i2
       iorder(i0+i) = iorder2(i)
       x(i0+i) = x2(i)
@@ -548,8 +548,8 @@ BEGIN_TEMPLATE
       print *,  irp_here, ': Unable to deallocate arrays x2, iorder2'
       stop
     endif
-    
-    
+
+
     !$OMP PARALLEL DEFAULT(SHARED) if (isize > 1000000)
     !$OMP SINGLE
     if (i3>1_$int_type) then
@@ -557,7 +557,7 @@ BEGIN_TEMPLATE
       call $Xradix_sort$big(x,iorder,i3,iradix_new-1)
       !$OMP END TASK
     endif
-    
+
     if (isize-i3>1_$int_type) then
       !$OMP TASK FIRSTPRIVATE(iradix_new,i3) SHARED(x,iorder) if(isize-i3 > 1000000)
       call $Xradix_sort$big(x(i3+1_$int_type),iorder(i3+1_$int_type),isize-i3,iradix_new-1)
@@ -567,29 +567,29 @@ BEGIN_TEMPLATE
     !$OMP TASKWAIT
     !$OMP END SINGLE
     !$OMP END PARALLEL
-    
+
     return
   endif
-  
+
   ASSERT (iradix >= 0)
 
   if (isize < 48) then
     call insertion_$Xsort$big(x,iorder,isize)
     return
   endif
-  
-  
+
+
   allocate(x2(isize),iorder2(isize),stat=err)
   if (err /= 0) then
     print *,  irp_here, ': Unable to allocate arrays x1, iorder1'
     stop
   endif
-  
-  
+
+
   mask = ibset(0_$type,iradix)
   i0=1_$int_type
   i1=1_$int_type
-  
+
   do i=1_$int_type,isize
     if (iand(mask,x(i)) == 0_$type) then
       iorder(i0) = iorder(i)
@@ -603,24 +603,24 @@ BEGIN_TEMPLATE
   enddo
   i0=i0-1_$int_type
   i1=i1-1_$int_type
-  
+
   do i=1_$int_type,i1
     iorder(i0+i) = iorder2(i)
     x(i0+i) = x2(i)
   enddo
-  
+
   deallocate(x2,iorder2,stat=err)
   if (err /= 0) then
     print *,  irp_here, ': Unable to allocate arrays x2, iorder2'
     stop
   endif
-  
-  
+
+
   if (iradix == 0) then
     return
   endif
-  
-  
+
+
   if (i1>1_$int_type) then
     !$OMP TASK FIRSTPRIVATE(i0,iradix,i1) SHARED(x,iorder) if(i1 >1000000)
     call $Xradix_sort$big(x(i0+1_$int_type),iorder(i0+1_$int_type),i1,iradix-1)
@@ -632,7 +632,7 @@ BEGIN_TEMPLATE
     !$OMP END TASK
   endif
   !$OMP TASKWAIT
-  
+
  end
 
 SUBST [ X, type, integer_size, is_big, big, int_type ]

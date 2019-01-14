@@ -10,7 +10,7 @@ BEGIN_PROVIDER [ character*(64), diag_algorithm ]
   else
     diag_algorithm = "Lapack"
   endif
-  
+
   if (N_det < N_states) then
     diag_algorithm = "Lapack"
   endif
@@ -57,7 +57,7 @@ BEGIN_PROVIDER [ integer, N_det ]
       stop 'Unable to read N_det with MPI'
     endif
   IRP_ENDIF
-  
+
   ASSERT (N_det > 0)
 END_PROVIDER
 
@@ -82,7 +82,7 @@ BEGIN_PROVIDER [ integer, psi_det_size ]
   BEGIN_DOC
   ! Size of the psi_det and psi_coef arrays
   END_DOC
-  PROVIDE ezfio_filename 
+  PROVIDE ezfio_filename
   logical                        :: exists
   if (mpi_master) then
     call ezfio_has_determinants_n_det(exists)
@@ -106,8 +106,8 @@ BEGIN_PROVIDER [ integer, psi_det_size ]
       stop 'Unable to read psi_det_size with MPI'
     endif
   IRP_ENDIF
-  
-  
+
+
 END_PROVIDER
 
 BEGIN_PROVIDER [ integer(bit_kind), psi_det, (N_int,2,psi_det_size) ]
@@ -119,7 +119,7 @@ BEGIN_PROVIDER [ integer(bit_kind), psi_det, (N_int,2,psi_det_size) ]
   integer                        :: i
   logical                        :: exists
   character*(64)                 :: label
-  
+
   PROVIDE read_wf N_det mo_label ezfio_filename HF_bitmask mo_coef
   psi_det = 0_bit_kind
   if (mpi_master) then
@@ -144,7 +144,7 @@ BEGIN_PROVIDER [ integer(bit_kind), psi_det, (N_int,2,psi_det_size) ]
           endif
         endif
       endif
-      
+
       if (exists) then
         call read_dets(psi_det,N_int,N_det)
         print *,  'Read psi_det'
@@ -175,8 +175,8 @@ BEGIN_PROVIDER [ integer(bit_kind), psi_det, (N_int,2,psi_det_size) ]
       stop 'Unable to read psi_det with MPI'
     endif
   IRP_ENDIF
-  
-  
+
+
 END_PROVIDER
 
 
@@ -187,7 +187,7 @@ BEGIN_PROVIDER [ double precision, psi_coef, (psi_det_size,N_states) ]
   ! The wave function coefficients. Initialized with Hartree-Fock if the |EZFIO| file
   ! is empty.
   END_DOC
-  
+
   integer                        :: i,k, N_int2
   logical                        :: exists
   character*(64)                 :: label
@@ -210,7 +210,7 @@ BEGIN_PROVIDER [ double precision, psi_coef, (psi_det_size,N_states) ]
       endif
 
       if (exists) then
-        
+
         double precision, allocatable  :: psi_coef_read(:,:)
         allocate (psi_coef_read(N_det,N_states))
         print *,  'Read psi_coef', N_det, N_states
@@ -221,7 +221,7 @@ BEGIN_PROVIDER [ double precision, psi_coef, (psi_det_size,N_states) ]
           enddo
         enddo
         deallocate(psi_coef_read)
-        
+
       endif
     endif
   endif
@@ -237,9 +237,9 @@ BEGIN_PROVIDER [ double precision, psi_coef, (psi_det_size,N_states) ]
       stop 'Unable to read psi_coef with MPI'
     endif
   IRP_ENDIF
-  
-  
-  
+
+
+
 END_PROVIDER
 
 BEGIN_PROVIDER [ double precision, psi_average_norm_contrib, (psi_det_size) ]
@@ -303,12 +303,12 @@ END_PROVIDER
    do i=1,N_det
      psi_det_sorted_order(iorder(i)) = i
    enddo
-   
-   
+
+
    deallocate(iorder)
-   
+
 END_PROVIDER
- 
+
  BEGIN_PROVIDER [ integer(bit_kind), psi_det_sorted_bit, (N_int,2,psi_det_size) ]
 &BEGIN_PROVIDER [ double precision, psi_coef_sorted_bit, (psi_det_size,N_states) ]
    implicit none
@@ -318,12 +318,12 @@ END_PROVIDER
    ! to accelerate the search of a random determinant in the wave
    ! function.
    END_DOC
-   
+
    call sort_dets_by_det_search_key(N_det, psi_det, psi_coef, size(psi_coef,1),       &
        psi_det_sorted_bit, psi_coef_sorted_bit, N_states)
 
 END_PROVIDER
- 
+
 subroutine sort_dets_by_det_search_key(Ndet, det_in, coef_in, sze, det_out, coef_out, N_st)
    use bitmasks
    implicit none
@@ -344,9 +344,9 @@ subroutine sort_dets_by_det_search_key(Ndet, det_in, coef_in, sze, det_out, coef
    integer, allocatable           :: iorder(:)
    integer*8, allocatable         :: bit_tmp(:)
    integer*8, external            :: det_search_key
-   
+
    allocate ( iorder(Ndet), bit_tmp(Ndet) )
-   
+
    do i=1,Ndet
      iorder(i) = i
      !$DIR FORCEINLINE
@@ -363,13 +363,13 @@ subroutine sort_dets_by_det_search_key(Ndet, det_in, coef_in, sze, det_out, coef
        coef_out(i,k) = coef_in(iorder(i),k)
      enddo
    enddo
-   
+
    deallocate(iorder, bit_tmp)
-   
+
 end
- 
- 
- 
+
+
+
  BEGIN_PROVIDER [ double precision, psi_coef_max, (N_states) ]
 &BEGIN_PROVIDER [ double precision, psi_coef_min, (N_states) ]
 &BEGIN_PROVIDER [ double precision, abs_psi_coef_max, (N_states) ]
@@ -389,7 +389,7 @@ end
      call write_double(6,abs_psi_coef_max(i), 'Max abs coef')
      call write_double(6,abs_psi_coef_min(i), 'Min abs coef')
    enddo
-   
+
 END_PROVIDER
 
 
@@ -405,7 +405,7 @@ subroutine read_dets(det,Nint,Ndet)
   BEGIN_DOC
   ! Reads the determinants from the |EZFIO| file
   END_DOC
-  
+
   integer, intent(in)            :: Nint,Ndet
   integer(bit_kind), intent(out) :: det(Nint,2,Ndet)
   integer*8, allocatable         :: psi_det_read(:,:,:)
@@ -415,12 +415,12 @@ subroutine read_dets(det,Nint,Ndet)
   integer                        :: N_int2
   integer                        :: i,k
   equivalence (det_8, det_bk)
-  
+
   call ezfio_get_determinants_N_int(N_int2)
   ASSERT (N_int2 == Nint)
   call ezfio_get_determinants_bit_kind(k)
   ASSERT (k == bit_kind)
-  
+
   N_int2 = (Nint*bit_kind)/8
   allocate (psi_det_read(N_int2,2,Ndet))
   call ezfio_get_determinants_psi_det (psi_det_read)
@@ -439,7 +439,7 @@ subroutine read_dets(det,Nint,Ndet)
     enddo
   enddo
   deallocate(psi_det_read)
-  
+
 end
 
 subroutine save_ref_determinant
@@ -516,16 +516,16 @@ subroutine save_wavefunction_general(ndet,nstates,psidet,dim_psicoef,psicoef)
   double precision, intent(in)   :: psicoef(dim_psicoef,nstates)
   integer*8, allocatable         :: psi_det_save(:,:,:)
   double precision, allocatable  :: psi_coef_save(:,:)
-  
+
   integer                        :: i,j,k
-  
+
   if (mpi_master) then
     call ezfio_set_determinants_N_int(N_int)
     call ezfio_set_determinants_bit_kind(bit_kind)
     call ezfio_set_determinants_N_det(ndet)
     call ezfio_set_determinants_n_states(nstates)
     call ezfio_set_determinants_mo_label(mo_label)
-    
+
     allocate (psi_det_save(N_int,2,ndet))
     do i=1,ndet
       do j=1,2
@@ -536,16 +536,16 @@ subroutine save_wavefunction_general(ndet,nstates,psidet,dim_psicoef,psicoef)
     enddo
     call ezfio_set_determinants_psi_det(psi_det_save)
     deallocate (psi_det_save)
-    
+
     allocate (psi_coef_save(ndet,nstates))
     double precision               :: accu_norm
     do k=1,nstates
       do i=1,ndet
-        psi_coef_save(i,k) = psicoef(i,k) 
+        psi_coef_save(i,k) = psicoef(i,k)
       enddo
       call normalize(psi_coef_save(1,k),ndet)
     enddo
-    
+
     call ezfio_set_determinants_psi_coef(psi_coef_save)
     deallocate (psi_coef_save)
     call write_int(6,ndet,'Saved determinants')
@@ -571,15 +571,15 @@ subroutine save_wavefunction_specified(ndet,nstates,psidet,psicoef,ndetsave,inde
   integer(bit_kind)              :: det_bk((100*8)/bit_kind)
   integer                        :: N_int2
   equivalence (det_8, det_bk)
-  
+
   integer                        :: i,k
-  
+
   call ezfio_set_determinants_N_int(N_int)
   call ezfio_set_determinants_bit_kind(bit_kind)
   call ezfio_set_determinants_N_det(ndetsave)
   call ezfio_set_determinants_n_states(nstates)
   call ezfio_set_determinants_mo_label(mo_label)
-  
+
   N_int2 = (N_int*bit_kind)/8
   allocate (psi_det_save(N_int2,2,ndetsave))
   do i=1,ndetsave
@@ -598,7 +598,7 @@ subroutine save_wavefunction_specified(ndet,nstates,psidet,psicoef,ndetsave,inde
   enddo
   call ezfio_set_determinants_psi_det(psi_det_save)
   deallocate (psi_det_save)
-  
+
   allocate (psi_coef_save(ndetsave,nstates))
   double precision               :: accu_norm(nstates)
   accu_norm = 0.d0
@@ -616,7 +616,7 @@ subroutine save_wavefunction_specified(ndet,nstates,psidet,psicoef,ndetsave,inde
       psi_coef_save(i,k) = psi_coef_save(i,k) * accu_norm(k)
     enddo
   enddo
-  
+
   call ezfio_set_determinants_psi_coef(psi_coef_save)
   call write_int(6,ndet,'Saved determinants')
   deallocate (psi_coef_save)
@@ -629,7 +629,7 @@ logical function detEq(a,b,Nint)
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: a(Nint,2), b(Nint,2)
   integer                        :: ni, i
-  
+
   detEq = .false.
   do i=1,2
     do ni=1,Nint
@@ -646,11 +646,11 @@ integer function detCmp(a,b,Nint)
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: a(Nint,2), b(Nint,2)
   integer                        :: ni, i
-  
+
   detCmp = 0
   do i=1,2
     do ni=Nint,1,-1
-      
+
       if(a(ni,i) < b(ni,i)) then
         detCmp = -1
         return
@@ -658,7 +658,7 @@ integer function detCmp(a,b,Nint)
         detCmp = 1
         return
       end if
-      
+
     end do
   end do
 end function
@@ -667,7 +667,7 @@ end function
 subroutine apply_excitation(det, exc, res, ok, Nint)
   use bitmasks
   implicit none
-  
+
   integer, intent(in)            :: Nint
   integer, intent(in)            :: exc(0:2,2,2)
   integer(bit_kind),intent(in)   :: det(Nint, 2)
@@ -675,11 +675,11 @@ subroutine apply_excitation(det, exc, res, ok, Nint)
   logical, intent(out)           :: ok
   integer                        :: h1,p1,h2,p2,s1,s2,degree
   integer                        :: ii, pos
-  
-  
+
+
   ok = .false.
   degree = exc(0,1,1) + exc(0,1,2)
-  
+
   !  call decode_exc(exc,degree,h1,p1,h2,p2,s1,s2)
   ! INLINE
   select case(degree)
@@ -736,25 +736,25 @@ subroutine apply_excitation(det, exc, res, ok, Nint)
       STOP
   end select
   ! END INLINE
-  
+
   res = det
-  
+
   ii = shiftr(h1-1,bit_kind_shift) + 1
   pos = h1-1-shiftl(ii-1,bit_kind_shift)
   if(iand(det(ii, s1), ibset(0_bit_kind, pos)) == 0_8) return
   res(ii, s1) = ibclr(res(ii, s1), pos)
-  
+
   ii = shiftr(p1-1,bit_kind_shift) + 1
   pos = p1-1-shiftl(ii-1,bit_kind_shift)
   if(iand(det(ii, s1),shiftl(1_bit_kind, pos)) /= 0_8) return
   res(ii, s1) = ibset(res(ii, s1), pos)
-  
+
   if(degree == 2) then
     ii = shiftr(h2-1,bit_kind_shift) + 1
     pos = h2-1-shiftl(ii-1,bit_kind_shift)
     if(iand(det(ii, s2), shiftl(1_bit_kind, pos)) == 0_8) return
     res(ii, s2) = ibclr(res(ii, s2), pos)
-    
+
     ii = shiftr(p2-1,bit_kind_shift) + 1
     pos = p2-1-shiftl(ii-1,bit_kind_shift)
     if(iand(det(ii, s2), shiftl(1_bit_kind, pos)) /= 0_8) return
@@ -773,22 +773,22 @@ subroutine apply_particles(det, s1, p1, s2, p2, res, ok, Nint)
   integer(bit_kind),intent(out)  :: res(Nint, 2)
   logical, intent(out)           :: ok
   integer                        :: ii, pos
-  
+
   ok = .false.
   res = det
-  
+
   if(p1 /= 0) then
     ii =shiftr(p1-1,bit_kind_shift) + 1
     pos = p1-1-shiftl(ii-1,bit_kind_shift)
     if(iand(det(ii, s1), shiftl(1_bit_kind, pos)) /= 0_8) return
     res(ii, s1) = ibset(res(ii, s1), pos)
   end if
-  
+
   ii = shiftr(p2-1,bit_kind_shift) + 1
   pos = p2-1-shiftl(ii-1,bit_kind_shift)
   if(iand(det(ii, s2), shiftl(1_bit_kind, pos)) /= 0_8) return
   res(ii, s2) = ibset(res(ii, s2), pos)
-  
+
   ok = .true.
 end subroutine
 
@@ -802,22 +802,22 @@ subroutine apply_holes(det, s1, h1, s2, h2, res, ok, Nint)
   integer(bit_kind),intent(out)  :: res(Nint, 2)
   logical, intent(out)           :: ok
   integer                        :: ii, pos
-  
+
   ok = .false.
   res = det
-  
+
   if(h1 /= 0) then
     ii = shiftr(h1-1,bit_kind_shift) + 1
     pos = h1-1-shiftl(ii-1,bit_kind_shift)
     if(iand(det(ii, s1), shiftl(1_bit_kind, pos)) == 0_8) return
     res(ii, s1) = ibclr(res(ii, s1), pos)
   end if
-  
+
   ii = shiftr(h2-1,bit_kind_shift) + 1
   pos = h2-1-shiftl(ii-1,bit_kind_shift)
   if(iand(det(ii, s2), shiftl(1_bit_kind, pos)) == 0_8) return
   res(ii, s2) = ibclr(res(ii, s2), pos)
-  
+
   ok = .true.
 end subroutine
 
@@ -830,15 +830,15 @@ subroutine apply_particle(det, s1, p1, res, ok, Nint)
   integer(bit_kind),intent(out)  :: res(Nint, 2)
   logical, intent(out)           :: ok
   integer                        :: ii, pos
-  
+
   ok = .false.
   res = det
-  
+
   ii = shiftr(p1-1,bit_kind_shift) + 1
   pos = p1-1-shiftl(ii-1,bit_kind_shift)
   if(iand(det(ii, s1), shiftl(1_bit_kind, pos)) /= 0_8) return
   res(ii, s1) = ibset(res(ii, s1), pos)
-  
+
   ok = .true.
 end subroutine
 
@@ -852,15 +852,15 @@ subroutine apply_hole(det, s1, h1, res, ok, Nint)
   integer(bit_kind),intent(out)  :: res(Nint, 2)
   logical, intent(out)           :: ok
   integer                        :: ii, pos
-  
+
   ok = .false.
   res = det
-  
+
   ii = shiftr(h1-1,bit_kind_shift) + 1
   pos = h1-1-shiftl(ii-1,bit_kind_shift)
   if(iand(det(ii, s1), shiftl(1_bit_kind, pos)) == 0_8) return
   res(ii, s1) = ibclr(res(ii, s1), pos)
-  
+
   ok = .true.
 end subroutine
 

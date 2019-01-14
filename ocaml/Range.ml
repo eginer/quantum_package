@@ -1,7 +1,7 @@
 open Sexplib.Std
 
 (* A range is a string of the type:
- * 
+ *
  * "[36-53,72-107,126-131]"
  *
  * that should represent the list of integers
@@ -12,7 +12,7 @@ open Sexplib.Std
 *)
 
 
-type t = int list [@@deriving sexp] 
+type t = int list [@@deriving sexp]
 
 let to_int_list r = r
 
@@ -29,11 +29,11 @@ let expand_range r =
           | i     -> i::(do_work (i+1))
         in do_work start
       end
-  | None -> 
+  | None ->
       begin
         match r with
           | "" -> []
-          | _  -> [int_of_string r] 
+          | _  -> [int_of_string r]
       end
 
 
@@ -48,17 +48,17 @@ let of_string s =
     let l = String_ext.split ~on:',' s in
     let l = List.map expand_range l in
   List.concat l
-  |> List.sort_uniq compare 
+  |> List.sort_uniq compare
 
 
 let to_string l =
-  "[" ^ 
+  "[" ^
   (List.map string_of_int l
    |> String.concat ",") ^ "]"
 (*
   let rec do_work buf symbol = function
     | [] -> buf
-    | a::([] as t) -> 
+    | a::([] as t) ->
           do_work (buf^symbol^(string_of_int a)) "" t
     | a::(b::q as t) ->
         if (b-a = 1) then
@@ -66,7 +66,7 @@ let to_string l =
         else
           do_work (buf^symbol^","^(string_of_int b)) "" t
   in
-  let result = 
+  let result =
     match l with
     | [] -> "[]"
     | h::t  ->

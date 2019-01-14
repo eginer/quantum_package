@@ -42,7 +42,7 @@ module mmap_module
       logical, intent(in)            :: read_only  ! If true, mmap is read-only
       integer, intent(out)           :: fd         ! File descriptor
       type(c_ptr), intent(out)       :: map        ! C Pointer
-     
+
       integer(c_size_t)              :: length
       integer(c_int)                 :: fd_
 

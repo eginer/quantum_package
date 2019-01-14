@@ -69,7 +69,7 @@ integer function zmq_get_psi_notouch(zmq_to_qp_run_socket, worker_id)
     zmq_get_psi_notouch = -1
     return
   endif
-  
+
   if (size(psi_det,kind=8) /= N_int*2_8*psi_det_size*bit_kind) then
     deallocate(psi_det)
     allocate(psi_det(N_int,2,psi_det_size))
@@ -276,7 +276,7 @@ end
 
 
 
-BEGIN_TEMPLATE 
+BEGIN_TEMPLATE
 
 integer function zmq_put_$X(zmq_to_qp_run_socket,worker_id)
   use f77_zmq

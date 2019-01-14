@@ -19,8 +19,8 @@ type t =
 
 
 let create () =
-  { queued_front   = [] ; 
-    queued_back    = [] ; 
+  { queued_front   = [] ;
+    queued_back    = [] ;
     running        = RunningMap.empty ;
     tasks          = TasksMap.empty;
     clients        = ClientsSet.empty;
@@ -37,7 +37,7 @@ let create () =
 
 let add_task ~task q =
   let task_id =
-    q.next_task_id 
+    q.next_task_id
   in
   { q with
     queued_front = task_id :: q.queued_front ;
@@ -52,7 +52,7 @@ let add_task ~task q =
 
 let add_client q =
   let client_id =
-    q.next_client_id 
+    q.next_client_id
   in
   { q with
     clients = ClientsSet.add client_id q.clients;
@@ -61,7 +61,7 @@ let add_client q =
   }, client_id
 
 
-let pop_task ~client_id q = 
+let pop_task ~client_id q =
   let { queued_front ; queued_back ; running ; _ } =
     q
   in
@@ -84,25 +84,25 @@ let pop_task ~client_id q =
     and found =
       try Some (TasksMap.find task_id q.tasks)
       with Caml.Not_found -> None
-    in new_q, Some task_id, found 
+    in new_q, Some task_id, found
   | [] -> q, None, None
-    
+
 
 let del_client ~client_id q =
   assert (ClientsSet.mem client_id q.clients);
-  { q with 
+  { q with
     clients = ClientsSet.remove client_id q.clients;
     number_of_clients = q.number_of_clients - 1
   }
 
 
-let end_task ~task_id ~client_id q = 
+let end_task ~task_id ~client_id q =
   let { running ; tasks ; _ } =
     q
   in
   assert (ClientsSet.mem client_id q.clients);
   let () =
-    let client_id_check = 
+    let client_id_check =
       try RunningMap.find task_id running with
       Caml.Not_found -> failwith "Task already finished"
     in
@@ -113,11 +113,11 @@ let end_task ~task_id ~client_id q =
     number_of_running = q.number_of_running - 1
   }
 
-let del_task ~task_id q = 
+let del_task ~task_id q =
   let { tasks ; _ } =
     q
   in
-  
+
   if (TasksMap.mem task_id tasks) then
       { q with
         tasks = TasksMap.remove task_id tasks;
@@ -127,7 +127,7 @@ let del_task ~task_id q =
       Printf.sprintf "Task %d is already deleted" (Id.Task.to_int task_id)
       |> failwith
 
-    
+
 
 let number_of_tasks q =
   assert (q.number_of_tasks >= 0);
@@ -155,12 +155,12 @@ let to_string qs =
   and r =
     RunningMap.bindings running
     |> List.map (fun (t,c) -> "("^(Id.Task.to_string t)^", "
-       ^(Id.Client.to_string c)^")") 
+       ^(Id.Client.to_string c)^")")
     |> String.concat " ; "
-  and t = 
+  and t =
     TasksMap.bindings tasks
     |> List.map (fun (t,c) -> "("^(Id.Task.to_string t)^", \""
-       ^c^"\")") 
+       ^c^"\")")
     |> String.concat " ; "
   in
   Printf.sprintf "{
@@ -173,15 +173,15 @@ tasks    : [ %s
 (number_of_tasks qs) (number_of_queued qs) (number_of_running qs) (number_of_clients qs)
 q r t
 
-  
+
 
 let test () =
-  let q = 
+  let q =
     create ()
     |> add_task ~task:"First Task"
     |> add_task ~task:"Second Task"
   in
-  let q, client_id = 
+  let q, client_id =
     add_client q
   in
   let q, task_id, task_content =
@@ -205,5 +205,5 @@ let test () =
   Printf.printf "Task_id : %d \t\t Task : %s\n"  task_id task_content;
   q
   |> to_string
-  |> print_endline 
+  |> print_endline
 

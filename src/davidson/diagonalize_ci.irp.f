@@ -4,7 +4,7 @@ BEGIN_PROVIDER [ double precision, CI_energy, (N_states_diag) ]
   BEGIN_DOC
   ! :c:data:`n_states` lowest eigenvalues of the |CI| matrix
   END_DOC
-  
+
   integer                        :: j
   character*(8)                  :: st
   call write_time(6)
@@ -40,7 +40,7 @@ END_PROVIDER
    double precision, allocatable  :: e_array(:)
    integer, allocatable           :: iorder(:)
    logical                        :: converged
-   
+
    PROVIDE threshold_davidson nthreads_davidson
    ! Guess values for the "N_states" states of the |CI| eigenvectors
    do j=1,min(N_states,N_det)
@@ -48,25 +48,25 @@ END_PROVIDER
        CI_eigenvectors(i,j) = psi_coef(i,j)
      enddo
    enddo
-   
+
    do j=min(N_states,N_det)+1,N_states_diag
      do i=1,N_det
        CI_eigenvectors(i,j) = 0.d0
      enddo
    enddo
-   
+
    if (diag_algorithm == "Davidson") then
-     
+
      call davidson_diag_HS2(psi_det,CI_eigenvectors, CI_eigenvectors_s2, &
          size(CI_eigenvectors,1),CI_electronic_energy,               &
          N_det,min(N_det,N_states),min(N_det,N_states_diag),N_int,0,converged)
 
-     integer :: N_states_diag_save 
+     integer :: N_states_diag_save
      N_states_diag_save = N_states_diag
      do while (.not.converged)
-        double precision, allocatable :: CI_electronic_energy_tmp (:) 
-        double precision, allocatable :: CI_eigenvectors_tmp (:,:) 
-        double precision, allocatable :: CI_eigenvectors_s2_tmp (:) 
+        double precision, allocatable :: CI_electronic_energy_tmp (:)
+        double precision, allocatable :: CI_eigenvectors_tmp (:,:)
+        double precision, allocatable :: CI_eigenvectors_s2_tmp (:)
 
         N_states_diag  *= 2
         TOUCH N_states_diag
@@ -75,9 +75,9 @@ END_PROVIDER
         allocate (CI_eigenvectors_tmp (N_det,N_states_diag) )
         allocate (CI_eigenvectors_s2_tmp (N_states_diag) )
 
-        CI_electronic_energy_tmp(1:N_states_diag_save) = CI_electronic_energy(1:N_states_diag_save) 
-        CI_eigenvectors_tmp(1:N_det,1:N_states_diag_save) = CI_eigenvectors(1:N_det,1:N_states_diag_save) 
-        CI_eigenvectors_s2_tmp(1:N_states_diag_save) = CI_eigenvectors_s2(1:N_states_diag_save) 
+        CI_electronic_energy_tmp(1:N_states_diag_save) = CI_electronic_energy(1:N_states_diag_save)
+        CI_eigenvectors_tmp(1:N_det,1:N_states_diag_save) = CI_eigenvectors(1:N_det,1:N_states_diag_save)
+        CI_eigenvectors_s2_tmp(1:N_states_diag_save) = CI_eigenvectors_s2(1:N_states_diag_save)
 
         call davidson_diag_HS2(psi_det,CI_eigenvectors_tmp, CI_eigenvectors_s2_tmp, &
             size(CI_eigenvectors_tmp,1),CI_electronic_energy_tmp,               &
@@ -95,9 +95,9 @@ END_PROVIDER
        N_states_diag = N_states_diag_save
        TOUCH N_states_diag
      endif
-     
+
    else if (diag_algorithm == "Lapack") then
-     
+
      print *,  'Diagonalization of H using Lapack'
      allocate (eigenvectors(size(H_matrix_all_dets,1),N_det))
      allocate (eigenvalues(N_det))
@@ -105,7 +105,7 @@ END_PROVIDER
        double precision, parameter :: alpha = 0.1d0
        allocate (H_prime(N_det,N_det) )
        H_prime(1:N_det,1:N_det) = H_matrix_all_dets(1:N_det,1:N_det) +  &
-         alpha * S2_matrix_all_dets(1:N_det,1:N_det) 
+         alpha * S2_matrix_all_dets(1:N_det,1:N_det)
        do j=1,N_det
          H_prime(j,j) = H_prime(j,j) + alpha*(S_z2_Sz - expected_s2)
        enddo
@@ -150,7 +150,7 @@ END_PROVIDER
            CI_electronic_energy(i_state+i_other_state) = eigenvalues(j)
            CI_eigenvectors_s2(i_state+i_other_state) = s2_eigvalues(i_state+i_other_state)
          enddo
-         
+
        else
          print*,''
          print*,'!!!!!!!!   WARNING  !!!!!!!!!'
@@ -187,13 +187,13 @@ END_PROVIDER
      endif
      deallocate(eigenvectors,eigenvalues)
    endif
-   
+
 END_PROVIDER
- 
+
 subroutine diagonalize_CI
   implicit none
   BEGIN_DOC
-!  Replace the coefficients of the |CI| states by the coefficients of the 
+!  Replace the coefficients of the |CI| states by the coefficients of the
 !  eigenstates of the |CI| matrix.
   END_DOC
   integer :: i,j

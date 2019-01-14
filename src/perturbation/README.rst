@@ -32,19 +32,19 @@ The arguments of the `pt2_` are always:
 
 `psi_ref`
   bitstring of the determinants present in the various `N_st` states
- 
+
 `psi_ref_coefs`
   coefficients of the determinants on the various `N_st` states
- 
+
 `E_refs`
   Energy of the various `N_st` states
- 
+
 `det_pert`
   Perturber determinant
 
 `c_pert`
   Perturbative coefficients for the various states
- 
+
 `e_2_pert`
   Perturbative energetic contribution for the various states
 

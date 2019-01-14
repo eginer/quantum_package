@@ -3,13 +3,13 @@ subroutine i_Wee_j_mono(key_i,key_j,Nint,spin,hij)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Returns $\langle i|H|j \rangle$  where $i$ and $j$ are determinants differing by a 
+  ! Returns $\langle i|H|j \rangle$  where $i$ and $j$ are determinants differing by a
   ! single excitation.
   END_DOC
   integer, intent(in)            :: Nint, spin
   integer(bit_kind), intent(in)  :: key_i(Nint,2), key_j(Nint,2)
   double precision, intent(out)  :: hij
-  
+
   integer                        :: exc(0:2,2)
   double precision               :: phase
 
@@ -27,7 +27,7 @@ double precision function diag_wee_mat_elem(det_in,Nint)
   END_DOC
   integer,intent(in)             :: Nint
   integer(bit_kind),intent(in)   :: det_in(Nint,2)
-  
+
   integer(bit_kind)              :: hole(Nint,2)
   integer(bit_kind)              :: particle(Nint,2)
   integer                        :: i, nexc(2), ispin
@@ -35,11 +35,11 @@ double precision function diag_wee_mat_elem(det_in,Nint)
   integer                        :: occ_hole(Nint*bit_kind_size,2)
   integer(bit_kind)              :: det_tmp(Nint,2)
   integer                        :: na, nb
-  
+
   ASSERT (Nint > 0)
   ASSERT (sum(popcnt(det_in(:,1))) == elec_alpha_num)
   ASSERT (sum(popcnt(det_in(:,2))) == elec_beta_num)
-  
+
   nexc(1) = 0
   nexc(2) = 0
   do i=1,Nint
@@ -52,12 +52,12 @@ double precision function diag_wee_mat_elem(det_in,Nint)
     nexc(1)       = nexc(1) + popcnt(hole(i,1))
     nexc(2)       = nexc(2) + popcnt(hole(i,2))
   enddo
-  
+
   diag_wee_mat_elem = ref_bitmask_two_e_energy
   if (nexc(1)+nexc(2) == 0) then
     return
   endif
-  
+
   !call debug_det(det_in,Nint)
   integer                        :: tmp(2)
   !DIR$ FORCEINLINE
@@ -68,7 +68,7 @@ double precision function diag_wee_mat_elem(det_in,Nint)
   call bitstring_to_list_ab(hole, occ_hole, tmp, Nint)
   ASSERT (tmp(1) == nexc(1))
   ASSERT (tmp(2) == nexc(2))
-  
+
   det_tmp = ref_bitmask
   do ispin=1,2
     na = elec_num_tab(ispin)
@@ -93,37 +93,37 @@ subroutine a_operator_two_e(iorb,ispin,key,hjj,Nint,na,nb)
   integer, intent(inout)         :: na, nb
   integer(bit_kind), intent(inout) :: key(Nint,2)
   double precision, intent(inout) :: hjj
-  
+
   integer                        :: occ(Nint*bit_kind_size,2)
   integer                        :: other_spin
   integer                        :: k,l,i
   integer                        :: tmp(2)
-  
+
   ASSERT (iorb > 0)
   ASSERT (ispin > 0)
   ASSERT (ispin < 3)
   ASSERT (Nint > 0)
-  
+
   k = ishft(iorb-1,-bit_kind_shift)+1
   ASSERT (k > 0)
   l = iorb - ishft(k-1,bit_kind_shift)-1
   key(k,ispin) = ibclr(key(k,ispin),l)
   other_spin = iand(ispin,1)+1
-  
+
   !DIR$ FORCEINLINE
   call bitstring_to_list_ab(key, occ, tmp, Nint)
   na = na-1
-  
+
   ! Same spin
   do i=1,na
     hjj = hjj - mo_two_e_integrals_jj_anti(occ(i,ispin),iorb)
   enddo
-  
+
   ! Opposite spin
   do i=1,nb
     hjj = hjj - mo_two_e_integrals_jj(occ(i,other_spin),iorb)
   enddo
-  
+
 end
 
 
@@ -137,34 +137,34 @@ subroutine ac_operator_two_e(iorb,ispin,key,hjj,Nint,na,nb)
   integer, intent(inout)         :: na, nb
   integer(bit_kind), intent(inout) :: key(Nint,2)
   double precision, intent(inout) :: hjj
-  
+
   integer                        :: occ(Nint*bit_kind_size,2)
   integer                        :: other_spin
   integer                        :: k,l,i
-  
+
   ASSERT (iorb > 0)
   ASSERT (ispin > 0)
   ASSERT (ispin < 3)
   ASSERT (Nint > 0)
-  
+
   integer                        :: tmp(2)
   !DIR$ FORCEINLINE
   call bitstring_to_list_ab(key, occ, tmp, Nint)
   ASSERT (tmp(1) == elec_alpha_num)
   ASSERT (tmp(2) == elec_beta_num)
-  
+
   k = ishft(iorb-1,-bit_kind_shift)+1
   ASSERT (k > 0)
   l = iorb - ishft(k-1,bit_kind_shift)-1
   key(k,ispin) = ibset(key(k,ispin),l)
   other_spin = iand(ispin,1)+1
-  
-  
+
+
   ! Same spin
   do i=1,na
     hjj = hjj + mo_two_e_integrals_jj_anti(occ(i,ispin),iorb)
   enddo
-  
+
   ! Opposite spin
   do i=1,nb
     hjj = hjj + mo_two_e_integrals_jj(occ(i,other_spin),iorb)
@@ -178,13 +178,13 @@ subroutine i_H_j_mono_spin_one_e(key_i,key_j,Nint,spin,hij)
   use bitmasks
   implicit none
   BEGIN_DOC
-  ! Returns $\langle i|H|j \rangle$  where $i$ and $j$ are determinants differing by 
+  ! Returns $\langle i|H|j \rangle$  where $i$ and $j$ are determinants differing by
   ! a single excitation.
   END_DOC
   integer, intent(in)            :: Nint, spin
   integer(bit_kind), intent(in)  :: key_i(Nint,2), key_j(Nint,2)
   double precision, intent(out)  :: hij
-  
+
   integer                        :: exc(0:2,2)
   double precision               :: phase
 
@@ -204,7 +204,7 @@ double precision function diag_H_mat_elem_one_e(det_in,Nint)
   END_DOC
   integer,intent(in)             :: Nint
   integer(bit_kind),intent(in)   :: det_in(Nint,2)
-  
+
   integer(bit_kind)              :: hole(Nint,2)
   integer(bit_kind)              :: particle(Nint,2)
   integer                        :: i, nexc(2), ispin
@@ -212,23 +212,23 @@ double precision function diag_H_mat_elem_one_e(det_in,Nint)
   integer                        :: occ_hole(Nint*bit_kind_size,2)
   integer(bit_kind)              :: det_tmp(Nint,2)
   integer                        :: na, nb
-  
+
   ASSERT (Nint > 0)
   ASSERT (sum(popcnt(det_in(:,1))) == elec_alpha_num)
   ASSERT (sum(popcnt(det_in(:,2))) == elec_beta_num)
-  
+
   diag_H_mat_elem_one_e = 0.d0
-  
+
   !call debug_det(det_in,Nint)
   integer                        :: tmp(2)
   !DIR$ FORCEINLINE
   call bitstring_to_list_ab(det_in, occ_particle, tmp, Nint)
-  do ispin = 1,2 
+  do ispin = 1,2
    do i = 1, tmp(ispin)
     diag_H_mat_elem_one_e +=  mo_one_e_integrals(occ_particle(i,ispin),occ_particle(i,ispin))
    enddo
   enddo
-  
+
 end
 
 subroutine i_H_j_one_e(key_i,key_j,Nint,hij)
@@ -251,7 +251,7 @@ subroutine i_H_j_one_e(key_i,key_j,Nint,hij)
   endif
   if(degree==0)then
    hij = diag_H_mat_elem_one_e(key_i,N_int)
-  else 
+  else
    call get_mono_excitation(key_i,key_j,exc,phase,Nint)
    if (exc(0,1,1) == 1) then
      ! Mono alpha
@@ -276,7 +276,7 @@ subroutine i_H_j_two_e(key_i,key_j,Nint,hij)
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: key_i(Nint,2), key_j(Nint,2)
   double precision, intent(out)  :: hij
-  
+
   integer                        :: exc(0:2,2,2)
   integer                        :: degree
   double precision               :: get_two_e_integral
@@ -286,14 +286,14 @@ subroutine i_H_j_two_e(key_i,key_j,Nint,hij)
   double precision               :: diag_H_mat_elem, phase,phase_2
   integer                        :: n_occ_ab(2)
   PROVIDE mo_two_e_integrals_in_map mo_integrals_map big_array_exchange_integrals ref_bitmask_two_e_energy
-  
+
   ASSERT (Nint > 0)
   ASSERT (Nint == N_int)
   ASSERT (sum(popcnt(key_i(:,1))) == elec_alpha_num)
   ASSERT (sum(popcnt(key_i(:,2))) == elec_beta_num)
   ASSERT (sum(popcnt(key_j(:,1))) == elec_alpha_num)
   ASSERT (sum(popcnt(key_j(:,2))) == elec_beta_num)
-  
+
   hij = 0.d0
   !DIR$ FORCEINLINE
   call get_excitation_degree(key_i,key_j,degree,Nint)

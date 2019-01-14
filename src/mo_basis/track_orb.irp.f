@@ -2,15 +2,15 @@ BEGIN_PROVIDER [ double precision, mo_coef_begin_iteration, (ao_num,mo_num) ]
    implicit none
    BEGIN_DOC
    ! Void provider to store the coefficients of the |MO| basis at the beginning of the SCF iteration
-   ! 
-   ! Usefull to track some orbitals 
+   !
+   ! Usefull to track some orbitals
    END_DOC
 END_PROVIDER
 
 subroutine initialize_mo_coef_begin_iteration
  implicit none
  BEGIN_DOC
- ! 
+ !
  ! Initialize :c:data:`mo_coef_begin_iteration` to the current :c:data:`mo_coef`
  END_DOC
  mo_coef_begin_iteration = mo_coef
@@ -18,7 +18,7 @@ end
 
 subroutine reorder_core_orb
  implicit none
- BEGIN_DOC 
+ BEGIN_DOC
 ! routines that takes the current :c:data:`mo_coef` and reorder the core orbitals (see :c:data:`list_core` and :c:data:`n_core_orb`) according to the overlap with :c:data:`mo_coef_begin_iteration`
  END_DOC
  integer :: i,j,iorb
@@ -28,7 +28,7 @@ subroutine reorder_core_orb
  double precision, allocatable :: mo_coef_tmp(:,:)
  allocate(accu(mo_num),index_core_orb(n_core_orb),iorder(mo_num))
  allocate(mo_coef_tmp(ao_num,mo_num))
- 
+
  do i = 1, n_core_orb
   iorb = list_core(i)
   do j = 1, mo_num
@@ -42,7 +42,7 @@ subroutine reorder_core_orb
    accu(j) = -dabs(accu(j))
   enddo
   call dsort(accu,iorder,mo_num)
-  index_core_orb(i) = iorder(1) 
+  index_core_orb(i) = iorder(1)
  enddo
 
  double precision :: x

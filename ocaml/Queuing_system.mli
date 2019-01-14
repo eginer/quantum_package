@@ -6,8 +6,8 @@ type t = {
   queued_front      : Id.Task.t list           ;
   queued_back       : Id.Task.t list           ;
   running           : Id.Client.t RunningMap.t ;
-  tasks             : string TasksMap.t        ;          
-  clients           : ClientsSet.t             ;          
+  tasks             : string TasksMap.t        ;
+  clients           : ClientsSet.t             ;
   next_client_id    : Id.Client.t              ;
   next_task_id      : Id.Task.t                ;
   number_of_queued  : int                      ;

@@ -6,7 +6,7 @@ double precision function step_function_becke(x)
   double precision, intent(in)   :: x
   double precision               :: f_function_becke
   integer                        :: i,n_max_becke
-  
+
   step_function_becke = f_function_becke(x)
   do i = 1, 4
     step_function_becke = f_function_becke(step_function_becke)

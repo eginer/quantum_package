@@ -39,12 +39,12 @@ logical function testTeethBuilding(minF, N)
   integer, intent(in) :: minF, N
   integer :: n0, i
   double precision :: u0, Wt, r
-  
+
   double precision, allocatable :: tilde_w(:), tilde_cW(:)
   integer, external :: dress_find_sample
 
   allocate(tilde_w(N_det_generators), tilde_cW(0:N_det_generators))
-  
+
   do i=1,N_det_generators
     tilde_w(i)  = psi_coef_sorted_gen(i,dress_stoch_istate)**2 + 1.d-20
   enddo
@@ -52,7 +52,7 @@ logical function testTeethBuilding(minF, N)
   double precision :: norm
   norm = 0.d0
   do i=N_det_generators,1,-1
-    norm += tilde_w(i) 
+    norm += tilde_w(i)
   enddo
 
   tilde_w(:) = tilde_w(:) / norm
@@ -132,16 +132,16 @@ END_PROVIDER
   double precision, allocatable :: tilde_M(:)
   logical, allocatable :: d(:)
   integer, external :: dress_find_sample
-  
+
   allocate(d(N_det_generators), tilde_M(N_det_generators))
-  
+
   dress_M_mi = 0d0
   tilde_M = 0d0
   dress_R1_(:) = 0
   N_c = 0
   N_j = pt2_n_0(1)
   d(:) = .false.
-  
+
 ! Set here the positions of the checkpoints
 !  U = N_det_generators/((dress_N_cp_max**2+dress_N_cp_max)/2)+1
 !  do i=1, dress_N_cp_max-1
@@ -169,9 +169,9 @@ END_PROVIDER
 
   call RANDOM_NUMBER(pt2_u)
   call RANDOM_NUMBER(pt2_u)
-  
+
   U = 0
-  
+
   m = 1
   ! TODO Slow loop : to optimize
   do while(N_j < N_det_generators)
@@ -189,7 +189,7 @@ END_PROVIDER
       end if
       dt = dt + 1.d0
     end do
-   
+
     !FILL_TOOTH
     do while(U < N_det_generators)
       U += 1
@@ -200,27 +200,27 @@ END_PROVIDER
         exit
       end if
     end do
-    
+
     if(N_c == dress_M_m(m)) then
       dress_R1_(m) = N_j
       dress_M_mi(m, :N_det_generators) = tilde_M(:)
       m += 1
     end if
   enddo
-  
+
   dress_N_cp = m-1
-  if (dress_N_cp == 0) then                   
+  if (dress_N_cp == 0) then
     dress_N_cp = 1
-  endif                                       
+  endif
 
   dress_R1_(dress_N_cp) = N_j
   dress_M_m(dress_N_cp) = N_c
   !!!!!!!!!!!!!!
- 
+
   do i=1, pt2_n_0(1)
     dress_T(i) = 0
   end do
-  
+
   do t=2,pt2_N_teeth+1
     do i=pt2_n_0(t-1)+1, pt2_n_0(t)
       dress_T(i) = t-1
@@ -232,21 +232,21 @@ END_PROVIDER
 
 subroutine ZMQ_dress(E, dress, delta_out, delta_s2_out, relative_error)
   use f77_zmq
-  
+
   implicit none
-  
+
   integer(ZMQ_PTR)               :: zmq_to_qp_run_socket, zmq_socket_pull
   integer, external              :: omp_get_thread_num
   double precision, intent(in)   :: E(N_states), relative_error
   double precision, intent(out)  :: dress(N_states)
   double precision, intent(out)  :: delta_out(N_states, N_det)
   double precision, intent(out)  :: delta_s2_out(N_states, N_det)
-  
+
   double precision, allocatable  :: delta(:,:)
   double precision, allocatable  :: delta_s2(:,:)
-  
+
   integer                        :: i, j, k, Ncp
-  
+
   double precision               :: state_average_weight_save(N_states)
   character(100000)              :: task
   PROVIDE Nproc
@@ -257,15 +257,15 @@ subroutine ZMQ_dress(E, dress, delta_out, delta_s2_out, relative_error)
     state_average_weight(:) = 0.d0
     state_average_weight(dress_stoch_istate) = 1.d0
     TOUCH state_average_weight dress_stoch_istate
-    
+
     provide nproc mo_two_e_integrals_in_map mo_one_e_integrals psi_selectors pt2_F pt2_N_teeth dress_M_m
-    
+
     print *, '========== ================= ================= ================='
     print *, ' Samples        Energy         Stat. Error         Seconds      '
     print *, '========== ================= ================= ================='
-   
+
     call new_parallel_job(zmq_to_qp_run_socket,zmq_socket_pull, 'dress')
-    
+
     integer, external              :: zmq_put_psi
     integer, external              :: zmq_put_N_det_generators
     integer, external              :: zmq_put_N_det_selectors
@@ -340,7 +340,7 @@ subroutine ZMQ_dress(E, dress, delta_out, delta_s2_out, relative_error)
       endif
 
 
-    
+
     integer :: nproc_target
     nproc_target = nproc
     double precision :: mem
@@ -364,23 +364,23 @@ subroutine ZMQ_dress(E, dress, delta_out, delta_s2_out, relative_error)
 
     delta_out(dress_stoch_istate,1:N_det) = delta(dress_stoch_istate,1:N_det)
     delta_s2_out(dress_stoch_istate,1:N_det) = delta_s2(dress_stoch_istate,1:N_det)
-    
+
     call end_parallel_job(zmq_to_qp_run_socket, zmq_socket_pull, 'dress')
-    
+
     print *, '========== ================= ================= ================='
   enddo
   FREE dress_stoch_istate
   state_average_weight(:) = state_average_weight_save(:)
   TOUCH state_average_weight
   deallocate(delta,delta_s2)
-  
+
 end subroutine
 
 
 subroutine dress_slave_inproc(i)
   implicit none
   integer, intent(in)            :: i
-  
+
   call run_dress_slave(1,i,dress_e0_denominator)
 end
 
@@ -388,13 +388,13 @@ end
 &BEGIN_PROVIDER [ integer, dress_P, (N_det_generators) ]
   implicit none
   integer :: m,i
- 
+
   do m=1,dress_N_cp
     do i=dress_R1(m-1)+1, dress_R1(m)
       dress_P(pt2_J(i)) = m
     end do
   end do
-  
+
   dress_dot_F = 0
   do m=1,dress_N_cp
     do i=dress_R1(m-1)+1,dress_R1(m)
@@ -408,12 +408,12 @@ END_PROVIDER
 
 BEGIN_PROVIDER [double precision, dress_e, (N_det_generators, dress_N_cp)]
 &BEGIN_PROVIDER [integer, dress_dot_t, (0:dress_N_cp)]
-&BEGIN_PROVIDER [integer, dress_dot_n_0, (0:dress_N_cp)] 
+&BEGIN_PROVIDER [integer, dress_dot_n_0, (0:dress_N_cp)]
   implicit none
-  
+
   logical, allocatable :: d(:)
   integer :: U, m, t, i
-  
+
   allocate(d(N_det_generators+1))
 
   dress_e(:,:) = 0d0
@@ -421,7 +421,7 @@ BEGIN_PROVIDER [double precision, dress_e, (N_det_generators, dress_N_cp)]
   dress_dot_n_0(:) = 0
   d(:) = .false.
   U=0
-  
+
   do m=1,dress_N_cp
     do i=dress_R1_(m-1)+1,dress_R1_(m)
       !dress_dot_F(m) += pt2_F(pt2_J_(i))
@@ -431,10 +431,10 @@ BEGIN_PROVIDER [double precision, dress_e, (N_det_generators, dress_N_cp)]
     do while(d(U+1))
       U += 1
     end do
-      
+
     dress_dot_t(m) = pt2_N_teeth + 1
     dress_dot_n_0(m) = N_det_generators
-    
+
     do t = 2, pt2_N_teeth+1
       if(U < pt2_n_0(t)) then
         dress_dot_t(m) = t-1
@@ -446,7 +446,7 @@ BEGIN_PROVIDER [double precision, dress_e, (N_det_generators, dress_N_cp)]
       dress_e(i,m) = pt2_W_T * dress_M_mi(m,i) / pt2_w(i)
     end do
   end do
-  
+
   do m=dress_N_cp, 2, -1
     dress_e(:,m) -= dress_e(:,m-1)
   end do
@@ -458,7 +458,7 @@ subroutine dress_collector(zmq_socket_pull, E, relative_error, delta, delta_s2, 
   use bitmasks
   implicit none
 
-  
+
   integer(ZMQ_PTR), intent(in)   :: zmq_socket_pull
   integer, intent(in)            :: istate
 
@@ -487,7 +487,7 @@ subroutine dress_collector(zmq_socket_pull, E, relative_error, delta, delta_s2, 
   worker_id=1
   zmq_to_qp_run_socket = new_zmq_to_qp_run_socket()
 
-  
+
   do_exit = .false.
   delta = 0d0
   delta_s2 = 0d0
@@ -498,7 +498,7 @@ subroutine dress_collector(zmq_socket_pull, E, relative_error, delta, delta_s2, 
   allocate(dot_f(dress_N_cp+1))
   allocate(S(pt2_N_teeth+1), S2(pt2_N_teeth+1))
   edI = 0d0
-  
+
   dot_f(:dress_N_cp) = dress_dot_F(:)
   dot_f(dress_N_cp+1) = 1
   more = 1
@@ -510,7 +510,7 @@ subroutine dress_collector(zmq_socket_pull, E, relative_error, delta, delta_s2, 
   time0 = -1d0 ! omp_get_wtime()
   more = 1
 
-  do 
+  do
     if(dot_f(m) == 0) then
       E0 = 0
       do i=dress_dot_n_0(m),1,-1
@@ -545,10 +545,10 @@ subroutine dress_collector(zmq_socket_pull, E, relative_error, delta, delta_s2, 
         error = 0.d0
       endif
       m += 1
-      if(do_exit .and. (dabs(error) / (1.d-20 + dabs(avg) ) <= relative_error)) then 
+      if(do_exit .and. (dabs(error) / (1.d-20 + dabs(avg) ) <= relative_error)) then
         integer, external :: zmq_put_dvector
         integer, external :: zmq_put_int
-        do while (zmq_put_int(zmq_to_qp_run_socket, worker_id, 'ending', (m-1)) == -1) 
+        do while (zmq_put_int(zmq_to_qp_run_socket, worker_id, 'ending', (m-1)) == -1)
           print *,  'Unable to put ending. Retrying...'
           call sleep(1)
         enddo
@@ -571,7 +571,7 @@ subroutine dress_collector(zmq_socket_pull, E, relative_error, delta, delta_s2, 
         end if
       end do
       do i=1,n_tasks
-        edI(edI_index(i)) += edI_task(i) 
+        edI(edI_index(i)) += edI_task(i)
       end do
       dot_f(m_task) -= f
     end if
@@ -591,11 +591,11 @@ subroutine dress_collector(zmq_socket_pull, E, relative_error, delta, delta_s2, 
 
   do while(more /= 0)
     call  pull_dress_results(zmq_socket_pull, m_task, f, edI_task, edI_index, breve_delta_m, task_id, n_tasks)
-    
-   !if(task_id(0) == 0) cycle                                                                                    
+
+   !if(task_id(0) == 0) cycle
    if(m_task == 0) then
-       i = zmq_delete_tasks(zmq_to_qp_run_socket,zmq_socket_pull,task_id,n_tasks,more)                         
-     else if(m_task < 0) then                                                                                                 
+       i = zmq_delete_tasks(zmq_to_qp_run_socket,zmq_socket_pull,task_id,n_tasks,more)
+     else if(m_task < 0) then
        i = zmq_delete_tasks(zmq_to_qp_run_socket,zmq_socket_pull,task_id,1,more)
      end if
 
@@ -603,12 +603,12 @@ subroutine dress_collector(zmq_socket_pull, E, relative_error, delta, delta_s2, 
     if(m_task >= 0) cycle
     ff = ff - f
     delta(:,:) += breve_delta_m(:,:,1)
-    delta_s2(:,:) += breve_delta_m(:,:,2) 
+    delta_s2(:,:) += breve_delta_m(:,:,2)
   end do
   dress(istate) = E(istate)+E0+avg
   if(ff /= 0) stop "WRONG NUMBER OF FRAGMENTS COLLECTED"
   !double precision :: tmp
-  
+
   !tmp = 0d0
 
   !do i=1,N_det
@@ -640,7 +640,7 @@ integer function dress_find_sample(v, w)
   end do
   i = r
   do r=i+1,N_det_generators
-    if (w(r) /= w(i)) then 
+    if (w(r) /= w(i)) then
       exit
     endif
   enddo
@@ -649,8 +649,8 @@ end function
 
 
 
- BEGIN_PROVIDER [ double precision,     pt2_w, (N_det_generators) ] 
-&BEGIN_PROVIDER [ double precision,     pt2_cW, (0:N_det_generators) ] 
+ BEGIN_PROVIDER [ double precision,     pt2_w, (N_det_generators) ]
+&BEGIN_PROVIDER [ double precision,     pt2_cW, (0:N_det_generators) ]
 &BEGIN_PROVIDER [ double precision,     pt2_W_T ]
 &BEGIN_PROVIDER [ double precision,     pt2_u_0 ]
 &BEGIN_PROVIDER [ integer,              pt2_n_0, (pt2_N_teeth+1) ]
@@ -661,7 +661,7 @@ end function
   integer, external :: dress_find_sample
 
   allocate(tilde_w(N_det_generators), tilde_cW(0:N_det_generators))
-  
+
   do i=1,N_det_generators
     tilde_w(i)  = psi_coef_sorted_gen(i,dress_stoch_istate)**2 + 1.d-20
     tilde_cW(i) = tilde_cW(i-1) + tilde_w(i)
@@ -670,7 +670,7 @@ end function
   double precision :: norm
   norm = 0.d0
   do i=N_det_generators,1,-1
-    norm += tilde_w(i) 
+    norm += tilde_w(i)
   enddo
 
   tilde_w(:) = tilde_w(:) / norm
@@ -680,7 +680,7 @@ end function
     tilde_cW(i) = tilde_cW(i-1) + tilde_w(i)
   enddo
   tilde_cW(:) = tilde_cW(:) + 1.d0
-  
+
   pt2_n_0(1) = 0
   do
     pt2_u_0 = tilde_cW(pt2_n_0(1))
@@ -695,13 +695,13 @@ end function
     end if
   end do
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    
+
   do t=2, pt2_N_teeth
     r = pt2_u_0 + pt2_W_T * dble(t-1)
     pt2_n_0(t) = dress_find_sample(r, tilde_cW)
   end do
   pt2_n_0(pt2_N_teeth+1) = N_det_generators
-    
+
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   pt2_w(:pt2_n_0(1)) = tilde_w(:pt2_n_0(1))
   do t=1, pt2_N_teeth
@@ -714,10 +714,10 @@ end function
       pt2_w(i) = tilde_w(i) * pt2_W_T / tooth_width
     end do
   end do
-  
+
   pt2_cW(0) = 0d0
   do i=1,N_det_generators
-    pt2_cW(i) = pt2_cW(i-1) + pt2_w(i)      
+    pt2_cW(i) = pt2_cW(i-1) + pt2_w(i)
   end do
   pt2_n_0(pt2_N_teeth+1) = N_det_generators
 END_PROVIDER

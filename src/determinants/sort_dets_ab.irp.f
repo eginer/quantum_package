@@ -7,9 +7,9 @@ logical function det_inf(key1, key2, Nint)
   integer,intent(in)                 :: Nint
   integer(bit_kind),intent(in)       :: key1(Nint, 2), key2(Nint, 2)
   integer                            :: i,j
-  
+
   det_inf = .false.
-  
+
   do i=1,2
     do j=Nint,1,-1
       if(key1(j,i) < key2(j,i)) then
@@ -33,7 +33,7 @@ subroutine tamiser(key, idx, no, n, Nint, N_key)
   integer(bit_kind)                     :: tmp(Nint, 2)
   logical                               :: det_inf
   integer                               :: ni
-  
+
   k = no
   j = 2*k
   do while(j <= n)
@@ -77,7 +77,7 @@ subroutine sort_dets_ba_v(key_in, key_out, idx, shortcut, version, N_key, Nint)
   integer(bit_kind),intent(out)  :: version(Nint,N_key+1)
   integer(bit_kind), allocatable :: key(:,:,:)
   integer                        :: i,ni
-  
+
   allocate ( key(Nint,2,N_key) )
   do i=1,N_key
     do ni=1,Nint
@@ -85,7 +85,7 @@ subroutine sort_dets_ba_v(key_in, key_out, idx, shortcut, version, N_key, Nint)
       key(ni,2,i) = key_in(ni,1,i)
     enddo
   enddo
-  
+
   call sort_dets_ab_v(key, key_out, idx, shortcut, version, N_key, Nint)
   deallocate ( key )
 end subroutine
@@ -107,7 +107,7 @@ subroutine sort_dets_ab_v(key_in, key_out, idx, shortcut, version, N_key, Nint)
   integer(bit_kind), allocatable        :: key(:,:,:)
   integer(bit_kind)                     :: tmp(Nint, 2)
   integer                               :: tmpidx,i,ni
-  
+
   allocate (key(Nint,2,N_key))
   do i=1,N_key
     do ni=1,Nint
@@ -116,11 +116,11 @@ subroutine sort_dets_ab_v(key_in, key_out, idx, shortcut, version, N_key, Nint)
     enddo
     idx(i) = i
   end do
-  
+
   do i=N_key/2,1,-1
     call tamiser(key, idx, i, N_key, Nint, N_key)
   end do
-  
+
   do i=N_key,2,-1
     do ni=1,Nint
       tmp(ni,1) = key(ni,1,i)
@@ -135,7 +135,7 @@ subroutine sort_dets_ab_v(key_in, key_out, idx, shortcut, version, N_key, Nint)
     idx(1) = tmpidx
     call tamiser(key, idx, 1, i-1, Nint, N_key)
   end do
-  
+
   shortcut(0) = 1
   shortcut(1) = 1
   do ni=1,Nint
@@ -173,15 +173,15 @@ subroutine sort_dets_ab(key, idx, shortcut, N_key, Nint)
   integer,intent(inout)                   :: shortcut(0:N_key+1)
   integer(bit_kind)                     :: tmp(Nint, 2)
   integer                               :: tmpidx,i,ni
-  
+
   do i=1,N_key
     idx(i) = i
   end do
-  
+
   do i=N_key/2,1,-1
     call tamiser(key, idx, i, N_key, Nint, N_key)
   end do
-  
+
   do i=N_key,2,-1
     do ni=1,Nint
       tmp(ni,1) = key(ni,1,i)
@@ -197,7 +197,7 @@ subroutine sort_dets_ab(key, idx, shortcut, N_key, Nint)
     idx(1) = tmpidx
     call tamiser(key, idx, 1, i-1, Nint, N_key)
   end do
-  
+
   shortcut(0) = 1
   shortcut(1) = 1
   do i=2,N_key

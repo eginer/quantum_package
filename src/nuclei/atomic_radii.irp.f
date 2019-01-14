@@ -4,8 +4,8 @@ BEGIN_PROVIDER [ double precision, slater_bragg_radii, (100)]
  ! atomic radii in Angstrom defined in table I of JCP 41, 3199 (1964) Slater
  ! execpt for the Hydrogen atom where we took the value of Becke (1988, JCP)
  END_DOC
- 
- slater_bragg_radii = 0.d0 
+
+ slater_bragg_radii = 0.d0
 
  slater_bragg_radii(1)  = 0.35d0
  slater_bragg_radii(2)  = 0.35d0
@@ -52,7 +52,7 @@ BEGIN_PROVIDER [ double precision, slater_bragg_radii, (100)]
  slater_bragg_radii(35)  = 1.15d0
  slater_bragg_radii(36)  = 1.15d0
 
-END_PROVIDER 
+END_PROVIDER
 
 BEGIN_PROVIDER [double precision, slater_bragg_radii_ua, (100)]
  implicit none
@@ -60,7 +60,7 @@ BEGIN_PROVIDER [double precision, slater_bragg_radii_ua, (100)]
  do i = 1, 100
   slater_bragg_radii_ua(i) = slater_bragg_radii(i) * 1.889725989d0
  enddo
-END_PROVIDER 
+END_PROVIDER
 
 BEGIN_PROVIDER [double precision, slater_bragg_radii_per_atom, (nucl_num)]
  implicit none
@@ -68,7 +68,7 @@ BEGIN_PROVIDER [double precision, slater_bragg_radii_per_atom, (nucl_num)]
  do i = 1, nucl_num
   slater_bragg_radii_per_atom(i) = slater_bragg_radii(int(nucl_charge(i)))
  enddo
-END_PROVIDER 
+END_PROVIDER
 
 BEGIN_PROVIDER [double precision, slater_bragg_radii_per_atom_ua, (nucl_num)]
  implicit none
@@ -76,10 +76,10 @@ BEGIN_PROVIDER [double precision, slater_bragg_radii_per_atom_ua, (nucl_num)]
  do i = 1, nucl_num
   slater_bragg_radii_per_atom_ua(i) = slater_bragg_radii_ua(int(nucl_charge(i)))
  enddo
-END_PROVIDER 
+END_PROVIDER
 
 BEGIN_PROVIDER [double precision, slater_bragg_type_inter_distance, (nucl_num, nucl_num)]
- implicit none 
+ implicit none
  integer :: i,j
  double precision :: xhi_tmp,u_ij
  slater_bragg_type_inter_distance = 0.d0
@@ -90,10 +90,10 @@ BEGIN_PROVIDER [double precision, slater_bragg_type_inter_distance, (nucl_num, n
    slater_bragg_type_inter_distance(i,j) = u_ij  / (u_ij * u_ij - 1.d0)
   enddo
  enddo
-END_PROVIDER 
+END_PROVIDER
 
 BEGIN_PROVIDER [double precision, slater_bragg_type_inter_distance_ua, (nucl_num, nucl_num)]
- implicit none 
+ implicit none
  integer :: i,j
  double precision :: xhi_tmp,u_ij
  slater_bragg_type_inter_distance_ua = 0.d0
@@ -109,4 +109,4 @@ BEGIN_PROVIDER [double precision, slater_bragg_type_inter_distance_ua, (nucl_num
    endif
   enddo
  enddo
-END_PROVIDER 
+END_PROVIDER

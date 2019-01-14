@@ -1,11 +1,11 @@
 BEGIN_PROVIDER [ double precision, nucl_coord,  (nucl_num,3) ]
    implicit none
-   
+
    BEGIN_DOC
    ! Nuclear coordinates in the format (:, {x,y,z})
    END_DOC
    PROVIDE ezfio_filename nucl_label nucl_charge
-   
+
    if (mpi_master) then
      double precision, allocatable  :: buffer(:,:)
      nucl_coord = 0.d0
@@ -19,18 +19,18 @@ BEGIN_PROVIDER [ double precision, nucl_coord,  (nucl_num,3) ]
      endif
      call ezfio_get_nuclei_nucl_coord(buffer)
      integer                        :: i,j
-     
+
      do i=1,3
        do j=1,nucl_num
          nucl_coord(j,i) = buffer(j,i)
        enddo
      enddo
      deallocate(buffer)
-     
+
      character*(64), parameter      :: f = '(A16, 4(1X,F12.6))'
      character*(64), parameter      :: ft= '(A16, 4(1X,A12  ))'
      double precision, parameter    :: a0= 0.529177249d0
-     
+
      call write_time(6)
      write(6,'(A)') ''
      write(6,'(A)') 'Nuclear Coordinates (Angstroms)'
@@ -51,9 +51,9 @@ BEGIN_PROVIDER [ double precision, nucl_coord,  (nucl_num,3) ]
      write(6,ft)                                         &
          '================','============','============','============','============'
      write(6,'(A)') ''
-     
+
    endif
-   
+
   IRP_IF MPI_DEBUG
     print *,  irp_here, mpi_rank
     call MPI_BARRIER(MPI_COMM_WORLD, ierr)
@@ -68,8 +68,8 @@ BEGIN_PROVIDER [ double precision, nucl_coord,  (nucl_num,3) ]
    IRP_ENDIF
 
 END_PROVIDER
- 
- 
+
+
 BEGIN_PROVIDER [ double precision, nucl_coord_transp, (3,nucl_num) ]
    implicit none
    BEGIN_DOC
@@ -77,22 +77,22 @@ BEGIN_PROVIDER [ double precision, nucl_coord_transp, (3,nucl_num) ]
    END_DOC
    integer                        :: i, k
    nucl_coord_transp = 0.d0
-   
+
    do i=1,nucl_num
      nucl_coord_transp(1,i) = nucl_coord(i,1)
      nucl_coord_transp(2,i) = nucl_coord(i,2)
      nucl_coord_transp(3,i) = nucl_coord(i,3)
    enddo
 END_PROVIDER
- 
+
 BEGIN_PROVIDER [ double precision, nucl_dist_inv, (nucl_num,nucl_num) ]
   implicit none
   BEGIN_DOC
   ! Inverse of the distance between nucleus I and nucleus J
   END_DOC
-  
+
   integer                        :: ie1, ie2, l
-  
+
   do ie1 = 1, nucl_num
     do ie2 = 1, nucl_num
       if(ie1 /= ie2) then
@@ -102,9 +102,9 @@ BEGIN_PROVIDER [ double precision, nucl_dist_inv, (nucl_num,nucl_num) ]
       endif
     enddo
   enddo
-  
+
 END_PROVIDER
- 
+
  BEGIN_PROVIDER [ double precision, nucl_dist_2, (nucl_num,nucl_num) ]
 &BEGIN_PROVIDER [ double precision, nucl_dist_vec_x, (nucl_num,nucl_num) ]
 &BEGIN_PROVIDER [ double precision, nucl_dist_vec_y, (nucl_num,nucl_num) ]
@@ -113,14 +113,14 @@ END_PROVIDER
    implicit none
    BEGIN_DOC
    ! nucl_dist     : Nucleus-nucleus distances
-   
+
    ! nucl_dist_2   : Nucleus-nucleus distances squared
-   
+
    ! nucl_dist_vec : Nucleus-nucleus distances vectors
    END_DOC
-   
+
    integer                        :: ie1, ie2, l
-   
+
    do ie2 = 1,nucl_num
      do ie1 = 1,nucl_num
        nucl_dist_vec_x(ie1,ie2) = nucl_coord(ie1,1) - nucl_coord(ie2,1)
@@ -135,7 +135,7 @@ END_PROVIDER
      enddo
    enddo
 END_PROVIDER
- 
+
 BEGIN_PROVIDER [ double precision, nuclear_repulsion ]
    implicit none
    BEGIN_DOC
@@ -145,7 +145,7 @@ BEGIN_PROVIDER [ double precision, nuclear_repulsion ]
    PROVIDE mpi_master nucl_coord nucl_charge nucl_num
    if (disk_access_nuclear_repulsion.EQ.'Read') then
      logical                        :: has
-     
+
      if (mpi_master) then
        call ezfio_has_nuclei_nuclear_repulsion(has)
        if (has) then
@@ -168,10 +168,10 @@ BEGIN_PROVIDER [ double precision, nuclear_repulsion ]
         stop 'Unable to read nuclear_repulsion with MPI'
       endif
      IRP_ENDIF
-     
-     
+
+
    else
-     
+
      integer                        :: k,l
      double precision               :: Z12, r2, x(3)
      nuclear_repulsion = 0.d0
@@ -193,14 +193,14 @@ BEGIN_PROVIDER [ double precision, nuclear_repulsion ]
 
    call write_time(6)
    call write_double(6,nuclear_repulsion,'Nuclear repulsion energy')
-   
+
    if (disk_access_nuclear_repulsion.EQ.'Write') then
      if (mpi_master) then
        call ezfio_set_nuclei_nuclear_repulsion(nuclear_repulsion)
      endif
    endif
-   
-   
+
+
 END_PROVIDER
 
  BEGIN_PROVIDER [ character*(4), element_name, (0:127)]
@@ -246,7 +246,7 @@ END_PROVIDER
     stop 'Unable to read element_name with MPI'
   endif
  IRP_ENDIF
- 
+
 END_PROVIDER
 
 BEGIN_PROVIDER [ double precision, center_of_mass, (3) ]

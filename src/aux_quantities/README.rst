@@ -8,7 +8,7 @@ which are stored in the EZFIO folder in a different place than determinants.
 This is used in practice to store density matrices which can be obtained from
 any methods, as long as they are stored in the same MO basis which is used for
 the calculations. In |RSDFT| calculations, this can be done to perform damping
-on the density in order to speed up convergence. 
+on the density in order to speed up convergence.
 
 The main providers of that module are:
 
@@ -18,4 +18,4 @@ The main providers of that module are:
 
 
 Thanks to these providers you can use any density matrix that does not
-necessary corresponds to that of the current wave function. 
+necessary corresponds to that of the current wave function.

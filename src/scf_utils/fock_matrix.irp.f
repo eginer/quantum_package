@@ -21,7 +21,7 @@
    if (elec_alpha_num == elec_beta_num) then
      Fock_matrix_mo = Fock_matrix_mo_alpha
    else
-     
+
      do j=1,elec_beta_num
        ! F-K
        do i=1,elec_beta_num
@@ -72,14 +72,14 @@
              + (Fock_matrix_mo_beta(i,j) - Fock_matrix_mo_alpha(i,j))
        enddo
      enddo
-     
+
    endif
 
    do i = 1, mo_num
-     Fock_matrix_diag_mo(i) = Fock_matrix_mo(i,i) 
+     Fock_matrix_diag_mo(i) = Fock_matrix_mo(i,i)
    enddo
-   
-   
+
+
    if(frozen_orb_scf)then
      integer                        :: iorb,jorb
      do i = 1, n_core_orb
@@ -91,11 +91,11 @@
       enddo
      enddo
    endif
-   
+
 END_PROVIDER
- 
- 
- 
+
+
+
 BEGIN_PROVIDER [ double precision, Fock_matrix_mo_alpha, (mo_num,mo_num) ]
    implicit none
    BEGIN_DOC
@@ -104,8 +104,8 @@ BEGIN_PROVIDER [ double precision, Fock_matrix_mo_alpha, (mo_num,mo_num) ]
    call ao_to_mo(Fock_matrix_ao_alpha,size(Fock_matrix_ao_alpha,1), &
                  Fock_matrix_mo_alpha,size(Fock_matrix_mo_alpha,1))
 END_PROVIDER
- 
- 
+
+
 BEGIN_PROVIDER [ double precision, Fock_matrix_mo_beta, (mo_num,mo_num) ]
    implicit none
    BEGIN_DOC
@@ -114,18 +114,18 @@ BEGIN_PROVIDER [ double precision, Fock_matrix_mo_beta, (mo_num,mo_num) ]
    call ao_to_mo(Fock_matrix_ao_beta,size(Fock_matrix_ao_beta,1), &
                  Fock_matrix_mo_beta,size(Fock_matrix_mo_beta,1))
 END_PROVIDER
- 
+
 
 BEGIN_PROVIDER [ double precision, Fock_matrix_ao, (ao_num, ao_num) ]
  implicit none
  BEGIN_DOC
  ! Fock matrix in AO basis set
  END_DOC
- 
+
  if(frozen_orb_scf)then
    call mo_to_ao(Fock_matrix_mo,size(Fock_matrix_mo,1), &
-      Fock_matrix_ao,size(Fock_matrix_ao,1)) 
- else 
+      Fock_matrix_ao,size(Fock_matrix_ao,1))
+ else
   if ( (elec_alpha_num == elec_beta_num).and. &
        (level_shift == 0.) ) &
   then
@@ -137,7 +137,7 @@ BEGIN_PROVIDER [ double precision, Fock_matrix_ao, (ao_num, ao_num) ]
     enddo
   else
     call mo_to_ao(Fock_matrix_mo,size(Fock_matrix_mo,1), &
-       Fock_matrix_ao,size(Fock_matrix_ao,1)) 
+       Fock_matrix_ao,size(Fock_matrix_ao,1))
   endif
  endif
 END_PROVIDER

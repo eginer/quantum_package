@@ -1,7 +1,7 @@
 open Ocamlbuild_plugin;;
 
 dispatch begin function
-  | Before_rules -> 
+  | Before_rules ->
     begin
     end
   | After_rules ->

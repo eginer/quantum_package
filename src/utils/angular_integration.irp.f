@@ -1,6 +1,6 @@
 BEGIN_PROVIDER [integer, degree_max_integration_lebedev]
  BEGIN_DOC
-! integrate correctly a polynom of order "degree_max_integration_lebedev" 
+! integrate correctly a polynom of order "degree_max_integration_lebedev"
  ! needed for the angular integration according to LEBEDEV formulae
  END_DOC
  implicit none
@@ -42,7 +42,7 @@ END_PROVIDER
 &BEGIN_PROVIDER [double precision, weights_angular_integration_lebedev, (n_points_integration_angular_lebedev)]
  implicit none
  BEGIN_DOC
-! Theta phi values together with the weights values for the angular integration : 
+! Theta phi values together with the weights values for the angular integration :
 ! integral [dphi,dtheta] f(x,y,z) = 4 * pi * sum (1<i<n_points_integration_angular_lebedev) f(xi,yi,zi)
 ! Note that theta and phi are in DEGREES !!
  END_DOC
@@ -965,7 +965,7 @@ END_PROVIDER
  weights_angular_integration_lebedev(86) = 0.011812303746904d0
 
  else if (degree_max_integration_lebedev == 17)then
- 
+
 
  theta_angular_integration_lebedev(1) = 0.000000000000000d0
  theta_angular_integration_lebedev(2) = 180.000000000000000d0
@@ -2260,5 +2260,5 @@ END_PROVIDER
  weights_angular_integration_lebedev(169) = 0.005968383987681d0
  weights_angular_integration_lebedev(170) = 0.005968383987681d0
  endif
-END_PROVIDER 
+END_PROVIDER
 

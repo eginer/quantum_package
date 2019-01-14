@@ -200,23 +200,23 @@ subroutine get_ao_two_e_integrals(j,k,l,sze,out_val)
   implicit none
   integer, intent(in)            :: j,k,l, sze
   real(integral_kind), intent(out) :: out_val(sze)
-  
+
   integer                        :: i
   integer(key_kind)              :: hash
   double precision               :: thresh
   PROVIDE ao_two_e_integrals_in_map ao_integrals_map
   thresh = ao_integrals_threshold
-  
+
   if (ao_overlap_abs(j,l) < thresh) then
     out_val = 0.d0
     return
   endif
-  
+
   double precision :: get_ao_two_e_integral
   do i=1,sze
     out_val(i) = get_ao_two_e_integral(i,j,k,l,ao_integrals_map)
   enddo
-  
+
 end
 
 subroutine get_ao_two_e_integrals_non_zero(j,k,l,sze,out_val,out_val_index,non_zero_int)
@@ -229,19 +229,19 @@ subroutine get_ao_two_e_integrals_non_zero(j,k,l,sze,out_val,out_val_index,non_z
   integer, intent(in)            :: j,k,l, sze
   real(integral_kind), intent(out) :: out_val(sze)
   integer, intent(out)           :: out_val_index(sze),non_zero_int
-  
+
   integer                        :: i
   integer(key_kind)              :: hash
   double precision               :: thresh,tmp
   PROVIDE ao_two_e_integrals_in_map
   thresh = ao_integrals_threshold
-  
+
   non_zero_int = 0
   if (ao_overlap_abs(j,l) < thresh) then
     out_val = 0.d0
     return
   endif
- 
+
   non_zero_int = 0
   do i=1,sze
     integer, external :: ao_l4
@@ -257,7 +257,7 @@ subroutine get_ao_two_e_integrals_non_zero(j,k,l,sze,out_val,out_val_index,non_z
     out_val_index(non_zero_int) = i
     out_val(non_zero_int) = tmp
   enddo
-  
+
 end
 
 
@@ -286,11 +286,11 @@ subroutine insert_into_ao_integrals_map(n_integrals,buffer_i, buffer_values)
   BEGIN_DOC
   ! Create new entry into AO map
   END_DOC
-  
+
   integer, intent(in)                :: n_integrals
   integer(key_kind), intent(inout)   :: buffer_i(n_integrals)
   real(integral_kind), intent(inout) :: buffer_values(n_integrals)
-  
+
   call map_append(ao_integrals_map, buffer_i, buffer_values, n_integrals)
 end
 
@@ -324,7 +324,7 @@ subroutine dump_ao_integrals(filename)
     write(66) (key(j), j=1,n), (val(j), j=1,n)
   enddo
   close(66)
-  
+
 end
 
 
@@ -370,6 +370,6 @@ integer function load_ao_integrals(filename)
   call map_deinit(ao_integrals_map)
   98 continue
   stop 'Problem reading ao_integrals_map file in work/'
-  
+
 end
 

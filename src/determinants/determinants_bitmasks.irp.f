@@ -55,6 +55,6 @@ BEGIN_PROVIDER [ integer(bit_kind), double_exc_bitmask, (N_int, 4, N_double_exc_
  double_exc_bitmask(:,particle_,1) = not(HF_bitmask(:,2))
  double_exc_bitmask(:,hole2_,1) = HF_bitmask(:,1)
  double_exc_bitmask(:,particle2_,1) = not(HF_bitmask(:,2))
- 
+
 END_PROVIDER
 

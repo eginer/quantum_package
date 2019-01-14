@@ -68,21 +68,21 @@ subroutine give_explicit_poly_and_gaussian(P_new,P_center,p,fact_k,iorder,alpha,
   double precision               :: P_a(0:max_dim,3), P_b(0:max_dim,3)
   integer                        :: n_new,i,j
   !DIR$ ATTRIBUTES ALIGN : $IRP_ALIGN :: P_a, P_b
-  
+
   iorder(1) = 0
   iorder(2) = 0
   iorder(3) = 0
   P_new(0,1) = 0.d0
   P_new(0,2) = 0.d0
   P_new(0,3) = 0.d0
-  
+
   !DIR$ FORCEINLINE
   call gaussian_product(alpha,A_center,beta,B_center,fact_k,p,P_center)
   if (fact_k < thresh) then
     fact_k = 0.d0
     return
   endif
-  
+
   !DIR$ FORCEINLINE
   call recentered_poly2(P_a(0,1),A_center(1),P_center(1),a(1),P_b(0,1),B_center(1),P_center(1),b(1))
   iorder(1) = a(1) + b(1)
@@ -92,7 +92,7 @@ subroutine give_explicit_poly_and_gaussian(P_new,P_center,p,fact_k,iorder,alpha,
   n_new=0
   !DIR$ FORCEINLINE
   call multiply_poly(P_a(0,1),a(1),P_b(0,1),b(1),P_new(0,1),n_new)
-  
+
   !DIR$ FORCEINLINE
   call recentered_poly2(P_a(0,2),A_center(2),P_center(2),a(2),P_b(0,2),B_center(2),P_center(2),b(2))
   iorder(2) = a(2) + b(2)
@@ -102,7 +102,7 @@ subroutine give_explicit_poly_and_gaussian(P_new,P_center,p,fact_k,iorder,alpha,
   n_new=0
   !DIR$ FORCEINLINE
   call multiply_poly(P_a(0,2),a(2),P_b(0,2),b(2),P_new(0,2),n_new)
-  
+
   !DIR$ FORCEINLINE
   call recentered_poly2(P_a(0,3),A_center(3),P_center(3),a(3),P_b(0,3),B_center(3),P_center(3),b(3))
   iorder(3) = a(3) + b(3)
@@ -112,15 +112,15 @@ subroutine give_explicit_poly_and_gaussian(P_new,P_center,p,fact_k,iorder,alpha,
   n_new=0
   !DIR$ FORCEINLINE
   call multiply_poly(P_a(0,3),a(3),P_b(0,3),b(3),P_new(0,3),n_new)
-  
+
 end
 
 
 subroutine give_explicit_poly_and_gaussian_double(P_new,P_center,p,fact_k,iorder,alpha,beta,gama,a,b,A_center,B_center,Nucl_center,dim)
   BEGIN_DOC
   ! Transforms the product of
-  !          (x-x_A)^a(1) (x-x_B)^b(1) (x-x_A)^a(2) (y-y_B)^b(2) (z-z_A)^a(3) (z-z_B)^b(3) 
-  !          exp(-(r-A)^2 alpha) exp(-(r-B)^2 beta) exp(-(r-Nucl_center)^2 gama 
+  !          (x-x_A)^a(1) (x-x_B)^b(1) (x-x_A)^a(2) (y-y_B)^b(2) (z-z_A)^a(3) (z-z_B)^b(3)
+  !          exp(-(r-A)^2 alpha) exp(-(r-B)^2 beta) exp(-(r-Nucl_center)^2 gama
   !
   ! into
   !        fact_k * [ sum (l_x = 0,i_order(1)) P_new(l_x,1) * (x-P_center(1))^l_x ] exp (- p (x-P_center(1))^2 )
@@ -154,7 +154,7 @@ subroutine give_explicit_poly_and_gaussian_double(P_new,P_center,p,fact_k,iorder
   call gaussian_product(p_tmp,P_center_tmp,gama,Nucl_center,fact_k_bis,p,P_center)
   fact_k = fact_k_bis * fact_k_tmp
 
-  ! Then you build the coefficient of the new polynom 
+  ! Then you build the coefficient of the new polynom
   do i = 0, iorder(1)
    P_new(i,1) = 0.d0
    do j = i,iorder(1)
@@ -173,7 +173,7 @@ subroutine give_explicit_poly_and_gaussian_double(P_new,P_center,p,fact_k,iorder
     P_new(i,3) = P_new(i,3) + P_new_tmp(j,3) * binom_func(j,j-i) * (P_center(3) - P_center_tmp(3))**(j-i)
    enddo
   enddo
-  
+
 end
 
 
@@ -184,21 +184,21 @@ subroutine gaussian_product(a,xa,b,xb,k,p,xp)
   ! Gaussian product in 1D.
   ! e^{-a (x-x_A)^2} e^{-b (x-x_B)^2} = K_{ab}^x e^{-p (x-x_P)^2}
   END_DOC
-  
+
   double precision, intent(in)   :: a,b         ! Exponents
   double precision, intent(in)   :: xa(3),xb(3) ! Centers
   double precision, intent(out)  :: p           ! New exponent
   double precision, intent(out)  :: xp(3)       ! New center
   double precision, intent(out)  :: k           ! Constant
-  
+
   double precision               :: p_inv
-  
+
   ASSERT (a>0.)
   ASSERT (b>0.)
-  
+
   double precision               :: xab(3), ab
   !DIR$ ATTRIBUTES ALIGN : $IRP_ALIGN :: xab
-  
+
   p = a+b
   p_inv = 1.d0/(a+b)
   ab = a*b
@@ -226,20 +226,20 @@ subroutine gaussian_product_x(a,xa,b,xb,k,p,xp)
   ! Gaussian product in 1D.
   ! e^{-a (x-x_A)^2} e^{-b (x-x_B)^2} = K_{ab}^x e^{-p (x-x_P)^2}
   END_DOC
-  
+
   double precision  , intent(in) :: a,b      ! Exponents
   double precision  , intent(in) :: xa,xb    ! Centers
   double precision  , intent(out) :: p       ! New exponent
   double precision  , intent(out) :: xp      ! New center
   double precision  , intent(out) :: k       ! Constant
-  
+
   double precision               :: p_inv
-  
+
   ASSERT (a>0.)
   ASSERT (b>0.)
-  
+
   double precision               :: xab, ab
-  
+
   p = a+b
   p_inv = 1.d0/(a+b)
   ab = a*b
@@ -253,10 +253,10 @@ subroutine gaussian_product_x(a,xa,b,xb,k,p,xp)
   k = exp(-k)
   xp = (a*xa+b*xb)*p_inv
 end subroutine
-  
-  
-  
-  
+
+
+
+
 
 subroutine multiply_poly(b,nb,c,nc,d,nd)
   implicit none
@@ -264,12 +264,12 @@ subroutine multiply_poly(b,nb,c,nc,d,nd)
   ! Multiply two polynomials
   ! D(t) += B(t)*C(t)
   END_DOC
-  
+
   integer, intent(in)            :: nb, nc
   integer, intent(out)           :: nd
   double precision, intent(in)   :: b(0:nb), c(0:nc)
   double precision, intent(inout) :: d(0:nb+nc)
-  
+
   integer                        :: ndtmp
   integer                        :: ib, ic, id, k
   if(ior(nc,nb) >= 0) then ! True if nc>=0 and nb>=0
@@ -278,25 +278,25 @@ subroutine multiply_poly(b,nb,c,nc,d,nd)
     return
   endif
   ndtmp = nb+nc
-  
+
   do ic = 0,nc
     d(ic) = d(ic) + c(ic) * b(0)
   enddo
-  
+
   do ib=1,nb
     d(ib) = d(ib) + c(0) * b(ib)
     do ic = 1,nc
       d(ib+ic) = d(ib+ic) + c(ic) * b(ib)
     enddo
   enddo
-  
+
   do nd = ndtmp,0,-1
     if (d(nd) == 0.d0) then
       cycle
     endif
     exit
   enddo
-  
+
 end
 
 subroutine add_poly(b,nb,c,nc,d,nd)
@@ -309,7 +309,7 @@ subroutine add_poly(b,nb,c,nc,d,nd)
   integer, intent(out)           :: nd
   double precision, intent(in)   :: b(0:nb), c(0:nc)
   double precision, intent(out)  :: d(0:nb+nc)
-  
+
   nd = nb+nc
   integer                        :: ib, ic, id
   do ib=0,max(nb,nc)
@@ -321,7 +321,7 @@ subroutine add_poly(b,nb,c,nc,d,nd)
       exit
     endif
   enddo
-  
+
 end
 
 
@@ -337,7 +337,7 @@ subroutine add_poly_multiply(b,nb,cst,d,nd)
   integer, intent(inout)         :: nd
   double precision, intent(in)   :: b(0:nb),cst
   double precision, intent(inout) :: d(0:max(nb,nd))
-  
+
   nd = max(nd,nb)
   if (nd /= -1) then
     integer                        :: ib, ic, id
@@ -351,7 +351,7 @@ subroutine add_poly_multiply(b,nb,cst,d,nd)
       endif
     enddo
   endif
-  
+
 end
 
 
@@ -441,7 +441,7 @@ double precision function rint(n,rho)
   double precision               :: rho,u,rint1,v,val0,rint_large_n,u_inv
   integer                        :: n,k
   double precision               :: two_rho_inv
-  
+
   if(n.eq.0)then
     if(rho == 0.d0)then
       rint=1.d0
@@ -488,10 +488,10 @@ double precision function rint_sum(n_pt_out,rho,d1)
   double precision               :: u,rint1,v,val0,rint_large_n,u_inv
   integer                        :: n,k,i
   double precision               :: two_rho_inv, rint_tmp, di
-  
-  
+
+
   if(rho < 1.d0)then
-    
+
     if(rho == 0.d0)then
       rint_sum=d1(0)
     else
@@ -499,20 +499,20 @@ double precision function rint_sum(n_pt_out,rho,d1)
       u=rho*u_inv
       rint_sum=0.5d0*u_inv*sqpi*erf(u) *d1(0)
     endif
-    
+
     do i=2,n_pt_out,2
       n = shiftr(i,1)
       rint_sum = rint_sum + d1(i)*rint1(n,rho)
     enddo
-    
+
   else
-    
+
     if(rho.gt.80.d0)then
      v=0.d0
     else
      v=dexp(-rho)
     endif
-     
+
     u_inv=1.d0/dsqrt(rho)
     u=rho*u_inv
     two_rho_inv = 0.5d0*u_inv*u_inv
@@ -529,7 +529,7 @@ double precision function rint_sum(n_pt_out,rho,d1)
       n = shiftr(i,1)
       rint_sum = rint_sum + d1(i)*rint_large_n(n,rho)
     enddo
-    
+
   endif
 end
 

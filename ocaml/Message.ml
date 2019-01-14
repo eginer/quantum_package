@@ -4,9 +4,9 @@ open Qptypes
 (** New job : Request to create a new multi-tasked job *)
 
 module State : sig
-  type t 
+  type t
   val of_string : string -> t
-  val to_string : t -> string 
+  val to_string : t -> string
 end = struct
   type t = string
   let of_string x = x
@@ -14,7 +14,7 @@ end = struct
 end
 
 module Newjob_msg : sig
-  type t = 
+  type t =
   { state: State.t;
     address_tcp: Address.Tcp.t ;
     address_inproc: Address.Inproc.t;
@@ -22,7 +22,7 @@ module Newjob_msg : sig
   val create : address_tcp:string -> address_inproc:string -> state:string -> t
   val to_string : t -> string
 end = struct
-  type t = 
+  type t =
   { state: State.t;
     address_tcp: Address.Tcp.t ;
     address_inproc: Address.Inproc.t;
@@ -34,19 +34,19 @@ end = struct
     }
   let to_string t =
     Printf.sprintf "new_job %s %s %s"
-     ( State.to_string t.state ) 
-     ( Address.Tcp.to_string t.address_tcp ) 
-     ( Address.Inproc.to_string t.address_inproc ) 
+     ( State.to_string t.state )
+     ( Address.Tcp.to_string t.address_tcp )
+     ( Address.Inproc.to_string t.address_inproc )
 end
 
 module Endjob_msg : sig
-  type t = 
+  type t =
   { state: State.t;
   }
   val create : state:string -> t
   val to_string : t -> string
 end = struct
-  type t = 
+  type t =
   { state: State.t;
   }
   let create ~state =
@@ -54,7 +54,7 @@ end = struct
     }
   let to_string t =
     Printf.sprintf "end_job %s"
-     ( State.to_string t.state ) 
+     ( State.to_string t.state )
 end
 
 
@@ -66,7 +66,7 @@ module Connect_msg : sig
   val to_string : t -> string
 end = struct
   type t = Tcp | Inproc | Ipc
-  let create ~typ = 
+  let create ~typ =
     match typ with
     | "tcp" -> Tcp
     | "inproc" -> Inproc
@@ -81,7 +81,7 @@ end
 (** ConnectReply : Reply to the connect messsage *)
 
 module ConnectReply_msg : sig
-  type t = 
+  type t =
   { client_id: Id.Client.t ;
     state: State.t ;
     push_address: Address.t;
@@ -89,12 +89,12 @@ module ConnectReply_msg : sig
   val create : state:State.t -> client_id:Id.Client.t -> push_address:Address.t -> t
   val to_string : t -> string
 end = struct
-  type t = 
+  type t =
   { client_id: Id.Client.t ;
     state: State.t ;
     push_address: Address.t;
   }
-  let create ~state ~client_id ~push_address = 
+  let create ~state ~client_id ~push_address =
     { client_id ; state ; push_address }
   let to_string x =
     Printf.sprintf "connect_reply %s %d %s"
@@ -106,18 +106,18 @@ end
 
 (** Disconnect : disconnect a client from the task server *)
 module Disconnect_msg : sig
-  type t = 
+  type t =
   { client_id: Id.Client.t ;
     state: State.t ;
   }
   val create : state:string -> client_id:int -> t
   val to_string : t -> string
 end = struct
-  type t = 
+  type t =
   { client_id: Id.Client.t ;
     state: State.t ;
   }
-  let create ~state ~client_id = 
+  let create ~state ~client_id =
     { client_id = Id.Client.of_int client_id ; state = State.of_string state }
   let to_string x =
     Printf.sprintf "disconnect %s %d"
@@ -126,18 +126,18 @@ end = struct
 end
 
 module DisconnectReply_msg : sig
-  type t = 
-  { 
+  type t =
+  {
     state: State.t ;
   }
   val create : state:State.t -> t
   val to_string : t -> string
 end = struct
-  type t = 
-  { 
+  type t =
+  {
     state: State.t ;
   }
-  let create ~state = 
+  let create ~state =
     { state }
   let to_string x =
     Printf.sprintf "disconnect_reply %s"
@@ -148,14 +148,14 @@ end
 
 (** AddTask : Add a new task to the queue *)
 module AddTask_msg : sig
-  type t = 
+  type t =
   { state: State.t;
     tasks:  string list;
   }
   val create : state:string -> tasks:string list -> t
   val to_string : t -> string
 end = struct
-  type t = 
+  type t =
   { state: State.t;
     tasks:  string list;
   }
@@ -167,7 +167,7 @@ end
 
 (** AddTaskReply : Reply to the AddTask message *)
 module AddTaskReply_msg : sig
-  type t  
+  type t
   val create : task_id:Id.Task.t -> t
   val to_string : t -> string
 end = struct
@@ -180,23 +180,23 @@ end
 
 (** DelTask : Remove a task from the queue *)
 module DelTask_msg : sig
-  type t = 
+  type t =
   { state:  State.t;
     task_ids:  Id.Task.t list
   }
   val create : state:string -> task_ids:int list -> t
   val to_string : t -> string
 end = struct
-  type t = 
+  type t =
   { state:  State.t;
     task_ids:  Id.Task.t list
   }
   let create ~state ~task_ids =
-    { state = State.of_string state ; 
+    { state = State.of_string state ;
       task_ids = List.map ~f:Id.Task.of_int task_ids
     }
   let to_string x =
-    Printf.sprintf "del_task %s %s" 
+    Printf.sprintf "del_task %s %s"
       (State.to_string x.state)
       (String.concat ~sep:"|" @@ List.map ~f:Id.Task.to_string x.task_ids)
 end
@@ -204,7 +204,7 @@ end
 
 (** DelTaskReply : Reply to the DelTask message *)
 module DelTaskReply_msg : sig
-  type t  
+  type t
   val create : task_ids:Id.Task.t list -> more:bool -> t
   val to_string : t -> string
 end = struct
@@ -214,30 +214,30 @@ end = struct
   }
   let create ~task_ids ~more = { task_ids ; more }
   let to_string x =
-    let more = 
+    let more =
       if x.more then "more"
       else "done"
     in
-    Printf.sprintf "del_task_reply %s %s" 
-     more (String.concat ~sep:"|" @@ List.map ~f:Id.Task.to_string x.task_ids) 
+    Printf.sprintf "del_task_reply %s %s"
+     more (String.concat ~sep:"|" @@ List.map ~f:Id.Task.to_string x.task_ids)
 end
 
 
 
 (** GetTask : get a new task to do *)
 module GetTask_msg : sig
-  type t = 
+  type t =
   { client_id: Id.Client.t ;
     state: State.t ;
   }
   val create : state:string -> client_id:int -> t
   val to_string : t -> string
 end = struct
-  type t = 
+  type t =
   { client_id: Id.Client.t ;
     state: State.t ;
   }
-  let create ~state ~client_id = 
+  let create ~state ~client_id =
     { client_id = Id.Client.of_int client_id ; state = State.of_string state }
   let to_string x =
     Printf.sprintf "get_task %s %d"
@@ -247,7 +247,7 @@ end
 
 (** GetTaskReply : Reply to the GetTask message *)
 module GetTaskReply_msg : sig
-  type t  
+  type t
   val create : task_id:Id.Task.t option -> task:string option -> t
   val to_string : t -> string
 end = struct
@@ -258,7 +258,7 @@ end = struct
   let create ~task_id ~task = { task_id ; task }
   let to_string x =
     match x.task_id, x.task with
-    | Some task_id, Some task -> 
+    | Some task_id, Some task ->
       Printf.sprintf "get_task_reply %d %s" (Id.Task.to_int task_id) task
     | _ ->
       Printf.sprintf "get_task_reply 0"
@@ -267,7 +267,7 @@ end
 
 (** GetTasks : get a new task to do *)
 module GetTasks_msg : sig
-  type t = 
+  type t =
   { client_id: Id.Client.t ;
     state: State.t ;
     n_tasks: Strictly_positive_int.t ;
@@ -275,12 +275,12 @@ module GetTasks_msg : sig
   val create : state:string -> client_id:int -> n_tasks:int -> t
   val to_string : t -> string
 end = struct
-  type t = 
+  type t =
   { client_id: Id.Client.t ;
     state: State.t ;
     n_tasks: Strictly_positive_int.t;
   }
-  let create ~state ~client_id ~n_tasks = 
+  let create ~state ~client_id ~n_tasks =
     { client_id = Id.Client.of_int client_id ; state = State.of_string state ;
       n_tasks = Strictly_positive_int.of_int n_tasks }
   let to_string x =
@@ -300,15 +300,15 @@ end = struct
   type t = (Id.Task.t option * string) list
   let create l = l
   let to_string _ =
-     "get_tasks_reply ok" 
-  let to_string_list x = 
+     "get_tasks_reply ok"
+  let to_string_list x =
      "get_tasks_reply ok" :: (
      List.map x ~f:(fun (task_id, task) ->
        match task_id with
        | Some task_id -> Printf.sprintf "%d %s" (Id.Task.to_int task_id) task
-       | None -> Printf.sprintf "0 terminate" 
+       | None -> Printf.sprintf "0 terminate"
      ) )
-     
+
 end
 
 
@@ -325,7 +325,7 @@ end = struct
   { client_id : Id.Client.t ;
     state     : State.t ;
     key       : string; }
-  let create ~client_id ~state ~key = 
+  let create ~client_id ~state ~key =
     { client_id = Id.Client.of_int client_id ;
       state = State.of_string state;
       key ; }
@@ -361,13 +361,13 @@ end = struct
   { client_id : Id.Client.t ;
     state     : State.t ;
     key       : string }
-  let create ~client_id ~state ~key = 
+  let create ~client_id ~state ~key =
     { client_id = Id.Client.of_int client_id ;
       state = State.of_string state;
       key }
   let to_string x =
     Printf.sprintf "get_data %s %d %s" (State.to_string x.state)
-    (Id.Client.to_int x.client_id) x.key 
+    (Id.Client.to_int x.client_id) x.key
 end
 
 
@@ -375,12 +375,12 @@ end
 module GetDataReply_msg : sig
   type t
   val create : value:string -> t
-  val to_string : t -> string 
+  val to_string : t -> string
   val to_string_list : t -> string list
 end = struct
   type t =  string
   let create ~value = value
-  let to_string x = 
+  let to_string x =
     Printf.sprintf "get_data_reply %d %s"
       (String.length x)  x
   let to_string_list x = [
@@ -405,8 +405,8 @@ end = struct
     state: State.t ;
     task_ids:  Id.Task.t list;
   }
-  let create ~state ~client_id ~task_ids = 
-    { client_id = Id.Client.of_int client_id ; 
+  let create ~state ~client_id ~task_ids =
+    { client_id = Id.Client.of_int client_id ;
       state = State.of_string state ;
       task_ids  = List.map ~f:Id.Task.of_int task_ids;
     }
@@ -420,7 +420,7 @@ end
 
 (** Terminate *)
 module Terminate_msg : sig
-  type t 
+  type t
   val create : t
   val to_string : t -> string
 end = struct
@@ -431,7 +431,7 @@ end
 
 (** Abort *)
 module Abort_msg : sig
-  type t 
+  type t
   val create : t
   val to_string : t -> string
 end = struct
@@ -442,7 +442,7 @@ end
 
 (** OK *)
 module Ok_msg : sig
-  type t 
+  type t
   val create : t
   val to_string : t -> string
 end = struct
@@ -453,14 +453,14 @@ end
 
 (** Error *)
 module Error_msg : sig
-  type t 
+  type t
   val create : string -> t
   val to_string : t -> string
 end = struct
   type t = string
   let create x = x
   let to_string x =
-     String.concat ~sep:" "  [ "error" ; x ] 
+     String.concat ~sep:" "  [ "error" ; x ]
 end
 
 
@@ -491,15 +491,15 @@ type t =
 | Abort               of  Abort_msg.t
 | Ok                  of  Ok_msg.t
 | Error               of  Error_msg.t
-| SetStopped 
-| SetWaiting 
-| SetRunning 
+| SetStopped
+| SetWaiting
+| SetRunning
 
 
-let of_string s = 
+let of_string s =
   let open Message_lexer in
     match parse s with
-    | AddTask_  { state ; tasks } -> 
+    | AddTask_  { state ; tasks } ->
         AddTask (AddTask_msg.create ~state ~tasks)
     | DelTask_  { state ; task_ids } ->
         DelTask (DelTask_msg.create ~state ~task_ids)
@@ -528,8 +528,8 @@ let of_string s =
     | SetRunning_ -> SetRunning
     | Ok_ -> Ok (Ok_msg.create)
     | Error_ m -> Error (Error_msg.create m)
-  
-    
+
+
 
 let to_string = function
 | GetData             x -> GetData_msg.to_string          x

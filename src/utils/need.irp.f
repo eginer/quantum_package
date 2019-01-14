@@ -1,5 +1,5 @@
- 
-      double precision function SABpartial(zA,zB,A,B,nA,nB,gamA,gamB,l) 
+
+      double precision function SABpartial(zA,zB,A,B,nA,nB,gamA,gamB,l)
       implicit double precision(a-h,o-z)
       dimension nA(3),nB(3)
       dimension A(3),B(3)

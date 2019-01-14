@@ -6,7 +6,7 @@ kohn_sham
 The Kohn-Sham module performs *Restricted* Kohn-Sham calculations (the
 spatial part of the |MOs| is common for alpha and beta spinorbitals).
 
-The Kohn-Sham in an SCF and therefore is based on the ``scf_utils`` structure. 
+The Kohn-Sham in an SCF and therefore is based on the ``scf_utils`` structure.
 It performs the following actions:
 
 #. Compute/Read all the one- and two-electron integrals, and store them in memory
@@ -14,12 +14,12 @@ It performs the following actions:
    will read them as initial guess. Otherwise, it will create a guess.
 #. Perform the |SCF| iterations
 
-The definition of the Fock matrix is in :file:`kohn_sham fock_matrix_ks.irp.f` 
-For the keywords related to the |SCF| procedure, see the ``scf_utils`` directory where you will find all options. 
-The main are: 
+The definition of the Fock matrix is in :file:`kohn_sham fock_matrix_ks.irp.f`
+For the keywords related to the |SCF| procedure, see the ``scf_utils`` directory where you will find all options.
+The main are:
 
-#. :option:`scf_utils thresh_scf` 
-#. :option:`scf_utils level_shift` 
+#. :option:`scf_utils thresh_scf`
+#. :option:`scf_utils level_shift`
 
 At each iteration, the |MOs| are saved in the |EZFIO| database. Hence, if the calculation
 crashes for any unexpected reason, the calculation can be restarted by running again

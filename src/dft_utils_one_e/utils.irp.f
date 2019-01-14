@@ -1,6 +1,6 @@
 
-subroutine GGA_sr_type_functionals(r,rho_a,rho_b,grad_rho_a_2,grad_rho_b_2,grad_rho_a_b, & 
-                                ex,vx_rho_a,vx_rho_b,vx_grad_rho_a_2,vx_grad_rho_b_2,vx_grad_rho_a_b, &  
+subroutine GGA_sr_type_functionals(r,rho_a,rho_b,grad_rho_a_2,grad_rho_b_2,grad_rho_a_b, &
+                                ex,vx_rho_a,vx_rho_b,vx_grad_rho_a_2,vx_grad_rho_b_2,vx_grad_rho_a_b, &
                                 ec,vc_rho_a,vc_rho_b,vc_grad_rho_a_2,vc_grad_rho_b_2,vc_grad_rho_a_b )
  implicit none
  BEGIN_DOC
@@ -21,7 +21,7 @@ subroutine GGA_sr_type_functionals(r,rho_a,rho_b,grad_rho_a_2,grad_rho_b_2,grad_
    vx_grad_rho_a_2 = 0.d0
    vx_grad_rho_a_b = 0.d0
    vx_grad_rho_b_2 = 0.d0
-  else 
+  else
    print*, 'Exchange functional required does not exist ...'
    print*,'exchange_functional',exchange_functional
    stop
@@ -44,7 +44,7 @@ subroutine GGA_sr_type_functionals(r,rho_a,rho_b,grad_rho_a_2,grad_rho_b_2,grad_
    vc_grad_rho_a_2 = 0.d0
    vc_grad_rho_a_b = 0.d0
    vc_grad_rho_b_2 = 0.d0
-  else 
+  else
    print*, 'Correlation functional required does not exist ...'
    print*, 'correlation_functional',correlation_functional
    stop
@@ -53,12 +53,12 @@ subroutine GGA_sr_type_functionals(r,rho_a,rho_b,grad_rho_a_2,grad_rho_b_2,grad_
 end
 
 
-subroutine GGA_type_functionals(r,rho_a,rho_b,grad_rho_a_2,grad_rho_b_2,grad_rho_a_b, & 
-                                ex,vx_rho_a,vx_rho_b,vx_grad_rho_a_2,vx_grad_rho_b_2,vx_grad_rho_a_b, &  
+subroutine GGA_type_functionals(r,rho_a,rho_b,grad_rho_a_2,grad_rho_b_2,grad_rho_a_b, &
+                                ex,vx_rho_a,vx_rho_b,vx_grad_rho_a_2,vx_grad_rho_b_2,vx_grad_rho_a_b, &
                                 ec,vc_rho_a,vc_rho_b,vc_grad_rho_a_2,vc_grad_rho_b_2,vc_grad_rho_a_b )
  implicit none
  BEGIN_DOC
- ! routine that helps in building the x/c potentials on the AO basis for a GGA functional 
+ ! routine that helps in building the x/c potentials on the AO basis for a GGA functional
  END_DOC
  double precision, intent(in)  :: r(3),rho_a(N_states),rho_b(N_states),grad_rho_a_2(N_states),grad_rho_b_2(N_states),grad_rho_a_b(N_states)
  double precision, intent(out) :: ex(N_states),vx_rho_a(N_states),vx_rho_b(N_states),vx_grad_rho_a_2(N_states),vx_grad_rho_b_2(N_states),vx_grad_rho_a_b(N_states)
@@ -77,7 +77,7 @@ subroutine GGA_type_functionals(r,rho_a,rho_b,grad_rho_a_2,grad_rho_b_2,grad_rho
    vx_grad_rho_a_2 = 0.d0
    vx_grad_rho_a_b = 0.d0
    vx_grad_rho_b_2 = 0.d0
-  else 
+  else
    print*, 'Exchange functional required does not exist ...'
    print*,'exchange_functional',exchange_functional
    stop
@@ -100,7 +100,7 @@ subroutine GGA_type_functionals(r,rho_a,rho_b,grad_rho_a_2,grad_rho_b_2,grad_rho
    vc_grad_rho_a_2 = 0.d0
    vc_grad_rho_a_b = 0.d0
    vc_grad_rho_b_2 = 0.d0
-  else 
+  else
    print*, 'Correlation functional required does not exist ...'
    print*, 'correlation_functional',correlation_functional
    stop

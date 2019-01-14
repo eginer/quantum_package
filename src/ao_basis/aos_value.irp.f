@@ -9,14 +9,14 @@ double precision function ao_value(i,r)
  integer :: m,num_ao
  double precision :: center_ao(3)
  double precision :: beta
- integer :: power_ao(3) 
+ integer :: power_ao(3)
  double precision :: accu,dx,dy,dz,r2
  num_ao = ao_nucl(i)
  power_ao(1:3)= ao_power(i,1:3)
  center_ao(1:3) = nucl_coord(num_ao,1:3)
- dx = (r(1) - center_ao(1)) 
- dy = (r(2) - center_ao(2)) 
- dz = (r(3) - center_ao(3)) 
+ dx = (r(1) - center_ao(1))
+ dy = (r(2) - center_ao(2))
+ dz = (r(3) - center_ao(3))
  r2 = dx*dx + dy*dy + dz*dz
  dx = dx**power_ao(1)
  dy = dy**power_ao(2)
@@ -25,7 +25,7 @@ double precision function ao_value(i,r)
  accu = 0.d0
  do m=1,ao_prim_num(i)
    beta = ao_expo_ordered_transp(m,i)
-   accu += ao_coef_normalized_ordered_transp(m,i) * dexp(-beta*r2) 
+   accu += ao_coef_normalized_ordered_transp(m,i) * dexp(-beta*r2)
  enddo
  ao_value = accu * dx * dy * dz
 
@@ -43,14 +43,14 @@ double precision function primitive_value(i,j,r)
  integer :: m,num_ao
  double precision :: center_ao(3)
  double precision :: beta
- integer :: power_ao(3) 
+ integer :: power_ao(3)
  double precision :: accu,dx,dy,dz,r2
  num_ao = ao_nucl(i)
  power_ao(1:3)= ao_power(i,1:3)
  center_ao(1:3) = nucl_coord(num_ao,1:3)
- dx = (r(1) - center_ao(1)) 
- dy = (r(2) - center_ao(2)) 
- dz = (r(3) - center_ao(3)) 
+ dx = (r(1) - center_ao(1))
+ dy = (r(2) - center_ao(2))
+ dz = (r(3) - center_ao(3))
  r2 = dx*dx + dy*dy + dz*dz
  dx = dx**power_ao(1)
  dy = dy**power_ao(2)
@@ -59,7 +59,7 @@ double precision function primitive_value(i,j,r)
  accu = 0.d0
  m=j
  beta = ao_expo_ordered_transp(m,i)
- accu += dexp(-beta*r2) 
+ accu += dexp(-beta*r2)
  primitive_value = accu * dx * dy * dz
 
 end
@@ -74,7 +74,7 @@ subroutine give_all_aos_at_r_old(r,aos_array)
  double precision, intent(out) :: aos_array(ao_num)
  integer :: i
  double precision :: ao_value
- do i = 1, ao_num 
+ do i = 1, ao_num
   aos_array(i) = ao_value(i,r)
  enddo
 end
@@ -88,8 +88,8 @@ subroutine give_all_aos_at_r(r,aos_array)
  END_DOC
  double precision, intent(in) :: r(3)
  double precision, intent(out) :: aos_array(ao_num)
- 
- integer :: power_ao(3) 
+
+ integer :: power_ao(3)
  integer :: i,j,k,l,m
  double precision :: dx,dy,dz,r2
  double precision ::      dx2,dy2,dz2
@@ -97,20 +97,20 @@ subroutine give_all_aos_at_r(r,aos_array)
  double precision :: beta
  do i = 1, nucl_num
   center_ao(1:3) = nucl_coord(i,1:3)
-  dx = (r(1) - center_ao(1)) 
-  dy = (r(2) - center_ao(2)) 
-  dz = (r(3) - center_ao(3)) 
+  dx = (r(1) - center_ao(1))
+  dy = (r(2) - center_ao(2))
+  dz = (r(3) - center_ao(3))
   r2 = dx*dx + dy*dy + dz*dz
-  do j = 1,Nucl_N_Aos(i) 
-   k = Nucl_Aos_transposed(j,i) ! index of the ao in the ordered format 
+  do j = 1,Nucl_N_Aos(i)
+   k = Nucl_Aos_transposed(j,i) ! index of the ao in the ordered format
    aos_array(k) = 0.d0
    power_ao(1:3)= ao_power_ordered_transp_per_nucl(1:3,j,i)
-   dx2 = dx**power_ao(1) 
-   dy2 = dy**power_ao(2) 
-   dz2 = dz**power_ao(3) 
-   do l = 1,ao_prim_num(k) 
+   dx2 = dx**power_ao(1)
+   dy2 = dy**power_ao(2)
+   dz2 = dz**power_ao(3)
+   do l = 1,ao_prim_num(k)
     beta = ao_expo_ordered_transp_per_nucl(l,j,i)
-    aos_array(k)+= ao_coef_normalized_ordered_transp_per_nucl(l,j,i) * dexp(-beta*r2) 
+    aos_array(k)+= ao_coef_normalized_ordered_transp_per_nucl(l,j,i) * dexp(-beta*r2)
    enddo
    aos_array(k) = aos_array(k) * dx2 * dy2 * dz2
   enddo
@@ -128,8 +128,8 @@ subroutine give_all_aos_and_grad_at_r(r,aos_array,aos_grad_array)
  double precision, intent(in) :: r(3)
  double precision, intent(out) :: aos_array(ao_num)
  double precision, intent(out) :: aos_grad_array(3,ao_num)
- 
- integer :: power_ao(3) 
+
+ integer :: power_ao(3)
  integer :: i,j,k,l,m
  double precision :: dx,dy,dz,r2
  double precision ::      dx2,dy2,dz2
@@ -138,12 +138,12 @@ subroutine give_all_aos_and_grad_at_r(r,aos_array,aos_grad_array)
  double precision :: beta,accu_1,accu_2,contrib
  do i = 1, nucl_num
   center_ao(1:3) = nucl_coord(i,1:3)
-  dx = (r(1) - center_ao(1)) 
-  dy = (r(2) - center_ao(2)) 
-  dz = (r(3) - center_ao(3)) 
+  dx = (r(1) - center_ao(1))
+  dy = (r(2) - center_ao(2))
+  dz = (r(3) - center_ao(3))
   r2 = dx*dx + dy*dy + dz*dz
-  do j = 1,Nucl_N_Aos(i) 
-   k = Nucl_Aos_transposed(j,i) ! index of the ao in the ordered format 
+  do j = 1,Nucl_N_Aos(i)
+   k = Nucl_Aos_transposed(j,i) ! index of the ao in the ordered format
    aos_array(k) = 0.d0
    aos_grad_array(1,k) = 0.d0
    aos_grad_array(2,k) = 0.d0
@@ -154,7 +154,7 @@ subroutine give_all_aos_and_grad_at_r(r,aos_array,aos_grad_array)
    dz2 = dz**power_ao(3)
    if(power_ao(1) .ne. 0)then
     dx1 = dble(power_ao(1)) * dx**(power_ao(1)-1)
-   else 
+   else
     dx1 = 0.d0
    endif
    if(power_ao(2) .ne. 0)then
@@ -169,9 +169,9 @@ subroutine give_all_aos_and_grad_at_r(r,aos_array,aos_grad_array)
    endif
    accu_1 = 0.d0
    accu_2 = 0.d0
-   do l = 1,ao_prim_num(k) 
+   do l = 1,ao_prim_num(k)
     beta = ao_expo_ordered_transp_per_nucl(l,j,i)
-    contrib = ao_coef_normalized_ordered_transp_per_nucl(l,j,i) * dexp(-beta*r2) 
+    contrib = ao_coef_normalized_ordered_transp_per_nucl(l,j,i) * dexp(-beta*r2)
     accu_1 += contrib
     accu_2 += contrib * beta
    enddo
@@ -213,7 +213,7 @@ subroutine give_all_aos_and_grad_and_lapl_at_r(r,aos_array,aos_grad_array,aos_la
   dz = (r(3) - center_ao(3))
   r2 = dx*dx + dy*dy + dz*dz
   do j = 1,Nucl_N_Aos(i)
-   k = Nucl_Aos_transposed(j,i) ! index of the ao in the ordered format 
+   k = Nucl_Aos_transposed(j,i) ! index of the ao in the ordered format
    aos_array(k) = 0.d0
    aos_grad_array(k,1) = 0.d0
    aos_grad_array(k,2) = 0.d0
@@ -229,7 +229,7 @@ subroutine give_all_aos_and_grad_and_lapl_at_r(r,aos_array,aos_grad_array,aos_la
    dz2 = dz**power_ao(3)
    if(power_ao(1) .ne. 0)then
     dx1 = dble(power_ao(1)) * dx**(power_ao(1)-1)
-   else  
+   else
     dx1 = 0.d0
    endif
    ! For the Laplacian
@@ -290,7 +290,7 @@ subroutine give_all_aos_and_grad_and_lapl_at_r(r,aos_array,aos_grad_array,aos_la
    aos_lapl_array(k,1) = accu_1 * dx3  * dy2 * dz2- 2.d0 * dx4 * dy2 * dz2* accu_2 +4.d0 * dx5 *dy2 * dz2* accu_3
    aos_lapl_array(k,2) = accu_1 * dx2  * dy3 * dz2- 2.d0 * dx2 * dy4 * dz2* accu_2 +4.d0 * dx2 *dy5 * dz2* accu_3
    aos_lapl_array(k,3) = accu_1 * dx2  * dy2 * dz3- 2.d0 * dx2 * dy2 * dz4* accu_2 +4.d0 * dx2 *dy2 * dz5* accu_3
- 
+
   enddo
  enddo
 end

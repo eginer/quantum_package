@@ -4,7 +4,7 @@
  BEGIN_DOC
  ! n_points_radial_grid = number of radial grid points per atom
  !
- ! n_points_integration_angular = number of angular grid points per atom 
+ ! n_points_integration_angular = number of angular grid points per atom
  !
  ! These numbers are automatically set by setting the grid_type_sgn parameter
  END_DOC
@@ -25,7 +25,7 @@ select case (grid_type_sgn)
       write(*,*) '!!! Quadrature grid not available !!!'
       stop
   end select
-END_PROVIDER 
+END_PROVIDER
 
 BEGIN_PROVIDER [integer, n_points_grid_per_atom]
   implicit none
@@ -33,7 +33,7 @@ BEGIN_PROVIDER [integer, n_points_grid_per_atom]
   ! Number of grid points per atom
   END_DOC
   n_points_grid_per_atom = n_points_integration_angular * n_points_radial_grid
-  
+
 END_PROVIDER
 
  BEGIN_PROVIDER [double precision, angular_quadrature_points, (n_points_integration_angular,3) ]
@@ -58,43 +58,43 @@ END_PROVIDER
   accu = 0.d0
 
   select case (n_points_integration_angular)
-      
+
     case (5810)
       call LD5810(X,Y,Z,W,n_points_integration_angular)
-      
+
     case (2030)
       call LD2030(X,Y,Z,W,n_points_integration_angular)
-      
+
     case (1202)
       call LD1202(X,Y,Z,W,n_points_integration_angular)
-      
+
     case (0590)
       call LD0590(X,Y,Z,W,n_points_integration_angular)
-      
+
     case (302)
       call LD0302(X,Y,Z,W,n_points_integration_angular)
-      
+
     case (266)
       call LD0266(X,Y,Z,W,n_points_integration_angular)
-      
+
     case (194)
       call LD0194(X,Y,Z,W,n_points_integration_angular)
-      
+
     case (170)
       call LD0170(X,Y,Z,W,n_points_integration_angular)
-      
+
     case (74)
       call LD0074(X,Y,Z,W,n_points_integration_angular)
-      
+
     case (50)
       call LD0050(X,Y,Z,W,n_points_integration_angular)
-      
+
       case default
       print *, irp_here//': wrong n_points_integration_angular. Expected:'
       print *, '[ 50 | 74 | 170 | 194 | 266 | 302 | 590 | 1202 | 2030 | 5810 ]'
       stop -1
   end select
-  
+
   do i = 1, n_points_integration_angular
     angular_quadrature_points(i,1) = x(i)
     angular_quadrature_points(i,2) = y(i)
@@ -102,7 +102,7 @@ END_PROVIDER
     weights_angular_points(i) = w(i) * 4.d0 * pi
     accu += w(i)
   enddo
-  
+
 END_PROVIDER
 
 BEGIN_PROVIDER [integer , m_knowles]
@@ -115,7 +115,7 @@ END_PROVIDER
 
  BEGIN_PROVIDER [double precision, grid_points_radial, (n_points_radial_grid)]
 &BEGIN_PROVIDER [double precision, dr_radial_integral]
-  
+
   implicit none
   BEGIN_DOC
   ! points in [0,1] to map the radial integral [0,\infty]
@@ -125,7 +125,7 @@ END_PROVIDER
   do i = 1, n_points_radial_grid
     grid_points_radial(i) = dble(i-1) * dr_radial_integral
   enddo
-  
+
 END_PROVIDER
 
 BEGIN_PROVIDER [double precision, grid_points_per_atom, (3,n_points_integration_angular,n_points_radial_grid,nucl_num)]
@@ -224,5 +224,6 @@ BEGIN_PROVIDER [double precision, final_weight_at_r, (n_points_integration_angul
       enddo
     enddo
   enddo
-  
+
 END_PROVIDER
+
