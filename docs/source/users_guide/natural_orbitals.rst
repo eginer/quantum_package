@@ -34,7 +34,7 @@ These orbitals are in general known to be better than the usual |HF| |MOs| as th
 
 .. code::
 
-    qp_run save_natorb hcn
+    qp_run save_natorb file.ezfio
 
 
 Hands on
@@ -50,5 +50,5 @@ Hands on
 
 .. seealso:: 
 
-    The documentation of the :ref:`save_natorb` program. 
+    The documentation of the :c:func:`save_natorb` program. 
  

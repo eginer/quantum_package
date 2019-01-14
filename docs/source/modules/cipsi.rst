@@ -517,48 +517,6 @@ Subroutines / functions
 
 
 
-.. c:function:: get_m0
-
-    .. code:: text
-
-        subroutine get_m0(gen, phasemask, bannedOrb, vect, mask, h, p, sp, coefs)
-
-    File: :file:`selection.irp.f`
-
-    
-
-
-
-
-
-.. c:function:: get_m1
-
-    .. code:: text
-
-        subroutine get_m1(gen, phasemask, bannedOrb, vect, mask, h, p, sp, coefs)
-
-    File: :file:`selection.irp.f`
-
-    
-
-
-
-
-
-.. c:function:: get_m2
-
-    .. code:: text
-
-        subroutine get_m2(gen, phasemask, bannedOrb, vect, mask, h, p, sp, coefs)
-
-    File: :file:`selection.irp.f`
-
-    
-
-
-
-
-
 .. c:function:: get_mask_phase
 
     .. code:: text

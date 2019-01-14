@@ -11,7 +11,7 @@ program save_one_e_dm
  END_DOC
   read_wf = .True.
   touch read_wf
-  call routine
+  call routine_save_one_e_dm
 
 end
 

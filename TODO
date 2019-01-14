@@ -55,12 +55,17 @@ Refaire les benchmarks
 # Documentation de qpsh
 
 # Documentation de /etc
+# Extrapolation qui prend aussi en compe la variance
+# Parler dans le papier de rPT2
 
 # Toto
-Selection d'etats avec qp_edit --state
-singles_alpha_csc_idx, singles_alpha_size  | git diff 
-Environment variables dans qp_run (prefix,etc)
-
 Si un provider est un programme, generer une page a lui tout seul avec le man
 
 Options obligatoires dans Command_line.ml
+Documentation des commandes a updater
+
+# Completion foireuse:
+  qp create_ezfio_from_xyz -b 6-31g ./<Tab>
+  qp create_ezfio_from_xyz -b <Tab>
+
+# Verifier la doc des commandes avec les options - et --

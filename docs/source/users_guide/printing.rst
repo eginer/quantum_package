@@ -7,7 +7,7 @@ If the wave function contains less than :math:`10^4` determinants, you can direc
 
 .. code::
 
-    qp_edit hcn
+    qp_edit file.ezfio
 
 
 .. important::
@@ -22,7 +22,7 @@ interactively in :ref:`qp_edit` mode. An alternative is to use the :command:`pri
 
 .. code::
 
-    qp_run print_wf hcn | tee hcn.fci_natorb.wf
+    qp_run print_wf file.ezfio | tee file.ezfio.fci_natorb.wf
 
 This program will, by default, print out the first :math:`10^4` determinants whatever the size of the wave function stored in the |EZFIO| folder. If you want to change the number of printed Slater determinants, just change the :option:`determinants n_det_print_wf` keyword using the :ref:`qp_edit` tool. 
 

@@ -25,7 +25,11 @@ Subroutines / functions
 
     File: :file:`diagonalize_h.irp.f`
 
-    program that extracts the `n_states` lowest states of the Hamiltonian within the set of Slater determinants stored in the EZFIO folder
+    Program that extracts the :option:`determinants n_states` lowest states of the Hamiltonian within the set of Slater determinants stored in the EZFIO folder. 
+
+    If :option:`determinants s2_eig` = True, it will retain only states 
+
+    which corresponds to the desired value of :option:`determinants expected_s2`.
 
 
 
@@ -39,9 +43,9 @@ Subroutines / functions
 
     File: :file:`fcidump.irp.f`
 
-    Produce a regular FCIDUMP file from the MOs stored in the EZFIO folder. 
+    Produce a regular FCIDUMP file from the |MOs| stored in the |EZFIO| folder. 
 
-    To specify an active space, the class of the mos have to set in the EZFIO folder (see set_mo_class/qp_set_mo_class). 
+    To specify an active space, the class of the mos have to set in the |EZFIO| folder (see :ref:`qp_set_mo_class`). 
 
     The fcidump program supports 3 types of MO_class : 
 
@@ -63,9 +67,9 @@ Subroutines / functions
 
     File: :file:`four_idx_transform.irp.f`
 
-    4-index transformation of two-electron integrals from AO to MO integrals. 
+    4-index transformation of two-electron integrals from |AO| to |MO| integrals. 
 
-    This program will compute the two-electron integrals on the MO basis and store it into the EZFIO folder. 
+    This program will compute the two-electron integrals on the |MO| basis and store it into the |EZFIO| folder. 
 
     This program can be useful if the AO --> MO transformation is an expensive step by itself.
 
@@ -99,9 +103,9 @@ Subroutines / functions
 
     for all istate, this program produces 
 
-    * a file "EZFIO. :math:`istate.conv" containing the variational and var+PT2 energies as a function of N_det 
+    * a file "EZFIO.istate.conv" containing the variational and var+PT2 energies as a function of N_det 
 
-    * for istate > 1, a file EZFIO.` istate.delta_e.conv containing the energy difference (both var and var+PT2) with the ground state as a function of N_det
+    * for istate > 1, a file EZFIO.istate.delta_e.conv containing the energy difference (both var and var+PT2) with the ground state as a function of N_det
 
 
 
@@ -115,9 +119,9 @@ Subroutines / functions
 
     File: :file:`print_wf.irp.f`
 
-    print the wave function stored in the EZFIO folder in the intermediate normalization. 
+    Print the ground state wave function stored in the |EZFIO| folder in the intermediate normalization. 
 
-    it also prints a lot of information regarding the excitation operators from the reference determinant 
+    It also prints a lot of information regarding the excitation operators from the reference determinant 
 
     and a first-order perturbative analysis of the wave function. 
 
@@ -136,6 +140,34 @@ Subroutines / functions
     File: :file:`write_integrals_erf.irp.f`
 
     
+
+
+
+
+
+.. c:function:: routine_e_conv
+
+    .. code:: text
+
+        subroutine routine_e_conv
+
+    File: :file:`print_e_conv.irp.f`
+
+    routine called by :c:func:`print_e_conv`
+
+
+
+
+
+.. c:function:: routine_save_one_e_dm
+
+    .. code:: text
+
+        subroutine routine_save_one_e_dm
+
+    File: :file:`save_one_e_dm.irp.f`
+
+    routine called by :c:func:`save_one_e_dm`
 
 
 

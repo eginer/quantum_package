@@ -672,7 +672,9 @@ Index of Providers
 * :c:data:`singles_alpha_csc`
 * :c:data:`singles_alpha_csc_idx`
 * :c:data:`singles_alpha_csc_size`
-* :c:data:`singles_alpha_size`
+* :c:data:`singles_beta_csc`
+* :c:data:`singles_beta_csc_idx`
+* :c:data:`singles_beta_csc_size`
 * :c:data:`size_select_max`
 * :c:data:`slater_bragg_radii`
 * :c:data:`slater_bragg_radii_per_atom`
@@ -950,9 +952,6 @@ Index of Subroutines/Functions
 * :c:func:`get_index_in_psi_det_beta_unique`
 * :c:func:`get_index_in_psi_det_sorted_bit`
 * :c:func:`get_inverse`
-* :c:func:`get_m0`
-* :c:func:`get_m1`
-* :c:func:`get_m2`
 * :c:func:`get_mask_phase`
 * :c:func:`get_mo_erf_map_size`
 * :c:func:`get_mo_map_size`
@@ -1233,7 +1232,9 @@ Index of Subroutines/Functions
 * :c:func:`rintgauss`
 * :c:func:`roothaan_hall_scf`
 * :c:func:`routine`
+* :c:func:`routine_e_conv`
 * :c:func:`routine_example_psi_det`
+* :c:func:`routine_save_one_e_dm`
 * :c:func:`rs_ks_scf`
 * :c:func:`run`
 * :c:func:`run_cipsi`

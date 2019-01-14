@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "QP_RUN" "1" "Jan 11, 2019" "2.0" "Quantum Package"
+.TH "QP_RUN" "1" "Jan 14, 2019" "2.0" "Quantum Package"
 .SH NAME
 qp_run \-  | Quantum Package >
 .
@@ -38,20 +38,30 @@ Command used to run a calculation.
 .sp
 .nf
 .ft C
-qp_run [\-slave] [\-help] <PROGRAM> <EZFIO_DIRECTORY>
+qp_run [\-h|\-\-help] [\-p <string>|\-\-prefix=<string>] [\-s|\-\-slave] [\-\-]
+    PROGRAM EZFIO_DIR
 .ft P
 .fi
 .UNINDENT
 .UNINDENT
+.sp
+\fBPROGRAM\fP is the name of the \fIQuantum Package\fP program to be run, and \fBEZFIO_DIR\fP is
+the name of the \fI\%EZFIO\fP directory containing the data.
 .INDENT 0.0
 .TP
-.B \-help
+.B \-h, \-\-help
 Displays the list of available \fIQuantum Package\fP programs.
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-slave
-This option needs to be set when \fBPROGRAM\fP is a slave program, to accelerate
+.B \-p <string>, \-\-prefix=<string>
+Prefix before running the program. This option is used to run programs like
+like gdb or valgrind.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-s, \-\-slave
+This option needs to be set to run a slave job for \fBPROGRAM\fP, to accelerate
 another running instance of the \fIQuantum Package\fP\&.
 .UNINDENT
 .SH EXAMPLE
@@ -60,7 +70,9 @@ another running instance of the \fIQuantum Package\fP\&.
 .sp
 .nf
 .ft C
-qp_run FCI h2o.ezfio
+qp_run fci h2o.ezfio &
+srun qp_run \-\-slave fci h2o.ezfio
+wait
 .ft P
 .fi
 .UNINDENT

@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "EXCITED_STATES" "1" "Jan 11, 2019" "2.0" "Quantum Package"
+.TH "EXCITED_STATES" "1" "Jan 14, 2019" "2.0" "Quantum Package"
 .SH NAME
 excited_states \-  | Quantum Package >
 .
@@ -42,7 +42,7 @@ s2_eig\fP flag \fBtrue\fP\&. This will force the Davidson algorithm to choose on
 vectors with a value of \ewidehat{S^2} equal to \fBdeterminants expected_s2\fP\&.
 Otherwise, different spin states will come out in the diagonalization.
 .sp
-The \fIQuantum Package\fP doesn\(aqt take account of the symmetry. Due to numerical noise, excited
+The \fIQuantum Package\fP doesn’t take account of the symmetry. Due to numerical noise, excited
 states of different symmetries may enter in the calculation. Note that it is
 possible to make state\-average calculation of states with different symmetries
 and/or different spin multiplicities.
@@ -55,6 +55,13 @@ and then running the selected FCI restarting from the CIS states, setting
 Usually, it is good practice to use state\-averaged natural MOs so that all
 states have MOs of comparable quality. This allows for a faster convergence
 of excitation energies.
+.sp
+\fBSEE ALSO:\fP
+.INDENT 0.0
+.INDENT 3.5
+The documentation of the \fBscf()\fP, \fBcis()\fP and  \fBfci()\fP programs.
+.UNINDENT
+.UNINDENT
 .SH AUTHOR
 A. Scemama, E. Giner
 .SH COPYRIGHT
