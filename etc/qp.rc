@@ -58,13 +58,12 @@ function qp()
           _ARGS+=("\"${arg//:/ }\"") ;;
         esac
       done
-      echo "qp_create_ezfio_from_xyz ${_ARGS[@]}"
       NAME=$(eval "qp_create_ezfio_from_xyz ${_ARGS[@]}")
       if [[ -d $NAME ]] ; then
         [[ -d $EZFIO_FILE ]] && ezfio unset_file
         ezfio set_file $NAME
       else
-        echo $NAME | more
+        qp_create_ezfio_from_xyz -h | more
       fi
       unset _ARGS
       ;;
