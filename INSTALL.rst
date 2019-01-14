@@ -86,7 +86,7 @@ The following packages are supported by the :command:`configure` installer:
 * irpf90 
 * zeromq 
 * f77zmq ( :math:`\approx` 3 minutes)
-* ocaml 
+* ocaml  ( :math:`\approx` 9 minutes)
 * ezfio 
 * emsl 
 * docopt 
