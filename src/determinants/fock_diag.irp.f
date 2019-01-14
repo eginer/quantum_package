@@ -8,11 +8,11 @@ subroutine build_fock_tmp(fock_diag_tmp,det_ref,Nint)
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: det_ref(Nint,2)
   double precision, intent(out)  :: fock_diag_tmp(2,mo_num+1)
-  
+
   integer                        :: occ(Nint*bit_kind_size,2)
   integer                        :: ne(2), i, j, ii, jj
   double precision               :: E0
-  
+
   ! Compute Fock matrix diagonal elements
   call bitstring_to_list_ab(det_ref,occ,Ne,Nint)
 

@@ -64,7 +64,7 @@ END_PROVIDER
  implicit none
  BEGIN_DOC
   ! Set of determinants which are not part of the reference, defined from the application
-  ! of the reference bitmask on the determinants. 
+  ! of the reference bitmask on the determinants.
   ! idx_non_ref gives the indice of the determinant in psi_det.
   ! idx_non_ref_rev gives the reverse.
  END_DOC
@@ -107,9 +107,9 @@ END_PROVIDER
  implicit none
  BEGIN_DOC
   ! Set of determinants which are not part of the reference, defined from the application
-  ! of the reference bitmask on the determinants. 
+  ! of the reference bitmask on the determinants.
   ! idx_non_ref gives the indice of the determinant in psi_det.
-  ! But this is with respect to the restart wave function. 
+  ! But this is with respect to the restart wave function.
  END_DOC
  integer                        :: i_non_ref,j,k
  integer                        :: degree
@@ -157,13 +157,13 @@ END_PROVIDER
 END_PROVIDER
 
 
-BEGIN_PROVIDER [double precision, H_matrix_ref, (N_det_ref,N_det_ref)] 
+BEGIN_PROVIDER [double precision, H_matrix_ref, (N_det_ref,N_det_ref)]
  implicit none
  integer :: i,j
  double precision :: hij
   do i = 1, N_det_ref
    do j = 1, N_det_ref
-    call i_H_j(psi_ref(1,1,i),psi_ref(1,1,j),N_int,hij) 
+    call i_H_j(psi_ref(1,1,i),psi_ref(1,1,j),N_int,hij)
     H_matrix_ref(i,j) = hij
    enddo
   enddo
@@ -208,7 +208,7 @@ END_PROVIDER
    psi_ref_energy(k) = psi_ref_energy(k) /norm
   enddo
 
-END_PROVIDER 
+END_PROVIDER
 
 
 logical function is_in_psi_ref(key,Nint)
@@ -329,7 +329,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ integer, idx_non_ref_from_sorted, (N_det) ]
   implicit none
   integer :: i,inpsisor
-  
+
   idx_non_ref_from_sorted = 0
 
   do i=1,N_det

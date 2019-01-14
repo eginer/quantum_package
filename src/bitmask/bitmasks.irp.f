@@ -20,7 +20,7 @@ BEGIN_PROVIDER [ integer(bit_kind), full_ijkl_bitmask, (N_int) ]
   BEGIN_DOC
   ! Bitmask to include all possible MOs
   END_DOC
-  
+
   integer                        :: i,j,k
   k=0
   do j=1,N_int
@@ -70,7 +70,7 @@ END_PROVIDER
 
 
 
- 
+
 BEGIN_PROVIDER [ integer(bit_kind), HF_bitmask, (N_int,2)]
   implicit none
   BEGIN_DOC
@@ -81,7 +81,7 @@ BEGIN_PROVIDER [ integer(bit_kind), HF_bitmask, (N_int,2)]
 
   HF_bitmask = 0_bit_kind
   do i=1,elec_alpha_num
-   occ(i) = i 
+   occ(i) = i
   enddo
   call list_to_bitstring( HF_bitmask(1,1), occ, elec_alpha_num, N_int)
   ! elec_alpha_num <= elec_beta_num, so occ is already OK.
@@ -104,7 +104,7 @@ BEGIN_PROVIDER [ integer, N_generators_bitmask ]
  END_DOC
  logical                        :: exists
  PROVIDE ezfio_filename N_int
- 
+
  if (mpi_master) then
   call ezfio_has_bitmasks_N_mask_gen(exists)
   if (exists) then
@@ -150,8 +150,8 @@ BEGIN_PROVIDER [ integer, N_generators_bitmask_restart ]
  ! Number of bitmasks for generators
  END_DOC
  logical                        :: exists
- PROVIDE ezfio_filename N_int 
- 
+ PROVIDE ezfio_filename N_int
+
  if (mpi_master) then
   call ezfio_has_bitmasks_N_mask_gen(exists)
   if (exists) then
@@ -216,7 +216,7 @@ BEGIN_PROVIDER [ integer(bit_kind), generators_bitmask_restart, (N_int,2,6,N_gen
  END_DOC
  logical                        :: exists
  PROVIDE ezfio_filename full_ijkl_bitmask N_generators_bitmask N_int
- PROVIDE generators_bitmask_restart 
+ PROVIDE generators_bitmask_restart
 
  if (mpi_master) then
   call ezfio_has_bitmasks_generators(exists)
@@ -393,7 +393,7 @@ BEGIN_PROVIDER [ integer(bit_kind), cas_bitmask, (N_int,2,N_cas_bitmask) ]
  logical                        :: exists
  integer                        :: i,i_part,i_gen,j,k
  PROVIDE ezfio_filename generators_bitmask_restart full_ijkl_bitmask
- PROVIDE n_generators_bitmask HF_bitmask 
+ PROVIDE n_generators_bitmask HF_bitmask
 
  if (mpi_master) then
   call ezfio_has_bitmasks_cas(exists)
@@ -407,7 +407,7 @@ BEGIN_PROVIDER [ integer(bit_kind), cas_bitmask, (N_int,2,N_cas_bitmask) ]
       cas_bitmask(i,2,j) = iand(not(HF_bitmask(i,2)),full_ijkl_bitmask(i))
       enddo
     enddo
-    else 
+    else
     i_part = 2
     i_gen = 1
     do j=1, N_cas_bitmask
@@ -449,10 +449,10 @@ END_PROVIDER
 &BEGIN_PROVIDER [ integer, n_virt_orb ]
  implicit none
  BEGIN_DOC
- ! inact_bitmask : Bitmask of the inactive orbitals which are supposed to be doubly excited 
+ ! inact_bitmask : Bitmask of the inactive orbitals which are supposed to be doubly excited
  ! in post CAS methods
  ! n_inact_orb   : Number of inactive orbitals
- ! virt_bitmask  : Bitmaks of vritual orbitals which are supposed to be recieve electrons 
+ ! virt_bitmask  : Bitmaks of vritual orbitals which are supposed to be recieve electrons
  ! in post CAS methods
  ! n_virt_orb    : Number of virtual orbitals
  END_DOC
@@ -471,7 +471,7 @@ END_PROVIDER
    n_inact_orb += popcnt(inact_bitmask(j,1))
    n_virt_orb  += popcnt(virt_bitmask(j,1))
   enddo
- else 
+ else
    i_hole = 1
    i_gen = 1
    do i = 1, N_int
@@ -499,16 +499,16 @@ END_PROVIDER
  &BEGIN_PROVIDER [ integer, list_inact_reverse, (mo_num)]
  &BEGIN_PROVIDER [ integer, list_virt_reverse, (mo_num)]
  BEGIN_DOC
- ! list_inact : List of the inactive orbitals which are supposed to be doubly excited 
+ ! list_inact : List of the inactive orbitals which are supposed to be doubly excited
  ! in post CAS methods
- ! list_virt  : List of vritual orbitals which are supposed to be recieve electrons 
+ ! list_virt  : List of vritual orbitals which are supposed to be recieve electrons
  ! in post CAS methods
- ! list_inact_reverse : reverse list of inactive orbitals 
- ! list_inact_reverse(i) = 0 ::> not an inactive 
- ! list_inact_reverse(i) = k ::> IS the kth inactive 
- ! list_virt_reverse : reverse list of virtual orbitals 
- ! list_virt_reverse(i) = 0 ::> not an virtual 
- ! list_virt_reverse(i) = k ::> IS the kth virtual 
+ ! list_inact_reverse : reverse list of inactive orbitals
+ ! list_inact_reverse(i) = 0 ::> not an inactive
+ ! list_inact_reverse(i) = k ::> IS the kth inactive
+ ! list_virt_reverse : reverse list of virtual orbitals
+ ! list_virt_reverse(i) = 0 ::> not an virtual
+ ! list_virt_reverse(i) = k ::> IS the kth virtual
  END_DOC
  implicit none
  integer :: occ_inact(N_int*bit_kind_size)
@@ -521,7 +521,7 @@ END_PROVIDER
   list_inact(i) = occ_inact(i)
   list_inact_reverse(occ_inact(i)) = i
  enddo
- 
+
 
  occ_inact = 0
  call bitstring_to_list(virt_bitmask(1,1), occ_inact(1), itest, N_int)
@@ -532,7 +532,7 @@ END_PROVIDER
   list_virt_reverse(occ_inact(i)) = i
  enddo
 
- END_PROVIDER 
+ END_PROVIDER
 
 
  BEGIN_PROVIDER [ integer, list_core_inact, (n_core_inact_orb)]
@@ -551,7 +551,7 @@ END_PROVIDER
   list_core_inact_reverse(occ_inact(i)) = i
  enddo
 
- END_PROVIDER 
+ END_PROVIDER
 
  BEGIN_PROVIDER [ integer, n_core_inact_orb ]
  implicit none
@@ -629,9 +629,9 @@ END_PROVIDER
  integer :: i,j
  do i = 1, N_int
   inact_virt_bitmask(i,1) = ior(inact_bitmask(i,1),virt_bitmask(i,1))
-  inact_virt_bitmask(i,2) = ior(inact_bitmask(i,2),virt_bitmask(i,2)) 
+  inact_virt_bitmask(i,2) = ior(inact_bitmask(i,2),virt_bitmask(i,2))
   core_inact_virt_bitmask(i,1) = ior(core_bitmask(i,1),inact_virt_bitmask(i,1))
-  core_inact_virt_bitmask(i,2) = ior(core_bitmask(i,2),inact_virt_bitmask(i,2)) 
+  core_inact_virt_bitmask(i,2) = ior(core_bitmask(i,2),inact_virt_bitmask(i,2))
  enddo
  END_PROVIDER
 
@@ -657,7 +657,7 @@ END_PROVIDER
 &BEGIN_PROVIDER [ integer, n_core_orb]
  implicit none
  BEGIN_DOC
- ! Core + deleted orbitals bitmask 
+ ! Core + deleted orbitals bitmask
  END_DOC
  integer :: i,j
  n_core_orb = 0
@@ -708,9 +708,9 @@ END_PROVIDER
 &BEGIN_PROVIDER [integer, list_act_reverse, (mo_num)]
  BEGIN_DOC
  ! list_act(i) = index of the ith active orbital
- ! 
- ! list_act_reverse : reverse list of active orbitals 
- ! list_act_reverse(i) = 0 ::> not an active 
+ !
+ ! list_act_reverse : reverse list of active orbitals
+ ! list_act_reverse(i) = 0 ::> not an active
  ! list_act_reverse(i) = k ::> IS the kth active orbital
  END_DOC
  implicit none
@@ -748,19 +748,19 @@ END_PROVIDER
  enddo
  END_PROVIDER
 
- 
+
  BEGIN_PROVIDER [integer, n_core_orb_allocate]
  implicit none
  n_core_orb_allocate = max(n_core_orb,1)
- END_PROVIDER 
+ END_PROVIDER
 
  BEGIN_PROVIDER [integer, n_inact_orb_allocate]
  implicit none
  n_inact_orb_allocate = max(n_inact_orb,1)
- END_PROVIDER 
+ END_PROVIDER
 
  BEGIN_PROVIDER [integer, n_virt_orb_allocate]
  implicit none
  n_virt_orb_allocate = max(n_virt_orb,1)
- END_PROVIDER 
+ END_PROVIDER
 

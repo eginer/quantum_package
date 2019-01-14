@@ -43,7 +43,7 @@ subroutine get_s2(key_i,key_j,Nint,s2)
   integer                        :: degree
   double precision               :: phase_spsm
   integer                        :: nup, i
-  
+
   s2 = 0.d0
   !$FORCEINLINE
   call get_excitation_degree(key_i,key_j,degree,Nint)
@@ -86,11 +86,11 @@ BEGIN_PROVIDER [ double precision, expected_s2]
      call ezfio_get_determinants_expected_s2(expected_s2)
    else
      double precision :: S
-     S = (elec_alpha_num-elec_beta_num)*0.5d0 
+     S = (elec_alpha_num-elec_beta_num)*0.5d0
      expected_s2 = S * (S+1.d0)
    endif
 
-END_PROVIDER 
+END_PROVIDER
 
 BEGIN_PROVIDER [ double precision, s2_values, (N_states) ]
  implicit none
@@ -117,12 +117,12 @@ subroutine u_0_S2_u_0(e_0,u_0,n,keys_tmp,Nint,N_st,sze_8)
   double precision, intent(out)  :: e_0(N_st)
   double precision, intent(in)   :: u_0(sze_8,N_st)
   integer(bit_kind),intent(in)   :: keys_tmp(Nint,2,n)
-  
+
   double precision, allocatable  :: v_0(:,:)
   double precision               :: u_dot_u,u_dot_v
   integer :: i,j
   allocate (v_0(sze_8,N_st))
-  
+
   call S2_u_0_nstates(v_0,u_0,n,keys_tmp,Nint,N_st,sze_8)
   do i=1,N_st
     e_0(i) = u_dot_v(v_0(1,i),u_0(1,i),n)/u_dot_u(u_0(1,i),n) + S_z2_Sz
@@ -164,31 +164,31 @@ subroutine S2_u_0_nstates(v_0,u_0,n,keys_tmp,Nint,N_st,sze_8)
   double precision, allocatable  :: vt(:,:)
   integer                        :: i,j,k,l, jj,ii
   integer                        :: i0, j0
-  
+
   integer, allocatable           :: shortcut(:,:), sort_idx(:,:)
   integer(bit_kind), allocatable :: sorted(:,:,:), version(:,:,:)
   integer(bit_kind)              :: sorted_i(Nint)
-  
+
   integer                        :: sh, sh2, ni, exa, ext, org_i, org_j, endi, istate
-  
+
 
   ASSERT (Nint > 0)
   ASSERT (Nint == N_int)
   ASSERT (n>0)
-  PROVIDE ref_bitmask_energy 
+  PROVIDE ref_bitmask_energy
 
   allocate (shortcut(0:n+1,2), sort_idx(n,2), sorted(Nint,n,2), version(Nint,n,2))
   v_0 = 0.d0
 
   call sort_dets_ab_v(keys_tmp, sorted(1,1,1), sort_idx(1,1), shortcut(0,1), version(1,1,1), n, Nint)
   call sort_dets_ba_v(keys_tmp, sorted(1,1,2), sort_idx(1,2), shortcut(0,2), version(1,1,2), n, Nint)
-  
+
   !$OMP PARALLEL DEFAULT(NONE)                                       &
       !$OMP PRIVATE(i,s2_tmp,j,k,jj,vt,ii,sh,sh2,ni,exa,ext,org_i,org_j,endi,sorted_i,istate)&
       !$OMP SHARED(n,u_0,keys_tmp,Nint,v_0,sorted,shortcut,sort_idx,version,N_st,sze_8)
   allocate(vt(sze_8,N_st))
   vt = 0.d0
-  
+
   do sh=1,shortcut(0,1)
     !$OMP DO SCHEDULE(static,1)
     do sh2=sh,shortcut(0,1)
@@ -199,7 +199,7 @@ subroutine S2_u_0_nstates(v_0,u_0,n,keys_tmp,Nint,N_st,sze_8)
       if(exa > 2) then
         cycle
       end if
-      
+
       do i=shortcut(sh,1),shortcut(sh+1,1)-1
         org_i = sort_idx(i,1)
         if(sh==sh2) then
@@ -210,7 +210,7 @@ subroutine S2_u_0_nstates(v_0,u_0,n,keys_tmp,Nint,N_st,sze_8)
         do ni=1,Nint
           sorted_i(ni) = sorted(ni,i,1)
         enddo
-        
+
         do j=shortcut(sh2,1),endi
           org_j = sort_idx(j,1)
           ext = exa
@@ -229,9 +229,9 @@ subroutine S2_u_0_nstates(v_0,u_0,n,keys_tmp,Nint,N_st,sze_8)
     enddo
     !$OMP END DO NOWAIT
   enddo
-  
+
   do sh=1,shortcut(0,2)
-    !$OMP DO 
+    !$OMP DO
     do i=shortcut(sh,2),shortcut(sh+1,2)-1
       org_i = sort_idx(i,2)
       do j=shortcut(sh,2),i-1
@@ -252,7 +252,7 @@ subroutine S2_u_0_nstates(v_0,u_0,n,keys_tmp,Nint,N_st,sze_8)
     !$OMP END DO NOWAIT
   enddo
   !$OMP BARRIER
-  
+
   do istate=1,N_st
     do i=n,1,-1
       !$OMP ATOMIC
@@ -262,7 +262,7 @@ subroutine S2_u_0_nstates(v_0,u_0,n,keys_tmp,Nint,N_st,sze_8)
 
   deallocate(vt)
   !$OMP END PARALLEL
-  
+
   do i=1,n
     call get_s2(keys_tmp(1,1,i),keys_tmp(1,1,i),Nint,s2_tmp)
     do istate=1,N_st
@@ -337,7 +337,7 @@ subroutine i_S2_psi_minilist(key,keys,idx_key,N_minilist,coef,Nint,Ndet,Ndet_max
   integer(bit_kind), intent(in)  :: key(Nint,2)
   double precision, intent(in)   :: coef(Ndet_max,Nstate)
   double precision, intent(out)  :: i_S2_psi_array(Nstate)
-  
+
   integer                        :: i, ii,j, i_in_key, i_in_coef
   double precision               :: phase
   integer                        :: exc(0:2,2,2)
@@ -349,14 +349,14 @@ subroutine i_S2_psi_minilist(key,keys,idx_key,N_minilist,coef,Nint,Ndet,Ndet_max
 ! Uses filter_connected_i_H_psi0 to get all the $|J\rangle$ to which $|i\rangle$
 ! is connected. The $|J\rangle$ are searched in short pre-computed lists.
   END_DOC
-  
+
   ASSERT (Nint > 0)
   ASSERT (N_int == Nint)
   ASSERT (Nstate > 0)
   ASSERT (Ndet > 0)
   ASSERT (Ndet_max >= Ndet)
   i_S2_psi_array = 0.d0
-  
+
   call filter_connected_i_H_psi0(keys,key,Nint,N_minilist,idx)
   if (Nstate == 1) then
 

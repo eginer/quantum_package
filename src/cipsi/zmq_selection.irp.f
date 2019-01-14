@@ -1,9 +1,9 @@
 subroutine ZMQ_selection(N_in, pt2, variance, norm)
   use f77_zmq
   use selection_types
-  
+
   implicit none
-  
+
   integer(ZMQ_PTR)               :: zmq_to_qp_run_socket , zmq_socket_pull
   integer, intent(in)            :: N_in
   type(selection_buffer)         :: b
@@ -12,16 +12,16 @@ subroutine ZMQ_selection(N_in, pt2, variance, norm)
   double precision, intent(out)  :: pt2(N_states)
   double precision, intent(out)  :: variance(N_states)
   double precision, intent(out)  :: norm(N_states)
-  
+
 !  PROVIDE psi_det psi_coef N_det qp_max_mem N_states pt2_F s2_eig N_det_generators
-  
+
   N = max(N_in,1)
   if (.True.) then
     PROVIDE pt2_e0_denominator nproc
     PROVIDE psi_bilinear_matrix_columns_loc psi_det_alpha_unique psi_det_beta_unique
     PROVIDE psi_bilinear_matrix_rows psi_det_sorted_order psi_bilinear_matrix_order
     PROVIDE psi_bilinear_matrix_transp_rows_loc psi_bilinear_matrix_transp_columns
-    PROVIDE psi_bilinear_matrix_transp_order 
+    PROVIDE psi_bilinear_matrix_transp_order
 
     call new_parallel_job(zmq_to_qp_run_socket,zmq_socket_pull,'selection')
 
@@ -55,7 +55,7 @@ subroutine ZMQ_selection(N_in, pt2, variance, norm)
   character(len=100000)           :: task
   integer :: j,k,ipos
   ipos=1
-  task = ' ' 
+  task = ' '
 
  do i= 1, N_det_generators
     do j=1,pt2_F(i)
@@ -74,7 +74,7 @@ subroutine ZMQ_selection(N_in, pt2, variance, norm)
       stop 'Unable to add task to task server'
     endif
   endif
-  
+
 
   ASSERT (associated(b%det))
   ASSERT (associated(b%val))
@@ -120,7 +120,7 @@ subroutine ZMQ_selection(N_in, pt2, variance, norm)
     if (s2_eig) then
       call make_selection_buffer_s2(b)
     endif
-    call fill_H_apply_buffer_no_selection(b%cur,b%det,N_int,0) 
+    call fill_H_apply_buffer_no_selection(b%cur,b%det,N_int,0)
     call copy_H_apply_buffer_to_wf()
     call save_wavefunction
   endif
@@ -168,9 +168,9 @@ subroutine selection_collector(zmq_socket_pull, b, N, pt2, variance, norm)
   integer(bit_kind), pointer :: det(:,:,:)
   integer, allocatable :: task_id(:)
   type(selection_buffer) :: b2
-  
-  
-  
+
+
+
 
   zmq_to_qp_run_socket = new_zmq_to_qp_run_socket()
   call create_selection_buffer(N, N*2, b2)

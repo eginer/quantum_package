@@ -21,7 +21,7 @@ subroutine fill_H_apply_buffer_selection(n_selected,det_buffer,e_2_pert_buffer,c
   ASSERT (N_selected >= 0)
   call omp_set_lock(H_apply_buffer_lock(1,iproc))
   new_size = H_apply_buffer(iproc)%N_det + n_selected
-  
+
   if (new_size > h_apply_buffer(iproc)%sze) then
     call resize_h_apply_buffer(max(h_apply_buffer(iproc)%sze*2,new_size),iproc)
   endif
@@ -38,7 +38,7 @@ subroutine fill_H_apply_buffer_selection(n_selected,det_buffer,e_2_pert_buffer,c
       is_selected = s > selection_criterion*selection_criterion_factor .or. is_selected
       select_max_out = max(select_max_out,s)
     enddo
-    
+
     if (is_selected) then
       l = l+1
       do j=1,N_int
@@ -68,7 +68,7 @@ end
  BEGIN_DOC
  ! Threshold to select determinants. Set by selection routines.
  END_DOC
- selection_criterion =  0.1d0 
+ selection_criterion =  0.1d0
  selection_criterion_factor = 0.01d0
  selection_criterion_min = selection_criterion
 
@@ -77,7 +77,7 @@ END_PROVIDER
 subroutine remove_small_contributions
   implicit none
   BEGIN_DOC
-!  Remove determinants with small contributions. N_states is assumed to be 
+!  Remove determinants with small contributions. N_states is assumed to be
 !  provided.
   END_DOC
   integer :: i,j,k, N_removed
@@ -124,7 +124,7 @@ subroutine remove_small_contributions
   deallocate(keep)
   if (N_removed > 0) then
     N_det = N_det - N_removed
-    SOFT_TOUCH N_det psi_det psi_coef 
+    SOFT_TOUCH N_det psi_det psi_coef
     call write_int(6,N_removed, 'Removed determinants')
   endif
 end

@@ -4,9 +4,9 @@ use bitmasks
 &BEGIN_PROVIDER [integer(bit_kind), particles_operators, (N_int,2)]
 
  BEGIN_DOC
- ! holes_operators represents an array of integers where all the holes have 
+ ! holes_operators represents an array of integers where all the holes have
  ! been done going from psi_ref to psi_non_ref
- ! particles_operators represents an array of integers where all the particles have 
+ ! particles_operators represents an array of integers where all the particles have
  ! been done going from psi_ref to psi_non_ref
  END_DOC
  holes_operators = 0_bit_kind

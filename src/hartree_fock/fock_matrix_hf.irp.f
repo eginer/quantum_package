@@ -6,7 +6,7 @@
  BEGIN_DOC
  ! Alpha Fock matrix in AO basis set
  END_DOC
- 
+
  integer                        :: i,j,k,l,k1,r,s
  integer                        :: i0,j0,k0,l0
  integer*8                      :: p,q
@@ -95,8 +95,8 @@
    deallocate(keys,values,ao_two_e_integral_alpha_tmp,ao_two_e_integral_beta_tmp)
    !$OMP END PARALLEL
  else
-   PROVIDE ao_two_e_integrals_in_map 
-           
+   PROVIDE ao_two_e_integrals_in_map
+
    integer(omp_lock_kind) :: lck(ao_num)
    integer(map_size_kind)     :: i8
    integer                        :: ii(8), jj(8), kk(8), ll(8), k2
@@ -108,7 +108,7 @@
        !$OMP PRIVATE(i,j,l,k1,k,integral,ii,jj,kk,ll,i8,keys,values,n_elements_max, &
        !$OMP  n_elements,ao_two_e_integral_alpha_tmp,ao_two_e_integral_beta_tmp)&
        !$OMP SHARED(ao_num,SCF_density_matrix_ao_alpha,SCF_density_matrix_ao_beta,&
-       !$OMP  ao_integrals_map, ao_two_e_integral_alpha, ao_two_e_integral_beta) 
+       !$OMP  ao_integrals_map, ao_two_e_integral_alpha, ao_two_e_integral_beta)
 
    call get_cache_map_n_elements_max(ao_integrals_map,n_elements_max)
    allocate(keys(n_elements_max), values(n_elements_max))

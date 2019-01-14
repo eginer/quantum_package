@@ -43,7 +43,7 @@ integer function load_mo_integrals_erf(filename)
   call map_deinit(mo_integrals_erf_map)
   98 continue
   stop 'Problem reading mo_integrals_erf_map file in work/'
-  
+
 end
 
 
@@ -66,11 +66,11 @@ subroutine insert_into_mo_integrals_erf_map(n_integrals,                 &
       buffer_i, buffer_values, thr)
   use map_module
   implicit none
-  
+
   BEGIN_DOC
   ! Create new entry into |MO| map, or accumulate in an existing entry
   END_DOC
-  
+
   integer, intent(in)                :: n_integrals
   integer(key_kind), intent(inout)   :: buffer_i(n_integrals)
   real(integral_kind), intent(inout) :: buffer_values(n_integrals)
@@ -183,17 +183,17 @@ subroutine get_mo_two_e_integrals_erf(j,k,l,sze,out_val,map)
   integer(key_kind)              :: hash(sze)
   real(integral_kind)            :: tmp_val(sze)
   PROVIDE mo_two_e_integrals_erf_in_map
-  
+
   do i=1,sze
     !DIR$ FORCEINLINE
     call two_e_integrals_index(i,j,k,l,hash(i))
   enddo
-  
+
   if (key_kind == 8) then
     call map_get_many(map, hash, out_val, sze)
   else
     call map_get_many(map, hash, tmp_val, sze)
-    ! Conversion to double precision 
+    ! Conversion to double precision
     do i=1,sze
       out_val(i) = dble(tmp_val(i))
     enddo
@@ -219,7 +219,7 @@ subroutine get_mo_two_e_integrals_erf_ij(k,l,sze,out_array,map)
   PROVIDE mo_two_e_integrals_erf_in_map
   allocate (hash(sze*sze), pairs(2,sze*sze),iorder(sze*sze), &
   tmp_val(sze*sze))
-  
+
   kk=0
   out_array = 0.d0
   do j=1,sze
@@ -249,7 +249,7 @@ subroutine get_mo_two_e_integrals_erf_ij(k,l,sze,out_array,map)
     i=pairs(1,m)
     j=pairs(2,m)
     out_array(i,j) = tmp_val(ll)
-  enddo  
+  enddo
 
   deallocate(pairs,hash,iorder,tmp_val)
 end
@@ -274,7 +274,7 @@ subroutine get_mo_two_e_integrals_erf_i1j1(k,l,sze,out_array,map)
   PROVIDE mo_two_e_integrals_erf_in_map
   allocate (hash(sze*sze), pairs(2,sze*sze),iorder(sze*sze), &
   tmp_val(sze*sze))
-  
+
   kk=0
   out_array = 0.d0
   do j=1,sze
@@ -304,7 +304,7 @@ subroutine get_mo_two_e_integrals_erf_i1j1(k,l,sze,out_array,map)
     i=pairs(1,m)
     j=pairs(2,m)
     out_array(i,j) = tmp_val(ll)
-  enddo  
+  enddo
 
   deallocate(pairs,hash,iorder,tmp_val)
 end
@@ -326,18 +326,18 @@ subroutine get_mo_two_e_integrals_erf_coulomb_ii(k,l,sze,out_val,map)
   integer(key_kind)              :: hash(sze)
   real(integral_kind)            :: tmp_val(sze)
   PROVIDE mo_two_e_integrals_erf_in_map
-  
+
   integer :: kk
   do i=1,sze
     !DIR$ FORCEINLINE
     call two_e_integrals_index(k,i,l,i,hash(i))
   enddo
-  
+
   if (key_kind == 8) then
     call map_get_many(map, hash, out_val, sze)
   else
     call map_get_many(map, hash, tmp_val, sze)
-    ! Conversion to double precision 
+    ! Conversion to double precision
     do i=1,sze
       out_val(i) = dble(tmp_val(i))
     enddo
@@ -360,18 +360,18 @@ subroutine get_mo_two_e_integrals_erf_exch_ii(k,l,sze,out_val,map)
   integer(key_kind)              :: hash(sze)
   real(integral_kind)            :: tmp_val(sze)
   PROVIDE mo_two_e_integrals_erf_in_map
-  
+
   integer :: kk
   do i=1,sze
     !DIR$ FORCEINLINE
     call two_e_integrals_index(k,i,i,l,hash(i))
   enddo
-  
+
   if (key_kind == 8) then
     call map_get_many(map, hash, out_val, sze)
   else
     call map_get_many(map, hash, tmp_val, sze)
-    ! Conversion to double precision 
+    ! Conversion to double precision
     do i=1,sze
       out_val(i) = dble(tmp_val(i))
     enddo

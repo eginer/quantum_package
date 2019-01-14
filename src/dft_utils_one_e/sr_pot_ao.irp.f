@@ -31,13 +31,13 @@
   enddo
  enddo
 
- END_PROVIDER 
+ END_PROVIDER
 
 
  BEGIN_PROVIDER [double precision, potential_sr_x_alpha_ao_LDA,(ao_num,ao_num,N_states)]
 &BEGIN_PROVIDER [double precision, potential_sr_x_beta_ao_LDA,(ao_num,ao_num,N_states)]
   implicit none
-  BEGIN_DOC 
+  BEGIN_DOC
   ! short range exchange alpha/beta potentials with LDA functional on the |AO| basis
   END_DOC
   ! Second dimension is given as ao_num * N_states so that Lapack does the loop over N_states.
@@ -50,12 +50,12 @@
       aos_sr_vx_beta_LDA_w,size(aos_sr_vx_beta_LDA_w,1),0.d0,&
       potential_sr_x_beta_ao_LDA,size(potential_sr_x_beta_ao_LDA,1))
 
-END_PROVIDER 
+END_PROVIDER
 
  BEGIN_PROVIDER [double precision, potential_sr_c_alpha_ao_LDA,(ao_num,ao_num,N_states)]
 &BEGIN_PROVIDER [double precision, potential_sr_c_beta_ao_LDA,(ao_num,ao_num,N_states)]
  implicit none
- BEGIN_DOC 
+ BEGIN_DOC
 ! short range correlation alpha/beta potentials with LDA functional on the |AO| basis
  END_DOC
  ! Second dimension is given as ao_num * N_states so that Lapack does the loop over N_states.
@@ -68,7 +68,7 @@ END_PROVIDER
       aos_sr_vc_beta_LDA_w,size(aos_sr_vc_beta_LDA_w,1),0.d0,&
       potential_sr_c_beta_ao_LDA,size(potential_sr_c_beta_ao_LDA,1))
 
-END_PROVIDER 
+END_PROVIDER
 
  BEGIN_PROVIDER[double precision, aos_sr_vc_alpha_PBE_w  , (ao_num,n_points_final_grid,N_states)] !(n_points_final_grid,ao_num,N_states)]
 &BEGIN_PROVIDER[double precision, aos_sr_vc_beta_PBE_w   , (ao_num,n_points_final_grid,N_states)]!(n_points_final_grid,ao_num,N_states)]
@@ -96,8 +96,8 @@ END_PROVIDER
  double precision, allocatable  :: sr_vx_grad_rho_a_2(:), sr_vx_grad_rho_b_2(:), sr_vx_grad_rho_a_b(:), sr_vc_grad_rho_a_2(:), sr_vc_grad_rho_b_2(:), sr_vc_grad_rho_a_b(:)
  allocate(sr_vc_rho_a(N_states), sr_vc_rho_b(N_states), sr_vx_rho_a(N_states), sr_vx_rho_b(N_states))
  allocate(sr_vx_grad_rho_a_2(N_states), sr_vx_grad_rho_b_2(N_states), sr_vx_grad_rho_a_b(N_states), sr_vc_grad_rho_a_2(N_states), sr_vc_grad_rho_b_2(N_states), sr_vc_grad_rho_a_b(N_states))
- 
- 
+
+
  allocate(rho_a(N_states), rho_b(N_states),grad_rho_a(3,N_states),grad_rho_b(3,N_states))
  allocate(grad_rho_a_2(N_states),grad_rho_b_2(N_states),grad_rho_a_b(N_states), ex(N_states), ec(N_states))
  allocate(contrib_grad_xa(3,N_states),contrib_grad_xb(3,N_states),contrib_grad_ca(3,N_states),contrib_grad_cb(3,N_states))
@@ -120,7 +120,7 @@ END_PROVIDER
     grad_rho_a_b(istate) += grad_rho_a(m,istate) * grad_rho_b(m,istate)
    enddo
 
-                             ! inputs 
+                             ! inputs
    call GGA_sr_type_functionals(r,rho_a,rho_b,grad_rho_a_2,grad_rho_b_2,grad_rho_a_b,                 &  ! outputs exchange
                              ex,sr_vx_rho_a,sr_vx_rho_b,sr_vx_grad_rho_a_2,sr_vx_grad_rho_b_2,sr_vx_grad_rho_a_b, &  ! outputs correlation
                              ec,sr_vc_rho_a,sr_vc_rho_b,sr_vc_grad_rho_a_2,sr_vc_grad_rho_b_2,sr_vc_grad_rho_a_b  )
@@ -129,10 +129,10 @@ END_PROVIDER
     sr_vx_rho_b(istate) *= weight
     sr_vc_rho_b(istate) *= weight
     do m= 1,3
-     contrib_grad_ca(m,istate) = weight * (2.d0 * sr_vc_grad_rho_a_2(istate) *  grad_rho_a(m,istate) + sr_vc_grad_rho_a_b(istate)  * grad_rho_b(m,istate)) 
-     contrib_grad_xa(m,istate) = weight * (2.d0 * sr_vx_grad_rho_a_2(istate) *  grad_rho_a(m,istate) + sr_vx_grad_rho_a_b(istate)  * grad_rho_b(m,istate)) 
-     contrib_grad_cb(m,istate) = weight * (2.d0 * sr_vc_grad_rho_b_2(istate) *  grad_rho_b(m,istate) + sr_vc_grad_rho_a_b(istate)  * grad_rho_a(m,istate)) 
-     contrib_grad_xb(m,istate) = weight * (2.d0 * sr_vx_grad_rho_b_2(istate) *  grad_rho_b(m,istate) + sr_vx_grad_rho_a_b(istate)  * grad_rho_a(m,istate)) 
+     contrib_grad_ca(m,istate) = weight * (2.d0 * sr_vc_grad_rho_a_2(istate) *  grad_rho_a(m,istate) + sr_vc_grad_rho_a_b(istate)  * grad_rho_b(m,istate))
+     contrib_grad_xa(m,istate) = weight * (2.d0 * sr_vx_grad_rho_a_2(istate) *  grad_rho_a(m,istate) + sr_vx_grad_rho_a_b(istate)  * grad_rho_b(m,istate))
+     contrib_grad_cb(m,istate) = weight * (2.d0 * sr_vc_grad_rho_b_2(istate) *  grad_rho_b(m,istate) + sr_vc_grad_rho_a_b(istate)  * grad_rho_a(m,istate))
+     contrib_grad_xb(m,istate) = weight * (2.d0 * sr_vx_grad_rho_b_2(istate) *  grad_rho_b(m,istate) + sr_vx_grad_rho_a_b(istate)  * grad_rho_a(m,istate))
     enddo
     do j = 1, ao_num
      aos_sr_vc_alpha_PBE_w(j,i,istate) = sr_vc_rho_a(istate) * aos_in_r_array(j,i)
@@ -145,16 +145,16 @@ END_PROVIDER
       aos_dsr_vx_alpha_PBE_w(j,i,m,istate) = contrib_grad_xa(m,istate) * aos_in_r_array(j,i)
       aos_dsr_vx_beta_PBE_w (j,i,m,istate) = contrib_grad_xb(m,istate) * aos_in_r_array(j,i)
 
-      grad_aos_dsr_vc_alpha_PBE_w (j,i,m,istate) = contrib_grad_ca(m,istate) * aos_grad_in_r_array(j,i,m) 
-      grad_aos_dsr_vc_beta_PBE_w  (j,i,m,istate) = contrib_grad_cb(m,istate) * aos_grad_in_r_array(j,i,m) 
-      grad_aos_dsr_vx_alpha_PBE_w (j,i,m,istate) = contrib_grad_xa(m,istate) * aos_grad_in_r_array(j,i,m) 
-      grad_aos_dsr_vx_beta_PBE_w  (j,i,m,istate) = contrib_grad_xb(m,istate) * aos_grad_in_r_array(j,i,m) 
+      grad_aos_dsr_vc_alpha_PBE_w (j,i,m,istate) = contrib_grad_ca(m,istate) * aos_grad_in_r_array(j,i,m)
+      grad_aos_dsr_vc_beta_PBE_w  (j,i,m,istate) = contrib_grad_cb(m,istate) * aos_grad_in_r_array(j,i,m)
+      grad_aos_dsr_vx_alpha_PBE_w (j,i,m,istate) = contrib_grad_xa(m,istate) * aos_grad_in_r_array(j,i,m)
+      grad_aos_dsr_vx_beta_PBE_w  (j,i,m,istate) = contrib_grad_xb(m,istate) * aos_grad_in_r_array(j,i,m)
      enddo
     enddo
   enddo
  enddo
 
- END_PROVIDER 
+ END_PROVIDER
 
 
  BEGIN_PROVIDER [double precision, potential_sr_x_alpha_ao_PBE,(ao_num,ao_num,N_states)]
@@ -162,7 +162,7 @@ END_PROVIDER
 &BEGIN_PROVIDER [double precision, potential_sr_c_alpha_ao_PBE,(ao_num,ao_num,N_states)]
 &BEGIN_PROVIDER [double precision, potential_sr_c_beta_ao_PBE,(ao_num,ao_num,N_states)]
  implicit none
- BEGIN_DOC 
+ BEGIN_DOC
 ! exchange/correlation alpha/beta potentials with the short range PBE functional on the AO basis
  END_DOC
  integer :: istate, m
@@ -172,17 +172,17 @@ END_PROVIDER
   potential_sr_c_beta_ao_PBE = 0.d0
   potential_sr_x_beta_ao_PBE = 0.d0
   do istate = 1, N_states
-    ! correlation alpha 
+    ! correlation alpha
     call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,       &
         aos_sr_vc_alpha_PBE_w(1,1,istate),size(aos_sr_vc_alpha_PBE_w,1),&
         aos_in_r_array,size(aos_in_r_array,1),1.d0,                  &
         potential_sr_c_alpha_ao_PBE(1,1,istate),size(potential_sr_c_alpha_ao_PBE,1))
-    ! correlation beta  
+    ! correlation beta
     call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,       &
         aos_sr_vc_beta_PBE_w(1,1,istate),size(aos_sr_vc_beta_PBE_w,1),&
         aos_in_r_array,size(aos_in_r_array,1),1.d0,                  &
         potential_sr_c_beta_ao_PBE(1,1,istate),size(potential_sr_c_beta_ao_PBE,1))
-    ! exchange alpha 
+    ! exchange alpha
     call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,       &
         aos_sr_vx_alpha_PBE_w(1,1,istate),size(aos_sr_vx_alpha_PBE_w,1),&
         aos_in_r_array,size(aos_in_r_array,1),1.d0,                  &
@@ -193,7 +193,7 @@ END_PROVIDER
         aos_in_r_array,size(aos_in_r_array,1),1.d0,                  &
         potential_sr_x_beta_ao_PBE(1,1,istate), size(potential_sr_x_beta_ao_PBE,1))
    do m= 1,3
-    ! correlation alpha 
+    ! correlation alpha
     call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,       &
         aos_dsr_vc_alpha_PBE_w(1,1,m,istate),size(aos_dsr_vc_alpha_PBE_w,1),&
         aos_grad_in_r_array(1,1,m),size(aos_grad_in_r_array,1),1.d0, &
@@ -211,7 +211,7 @@ END_PROVIDER
         grad_aos_dsr_vc_beta_PBE_w(1,1,m,istate),size(grad_aos_dsr_vc_beta_PBE_w,1),&
         aos_in_r_array,size(aos_in_r_array,1),1.d0,                  &
         potential_sr_c_beta_ao_PBE(1,1,istate),size(potential_sr_c_beta_ao_PBE,1))
-    ! exchange alpha 
+    ! exchange alpha
     call dgemm('N','T',ao_num,ao_num,n_points_final_grid,1.d0,       &
         aos_dsr_vx_alpha_PBE_w(1,1,m,istate),size(aos_dsr_vx_alpha_PBE_w,1),&
         aos_grad_in_r_array(1,1,m),size(aos_grad_in_r_array,1),1.d0, &
@@ -232,4 +232,4 @@ END_PROVIDER
    enddo
   enddo
 
-END_PROVIDER 
+END_PROVIDER

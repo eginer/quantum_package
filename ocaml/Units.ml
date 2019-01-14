@@ -1,5 +1,5 @@
 
-type units = 
+type units =
 | Bohr
 | Angstrom
 ;;

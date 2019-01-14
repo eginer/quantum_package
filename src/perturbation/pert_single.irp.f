@@ -5,11 +5,11 @@ subroutine pt2_h_core(det_pert,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minili
   integer(bit_kind), intent(in)  :: det_pert(Nint,2)
   double precision , intent(out) :: c_pert(N_st),e_2_pert(N_st),H_pert_diag(N_st)
   double precision               :: i_H_psi_array(N_st)
-  
+
   integer, intent(in)            :: N_minilist
   integer, intent(in)            :: idx_minilist(0:N_det_selectors)
   integer(bit_kind), intent(in)  :: minilist(Nint,2,N_det_selectors)
-  
+
   BEGIN_DOC
   ! compute the standard Epstein-Nesbet perturbative first order coefficient and second order energetic contribution
   !
@@ -20,7 +20,7 @@ subroutine pt2_h_core(det_pert,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minili
   ! e_2_pert(i) = <psi(i)|H|det_pert>^2/( E(i) - <det_pert|H|det_pert> )
   !
   END_DOC
-  
+
   integer                        :: i,j
   double precision               :: diag_H_mat_elem, h
 
@@ -49,5 +49,5 @@ subroutine pt2_h_core(det_pert,c_pert,e_2_pert,H_pert_diag,Nint,ndet,N_st,minili
  call decode_exc(exc,degree,h1,p1,h2,p2,s1,s2)
  c_pert = phase * mo_one_e_integrals(h1,p1)
  e_2_pert = -dabs(mo_one_e_integrals(h1,p1)+1.d0)
-  
+
 end

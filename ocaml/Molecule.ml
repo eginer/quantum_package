@@ -1,8 +1,8 @@
-open Qptypes 
+open Qptypes
 open Sexplib.Std
 
 exception MultiplicityError of string
-exception XYZError 
+exception XYZError
 
 type t = {
   nuclei     : Atom.t list ;
@@ -22,7 +22,7 @@ let get_charge { nuclei  ; elec_alpha ; elec_beta } =
   Charge.of_float (nucl_charge nuclei  -. (float_of_int result))
 
 
-let get_multiplicity m = 
+let get_multiplicity m =
   let elec_alpha =
      m.elec_alpha
   in
@@ -31,17 +31,17 @@ let get_multiplicity m =
 
 let get_nucl_num m =
   let nmax =
-    List.length m.nuclei 
+    List.length m.nuclei
   in
   Nucl_number.of_int nmax ~max:nmax
 
 
-let name m = 
+let name m =
   let cm =
     get_charge m
     |> Charge.to_int
   in
-  let c = 
+  let c =
      match cm with
      | 0 -> ""
      | 1 -> " (+)"
@@ -72,9 +72,9 @@ let name m =
       Element.to_string a
     in
     begin
-      match n with 
+      match n with
       | 1 -> build_name (a::accu) rest
-      | i when i>1 -> 
+      | i when i>1 ->
         let tmp = Printf.sprintf "%s%d" a i
         in build_name (tmp::accu) rest
       | _ -> assert false
@@ -87,7 +87,7 @@ let name m =
   String.concat "" result
 
 
-let to_string_general ~f m = 
+let to_string_general ~f m =
   let { nuclei  ; elec_alpha ; elec_beta } = m
   in
   let n =
@@ -102,8 +102,8 @@ let to_string_general ~f m =
 let to_string =
   to_string_general ~f:(fun x -> Atom.to_string Units.Angstrom x)
 
-let to_xyz = 
-  to_string_general ~f:Atom.to_xyz 
+let to_xyz =
+  to_string_general ~f:Atom.to_xyz
 
 
 let of_xyz_string
@@ -114,18 +114,18 @@ let of_xyz_string
        |> List.filter (fun x -> x <> "")
        |> List.map (fun x -> Atom.of_string units x)
   in
-  let ne = ( get_charge { 
+  let ne = ( get_charge {
         nuclei=l ;
         elec_alpha=(Elec_alpha_number.of_int 1) ;
-        elec_beta=(Elec_beta_number.of_int 0) } 
-      |> Charge.to_int 
+        elec_beta=(Elec_beta_number.of_int 0) }
+      |> Charge.to_int
       ) + 1 - (Charge.to_int charge)
-      |> Elec_number.of_int 
+      |> Elec_number.of_int
   in
   let (na,nb) =
      Multiplicity.to_alpha_beta ne multiplicity
   in
-  let result = 
+  let result =
   { nuclei = l ;
     elec_alpha = na ;
     elec_beta  = nb }
@@ -146,9 +146,9 @@ let of_xyz_file
     ?(charge=(Charge.of_int 0)) ?(multiplicity=(Multiplicity.of_int 1))
     ?(units=Units.Angstrom)
     filename =
-  let lines = 
+  let lines =
     match Io_ext.input_lines filename with
-    | natoms :: title :: rest -> 
+    | natoms :: title :: rest ->
         begin
           try
             if (int_of_string @@ String_ext.strip natoms) <= 0 then
@@ -159,24 +159,24 @@ let of_xyz_file
         String.concat "\n" rest
     | _ -> raise XYZError
   in
-  of_xyz_string ~charge:charge ~multiplicity:multiplicity 
+  of_xyz_string ~charge:charge ~multiplicity:multiplicity
     ~units:units lines
 
 
-let of_zmt_file  
+let of_zmt_file
     ?(charge=(Charge.of_int 0)) ?(multiplicity=(Multiplicity.of_int 1))
     ?(units=Units.Angstrom)
-    filename = 
+    filename =
   Io_ext.read_all filename
   |> Zmatrix.of_string
   |> Zmatrix.to_xyz_string
   |> of_xyz_string ~charge ~multiplicity ~units
 
 
-let of_file 
+let of_file
     ?(charge=(Charge.of_int 0)) ?(multiplicity=(Multiplicity.of_int 1))
     ?(units=Units.Angstrom)
-    filename = 
+    filename =
   try
     of_xyz_file ~charge ~multiplicity ~units filename
   with XYZError ->
@@ -189,7 +189,7 @@ let distance_matrix molecule =
     |> List.map (fun x -> x.Atom.coord)
     |> Array.of_list
   in
-  let n = 
+  let n =
     Array.length coord
   in
   let result =
@@ -203,9 +203,9 @@ let distance_matrix molecule =
     done;
   done;
   result
-  
-  
-  
+
+
+
 
 open Core ;;
 include To_md5

@@ -1,12 +1,12 @@
 module Id = struct
   type t = int
 
-  let of_int x = 
+  let of_int x =
     assert (x>0); x
 
   let to_int x = x
 
-  let of_string x = 
+  let of_string x =
     int_of_string x
     |> of_int
 

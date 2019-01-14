@@ -2,44 +2,43 @@
 # -*- coding: utf-8 -*-
 """
 Usage:
-       qp_plugins list [ -i | -u | -q ]
+       qp_plugins list [-iuq]
        qp_plugins download <url>
        qp_plugins install <name>...
        qp_plugins uninstall <name>
-       qp_plugins create -n <name> [-r <repository>] [<needed_modules>...]
+       qp_plugins create -n <name> [-r <repo>] [<needed_modules>...]
 
 Options:
-    list                  List all the plugins
-      -i                  List only the installed plugins
-      -u                  List only the uninstalled plugins
-      -q                  List the external repositories
+    list                      List
+      -i --installed           only the installed plugins
+      -u --uninstalled         only the uninstalled plugins
+      -q --repositories        the external repositories
 
-    download <url>        Download an external repository.
-                          The URL points to a tar.gz file or a git repository:
-                          http://example.com/site/example.tar.gz
-                          git@gitlab.com:user/example_repository
+    download <url>            Download an external repository.
+                              The URL points to a tar.gz file or a git repository:
+                              http://example.com/site/example.tar.gz
+                              git@gitlab.com:user/example_repository
 
-    install               Install a plugin
+    install                   Install a plugin
 
-    uninstall             Uninstall a plugin
+    uninstall                 Uninstall a plugin
 
-    create -n <name>      Create a new plugin named <name>
-      -r <repository>     Name of the repository in which to create the plugin
+    create
+      -n --name=<name>        Create a new plugin named <name>
+      -r --repository=<repo>  Name of the repository in which to create the plugin
 
-"""                      
+"""
 
 import sys
 import os
 import subprocess
-from os import listdir
-from os.path import isdir, join
 
 
 try:
     from docopt import docopt
     from module_handler import ModuleHandler, get_dict_child
     from module_handler import get_l_module_descendant
-    from qp_path import QP_SRC, QP_PLUGINS, QP_ROOT, QP_DATA
+    from qp_path import QP_SRC, QP_PLUGINS, QP_DATA
 except ImportError:
     print "Please check if you have sourced the ${QP_ROOT}/quantum_package.rc"
     print "(`source ${QP_ROOT}/quantum_package.rc`)"
@@ -47,6 +46,7 @@ except ImportError:
 
 
 def save_new_module(path, l_child):
+    """Creates a new module"""
 
     # ~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~ #
     # N E E D E D _ C H I L D R E N _ M O D U L E S #
@@ -78,8 +78,8 @@ def save_new_module(path, l_child):
             data = g.read()
         f.write(data)
 
-    with open(os.path.join(path, "%s.irp.f"%(module_name) ), "w") as f:
-        f.write("program {0}".format(module_name) )
+    with open(os.path.join(path, "%s.irp.f"%(module_name)), "w") as f:
+        f.write("program {0}".format(module_name))
         f.write("""
   implicit none
   BEGIN_DOC
@@ -90,47 +90,51 @@ def save_new_module(path, l_child):
 """)
 
 def main(arguments):
-    arguments["<name>"] = [ os.path.normpath(name) for name in arguments["<name>"] ]
+    """Main function"""
+    arguments["<name>"] = [os.path.normpath(name) for name in arguments["<name>"]]
 
     if arguments["list"]:
         if arguments["-q"]:
-            l_result = [ f for f in listdir(QP_PLUGINS) if f not in [ ".gitignore", "local" ] ]
+            l_result = [f for f in os.path.listdir(QP_PLUGINS) if f not in [".gitignore", "local"]]
 
         else:
-            # Search in src all directories with a NEED file 
-            l_tmp = [ dirname for (dirname, _, filenames) in os.walk(QP_PLUGINS, followlinks=False) for f in filenames if f == 'NEED']
+            # Search in src all directories with a NEED file
+            l_tmp = [dirname for (dirname, _, filenames) in \
+                     os.walk(QP_PLUGINS, followlinks=False) \
+                     for f in filenames if f == 'NEED']
 
             # Find directories which contain modules
-            l_tmp = [ os.path.split(f) for f in l_tmp ]
+            l_tmp = [os.path.split(f) for f in l_tmp]
             d_tmp = {}
-            for (x,_) in l_tmp:
+            for (x, _) in l_tmp:
                 d_tmp[x] = 1
             l_repository = d_tmp.keys()
-            m_all_instances = ModuleHandler(l_repository)   
-            m_instance = ModuleHandler(l_repository)   
-            l_plugins = [ module for module in m_instance.l_module ]
+            m_instance = ModuleHandler(l_repository)
+            l_plugins = [module for module in m_instance.l_module]
             l_result = l_plugins
 
             if arguments["-i"] or arguments["-u"]:
                 # Search in src all symbolic links that are modules
-                l_installed = [ f for f in listdir(QP_SRC) if (os.path.islink(os.path.join(QP_SRC,f)) and f != ".gitignore") ]
+                l_installed = [f for f in os.path.listdir(QP_SRC) \
+                               if (os.path.islink(os.path.join(QP_SRC, f)) \
+                               and f != ".gitignore")]
 
             if arguments["-i"]:
-                l_result = [ f for f in l_plugins if f in l_installed ]
+                l_result = [f for f in l_plugins if f in l_installed]
 
             elif arguments["-u"]:
-                l_result = [ f for f in l_plugins if f not in l_installed ]
+                l_result = [f for f in l_plugins if f not in l_installed]
 
-        for module in sorted(l_result): 
-            print "* {0}".format(module)           
-                                                   
-    if arguments["create"]:                        
-        m_instance = ModuleHandler([QP_SRC])       
-                                                   
-        l_children = arguments["<needed_modules>"] 
-                                                   
-        name = arguments["<name>"][0]              
-      
+        for module in sorted(l_result):
+            print "* {0}".format(module)
+
+    if arguments["create"]:
+        m_instance = ModuleHandler([QP_SRC])
+
+        l_children = arguments["<needed_modules>"]
+
+        name = arguments["<name>"][0]
+
         if arguments["-r"]:
             repository = arguments["-r"]
         else:
@@ -161,16 +165,15 @@ def main(arguments):
 
         print "    [ OK ]"
         print ""
-        arguments["create"]=False
-        arguments["install"]=True
+        arguments["create"] = False
+        arguments["install"] = True
         main(arguments)
 
     elif arguments["download"]:
         url = arguments["<url>"]
-        is_repo = not(  url.endswith(".tar.gz") or \
-                        url.endswith(".tgz")    or \
-                        url.endswith(".zip") \
-                     )
+        is_repo = not(url.endswith(".tar.gz") or \
+                      url.endswith(".tgz")    or \
+                      url.endswith(".zip"))
         os.chdir(QP_PLUGINS)
         if is_repo:
             subprocess.check_call(["git", "clone", url])
@@ -179,38 +182,33 @@ def main(arguments):
 
             import requests, shutil
             try:
-                r = requests.get(url,verify=True,stream=True)
+                r = requests.get(url, verify=True, stream=True)
             except:
-                r = requests.get(url,verify=False,stream=True)
+                r = requests.get(url, verify=False, stream=True)
             r.raw.decode_content = True
             with open(filename, 'wb') as f:
-                    shutil.copyfileobj(r.raw, f)      
+                shutil.copyfileobj(r.raw, f)
 
             if filename.endswith(".tar.gz") or  \
-               filename.endswith(".tgz") or  \
-               filename.endswith(".tar.bz2") or  \
-               filename.endswith(".tar"):
-              subprocess.check_call(["tar", "xf", filename])
-              os.remove(filename)
+                 filename.endswith(".tgz") or  \
+                 filename.endswith(".tar.bz2") or  \
+                 filename.endswith(".tar"):
+                subprocess.check_call(["tar", "xf", filename])
+                os.remove(filename)
 
     elif arguments["install"]:
 
-        # Python 2.6 ...
-        d_module_location= dict()
-
         d_local = get_dict_child([QP_SRC])
-#        d_plugin = get_dict_child([join(QP_PLUGINS, f) for f in listdir(QP_PLUGINS) if isdir(join(QP_PLUGINS, f))])
-        l_tmp = [ dirname for (dirname, _, filenames) in os.walk(QP_PLUGINS, followlinks=False) for f in filenames if f == 'NEED']
+
+        l_tmp = [dirname for (dirname, _, filenames) in \
+                 os.walk(QP_PLUGINS, followlinks=False) \
+                 for f in filenames if f == 'NEED']
         d_repo_of_plugin = {}
         d_repo = {}
-        for (x,y) in [ os.path.split(f) for f in l_tmp ]:
+        for (x, y) in [os.path.split(f) for f in l_tmp]:
             d_repo_of_plugin[y] = x
             d_repo[x] = None
         l_repository = d_repo.keys()
-#        m_all_instances = ModuleHandler(l_repository)   
-#        m_instance = ModuleHandler(l_repository)   
-#        l_plugins = [ module for module in m_instance.l_module ]
-#        print l_plugins
 
         d_plugin = get_dict_child(l_repository)
 
@@ -219,9 +217,9 @@ def main(arguments):
 
         normalize_case = {}
         for name in d_local.keys() + d_plugin.keys():
-            normalize_case [ name.lower() ] = name
+            normalize_case[name.lower()] = name
 
-        l_name = [ normalize_case[name.lower()] for name in arguments["<name>"] ]
+        l_name = [normalize_case[name.lower()] for name in arguments["<name>"]]
 
         for name in l_name:
 
@@ -240,11 +238,11 @@ def main(arguments):
             print "Installation...",
 
             for module_to_cp in l_module_to_cp:
-                src = os.path.join( d_repo_of_plugin[module_to_cp], module_to_cp )
+                src = os.path.join(d_repo_of_plugin[module_to_cp], module_to_cp)
                 des = os.path.join(QP_SRC, module_to_cp)
                 try:
                     os.symlink(src, des)
-                    install = os.path.join(src,"install")
+                    install = os.path.join(src, "install")
                     if os.path.isfile(install):
                         wd = os.getcwd()
                         os.chdir(src)
@@ -271,7 +269,9 @@ def main(arguments):
                 print "* %s" % name
             sys.exit(1)
 
-        l_name_to_remove = l_name + [module for module in m_instance.l_module for name in l_name if name in d_descendant[module]]
+        l_name_to_remove = l_name + \
+            [module for module in m_instance.l_module \
+              for name in l_name if name in d_descendant[module]]
 
         print "Removing plugins:"
         print l_name_to_remove
@@ -282,7 +282,7 @@ def main(arguments):
 
         for module in set(l_name_to_remove):
 
-            uninstall = os.path.join(QP_SRC,module,"uninstall")
+            uninstall = os.path.join(QP_SRC, module, "uninstall")
             if os.path.isfile(uninstall):
                 subprocess.check_call([uninstall])
 
@@ -293,6 +293,6 @@ def main(arguments):
 
 
 if __name__ == '__main__':
-    arguments = docopt(__doc__)
-    main(arguments)
+    ARG = docopt(__doc__)
+    main(ARG)
 

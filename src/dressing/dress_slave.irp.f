@@ -5,10 +5,10 @@ subroutine dress_slave
   END_DOC
   read_wf = .False.
   distributed_davidson = .False.
-  threshold_generators = 1d0 
+  threshold_generators = 1d0
   SOFT_TOUCH read_wf distributed_davidson threshold_generators
-  
- 
+
+
   call provide_everything
   call switch_qp_run_to_master
   call run_wf
@@ -27,14 +27,14 @@ subroutine run_wf
   double precision :: energy(N_states_diag)
   character*(64) :: states(1)
   integer :: rc, i
-  integer, external              :: zmq_get_dvector, zmq_get_N_det_generators 
+  integer, external              :: zmq_get_dvector, zmq_get_N_det_generators
   integer, external              :: zmq_get_psi, zmq_get_N_det_selectors
   integer, external              :: zmq_get_N_states_diag
   double precision               :: tmp
 
 
   call provide_everything
-  
+
   zmq_context = f77_zmq_ctx_new ()
   states(1) = 'dress'
 
@@ -57,7 +57,7 @@ subroutine run_wf
       if (zmq_get_dvector(zmq_to_qp_run_socket,1,'dress_stoch_istate',tmp,1) == -1) cycle
       dress_stoch_istate = int(tmp)
       psi_energy(1:N_states) = energy(1:N_states)
-      TOUCH psi_energy dress_stoch_istate state_average_weight 
+      TOUCH psi_energy dress_stoch_istate state_average_weight
 
       PROVIDE psi_bilinear_matrix_columns_loc psi_det_alpha_unique psi_det_beta_unique
       PROVIDE psi_bilinear_matrix_rows psi_det_sorted_gen_order psi_bilinear_matrix_order

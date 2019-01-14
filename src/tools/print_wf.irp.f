@@ -1,24 +1,24 @@
 program print_wf
- implicit none 
+ implicit none
  BEGIN_DOC
- ! Print the ground state wave function stored in the |EZFIO| folder in the intermediate normalization.  
+ ! Print the ground state wave function stored in the |EZFIO| folder in the intermediate normalization.
  !
- ! It also prints a lot of information regarding the excitation operators from the reference determinant 
- ! 
- ! and a first-order perturbative analysis of the wave function. 
- ! 
+ ! It also prints a lot of information regarding the excitation operators from the reference determinant
+ !
+ ! and a first-order perturbative analysis of the wave function.
+ !
  ! If the wave function strongly deviates from the first-order analysis, something funny is going on :)
  END_DOC
 
 
- ! this has to be done in order to be sure that N_det, psi_det and psi_coef are the wave function stored in the EZFIO folder 
+ ! this has to be done in order to be sure that N_det, psi_det and psi_coef are the wave function stored in the EZFIO folder
  read_wf = .True.
  touch read_wf
  call routine
 end
 
 subroutine routine
- implicit none 
+ implicit none
  integer :: i
  integer :: degree
  double precision :: hij,hii,coef_1,h00
@@ -48,18 +48,18 @@ subroutine routine
   if(degree == 0)then
    print*,'Reference determinant '
    call i_H_j(psi_det(1,1,i),psi_det(1,1,i),N_int,h00)
-  else 
+  else
    call i_H_j(psi_det(1,1,i),psi_det(1,1,i),N_int,hii)
    call i_H_j(psi_det(1,1,1),psi_det(1,1,i),N_int,hij)
    delta_e = hii - h00
    coef_1 = hij/(h00-hii)
    if(hij.ne.0.d0)then
     if (delta_e > 0.d0) then
-      coef_2_2 = 0.5d0 * (delta_e - dsqrt(delta_e * delta_e + 4.d0 * hij * hij ))/ hij 
+      coef_2_2 = 0.5d0 * (delta_e - dsqrt(delta_e * delta_e + 4.d0 * hij * hij ))/ hij
     else
-      coef_2_2 = 0.5d0 * (delta_e + dsqrt(delta_e * delta_e + 4.d0 * hij * hij )) /hij 
+      coef_2_2 = 0.5d0 * (delta_e + dsqrt(delta_e * delta_e + 4.d0 * hij * hij )) /hij
     endif
-   else 
+   else
     coef_2_2 = 0.d0
    endif
    call get_excitation(psi_det(1,1,1),psi_det(1,1,i),exc,degree,phase,N_int)
@@ -91,7 +91,7 @@ subroutine routine
     print*,'s2',s2
     print*,'h2,p2 = ',h2,p2
    endif
-   
+
    print*,'<Ref| H |D_I> = ',hij
    print*,'Delta E       = ',h00-hii
    print*,'coef pert (1) = ',coef_1

@@ -1,6 +1,6 @@
 BEGIN_PROVIDER [double precision, core_energy_erf]
  implicit none
- BEGIN_DOC 
+ BEGIN_DOC
 ! energy from the core : contains all core-core contributionswith the erf interaction
  END_DOC
  integer :: i,j,k,l
@@ -21,7 +21,7 @@ BEGIN_PROVIDER [double precision, core_fock_operator_erf, (mo_num,mo_num)]
  implicit none
  integer :: i,j,k,l,m,n
  double precision :: get_mo_two_e_integral_erf
- BEGIN_DOC 
+ BEGIN_DOC
 ! this is the contribution to the Fock operator from the core electrons with the erf interaction
  END_DOC
  core_fock_operator_erf = 0.d0

@@ -10,11 +10,11 @@ type t = int64 array [@@deriving sexp]
 (** Transform to an int64 array *)
 val to_int64_array : t -> int64 array
 
-(** Create from an int64 array, checking the number of alpha 
+(** Create from an int64 array, checking the number of alpha
   * and beta electrons *)
-val of_int64_array : n_int:Qptypes.N_int_number.t -> 
+val of_int64_array : n_int:Qptypes.N_int_number.t ->
   alpha:Qptypes.Elec_alpha_number.t ->
-  beta:Qptypes.Elec_beta_number.t -> 
+  beta:Qptypes.Elec_beta_number.t ->
   int64 array -> t
 
 (** Split into an alpha-only and a beta-only determinant *)
@@ -26,7 +26,7 @@ val to_bitlist_couple : t -> Bitlist.t * Bitlist.t
 (** Create from a bit list *)
 val of_bitlist_couple : ?n_int:Qptypes.N_int_number.t ->
   alpha:Qptypes.Elec_alpha_number.t ->
-  beta:Qptypes.Elec_beta_number.t -> 
+  beta:Qptypes.Elec_beta_number.t ->
   Bitlist.t * Bitlist.t -> t
 
 (** String representation *)

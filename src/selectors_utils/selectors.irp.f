@@ -14,7 +14,7 @@ BEGIN_PROVIDER [ double precision, psi_selectors_coef_transp, (N_states,psi_sele
 
   do i=1,N_det_selectors
     do k=1,N_states
-      psi_selectors_coef_transp(k,i) = psi_selectors_coef(i,k) 
+      psi_selectors_coef_transp(k,i) = psi_selectors_coef(i,k)
     enddo
   enddo
 END_PROVIDER
@@ -22,7 +22,7 @@ END_PROVIDER
 BEGIN_PROVIDER [ double precision, psi_selectors_diag_h_mat, (psi_selectors_size) ]
   implicit none
   BEGIN_DOC
-  ! Diagonal elements of the H matrix for each selectors 
+  ! Diagonal elements of the H matrix for each selectors
   END_DOC
   integer                        :: i
   double precision :: diag_H_mat_elem

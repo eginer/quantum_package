@@ -31,25 +31,25 @@ subroutine push_integrals(zmq_socket_push, n_integrals, buffer_i, buffer_value, 
   real(integral_kind), intent(in) :: buffer_value(*)
   integer, intent(in)            :: task_id
   integer                        :: rc
-  
+
   rc = f77_zmq_send( zmq_socket_push, n_integrals, 4, ZMQ_SNDMORE)
   if (rc /= 4) then
     print *, irp_here,  ': f77_zmq_send( zmq_socket_push, n_integrals, 4, ZMQ_SNDMORE)'
     stop 'error'
   endif
-  
+
   rc = f77_zmq_send( zmq_socket_push, buffer_i, key_kind*n_integrals, ZMQ_SNDMORE)
   if (rc /= key_kind*n_integrals) then
     print *, irp_here,  ': f77_zmq_send( zmq_socket_push, buffer_i, key_kind*n_integrals, ZMQ_SNDMORE)'
     stop 'error'
   endif
-  
+
   rc = f77_zmq_send( zmq_socket_push, buffer_value, integral_kind*n_integrals, ZMQ_SNDMORE)
   if (rc /= integral_kind*n_integrals) then
     print *, irp_here,  ': f77_zmq_send( zmq_socket_push, buffer_value, integral_kind*n_integrals, 0)'
     stop 'error'
   endif
-  
+
   rc = f77_zmq_send( zmq_socket_push, task_id, 4, 0)
   if (rc /= 4) then
     print *, irp_here,  ': f77_zmq_send( zmq_socket_push, task_id, 4, 0)'
@@ -85,7 +85,7 @@ subroutine ao_two_e_integrals_in_map_slave(thread,iproc)
   integer                        :: rc
   real(integral_kind), allocatable :: buffer_value(:)
   integer(key_kind), allocatable :: buffer_i(:)
-  
+
   integer                        :: worker_id, task_id
   character*(512)                :: task
 
@@ -110,7 +110,7 @@ subroutine ao_two_e_integrals_in_map_slave(thread,iproc)
   allocate ( buffer_i(ao_num*ao_num), buffer_value(ao_num*ao_num) )
 
 
-  do 
+  do
     integer, external :: get_task_from_taskserver
     if (get_task_from_taskserver(zmq_to_qp_run_socket,worker_id, task_id, task) == -1) then
       exit
@@ -118,7 +118,7 @@ subroutine ao_two_e_integrals_in_map_slave(thread,iproc)
     if (task_id == 0) exit
     read(task,*) j, l
     integer, external :: task_done_to_taskserver
-    call compute_ao_integrals_jl(j,l,n_integrals,buffer_i,buffer_value) 
+    call compute_ao_integrals_jl(j,l,n_integrals,buffer_i,buffer_value)
     if (task_done_to_taskserver(zmq_to_qp_run_socket,worker_id,task_id) == -1) then
         stop 'Unable to send task_done'
     endif
@@ -147,15 +147,15 @@ subroutine ao_two_e_integrals_in_map_collector(zmq_socket_pull)
   integer(ZMQ_PTR), intent(in)   :: zmq_socket_pull
   integer                        :: j,l,n_integrals
   integer                        :: rc
-  
+
   real(integral_kind), allocatable :: buffer_value(:)
   integer(key_kind), allocatable :: buffer_i(:)
-  
+
   integer(ZMQ_PTR),external      :: new_zmq_to_qp_run_socket
   integer(ZMQ_PTR)               :: zmq_to_qp_run_socket
-  
+
   integer(ZMQ_PTR), external     :: new_zmq_pull_socket
-  
+
   integer*8                      :: control, accu, sze
   integer                        :: task_id, more
 
@@ -167,7 +167,7 @@ subroutine ao_two_e_integrals_in_map_collector(zmq_socket_pull)
   accu = 0_8
   more = 1
   do while (more == 1)
-    
+
     rc = f77_zmq_recv( zmq_socket_pull, n_integrals, 4, 0)
     if (rc == -1) then
       n_integrals = 0
@@ -177,9 +177,9 @@ subroutine ao_two_e_integrals_in_map_collector(zmq_socket_pull)
       print *, irp_here,  ': f77_zmq_recv( zmq_socket_pull, n_integrals, 4, 0)'
       stop 'error'
     endif
-    
+
     if (n_integrals >= 0) then
-      
+
       if (n_integrals > sze) then
         deallocate (buffer_value, buffer_i)
         sze = n_integrals
@@ -192,7 +192,7 @@ subroutine ao_two_e_integrals_in_map_collector(zmq_socket_pull)
         print *, irp_here,  ': f77_zmq_recv( zmq_socket_pull, buffer_i, key_kind*n_integrals, 0)'
         stop 'error'
       endif
-      
+
       rc = f77_zmq_recv( zmq_socket_pull, buffer_value, integral_kind*n_integrals, 0)
       if (rc /= integral_kind*n_integrals) then
         print *, irp_here,  ': f77_zmq_recv( zmq_socket_pull, buffer_value, integral_kind*n_integrals, 0)'
@@ -210,7 +210,7 @@ IRP_ELSE
       endif
 IRP_ENDIF
 
-      
+
       call insert_into_ao_integrals_map(n_integrals,buffer_i,buffer_value)
       accu += n_integrals
       if (task_id /= 0) then
@@ -225,7 +225,7 @@ IRP_ENDIF
 
   deallocate( buffer_i, buffer_value )
 
-  integer (map_size_kind) :: get_ao_map_size 
+  integer (map_size_kind) :: get_ao_map_size
   control = get_ao_map_size(ao_integrals_map)
 
   if (control /= accu) then

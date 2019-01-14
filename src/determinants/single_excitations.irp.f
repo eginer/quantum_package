@@ -5,7 +5,7 @@ BEGIN_PROVIDER [integer(bit_kind), ref_closed_shell_bitmask, (N_int,2)]
  integer :: n_occ_ab(2)
  integer :: occ(N_int*bit_kind_size,2)
  call bitstring_to_list_ab(ref_bitmask, occ, n_occ_ab, N_int)
- ! do the closed shell determinant 
+ ! do the closed shell determinant
  do i = 1, N_int
   ref_closed_shell_bitmask(i,1) = ref_bitmask(i,1)
   ref_closed_shell_bitmask(i,2) = ref_bitmask(i,2)

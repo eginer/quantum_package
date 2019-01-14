@@ -2,7 +2,7 @@
 mo_basis
 ========
 
-Molecular orbitals are expressed as 
+Molecular orbitals are expressed as
 
 .. math::
 

@@ -11,7 +11,7 @@ list of Bits
 type t = Bit.t list
 
 (* String representation *)
-let to_string b = 
+let to_string b =
   let rec do_work accu = function
     | [] -> accu
     | head :: tail ->
@@ -33,28 +33,28 @@ let of_string_mp s =
   |> List.rev_map ~f:(function
     | '-' -> Bit.Zero
     | '+' -> Bit.One
-    | _   -> failwith ("Error in bitstring ") ) 
-    
+    | _   -> failwith ("Error in bitstring ") )
+
 
 (* Create a bit list from an int64 *)
-let of_int64 i = 
+let of_int64 i =
 
   let rec do_work accu = function
   | 0L -> Bit.Zero :: accu |> List.rev
   | 1L -> Bit.One  :: accu |> List.rev
-  | i  -> 
+  | i  ->
     let b =
       match (Int64.bit_and i 1L ) with
       | 0L -> Bit.Zero
-      | 1L -> Bit.One 
-      | _ -> raise (Failure "i land 1 not in (0,1)")  
+      | 1L -> Bit.One
+      | _ -> raise (Failure "i land 1 not in (0,1)")
     in
     do_work (b :: accu) (Int64.shift_right_logical i 1)
   in
 
-  let adjust_length result = 
+  let adjust_length result =
     let rec do_work accu = function
-    | 64 -> List.rev accu 
+    | 64 -> List.rev accu
     | i when i>64 -> raise (Failure "Error in of_int64 > 64")
     | i when i<0 -> raise (Failure "Error in of_int64 < 0")
     | i -> do_work (Bit.Zero :: accu)  (i+1)
@@ -75,13 +75,13 @@ let to_int64 l =
 
 
 (* Create a bit list from a list of int64 *)
-let of_int64_list l = 
-  List.map ~f:of_int64 l 
+let of_int64_list l =
+  List.map ~f:of_int64 l
   |> List.concat
 
 (* Create a bit list from an array of int64 *)
-let of_int64_array l = 
-  Array.map ~f:of_int64 l 
+let of_int64_array l =
+  Array.map ~f:of_int64 l
   |> Array.to_list
   |> List.concat
 
@@ -102,13 +102,13 @@ let zero n_int =
 (* Create an int64 list from a bit list *)
 let to_int64_list l =
   let rec do_work accu buf counter = function
-    | [] -> 
+    | [] ->
         begin
           match buf with
           | [] -> accu
           | _  -> (List.rev buf)::accu
         end
-    | i::tail -> 
+    | i::tail ->
         if (counter < 64) then
           do_work accu (i::buf) (counter+1) tail
         else
@@ -124,7 +124,7 @@ let to_int64_array l =
     |> Array.of_list
 
 (* Create a bit list from a list of MO indices *)
-let of_mo_number_list n_int l = 
+let of_mo_number_list n_int l =
   let n_int = N_int_number.to_int n_int in
   let length = n_int*64 in
   let a = Array.create length (Bit.Zero) in
@@ -139,10 +139,10 @@ let to_mo_number_list l =
   | 0 -> accu
   | i ->
       begin
-        let new_accu = 
+        let new_accu =
         match a.(i-1) with
-        | Bit.One  -> (MO_number.of_int ~max:mo_num i)::accu 
-        | Bit.Zero -> accu 
+        | Bit.One  -> (MO_number.of_int ~max:mo_num i)::accu
+        | Bit.Zero -> accu
         in
         do_work new_accu (i-1)
       end
@@ -154,11 +154,11 @@ let to_mo_number_list l =
 
 (* logical operations on bit_list *)
 let logical_operator2 op a b =
-  let rec do_work_binary result a b = 
+  let rec do_work_binary result a b =
   match a, b with
   | [], [] -> result
   | [], _  | _ , [] -> raise (Failure "Lists should have same length")
-  | (ha::ta), (hb::tb) -> 
+  | (ha::ta), (hb::tb) ->
     let newbit = op ha hb
     in  do_work_binary (newbit::result) ta tb
   in
@@ -166,10 +166,10 @@ let logical_operator2 op a b =
 
 
 let logical_operator1 op b =
-  let rec do_work_unary result b = 
+  let rec do_work_unary result b =
   match b with
   | [] -> result
-  | (hb::tb) -> 
+  | (hb::tb) ->
     let newbit = op hb
     in  do_work_unary (newbit::result) tb
   in
@@ -182,11 +182,11 @@ let  or_operator a b = logical_operator2  Bit.or_operator a b
 let not_operator   b = logical_operator1 Bit.not_operator   b
 
 
-let popcnt b = 
+let popcnt b =
   List.fold_left b ~init:0 ~f:(fun accu -> function
     | Bit.One -> accu+1
     | Bit.Zero -> accu
-  ) 
+  )
 
 
 

@@ -5,7 +5,7 @@
  BEGIN_DOC
  ! Alpha Fock matrix in AO basis set
  END_DOC
- 
+
  integer                        :: i,j,k,l,k1,r,s
  integer                        :: i0,j0,k0,l0
  integer*8                      :: p,q
@@ -96,9 +96,9 @@
    deallocate(keys,values,ao_two_e_integral_alpha_tmp,ao_two_e_integral_beta_tmp)
    !$OMP END PARALLEL
  else
-   PROVIDE ao_two_e_integrals_in_map 
-   PROVIDE ao_two_e_integrals_erf_in_map 
-           
+   PROVIDE ao_two_e_integrals_in_map
+   PROVIDE ao_two_e_integrals_erf_in_map
+
    integer(omp_lock_kind) :: lck(ao_num)
    integer*8                      :: i8
    integer                        :: ii(8), jj(8), kk(8), ll(8), k2
@@ -113,7 +113,7 @@
        !$OMP PRIVATE(i,j,l,k1,k,integral,ii,jj,kk,ll,i8,keys,values,n_elements_max, &
        !$OMP  n_elements,ao_two_e_integral_alpha_tmp,ao_two_e_integral_beta_tmp)&
        !$OMP SHARED(ao_num,SCF_density_matrix_ao_alpha,SCF_density_matrix_ao_beta,&
-       !$OMP  ao_integrals_map, ao_two_e_integral_alpha, ao_two_e_integral_beta) 
+       !$OMP  ao_integrals_map, ao_two_e_integral_alpha, ao_two_e_integral_beta)
 
    call get_cache_map_n_elements_max(ao_integrals_map,n_elements_max)
    allocate(keys(n_elements_max), values(n_elements_max))
@@ -145,7 +145,7 @@
      enddo
    enddo
    !$OMP END DO NOWAIT
-   !$OMP CRITICAL 
+   !$OMP CRITICAL
    ao_two_e_integral_alpha += ao_two_e_integral_alpha_tmp
    ao_two_e_integral_beta  += ao_two_e_integral_beta_tmp
    !$OMP END CRITICAL
@@ -156,7 +156,7 @@
        !$OMP PRIVATE(i,j,l,k1,k,integral_erf,ii,jj,kk,ll,i8,keys_erf,values_erf,n_elements_max_erf, &
        !$OMP  n_elements_erf,ao_two_e_integral_alpha_tmp,ao_two_e_integral_beta_tmp)&
        !$OMP SHARED(ao_num,SCF_density_matrix_ao_alpha,SCF_density_matrix_ao_beta,&
-       !$OMP  ao_integrals_erf_map, ao_two_e_integral_alpha, ao_two_e_integral_beta) 
+       !$OMP  ao_integrals_erf_map, ao_two_e_integral_alpha, ao_two_e_integral_beta)
 
 
    call get_cache_map_n_elements_max(ao_integrals_erf_map,n_elements_max_erf)
@@ -203,14 +203,14 @@
 
 END_PROVIDER
 
- 
+
  BEGIN_PROVIDER [ double precision, Fock_matrix_ao_alpha, (ao_num, ao_num) ]
 &BEGIN_PROVIDER [ double precision, Fock_matrix_ao_beta,  (ao_num, ao_num) ]
  implicit none
  BEGIN_DOC
  ! Alpha Fock matrix in AO basis set
  END_DOC
- 
+
  integer                        :: i,j
  do j=1,ao_num
    do i=1,ao_num
@@ -228,12 +228,12 @@ END_PROVIDER
  BEGIN_DOC
  ! Mono electronic an Coulomb matrix in AO basis set
  END_DOC
- 
+
  integer                        :: i,j
  do j=1,ao_num
    do i=1,ao_num
-     Fock_matrix_alpha_no_xc_ao(i,j) = ao_one_e_integrals(i,j) + ao_two_e_integral_alpha(i,j) 
-     Fock_matrix_beta_no_xc_ao(i,j) = ao_one_e_integrals(i,j) + ao_two_e_integral_beta (i,j) 
+     Fock_matrix_alpha_no_xc_ao(i,j) = ao_one_e_integrals(i,j) + ao_two_e_integral_alpha(i,j)
+     Fock_matrix_beta_no_xc_ao(i,j) = ao_one_e_integrals(i,j) + ao_two_e_integral_beta (i,j)
    enddo
  enddo
 

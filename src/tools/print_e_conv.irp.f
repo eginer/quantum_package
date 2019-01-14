@@ -1,9 +1,9 @@
 program print_e_conv
  implicit none
- BEGIN_DOC 
-! program that prints in a human readable format the convergence of the CIPSI algorithm. 
+ BEGIN_DOC
+! program that prints in a human readable format the convergence of the CIPSI algorithm.
 !
-! for all istate, this program produces 
+! for all istate, this program produces
 !
 ! * a file "EZFIO.istate.conv" containing the variational and var+PT2 energies as a function of N_det
 !
@@ -24,7 +24,7 @@ subroutine routine_e_conv
  character*(128) :: output
  integer :: i_unit_output,getUnitAndOpen
  character*(128) :: filename
-  
+
  integer, allocatable :: n_det_tmp(:)
  call ezfio_get_iterations_N_iter(N_iter_tmp)
  print*,'N_iter_tmp = ',N_iter_tmp
@@ -33,9 +33,9 @@ subroutine routine_e_conv
  call ezfio_get_iterations_energy_iterations(e)
  call ezfio_get_iterations_pt2_iterations(pt2)
  call ezfio_get_iterations_n_det_iterations(n_det_tmp)
- 
 
-  do istate = 1, N_states 
+
+  do istate = 1, N_states
    if (istate.lt.10)then
     write (filename, "(I1)")istate
    else
@@ -56,7 +56,7 @@ subroutine routine_e_conv
    double precision, allocatable :: deltae(:,:),deltae_pt2(:,:)
    allocate(deltae(N_states,100),deltae_pt2(N_states,100))
    do i = 1, N_iter_tmp
-    do istate = 1, N_states 
+    do istate = 1, N_states
      deltae(istate,i) = e(istate,i) - e(1,i)
      deltae_pt2(istate,i) = e(istate,i) + pt2(istate,i) - (e(1,i) + pt2(1,i))
     enddo

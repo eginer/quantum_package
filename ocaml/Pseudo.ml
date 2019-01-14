@@ -4,22 +4,22 @@ open Qptypes
 
 module GaussianPrimitive_local : sig
 
-  type t = { 
+  type t = {
     expo    : AO_expo.t ;
     r_power : R_power.t ;
   } [@@deriving sexp]
 
   val of_expo_r_power : AO_expo.t -> R_power.t -> t
   val to_string : t -> string
-  
+
 end = struct
 
-  type t = { 
+  type t = {
     expo    : AO_expo.t ;
     r_power : R_power.t ;
   } [@@deriving sexp]
 
-  let of_expo_r_power dz n = 
+  let of_expo_r_power dz n =
      { expo = dz ; r_power = n }
 
   let to_string p =
@@ -31,7 +31,7 @@ end
 
 module GaussianPrimitive_non_local : sig
 
-  type t = { 
+  type t = {
     expo    : AO_expo.t ;
     r_power : R_power.t ;
     proj    : Positive_int.t
@@ -39,20 +39,20 @@ module GaussianPrimitive_non_local : sig
 
   val of_proj_expo_r_power : Positive_int.t -> AO_expo.t -> R_power.t -> t
   val to_string : t -> string
-  
+
 end = struct
 
-  type t = { 
+  type t = {
     expo    : AO_expo.t ;
     r_power : R_power.t ;
     proj    : Positive_int.t
   } [@@deriving sexp]
 
-  let of_proj_expo_r_power p dz n = 
+  let of_proj_expo_r_power p dz n =
      { expo = dz ; r_power = n ; proj = p }
 
   let to_string p =
-     Printf.sprintf "(%d, %22e, %d)" 
+     Printf.sprintf "(%d, %22e, %d)"
        (R_power.to_int p.r_power)
        (AO_expo.to_float p.expo)
        (Positive_int.to_int p.proj)
@@ -65,7 +65,7 @@ type t = {
   element   : Element.t ;
   n_elec    : Positive_int.t ;
   local     : (GaussianPrimitive_local.t * AO_coef.t ) list ;
-  non_local : (GaussianPrimitive_non_local.t * AO_coef.t ) list 
+  non_local : (GaussianPrimitive_non_local.t * AO_coef.t ) list
 } [@@deriving sexp]
 
 let empty e =
@@ -82,11 +82,11 @@ let to_string_local = function
   "Local component:" ::
   ( Printf.sprintf "%20s %8s %20s" "Coeff." "r^n" "Exp." ) ::
   ( List.map t ~f:(fun (l,c) -> Printf.sprintf "%20f %8d %20f"
-      (AO_coef.to_float c) 
+      (AO_coef.to_float c)
       (R_power.to_int   l.GaussianPrimitive_local.r_power)
       (AO_expo.to_float l.GaussianPrimitive_local.expo)
   ) )
-  |> String.concat ~sep:"\n" 
+  |> String.concat ~sep:"\n"
 
 
 (** Transform the non-local component of the pseudopotential to a string *)
@@ -96,16 +96,16 @@ let to_string_non_local = function
   "Non-local component:" ::
   ( Printf.sprintf "%20s %8s %20s %8s" "Coeff." "r^n" "Exp." "Proj") ::
   ( List.map t ~f:(fun (l,c) ->
-      let p = 
+      let p =
         Positive_int.to_int l.GaussianPrimitive_non_local.proj
       in
       Printf.sprintf "%20f %8d %20f   |%d><%d|"
-      (AO_coef.to_float c) 
+      (AO_coef.to_float c)
       (R_power.to_int   l.GaussianPrimitive_non_local.r_power)
       (AO_expo.to_float l.GaussianPrimitive_non_local.expo)
       p p
   ) )
-  |> String.concat ~sep:"\n" 
+  |> String.concat ~sep:"\n"
 
 (** Transform the Pseudopotential to a string *)
 let to_string t =
@@ -118,22 +118,22 @@ let to_string t =
   :: []
   |> List.filter ~f:(fun x -> x <> "")
   |> String.concat ~sep:"\n"
-  
-  
+
+
 (** Find an element in the file *)
 let find in_channel element =
   In_channel.seek in_channel 0L;
-  
+
   let loop, element_read, old_pos =
      ref true,
-     ref None, 
+     ref None,
      ref (In_channel.pos in_channel)
   in
 
   while !loop
   do
     try
-      let buffer = 
+      let buffer =
         old_pos := In_channel.pos in_channel;
         match In_channel.input_line in_channel with
         | Some line -> String.split ~on:' ' line
@@ -141,7 +141,7 @@ let find in_channel element =
         | None -> raise End_of_file
       in
       element_read := Some (Element.of_string buffer);
-      loop := !element_read <> (Some element) 
+      loop := !element_read <> (Some element)
     with
     | Element.ElementError _ -> ()
     | End_of_file -> loop := false
@@ -153,7 +153,7 @@ let find in_channel element =
 (** Read the Pseudopotential in GAMESS format *)
 let read_element in_channel element =
   match find in_channel element with
-  | Some e when e = element -> 
+  | Some e when e = element ->
     begin
       let rec read result =
         match In_channel.input_line in_channel with
@@ -165,19 +165,19 @@ let read_element in_channel element =
             read (line::result)
       in
 
-      let data = 
+      let data =
         read []
         |> List.rev
       in
 
-      let debug_data = 
+      let debug_data =
         String.concat ~sep:"\n" data
       in
 
       let decode_first_line = function
       | first_line :: rest ->
         begin
-          let first_line_split = 
+          let first_line_split =
             String.split first_line ~on:' '
             |> List.filter ~f:(fun x -> (String.strip x) <> "")
           in
@@ -193,11 +193,11 @@ let read_element in_channel element =
             debug_data )
         end
       | _ -> failwith ("Error reading pseudopotential\n"^debug_data)
-      in  
+      in
 
       let rec loop create_primitive accu = function
       | (0,rest) -> List.rev accu, rest
-      | (n,line::rest) -> 
+      | (n,line::rest) ->
         begin
           match
             String.split line ~on:' '
@@ -208,10 +208,10 @@ let read_element in_channel element =
               Int.of_string i
             in
             let elem =
-              ( create_primitive 
+              ( create_primitive
                 (Float.of_string e |> AO_expo.of_float)
                 (i-2 |> R_power.of_int),
-                Float.of_string c |> AO_coef.of_float 
+                Float.of_string c |> AO_coef.of_float
               )
             in
             loop create_primitive (elem::accu) (n-1, rest)
@@ -220,7 +220,7 @@ let read_element in_channel element =
       | _ -> failwith ("Error reading pseudopotential\n"^debug_data)
       in
 
-      let decode_local (pseudo,data) = 
+      let decode_local (pseudo,data) =
         let decode_local_n n rest =
           let result, rest =
             loop GaussianPrimitive_local.of_expo_r_power [] (Positive_int.to_int n,rest)
@@ -238,15 +238,15 @@ let read_element in_channel element =
         | _ -> failwith ("Unable to read (non-)local pseudopotential\n"^debug_data)
       in
 
-      let decode_non_local (pseudo,data) = 
+      let decode_non_local (pseudo,data) =
         let decode_non_local_n proj n (pseudo,data) =
-          let result, rest = 
+          let result, rest =
             loop (GaussianPrimitive_non_local.of_proj_expo_r_power proj)
               [] (Positive_int.to_int n, data)
           in
           { pseudo with non_local = pseudo.non_local @ result }, rest
         in
-        let rec new_proj (pseudo,data) proj = 
+        let rec new_proj (pseudo,data) proj =
           match data with
           | n :: rest ->
               let n =
@@ -254,7 +254,7 @@ let read_element in_channel element =
                 |> Int.of_string
                 |> Positive_int.of_int
               in
-              let result = 
+              let result =
                 decode_non_local_n proj n (pseudo,rest)
               and proj_next =
                 (Positive_int.to_int proj)+1
@@ -268,11 +268,11 @@ let read_element in_channel element =
 
       decode_first_line data
       |> decode_local
-      |> decode_non_local 
+      |> decode_non_local
     end
   | _ -> empty element
 
- 
+
 
 include To_md5
 let to_md5 = to_md5 sexp_of_t

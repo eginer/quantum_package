@@ -65,7 +65,7 @@ subroutine print_summary(e_,pt2_,error_,variance_,norm_,n_det_,n_occ_pattern_,n_
 
   do k=1, N_states_p
     print*,'* State ',k
-    print *,  'Variance        = ', variance_(k) 
+    print *,  'Variance        = ', variance_(k)
     print *,  'PT norm         = ', dsqrt(norm_(k))
     print *,  'PT2             = ', pt2_(k)
     print *,  'rPT2            = ', pt2_(k)*f(k)
@@ -96,5 +96,5 @@ subroutine print_summary(e_,pt2_,error_,variance_,norm_,n_det_,n_occ_pattern_,n_
     enddo
   endif
 
-end subroutine 
+end subroutine
 

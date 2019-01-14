@@ -9,5 +9,5 @@ val to_int   : t -> int
 val of_int   : int -> t
 
 (** String conversion functions *)
-val to_string: t -> string 
+val to_string: t -> string
 val of_string: string -> t

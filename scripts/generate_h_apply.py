@@ -320,7 +320,7 @@ class H_apply(object):
         sum_norm_pert(k) = 0.d0
         sum_H_pert_diag(k) = 0.d0
       enddo
-      """ 
+      """
 
       self.data["deinit_thread"] = """
       ! OMP CRITICAL
@@ -332,7 +332,7 @@ class H_apply(object):
       ! OMP END CRITICAL
       deallocate (e_2_pert_buffer, coef_pert_buffer)
       """
-      self.data["size_max"] = "8192" 
+      self.data["size_max"] = "8192"
       self.data["initialization"] = """
       PROVIDE psi_selectors_coef psi_selectors E_corr_per_selectors psi_det_sorted_bit
       """
@@ -342,7 +342,7 @@ class H_apply(object):
             call perturb_buffer_%s(i_generator,keys_out,key_idx,e_2_pert_buffer,coef_pert_buffer,sum_e_2_pert, &
              sum_norm_pert,sum_H_pert_diag,N_st,N_int,key_mask,fock_diag_tmp,%s)
           """%(pert,self.energy)
-      else: 
+      else:
           self.data["keys_work"] = """
             call perturb_buffer_by_mono_%s(i_generator,keys_out,key_idx,e_2_pert_buffer,coef_pert_buffer,sum_e_2_pert, &
              sum_norm_pert,sum_H_pert_diag,N_st,N_int,key_mask,fock_diag_tmp,%s)
@@ -356,12 +356,12 @@ class H_apply(object):
 
       self.data["params_main"] = "pt2, norm_pert, H_pert_diag, N_st"
       self.data["params_post"] = ","+self.data["params_main"] +", N_int"
-      self.data["decls_main"] = """  integer, intent(in)            :: N_st 
-  double precision, intent(inout):: pt2(N_st) 
-  double precision, intent(inout):: norm_pert(N_st) 
+      self.data["decls_main"] = """  integer, intent(in)            :: N_st
+  double precision, intent(inout):: pt2(N_st)
+  double precision, intent(inout):: norm_pert(N_st)
   double precision, intent(inout):: H_pert_diag(N_st)
   double precision               :: delta_pt2(N_st), norm_psi(N_st), pt2_old(N_st)
-  PROVIDE N_det_generators 
+  PROVIDE N_det_generators
   do k=1,N_st
     pt2(k) = 0.d0
     norm_pert(k) = 0.d0
@@ -375,7 +375,7 @@ class H_apply(object):
         write(6,'(A12, 1X, A8, 3(2X, A9), 2X, A8, 2X, A8, 2X, A8)') &
                  '============', '========', '=========', '=========', '=========', &
                  '========='
-      """ 
+      """
 
       self.data["printout_always"] = """
       do k=1,N_st
@@ -424,7 +424,7 @@ class H_apply(object):
       """ + self.data["keys_work"]
       self.data["keys_work"] += """
       call fill_H_apply_buffer_selection(key_idx,keys_out,e_2_pert_buffer, &
-        coef_pert_buffer,N_st,N_int,iproc,select_max_out) 
+        coef_pert_buffer,N_st,N_int,iproc,select_max_out)
       """
 #      self.data["omp_parallel"]    += """&
 # !$OMP REDUCTION (max:select_max_out)"""
@@ -450,12 +450,12 @@ class H_apply_zmq(H_apply):
      H_apply.set_perturbation(self,pert)
      self.data["printout_now"] = ""
      self.data["printout_always"] = ""
-     self.data["decls_main"] = """  integer, intent(in)            :: N_st 
-  double precision, intent(inout):: pt2(N_st) 
-  double precision, intent(inout):: norm_pert(N_st) 
+     self.data["decls_main"] = """  integer, intent(in)            :: N_st
+  double precision, intent(inout):: pt2(N_st)
+  double precision, intent(inout):: norm_pert(N_st)
   double precision, intent(inout):: H_pert_diag(N_st)
   double precision               :: delta_pt2(N_st), norm_psi(N_st), pt2_old(N_st)
-  PROVIDE N_det_generators 
+  PROVIDE N_det_generators
   do k=1,N_st
     pt2(k) = 0.d0
     norm_pert(k) = 0.d0

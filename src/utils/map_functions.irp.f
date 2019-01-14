@@ -99,7 +99,7 @@ subroutine map_load_from_disk(filename,map)
     deallocate(map % map(i) % value)
     deallocate(map % map(i) % key)
     k = map % consolidated_idx (i+2_8)
-    l =  map % consolidated_idx (i+1_8) 
+    l =  map % consolidated_idx (i+1_8)
     n_elements = int(k - l, 4)
     key_p => map % consolidated_key   (l:l+n_elements-1)
     value_p => map % consolidated_value ( l:l+n_elements-1 )
@@ -122,7 +122,7 @@ subroutine map_load_from_disk(filename,map)
   enddo
   map % sorted = x>0 .or. l == 0_8
   map % n_elements = k-1_8
-  map % sorted = map % sorted .or. .True. 
+  map % sorted = map % sorted .or. .True.
   map % consolidated = .True.
 
 end

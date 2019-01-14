@@ -1,16 +1,16 @@
 open Core;;
 
 (*
-Type for bits 
+Type for bits
 ==============
 
 Zero | One
 
 *)
 
-type t      = 
-| One 
-| Zero 
+type t      =
+| One
+| Zero
 [@@deriving sexp]
 
 let to_string = function
@@ -18,14 +18,14 @@ let to_string = function
   | One  -> "1"
 ;;
 
-let and_operator a b = 
+let and_operator a b =
   match a, b with
   | Zero, _ -> Zero
   | _, Zero -> Zero
   | _, _ -> One
 ;;
 
-let or_operator a b = 
+let or_operator a b =
   match a, b with
   | One, _ -> One
   | _, One -> One

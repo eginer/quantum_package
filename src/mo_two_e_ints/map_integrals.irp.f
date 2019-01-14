@@ -20,11 +20,11 @@ subroutine insert_into_mo_integrals_map(n_integrals,                 &
       buffer_i, buffer_values, thr)
   use map_module
   implicit none
-  
+
   BEGIN_DOC
   ! Create new entry into MO map, or accumulate in an existing entry
   END_DOC
-  
+
   integer, intent(in)                :: n_integrals
   integer(key_kind), intent(inout)   :: buffer_i(n_integrals)
   real(integral_kind), intent(inout) :: buffer_values(n_integrals)
@@ -146,7 +146,7 @@ subroutine get_mo_two_e_integrals(j,k,l,sze,out_val,map)
   integer                        :: i
   double precision, external :: get_two_e_integral
   PROVIDE mo_two_e_integrals_in_map mo_integrals_cache
-  
+
   integer                        :: ii, ii0
   integer*8                      :: ii_8, ii0_8
   real(integral_kind)            :: tmp
@@ -204,7 +204,7 @@ subroutine get_mo_two_e_integrals_ij(k,l,sze,out_array,map)
   PROVIDE mo_two_e_integrals_in_map
   allocate (hash(sze*sze), pairs(2,sze*sze),iorder(sze*sze), &
   tmp_val(sze*sze))
-  
+
   kk=0
   out_array = 0.d0
   do j=1,sze
@@ -234,7 +234,7 @@ subroutine get_mo_two_e_integrals_ij(k,l,sze,out_array,map)
     i=pairs(1,m)
     j=pairs(2,m)
     out_array(i,j) = tmp_val(ll)
-  enddo  
+  enddo
 
   deallocate(pairs,hash,iorder,tmp_val)
 end
@@ -298,7 +298,7 @@ subroutine get_mo_two_e_integrals_coulomb_ii(k,l,sze,out_val,map)
   use map_module
   implicit none
   BEGIN_DOC
-  ! Returns multiple integrals <ki|li> 
+  ! Returns multiple integrals <ki|li>
   ! k(1)i(2) 1/r12 l(1)i(2) :: out_val(i1)
   ! for k,l fixed.
   END_DOC
@@ -309,18 +309,18 @@ subroutine get_mo_two_e_integrals_coulomb_ii(k,l,sze,out_val,map)
   integer(key_kind)              :: hash(sze)
   real(integral_kind)            :: tmp_val(sze)
   PROVIDE mo_two_e_integrals_in_map
-  
+
   integer :: kk
   do i=1,sze
     !DIR$ FORCEINLINE
     call two_e_integrals_index(k,i,l,i,hash(i))
   enddo
-  
+
   if (integral_kind == 8) then
     call map_get_many(map, hash, out_val, sze)
   else
     call map_get_many(map, hash, tmp_val, sze)
-    ! Conversion to double precision 
+    ! Conversion to double precision
     do i=1,sze
       out_val(i) = dble(tmp_val(i))
     enddo
@@ -331,7 +331,7 @@ subroutine get_mo_two_e_integrals_exch_ii(k,l,sze,out_val,map)
   use map_module
   implicit none
   BEGIN_DOC
-  ! Returns multiple integrals <ki|il> 
+  ! Returns multiple integrals <ki|il>
   ! k(1)i(2) 1/r12 i(1)l(2) :: out_val(i1)
   ! for k,l fixed.
   END_DOC
@@ -342,18 +342,18 @@ subroutine get_mo_two_e_integrals_exch_ii(k,l,sze,out_val,map)
   integer(key_kind)              :: hash(sze)
   real(integral_kind)            :: tmp_val(sze)
   PROVIDE mo_two_e_integrals_in_map
-  
+
   integer :: kk
   do i=1,sze
     !DIR$ FORCEINLINE
     call two_e_integrals_index(k,i,i,l,hash(i))
   enddo
-  
+
   if (integral_kind == 8) then
     call map_get_many(map, hash, out_val, sze)
   else
     call map_get_many(map, hash, tmp_val, sze)
-    ! Conversion to double precision 
+    ! Conversion to double precision
     do i=1,sze
       out_val(i) = dble(tmp_val(i))
     enddo
@@ -399,7 +399,7 @@ subroutine dump_mo_integrals(filename)
     write(66) (key(j), j=1,n), (val(j), j=1,n)
   enddo
   close(66)
-  
+
 end
 
 
@@ -445,6 +445,6 @@ integer function load_mo_integrals(filename)
   call map_deinit(mo_integrals_map)
   98 continue
   stop 'Problem reading mo_integrals_map file in work/'
-  
+
 end
 

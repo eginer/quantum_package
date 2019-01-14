@@ -119,7 +119,7 @@ subroutine routine_example_psi_det
   integer, allocatable           :: degree_list(:)
   integer, allocatable           :: idx(:)
   allocate(degree_list(N_det),idx(0:N_det))
-  
+
   print*,'Number of determinants in the wave function'
   print*,'N_det = ',N_det
   print*,''

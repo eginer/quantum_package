@@ -36,22 +36,22 @@ subroutine davidson_run_slave(thread,iproc)
 
   zmq_to_qp_run_socket = new_zmq_to_qp_run_socket()
 
-  integer, external :: connect_to_taskserver 
+  integer, external :: connect_to_taskserver
 
 
 
-  if (connect_to_taskserver(zmq_to_qp_run_socket,worker_id,thread) == -1) then 
-    call end_zmq_to_qp_run_socket(zmq_to_qp_run_socket) 
+  if (connect_to_taskserver(zmq_to_qp_run_socket,worker_id,thread) == -1) then
+    call end_zmq_to_qp_run_socket(zmq_to_qp_run_socket)
   endif
 
   zmq_socket_push      = new_zmq_push_socket(thread)
 
   call davidson_slave_work(zmq_to_qp_run_socket, zmq_socket_push, N_states_diag, N_det, worker_id)
 
-  integer, external :: disconnect_from_taskserver 
-  if (disconnect_from_taskserver(zmq_to_qp_run_socket,worker_id) == -1) then 
-    continue 
-  endif 
+  integer, external :: disconnect_from_taskserver
+  if (disconnect_from_taskserver(zmq_to_qp_run_socket,worker_id) == -1) then
+    continue
+  endif
 
   call end_zmq_to_qp_run_socket(zmq_to_qp_run_socket)
   call end_zmq_push_socket(zmq_socket_push,thread)
@@ -62,14 +62,14 @@ end subroutine
 subroutine davidson_slave_work(zmq_to_qp_run_socket, zmq_socket_push, N_st, sze, worker_id)
   use f77_zmq
   implicit none
-  
+
   integer(ZMQ_PTR),intent(in)   :: zmq_to_qp_run_socket
   integer(ZMQ_PTR),intent(in)   :: zmq_socket_push
   integer,intent(in)             :: worker_id, N_st, sze
   integer                        :: task_id
   character*(512)                :: msg
   integer                        :: imin, imax, ishift, istep
-  
+
   integer, allocatable           :: psi_det_read(:,:,:)
   double precision, allocatable  :: v_t(:,:), s_t(:,:), u_t(:,:)
 
@@ -87,7 +87,7 @@ subroutine davidson_slave_work(zmq_to_qp_run_socket, zmq_socket_push, N_st, sze,
   integer, external :: zmq_get_dvector
   integer, external :: zmq_get_dmatrix
 
-  PROVIDE psi_det_beta_unique psi_bilinear_matrix_order_transp_reverse psi_det_alpha_unique 
+  PROVIDE psi_det_beta_unique psi_bilinear_matrix_order_transp_reverse psi_det_alpha_unique
   PROVIDE psi_bilinear_matrix_transp_values psi_bilinear_matrix_values psi_bilinear_matrix_columns_loc
   PROVIDE ref_bitmask_energy nproc
   PROVIDE mpi_initialized
@@ -105,7 +105,7 @@ subroutine davidson_slave_work(zmq_to_qp_run_socket, zmq_socket_push, N_st, sze,
     nj = int(size(u_t,kind=8)/8388608_8,4) + 1
   endif
 
-  do while (zmq_get_dmatrix(zmq_to_qp_run_socket, worker_id, 'u_t', u_t, ni, nj, size(u_t,kind=8)) == -1) 
+  do while (zmq_get_dmatrix(zmq_to_qp_run_socket, worker_id, 'u_t', u_t, ni, nj, size(u_t,kind=8)) == -1)
     call sleep(1)
     print *,  irp_here, ': waiting for u_t...'
   enddo
@@ -121,7 +121,7 @@ subroutine davidson_slave_work(zmq_to_qp_run_socket, zmq_socket_push, N_st, sze,
     integer :: ierr
 
     call broadcast_chunks_double(u_t,size(u_t,kind=8))
-    
+
   IRP_ENDIF
 
   ! Run tasks
@@ -160,7 +160,7 @@ subroutine davidson_push_results(zmq_socket_push, v_t, s_t, imin, imax, task_id)
   BEGIN_DOC
 ! Push the results of $H|U \rangle$ from a worker to the master.
   END_DOC
-  
+
   integer(ZMQ_PTR)    ,intent(in)    :: zmq_socket_push
   integer             ,intent(in)    :: task_id, imin, imax
   double precision    ,intent(in)    :: v_t(N_states_diag,N_det)
@@ -206,7 +206,7 @@ subroutine davidson_pull_results(zmq_socket_pull, v_t, s_t, imin, imax, task_id)
   BEGIN_DOC
 ! Pull the results of $H|U \rangle$ on the master.
   END_DOC
-  
+
   integer(ZMQ_PTR)    ,intent(in)     :: zmq_socket_pull
   integer             ,intent(out)    :: task_id, imin, imax
   double precision    ,intent(out)    :: v_t(N_states_diag,N_det)
@@ -256,18 +256,18 @@ subroutine davidson_collector(zmq_to_qp_run_socket, zmq_socket_pull, v0, s0, sze
   integer(ZMQ_PTR), intent(in)   :: zmq_socket_pull
   integer, intent(in)            :: sze, N_st
   integer(ZMQ_PTR), intent(in)   :: zmq_to_qp_run_socket
-  
+
   double precision    ,intent(inout) :: v0(sze, N_st)
   double precision    ,intent(inout) :: s0(sze, N_st)
-  
+
   integer                          :: more, task_id, imin, imax
-  
+
   double precision, allocatable :: v_t(:,:), s_t(:,:)
   integer :: i,j
 
   allocate(v_t(N_st,N_det), s_t(N_st,N_det))
-  v0 = 0.d0 
-  s0 = 0.d0 
+  v0 = 0.d0
+  s0 = 0.d0
   more = 1
   do while (more == 1)
     call davidson_pull_results(zmq_socket_pull, v_t, s_t, imin, imax, task_id)
@@ -311,13 +311,13 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
   double precision, allocatable  :: u_t(:,:)
   !DIR$ ATTRIBUTES ALIGN : $IRP_ALIGN :: u_t
   integer(ZMQ_PTR) :: zmq_to_qp_run_socket, zmq_socket_pull
-  PROVIDE psi_det_beta_unique psi_bilinear_matrix_order_transp_reverse psi_det_alpha_unique 
+  PROVIDE psi_det_beta_unique psi_bilinear_matrix_order_transp_reverse psi_det_alpha_unique
   PROVIDE psi_bilinear_matrix_transp_values psi_bilinear_matrix_values psi_bilinear_matrix_columns_loc
   PROVIDE ref_bitmask_energy nproc
   PROVIDE mpi_initialized
 
   call new_parallel_job(zmq_to_qp_run_socket,zmq_socket_pull,'davidson')
-  
+
   integer :: N_states_diag_save
   N_states_diag_save = N_states_diag
   N_states_diag = N_st
@@ -368,7 +368,7 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
     endif
     ipos=1
   endif
-    
+
   allocate(u_t(N_st,N_det))
   do k=1,N_st
     call dset_order(u_0(1,k),psi_bilinear_matrix_order,N_det)
@@ -381,9 +381,9 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
       size(u_t, 1),                                                  &
       N_det, N_st)
 
-  
+
   ASSERT (N_st == N_states_diag)
-  ASSERT (sze >= N_det) 
+  ASSERT (sze >= N_det)
 
   integer :: rc, ni, nj
   integer*8 :: rc8
@@ -420,7 +420,7 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
   ithread = omp_get_thread_num()
   if (ithread == 0 ) then
     call davidson_collector(zmq_to_qp_run_socket, zmq_socket_pull, v_0, s_0, N_det, N_st)
-  else 
+  else
     call davidson_slave_inproc(1)
   endif
   !$OMP END PARALLEL
@@ -512,12 +512,12 @@ integer function zmq_get_N_states_diag(zmq_to_qp_run_socket, worker_id)
     rc = f77_zmq_send(zmq_to_qp_run_socket,trim(msg),len(trim(msg)),0)
     if (rc /= len(trim(msg))) go to 10
 
-    rc = f77_zmq_recv(zmq_to_qp_run_socket,msg,len(msg),0) 
+    rc = f77_zmq_recv(zmq_to_qp_run_socket,msg,len(msg),0)
     if (msg(1:14) /= 'get_data_reply') go to 10
-  
-    rc = f77_zmq_recv(zmq_to_qp_run_socket,N_states_diag,4,0) 
+
+    rc = f77_zmq_recv(zmq_to_qp_run_socket,N_states_diag,4,0)
     if (rc /= 4) go to 10
-  endif 
+  endif
 
   IRP_IF MPI_DEBUG
     print *,  irp_here, mpi_rank

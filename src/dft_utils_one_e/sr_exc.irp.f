@@ -29,7 +29,7 @@
   enddo
  enddo
 
- END_PROVIDER 
+ END_PROVIDER
 
  BEGIN_PROVIDER[double precision, energy_sr_x_PBE, (N_states) ]
 &BEGIN_PROVIDER[double precision, energy_sr_c_PBE, (N_states) ]
@@ -72,7 +72,7 @@
     grad_rho_a_b(istate) += grad_rho_a(m,istate) * grad_rho_b(m,istate)
    enddo
 
-                             ! inputs 
+                             ! inputs
    call GGA_sr_type_functionals(r,rho_a,rho_b,grad_rho_a_2,grad_rho_b_2,grad_rho_a_b,                 &  ! outputs exchange
                              ex,vx_rho_a,vx_rho_b,vx_grad_rho_a_2,vx_grad_rho_b_2,vx_grad_rho_a_b, &  ! outputs correlation
                              ec,vc_rho_a,vc_rho_b,vc_grad_rho_a_2,vc_grad_rho_b_2,vc_grad_rho_a_b  )
@@ -82,5 +82,5 @@
  enddo
 
 
-END_PROVIDER 
+END_PROVIDER
 

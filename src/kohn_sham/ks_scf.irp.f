@@ -1,14 +1,14 @@
 program srs_ks_cf
   BEGIN_DOC
-! Produce `Kohn_Sham` MO orbital 
+! Produce `Kohn_Sham` MO orbital
 ! output: mo_basis.mo_num mo_basis.mo_label mo_basis.ao_md5 mo_basis.mo_coef mo_basis.mo_occ
 ! output: kohn_sham.energy
 ! optional: mo_basis.mo_coef
   END_DOC
 
-  io_mo_one_e_integrals = "None" 
+  io_mo_one_e_integrals = "None"
   touch io_mo_one_e_integrals
-  io_ao_one_e_integrals = "None"  
+  io_ao_one_e_integrals = "None"
   touch io_ao_one_e_integrals
   density_for_dft ="KS"
   touch density_for_dft
@@ -83,15 +83,15 @@ subroutine run
   implicit none
 
   double precision               :: EHF
-   
-  EHF = KS_energy 
+
+  EHF = KS_energy
 
   mo_label = "Orthonormalized"
 
 ! Choose SCF algorithm
 
   call Roothaan_Hall_SCF
-  
+
 end
 
 

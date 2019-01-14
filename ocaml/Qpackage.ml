@@ -4,11 +4,11 @@ open Qputils;;
 
 (** Variables related to the quantum package installation *)
 
-let root = 
+let root =
   match (Sys.getenv "QP_ROOT") with
   | None -> failwith "QP_ROOT environment variable is not set.
 Please source the quantum_package.rc file."
-  | Some x -> x 
+  | Some x -> x
 ;;
 
 let bit_kind_size = lazy (
@@ -21,17 +21,17 @@ let bit_kind_size = lazy (
   In_channel.close in_channel;
 
   let rec get_data = function
-  | [] -> raise (Failure ("bit_kind_size not found in "^filename)) 
-  | line::tail -> 
-     let line = 
+  | [] -> raise (Failure ("bit_kind_size not found in "^filename))
+  | line::tail ->
+     let line =
      begin match String.split ~on:'!' line |> List.hd with
      | Some x -> x
      | None -> ""
      end in
      begin match (String.rsplit2 ~on:':' line) with
-     | Some (_ ,buffer) -> 
+     | Some (_ ,buffer) ->
        begin match (String.split ~on:'=' buffer |> List.map ~f:String.strip) with
-       | ["bit_kind_size"; x] -> 
+       | ["bit_kind_size"; x] ->
          Int.of_string x |> Bit_kind_size.of_int
        | _  -> get_data tail
        end
@@ -50,7 +50,7 @@ let bit_kind = lazy (
 ;;
 
 let executables = lazy (
-  let filename = root^"/data/executables" 
+  let filename = root^"/data/executables"
   and func in_channel =
     In_channel.input_lines in_channel
      |> List.map ~f:(fun x ->
@@ -63,10 +63,10 @@ let executables = lazy (
      )
   in
   In_channel.with_file filename ~f:func
-  |> List.sort ~compare:(fun (x,_) (y,_) -> 
+  |> List.sort ~compare:(fun (x,_) (y,_) ->
       if x < y then -1
       else if x > y then 1
-      else 0) 
+      else 0)
 )
 
 
@@ -81,18 +81,18 @@ let get_ezfio_default_in_file ~directory ~data ~filename =
         else
           find_dir rest
     | [] -> raise Caml.Not_found
-  in 
+  in
   let rec find_data = function
     | line :: rest ->
         if (line = "") then
           raise Caml.Not_found
         else if (line.[0] <> ' ') then
           raise Caml.Not_found
-        else 
+        else
           begin
             match (String.lsplit2 ~on:' ' (String.strip line)) with
-              | Some (l,r) -> 
-                if (l = data) then 
+              | Some (l,r) ->
+                if (l = data) then
                   String.strip r
                 else
                   find_data rest
@@ -106,15 +106,15 @@ let get_ezfio_default_in_file ~directory ~data ~filename =
 
 let get_ezfio_default directory data =
   let dirname = root^"/data/ezfio_defaults/" in
-  
-  let rec aux = function 
-  | []           -> 
+
+  let rec aux = function
+  | []           ->
       begin
         Printf.printf "%s/%s not found\n%!" directory data;
         raise Caml.Not_found
       end
   | filename :: tail ->
-    let filename = 
+    let filename =
       dirname^filename
     in
     try
@@ -124,11 +124,11 @@ let get_ezfio_default directory data =
   in
   Sys.readdir dirname
   |> Array.to_list
-  |> aux 
+  |> aux
 ;;
 
-let ezfio_work ezfio_file = 
-  let result = 
+let ezfio_work ezfio_file =
+  let result =
     Filename.concat ezfio_file  "work"
   in
   begin

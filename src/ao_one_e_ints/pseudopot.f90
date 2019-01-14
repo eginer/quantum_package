@@ -6,7 +6,7 @@
 !! with :
 !!
 !! {\tt Vloc}(C)=\sum_{k=1}^{\tt klocmax} v_k r_C^{n_k} \exp(-dz_k r_C^2) \\
-!! 
+!!
 !! {\tt Vpp}(C)=\sum_{l=0}^{\tt lmax}\left( \sum_{k=1}^{\tt kmax} v_{kl}
 !!   r_C^{n_{kl}} \exp(-dz_{kl} r_C)^2 \right) |l\rangle \langle l|
 !!
@@ -40,7 +40,7 @@ double precision Vloc_num,Vpseudo_num,v1,v2
 integer npts,nptsgrid
 nptsgrid=50
 call initpseudos(nptsgrid)
-v1=Vloc_num(npts,rmax,klocmax,v_k,n_k,dz_k,a,n_a,g_a,b,n_b,g_b,c) 
+v1=Vloc_num(npts,rmax,klocmax,v_k,n_k,dz_k,a,n_a,g_a,b,n_b,g_b,c)
 v2=Vpseudo_num(nptsgrid,rmax,lmax,kmax,v_kl,n_kl,dz_kl,a,n_a,g_a,b,n_b,g_b,c)
 Vps_num=v1+v2
 end
@@ -68,7 +68,7 @@ do iz=1,npts_over
  z=-xmax+dx*iz+dx/2.d0
  term=orb_phi(x,y,z,n_a,ac,g_a)*orb_phi(x,y,z,n_b,bc,g_b)
  r=dsqrt(x**2+y**2+z**2)
- do k=1,klocmax 
+ do k=1,klocmax
   Vloc_num=Vloc_num+dx**3*v_k(k)*r**n_k(k)*dexp(-dz_k(k)*r**2)*term
  enddo
 enddo
@@ -85,12 +85,12 @@ orb_phi=(x-center(1))**npower(1)*(y-center(2))**npower(2)*(z-center(3))**npower(
 orb_phi=orb_phi*dexp(-gamma*r2)
 end
 
-!!  Real spherical harmonics  Ylm  
+!!  Real spherical harmonics  Ylm
 
 !  factor =  ([(2l+1)*(l-|m|)!]/[4pi*(l+|m|)!])^1/2
-!  Y_lm(theta,phi) = 
+!  Y_lm(theta,phi) =
 !   m > 0 factor* P_l^|m|(cos(theta)) cos (|m| phi)
-!   m = 0 1/sqrt(2) *factor* P_l^0(cos(theta)) 
+!   m = 0 1/sqrt(2) *factor* P_l^0(cos(theta))
 !   m < 0 factor* P_l^|m|(cos(theta)) sin (|m| phi)
 !
 ! x=cos(theta)
@@ -107,7 +107,7 @@ end
         if(dabs(x).gt.1.d0)then
          print*,'pb. in ylm_no'
          print*,'x=',x
-         stop 
+         stop
         endif
         call LPMN(MM,l,l,X,PM)
         plm=PM(iabs_m,l)
@@ -134,16 +134,16 @@ end
          if(l.gt.2)stop 'l > 2 not coded!'
 
         end
-!                                   _       
-!                                  | |      
-! __   __  _ __  ___  ___ _   _  __| | ___  
-! \ \ / / | '_ \/ __|/ _ \ | | |/ _` |/ _ \ 
+!                                   _
+!                                  | |
+! __   __  _ __  ___  ___ _   _  __| | ___
+! \ \ / / | '_ \/ __|/ _ \ | | |/ _` |/ _ \
 !  \ V /  | |_) \__ \  __/ |_| | (_| | (_) |
-!   \_/   | .__/|___/\___|\__,_|\____|\___/ 
-!         | |                               
-!         |_|                               
+!   \_/   | .__/|___/\___|\__,_|\____|\___/
+!         | |
+!         |_|
 
-!! Routine Vpseudo is based on formumla (66) 
+!! Routine Vpseudo is based on formumla (66)
 !! of Kahn Baybutt TRuhlar J.Chem.Phys. vol.65 3826 (1976):
 !!
 !! Vpseudo= (4pi)**2* \sum_{l=0}^lmax \sum_{m=-l}^{l}
@@ -167,8 +167,8 @@ end
 !! BC=|B-C|
 !! AC_unit= vect(AC)/AC
 !! BC_unit= vect(BC)/BC
-!! bigI(lambda,mu,l,m,k1,k2,k3)= 
-!! \int dOmega Y_{lambda mu}(Omega) xchap^k1 ychap^k2 zchap^k3  Y_{l m}(Omega) 
+!! bigI(lambda,mu,l,m,k1,k2,k3)=
+!! \int dOmega Y_{lambda mu}(Omega) xchap^k1 ychap^k2 zchap^k3  Y_{l m}(Omega)
 !!
 !! bigR(lambda,lambdap,N,g_a,g_b,gamm_k,AC,BC)
 !! = exp(-g_a* AC**2 -g_b* BC**2) * int_prod_bessel_loc(ktot+2,g_a+g_b+dz_k(k),l,dreal)
@@ -178,19 +178,19 @@ double precision function Vpseudo  &
 (lmax,kmax,v_kl,n_kl,dz_kl,a,n_a,g_a,b,n_b,g_b,c)
 implicit none
 
-! ___                
-!  |  ._  ._     _|_ 
-! _|_ | | |_) |_| |_ 
-!         |          
+! ___
+!  |  ._  ._     _|_
+! _|_ | | |_) |_| |_
+!         |
 double precision, intent(in) :: a(3),g_a,b(3),g_b,c(3)
 integer, intent(in) :: lmax,kmax,n_kl(kmax,0:lmax)
 integer, intent(in) :: n_a(3),n_b(3)
 double precision, intent(in) :: v_kl(kmax,0:lmax),dz_kl(kmax,0:lmax)
 
-!                     
-! |   _   _  _. | 
-! |_ (_) (_ (_| | 
-!                     
+!
+! |   _   _  _. |
+! |_ (_) (_ (_| |
+!
 
 double precision :: fourpi,f,prod,prodp,binom_func,accu,bigR,bigI,ylm
 double precision :: theta_AC0,phi_AC0,theta_BC0,phi_BC0,ac,bc,big
@@ -200,10 +200,10 @@ double precision :: arg
 integer :: ntot,ntotA,m,mu,mup,k1,k2,k3,ntotB,k1p,k2p,k3p,lambda,lambdap,ktot
 integer :: l,k, nkl_max
 
-!  _                          
-! |_) o  _     _. ._ ._ _.    
-! |_) | (_|   (_| |  | (_| \/ 
-!        _|                /  
+!  _
+! |_) o  _     _. ._ ._ _.
+! |_) | (_|   (_| |  | (_| \/
+!        _|                /
 
 double precision, allocatable :: array_coefs_A(:,:)
 double precision, allocatable :: array_coefs_B(:,:)
@@ -248,7 +248,7 @@ allocate (array_coefs_B(0:ntot,3))
 allocate (array_R(kmax,0:ntot+nkl_max,0:lmax,0:lmax+ntot,0:lmax+ntot))
 
 allocate (array_I_A(-(lmax+ntot):lmax+ntot,0:lmax+ntot,0:ntot,0:ntot,0:ntot))
-                                                       
+
 allocate (array_I_B(-(lmax+ntot):lmax+ntot,0:lmax+ntot,0:ntot,0:ntot,0:ntot))
 
 if(ac.eq.0.d0.and.bc.eq.0.d0)then
@@ -309,7 +309,7 @@ else if(ac.ne.0.d0.and.bc.ne.0.d0)then
      enddo
    enddo
  enddo
- 
+
  do k1=0,n_a(1)
    array_coefs_A(k1,1) = binom_func(n_a(1),k1)*(c(1)-a(1))**(n_a(1)-k1)
  enddo
@@ -329,7 +329,7 @@ else if(ac.ne.0.d0.and.bc.ne.0.d0)then
  do k3p=0,n_b(3)
    array_coefs_B(k3p,3) = binom_func(n_b(3),k3p)*(c(3)-b(3))**(n_b(3)-k3p)
  enddo
- 
+
  !=!=!=!=!=!=!=!
  ! c a l c u l !
  !=!=!=!=!=!=!=!
@@ -337,7 +337,7 @@ else if(ac.ne.0.d0.and.bc.ne.0.d0)then
  accu=0.d0
  do l=0,lmax
    do m=-l,l
-     
+
      do k3=0,n_a(3)
        do k2=0,n_a(2)
          do k1=0,n_a(1)
@@ -349,7 +349,7 @@ else if(ac.ne.0.d0.and.bc.ne.0.d0)then
          enddo
        enddo
      enddo
-     
+
      do k3p=0,n_b(3)
        do k2p=0,n_b(2)
          do k1p=0,n_b(1)
@@ -361,7 +361,7 @@ else if(ac.ne.0.d0.and.bc.ne.0.d0)then
          enddo
        enddo
      enddo
-     
+
      do k3=0,n_a(3)
        if (array_coefs_A(k3,3) == 0.d0) cycle
        do k2=0,n_a(2)
@@ -371,40 +371,40 @@ else if(ac.ne.0.d0.and.bc.ne.0.d0)then
 
            do lambda=0,l+ntotA
              do mu=-lambda,lambda
-               
+
                prod=ylm(lambda,mu,theta_AC0,phi_AC0)*array_coefs_A(k1,1)*array_coefs_A(k2,2)*array_coefs_A(k3,3)*array_I_A(mu,lambda,k1,k2,k3)
                if (prod == 0.d0) cycle
-               
+
                do k3p=0,n_b(3)
                  do k2p=0,n_b(2)
                    do k1p=0,n_b(1)
                      do lambdap=0,l+ntotB
                        do mup=-lambdap,lambdap
-                         
+
                          prodp=prod*ylm(lambdap,mup,theta_BC0,phi_BC0)* &
                             array_coefs_B(k1p,1)*array_coefs_B(k2p,2)*array_coefs_B(k3p,3)* &
                             array_I_B(mup,lambdap,k1p,k2p,k3p)
-                         
+
                          if (prodp == 0.d0) cycle
                          do k=1,kmax
                            ktot=k1+k2+k3+k1p+k2p+k3p+n_kl(k,l)
                            accu=accu+prodp*v_kl(k,l)*array_R(k,ktot,l,lambda,lambdap)
                          enddo
-                         
+
                        enddo
                      enddo
                    enddo
-                   
+
                  enddo
                enddo
-               
+
              enddo
            enddo
          enddo
-         
+
        enddo
      enddo
-     
+
    enddo
  enddo
 
@@ -455,7 +455,7 @@ else if(ac.eq.0.d0.and.bc.ne.0.d0)then
  accu=0.d0
  do l=0,lmax
    do m=-l,l
-     
+
      do k3p=0,n_b(3)
        do k2p=0,n_b(2)
          do k1p=0,n_b(1)
@@ -467,9 +467,9 @@ else if(ac.eq.0.d0.and.bc.ne.0.d0)then
          enddo
        enddo
      enddo
-     
+
      prod=bigI(0,0,l,m,n_a(1),n_a(2),n_a(3))
-     
+
      do k3p=0,n_b(3)
        if (array_coefs_B(k3p,3) == 0.d0) cycle
        do k2p=0,n_b(2)
@@ -478,18 +478,18 @@ else if(ac.eq.0.d0.and.bc.ne.0.d0)then
            if (array_coefs_B(k1p,1) == 0.d0) cycle
            do lambdap=0,l+ntotB
              do mup=-lambdap,lambdap
-               
+
                prodp=prod*array_coefs_B(k1p,1)*array_coefs_B(k2p,2)*array_coefs_B(k3p,3)*ylm(lambdap,mup,theta_BC0,phi_BC0)*array_I_B(mup,lambdap,k1p,k2p,k3p)
-               
+
                if (prodp == 0.d0) cycle
 
                do k=1,kmax
-                 
+
                  ktot=ntotA+k1p+k2p+k3p+n_kl(k,l)
                  accu=accu+prodp*v_kl(k,l)*array_R(k,ktot,l,0,lambdap)
-                 
+
                enddo
-               
+
              enddo
            enddo
          enddo
@@ -566,18 +566,18 @@ else if(ac.ne.0.d0.and.bc.eq.0.d0)then
           if (array_coefs_A(k1,1) == 0.d0) cycle
           do lambda=0,l+ntotA
             do mu=-lambda,lambda
-              
+
               prod=array_coefs_A(k1,1)*array_coefs_A(k2,2)*array_coefs_A(k3,3)*ylm(lambda,mu,theta_AC0,phi_AC0)*array_I_A(mu,lambda,k1,k2,k3)
               if (prod == 0.d0) cycle
               prodp=prod*bigI(0,0,l,m,n_b(1),n_b(2),n_b(3))
 
               if (prodp == 0.d0) cycle
-              
+
               do k=1,kmax
                 ktot=k1+k2+k3+ntotB+n_kl(k,l)
                 accu=accu+prodp*v_kl(k,l)*array_R(k,ktot,l,lambda,0)
               enddo
-              
+
             enddo
           enddo
         enddo
@@ -586,7 +586,7 @@ else if(ac.ne.0.d0.and.bc.eq.0.d0)then
 
   enddo
  enddo
- 
+
  !=!=!=!=!
  ! E n d !
  !=!=!=!=!
@@ -594,52 +594,52 @@ else if(ac.ne.0.d0.and.bc.eq.0.d0)then
  Vpseudo=f*accu
 endif
 
-!  _                      
-! |_ o ._   _. | o  _  _  
-! |  | | | (_| | | _> (/_ 
-!                         
+!  _
+! |_ o ._   _. | o  _  _
+! |  | | | (_| | | _> (/_
+!
   deallocate (array_R, array_I_A, array_I_B)
   deallocate (array_coefs_A, array_coefs_B)
   return
 end
 
-!                                  _                               
-!                                 | |                              
-!__   __  _ __  ___  ___ _   _  __| | ___    _ __  _   _ _ __ ___  
-!\ \ / / | '_ \/ __|/ _ \ | | |/ _` |/ _ \  | '_ \| | | | '_ ` _ \ 
+!                                  _
+!                                 | |
+!__   __  _ __  ___  ___ _   _  __| | ___    _ __  _   _ _ __ ___
+!\ \ / / | '_ \/ __|/ _ \ | | |/ _` |/ _ \  | '_ \| | | | '_ ` _ \
 ! \ V /  | |_) \__ \  __/ |_| | (_| | (_) | | | | | |_| | | | | | |
 !  \_/   | .__/|___/\___|\__,_|\__,_|\___/  |_| |_|\__,_|_| |_| |_|
-!        | |                                                       
-!        |_|                                                       
+!        | |
+!        |_|
 
 double precision function Vpseudo_num(npts,rmax,lmax,kmax,v_kl,n_kl,dz_kl,a,n_a,g_a,b,n_b,g_b,c)
 implicit none
 
 
-! ___                
-!  |  ._  ._     _|_ 
-! _|_ | | |_) |_| |_ 
-!         |          
+! ___
+!  |  ._  ._     _|_
+! _|_ | | |_) |_| |_
+!         |
 double precision, intent(in) :: a(3),g_a,b(3),g_b,c(3)
 integer, intent(in) :: lmax,kmax,npts
 integer, intent(in) :: n_a(3),n_b(3), n_kl(kmax,0:lmax)
 double precision, intent(in) :: v_kl(kmax,0:lmax),dz_kl(kmax,0:lmax)
 double precision, intent(in) :: rmax
 
-!                     
+!
 ! |   _   _  _. |
 ! |_ (_) (_ (_| |
-!                     
+!
 
 integer :: l,m,k,kk
 double precision ac(3),bc(3)
 double precision dr,sum,rC
 double precision overlap_orb_ylm_brute
 
-!  _                
-! /   _. |  _     | 
-! \_ (_| | (_ |_| | 
-!                   
+!  _
+! /   _. |  _     |
+! \_ (_| | (_ |_| |
+!
 
 do l=1,3
  ac(l)=a(l)-c(l)
@@ -663,7 +663,7 @@ enddo
 Vpseudo_num=sum
 return
 end
-!! Routine Vloc is a variation of formumla (66) 
+!! Routine Vloc is a variation of formumla (66)
 !! of Kahn Baybutt TRuhlar J.Chem.Phys. vol.65 3826 (1976)
 !! without the projection operator
 !!
@@ -689,9 +689,9 @@ end
 !! BC_unit= vect(BC)/BCA
 !!
 !! bigR(lambda,g_a,g_b,g_k,AC,BC)
-!! = exp(-g_a* AC**2 -g_b* BC**2)* 
-!!    I_loc= \int dx x**l *exp(-gam*x**2) M_n(ax)  l=ktot+2 gam=g_a+g_b+dz_k(k) a=dreal n=l 
-!!    M_n(x) modified spherical bessel function 
+!! = exp(-g_a* AC**2 -g_b* BC**2)*
+!!    I_loc= \int dx x**l *exp(-gam*x**2) M_n(ax)  l=ktot+2 gam=g_a+g_b+dz_k(k) a=dreal n=l
+!!    M_n(x) modified spherical bessel function
 
 
 double precision function Vloc(klocmax,v_k,n_k,dz_k,a,n_a,g_a,b,n_b,g_b,c)
@@ -717,14 +717,14 @@ double precision int_prod_bessel_loc,binom_func,accu,prod,ylm,bigI,arg
    Vloc=0.d0
    return
  endif
- 
+
  ntotA=n_a(1)+n_a(2)+n_a(3)
  ntotB=n_b(1)+n_b(2)+n_b(3)
  ntot=ntotA+ntotB
- 
+
  if(ac.eq.0.d0.and.bc.eq.0.d0)then
    accu=0.d0
-   
+
    do k=1,klocmax
      accu=accu+v_k(k)*crochet(n_k(k)+2+ntot,g_a+g_b+dz_k(k))
    enddo
@@ -732,9 +732,9 @@ double precision int_prod_bessel_loc,binom_func,accu,prod,ylm,bigI,arg
    !bigI frequently is null
    return
  endif
- 
+
  freal=dexp(-g_a*ac**2-g_b*bc**2)
- 
+
  d2 = 0.d0
  do i=1,3
    d(i)=g_a*(a(i)-c(i))+g_b*(b(i)-c(i))
@@ -742,11 +742,11 @@ double precision int_prod_bessel_loc,binom_func,accu,prod,ylm,bigI,arg
  enddo
  d2=dsqrt(d2)
  dreal=2.d0*d2
- 
- 
+
+
  allocate (array_R_loc(-2:ntot+klocmax,klocmax,0:ntot))
  allocate (array_coefs(0:ntot,0:ntot,0:ntot,0:ntot,0:ntot,0:ntot))
- 
+
  do ktot=-2,ntotA+ntotB+klocmax
    do l=0,ntot
      do k=1,klocmax
@@ -754,7 +754,7 @@ double precision int_prod_bessel_loc,binom_func,accu,prod,ylm,bigI,arg
      enddo
    enddo
  enddo
- 
+
  do k1=0,n_a(1)
    do k2=0,n_a(2)
      do k3=0,n_a(3)
@@ -771,8 +771,8 @@ double precision int_prod_bessel_loc,binom_func,accu,prod,ylm,bigI,arg
      enddo
    enddo
  enddo
- 
- 
+
+
  accu=0.d0
  if(d2 == 0.d0)then
    l=0
@@ -796,11 +796,11 @@ double precision int_prod_bessel_loc,binom_func,accu,prod,ylm,bigI,arg
        enddo
      enddo
    enddo
-   
+
  else
    theta_DC0=dacos(d(3)/d2)
    phi_DC0=datan2(d(2)/d2,d(1)/d2)
-   
+
    do k=1,klocmax
      if (v_k(k) == 0.d0) cycle
      do k1=0,n_a(1)
@@ -830,7 +830,7 @@ double precision int_prod_bessel_loc,binom_func,accu,prod,ylm,bigI,arg
    enddo
  endif
  Vloc=f*accu
- 
+
  deallocate (array_R_loc)
  deallocate (array_coefs)
 end
@@ -1129,7 +1129,7 @@ do i=1,npts
  sintheta=dsqrt(1.d0-u**2)
  do j=1,npts
   phi=dphi*(j-1)+dphi/2.d0
-  x_orb=r*dcos(phi)*sintheta 
+  x_orb=r*dcos(phi)*sintheta
   y_orb=r*dsin(phi)*sintheta
   z_orb=r*u
   term=orb_phi(x_orb,y_orb,z_orb,npower_orb,center_orb,g_orb)*ylm_real(l,m,u,phi)
@@ -1168,11 +1168,11 @@ end
 !  l=0,1,2,....
 !  m=0,1,...,l
 ! Here:
-!  n=l (n=0,1,...)  
-!  m=0,1,...,n 
+!  n=l (n=0,1,...)
+!  m=0,1,...,n
 !  x=cos(theta) 0 < x < 1
 !
-!  
+!
 !  This routine computes:   PM(m,n) for n=0,...,N (number N in input) and m=0,..,n
 
 !   Exemples (see 'Associated Legendre Polynomilas wikipedia')
@@ -1197,7 +1197,7 @@ end
 !       Input :  x  --- Argument of Pmn(x)
 !                m  --- Order of Pmn(x),  m = 0,1,2,...,n
 !                n  --- Degree of Pmn(x), n = 0,1,2,...,N
-!                mm --- Physical dimension of PM 
+!                mm --- Physical dimension of PM
 !       Output:  PM(m,n) --- Pmn(x)
 !       =====================================================
 !
@@ -1238,7 +1238,7 @@ end
         ENDDO
 
         II = 0.D0
-        DO I=0,M 
+        DO I=0,M
           JJ = II+2.D0
           DO J=I+2,N
             PM(I,J)=((2.0D0*JJ-1.0D0)*X*PM(I,J-1)- (II+JJ-1.0D0)*PM(I,J-2))*INVERSE(J-I)
@@ -1576,7 +1576,7 @@ end
         cc=g_a+g_b+g_k
         if(cc.eq.0.d0)stop 'pb. in bigR'
         rmax=dsqrt(-dlog(10.d-20)/cc)
-        npts=500 
+        npts=500
         dr=rmax/npts
         sum=0.d0
         do i=1,npts
@@ -1633,7 +1633,7 @@ end
 !c  m=-l,l
 !c
 !c  m>0: Y_lm = sqrt(2) ([(2l+1)*(l-|m|)!]/[4pi*(l+|m|)!])^1/2  P_l^|m|(cos(theta)) cos(m phi)
-!c  m=0: Y_l0 =         ([(2l+1)*(l-|m|)!]/[4pi*(l+|m|)!])^1/2  P_l^0  (cos(theta)) 
+!c  m=0: Y_l0 =         ([(2l+1)*(l-|m|)!]/[4pi*(l+|m|)!])^1/2  P_l^0  (cos(theta))
 !c  m<0: Y_lm = sqrt(2) ([(2l+1)*(l-|m|)!]/[4pi*(l+|m|)!])^1/2  P_l^|m|(cos(theta)) sin(|m|phi)
 
 !Examples(wikipedia http://en.wikipedia.org/wiki/Table_of_spherical_harmonics#Real_spherical_harmonics)
@@ -1650,11 +1650,11 @@ end
 !
 ! l = 2
 !
-! Y_2,-2= 1/2 \sqrt{15/pi}  xy/r^2 
-! Y_2,-1= 1/2 \sqrt{15/pi}  yz/r^2 
-! Y_20  = 1/4 \sqrt{15/pi} (-x^2-y^2 +2z^2)/r^2 
-! Y_21  = 1/2 \sqrt{15/pi}  zx/r^2 
-! Y_22  = 1/4 \sqrt{15/pi} (x^2-y^2)/r^2 
+! Y_2,-2= 1/2 \sqrt{15/pi}  xy/r^2
+! Y_2,-1= 1/2 \sqrt{15/pi}  yz/r^2
+! Y_20  = 1/4 \sqrt{15/pi} (-x^2-y^2 +2z^2)/r^2
+! Y_21  = 1/2 \sqrt{15/pi}  zx/r^2
+! Y_22  = 1/4 \sqrt{15/pi} (x^2-y^2)/r^2
 !
 !c
 double precision function ylm(l,m,theta,phi)
@@ -1692,7 +1692,7 @@ else if (m < 0) then
 endif
 end
 
-!c Explicit representation of Legendre polynomials P_n(x) 
+!c Explicit representation of Legendre polynomials P_n(x)
 !!
 !! P_n0(x) = P_n(x)= \sum_{k=0}^n a_k x^k
 !!
@@ -1714,14 +1714,14 @@ end
 !! Ylm_bis uses the series expansion of Ylm in xchap^i ychap^j zchap^k
 !!  xchap=x/r etc.
 !c  m>0: Y_lm = sqrt(2)*factor* P_l^|m|(cos(theta)) cos(m phi)
-!c  m=0: Y_l0 =         factor* P_l^0  (cos(theta)) 
+!c  m=0: Y_l0 =         factor* P_l^0  (cos(theta))
 !c  m<0: Y_lm = sqrt(2) factor* P_l^|m|(cos(theta)) sin(|m|phi)
-!c  factor= ([(2l+1)*(l-|m|)!]/[4pi*(l+|m|)!])^1/2 
+!c  factor= ([(2l+1)*(l-|m|)!]/[4pi*(l+|m|)!])^1/2
 
 !! P_l^m (x) = (-1)**m (1-x**2)^m/2 d^m/dx^m P_l(x)   m >0 or 0
 !! the series expansion of P_m (x) is known
 !!
-!!  sin(theta)**m cos(mphi)  = \sum_0^[m/2] binom(m,2k) x^(m-2k) y^2k (-1)**k   (easy to proove with 
+!!  sin(theta)**m cos(mphi)  = \sum_0^[m/2] binom(m,2k) x^(m-2k) y^2k (-1)**k   (easy to proove with
 !! Moivre formula)
 !! (here x = xchap...)
 !!
@@ -1780,8 +1780,8 @@ end
 !c
 !c  Computation of associated Legendre Polynomials PM(m,n) for n=0,...,N
 !c  Here:
-!c  n=l (n=0,1,...)  
-!c  m=0,1,...,n 
+!c  n=l (n=0,1,...)
+!c  m=0,1,...,n
 !c  x=cos(theta) 0 < x < 1
 !c
 !c  This routine computes:   PM(m,n) for n=0,...,N (number N in input) and m=0,..,n
@@ -1826,7 +1826,7 @@ double precision function coef_nk(n,k)
   gam=dble_fact(n+n+k+k+1)
 !  coef_nk=1.d0/(2.d0**k*fact(k)*gam)
   coef_nk=1.d0/(dble(ibset(0_8,k))*fact(k)*gam)
-  
+
   return
 
 end
@@ -1835,7 +1835,7 @@ end
 !!
 !!    I= \int dx x**l *exp(-gam*x**2) M_n(ax) M_m(bx)
 !!
-!!    M_n(x) modified spherical bessel function 
+!!    M_n(x) modified spherical bessel function
 !!
 
 double precision function int_prod_bessel(l,gam,n,m,a,b,arg)
@@ -1862,7 +1862,7 @@ double precision function int_prod_bessel(l,gam,n,m,a,b,arg)
       int_prod_bessel=0.d0
       return
     endif
-    
+
     int_prod_bessel=crochet(l,gam)*freal
     return
   endif
@@ -1900,7 +1900,7 @@ double precision function int_prod_bessel(l,gam,n,m,a,b,arg)
 
     mk = dble(m)
     ! Loop over q for the convergence of the sequence
-    do while (.not.done)  
+    do while (.not.done)
 
       ! Init
       s_q_k=s_q_0
@@ -1916,14 +1916,14 @@ double precision function int_prod_bessel(l,gam,n,m,a,b,arg)
         s_q_k = two_qkmp1*qk*inverses(k)*s_q_k
         sum=sum+s_q_k
         two_qkmp1 = two_qkmp1-2.d0
-        qk = qk-1.d0 
+        qk = qk-1.d0
       enddo
-      inverses(q) = a_over_b_square/(dble(q+n+q+n+3) * dble(q+1)) 
+      inverses(q) = a_over_b_square/(dble(q+n+q+n+3) * dble(q+1))
 !      do k=0,q
 !        sum=sum+s_q_k
 !        s_q_k = a_over_b_square * ( dble(2*(q-k+m)+1)*dble(q-k)/(dble(2*(k+n)+3) * dble(k+1)) ) * s_q_k
 !      enddo
-    
+
       int=int+sum
 
       if(dabs(int-intold).lt.1d-15)then
@@ -1933,7 +1933,7 @@ double precision function int_prod_bessel(l,gam,n,m,a,b,arg)
         !Compute the s_q+1_0
 !        s_q_0=s_q_0*(2.d0*q+nlm+1)*b**2/((2.d0*(m+q)+3)*4.d0*(q+1)*gam)
         s_q_0=s_q_0*(q+q+nlm+1)*b*b/(dble(8*(m+q)+12)*(q+1)*gam)
-        
+
         if(mod(n+m+l,2).eq.1)s_q_0=s_q_0*dsqrt(pi*.5d0)
         ! Increment q
         q=q+1
@@ -1948,7 +1948,7 @@ double precision function int_prod_bessel(l,gam,n,m,a,b,arg)
   endif
 
   if(a.eq.0.d0.and.b.ne.0.d0)then
-       
+
     int = int_prod_bessel_loc(l,gam,m,b)
     int_prod_bessel=int*freal
     return
@@ -1975,26 +1975,26 @@ double precision function int_prod_bessel_large(l,gam,n,m,a,b,arg)
       u=(a+b)/(2.d0*dsqrt(gam))
       factor=dexp(u*u-arg)/dsqrt(gam)
 
-xq(1)= 5.38748089001123    
-xq(2)= 4.60368244955074   
-xq(3)= 3.94476404011563  
-xq(4)= 3.34785456738322 
+xq(1)= 5.38748089001123
+xq(2)= 4.60368244955074
+xq(3)= 3.94476404011563
+xq(4)= 3.34785456738322
 xq(5)= 2.78880605842813
-xq(6)= 2.25497400208928       
-xq(7)= 1.73853771211659      
-xq(8)= 1.23407621539532     
-xq(9)= 0.737473728545394   
-xq(10)= 0.245340708300901 
+xq(6)= 2.25497400208928
+xq(7)= 1.73853771211659
+xq(8)= 1.23407621539532
+xq(9)= 0.737473728545394
+xq(10)= 0.245340708300901
 xq(11)=-0.245340708300901
-xq(12)=-0.737473728545394    
-xq(13)=-1.23407621539532    
-xq(14)=-1.73853771211659   
-xq(15)=-2.25497400208928  
-xq(16)=-2.78880605842813 
-xq(17)=-3.34785456738322     
-xq(18)=-3.94476404011563    
-xq(19)=-4.60368244955074   
-xq(20)=-5.38748089001123  
+xq(12)=-0.737473728545394
+xq(13)=-1.23407621539532
+xq(14)=-1.73853771211659
+xq(15)=-2.25497400208928
+xq(16)=-2.78880605842813
+xq(17)=-3.34785456738322
+xq(18)=-3.94476404011563
+xq(19)=-4.60368244955074
+xq(20)=-5.38748089001123
 wq(1)=  2.229393645534151E-013
 wq(2)=  4.399340992273176E-010
 wq(3)=  1.086069370769280E-007
@@ -2031,7 +2031,7 @@ end
 !!
 !!    I= \int dx x**l *exp(-gam*x**2) M_n(ax)
 !!
-!!    M_n(x) modified spherical bessel function 
+!!    M_n(x) modified spherical bessel function
 !!
 double precision function int_prod_bessel_loc(l,gam,n,a)
   implicit none
@@ -2040,12 +2040,12 @@ double precision function int_prod_bessel_loc(l,gam,n,a)
   double precision int,intold,coef_nk,crochet,dble_fact, fact, pi, expo
   double precision :: f_0, f_k
   logical done
-  
+
   pi=dacos(-1.d0)
   intold=-1.d0
   done=.false.
   int=0
-  
+
   ! Int f_0
   coef_nk=1.d0/dble_fact( n+n+1 )
   expo=0.5d0*dfloat(n+l+1)
@@ -2072,7 +2072,7 @@ double precision function int_prod_bessel_loc(l,gam,n,a)
     endif
 
   enddo
-  
+
   int_prod_bessel_loc=int
 end
 

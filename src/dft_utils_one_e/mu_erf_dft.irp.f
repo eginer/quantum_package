@@ -5,4 +5,4 @@ BEGIN_PROVIDER [double precision, mu_erf_dft]
  END_DOC
  mu_erf_dft = mu_erf
 
-END_PROVIDER 
+END_PROVIDER

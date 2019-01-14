@@ -1,6 +1,6 @@
 program scf
   BEGIN_DOC
-! Produce `Hartree_Fock` |MOs| 
+! Produce `Hartree_Fock` |MOs|
 !
 ! output: mo_basis.mo_num mo_basis.mo_label mo_basis.ao_md5 mo_basis.mo_coef mo_basis.mo_occ
 !
@@ -50,12 +50,12 @@ subroutine run
   implicit none
 
   integer                        :: i_it, i, j, k
-   
+
   mo_label = "Orthonormalized"
 
   call Roothaan_Hall_SCF
   call ezfio_set_hartree_fock_energy(SCF_energy)
-  
+
 end
 
 

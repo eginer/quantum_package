@@ -5,18 +5,18 @@ let rec transpose = function
 | []          -> []
 | []::tail    -> transpose tail
 | (x::t1)::t2 ->
-    let new_head = (x::(List.map List.hd t2)) 
+    let new_head = (x::(List.map List.hd t2))
     and new_tail =  (transpose (t1 :: (List.map List.tl t2) ))
-    in 
+    in
     new_head @ new_tail
 ;;
 *)
 
 let input_to_sexp s =
-    let result = 
-      String_ext.split ~on:'\n' s 
+    let result =
+      String_ext.split ~on:'\n' s
       |> List.filter (fun x-> (String_ext.strip x) <> "")
-      |> List.map (fun x-> "("^ 
+      |> List.map (fun x-> "("^
         (Str.global_replace (Str.regexp "=") " " x)
         ^")")
       |> String.concat ""
@@ -39,6 +39,6 @@ let rmdir dirname =
     Unix.rmdir dir
   in
   remove_one dirname
-  
-    
+
+
 

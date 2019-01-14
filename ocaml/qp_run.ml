@@ -7,26 +7,26 @@ open Qputils
 *)
 
 let print_list () =
-  Lazy.force Qpackage.executables 
-  |> List.iter (fun (x,_) -> Printf.printf " * %s\n" x) 
+  Lazy.force Qpackage.executables
+  |> List.iter (fun (x,_) -> Printf.printf " * %s\n" x)
 
-let () = 
+let () =
   Random.self_init ()
 
 let run slave ?prefix exe ezfio_file =
 
   (** Check availability of the ports *)
-  let port_number = 
+  let port_number =
     let zmq_context =
       Zmq.Context.create ()
     in
-    let dummy_socket = 
+    let dummy_socket =
       Zmq.Socket.create zmq_context Zmq.Socket.rep
     in
     let rec try_new_port port_number =
-      try 
+      try
         List.iter (fun i ->
-            let address = 
+            let address =
               Printf.sprintf "tcp://%s:%d" (Lazy.force TaskServer.ip_address) (port_number+i)
             in
             Zmq.Socket.bind dummy_socket address;
@@ -36,7 +36,7 @@ let run slave ?prefix exe ezfio_file =
       with
       | Unix.Unix_error _ -> try_new_port (port_number+100)
     in
-    let result = 
+    let result =
       try_new_port 41279
     in
     Zmq.Socket.close dummy_socket;
@@ -44,7 +44,7 @@ let run slave ?prefix exe ezfio_file =
     result
   in
 
-  let time_start = 
+  let time_start =
     Core.Time.now ()
   in
 
@@ -76,25 +76,25 @@ let run slave ?prefix exe ezfio_file =
       | i -> failwith "Error: Input inconsistent\n"
     end;
 
-  let qp_run_address_filename = 
+  let qp_run_address_filename =
    Filename.concat (Qpackage.ezfio_work ezfio_file) "qp_run_address"
   in
 
-  let () = 
+  let () =
     if slave then
       try
-        let address = 
+        let address =
           Core.In_channel.read_all qp_run_address_filename
           |> String.trim
         in
         Unix.putenv "QP_RUN_ADDRESS_MASTER" address
       with Sys_error _ -> failwith "No master is not running"
   in
-       
+
   (** Start task server *)
   let task_thread =
-     let thread = 
-      Thread.create ( fun () -> 
+     let thread =
+      Thread.create ( fun () ->
          TaskServer.run port_number )
      in
      thread ();
@@ -103,15 +103,15 @@ let run slave ?prefix exe ezfio_file =
     Printf.sprintf "tcp://%s:%d" (Lazy.force TaskServer.ip_address) port_number
   in
   Unix.putenv "QP_RUN_ADDRESS" address;
-  let () = 
+  let () =
     if (not slave) then
       Core.Out_channel.with_file qp_run_address_filename  ~f:(
-        fun oc -> Core.Out_channel.output_lines oc [address]) 
+        fun oc -> Core.Out_channel.output_lines oc [address])
   in
 
 
   (** Run executable *)
-  let prefix = 
+  let prefix =
     match prefix with
     | Some x -> x^" "
     | None -> ""
@@ -119,7 +119,7 @@ let run slave ?prefix exe ezfio_file =
     match (List.find (fun (x,_) -> x = exe) executables) with
     | (_,exe) -> exe^" "
   in
-  let exit_code = 
+  let exit_code =
     match (Sys.command (prefix^exe^ezfio_file)) with
     | 0 -> 0
     | i -> (Printf.printf "Program exited with code %d.\n%!" i; i)
@@ -130,7 +130,7 @@ let run slave ?prefix exe ezfio_file =
   if (not slave) then
     Sys.remove qp_run_address_filename;
 
-  let duration = Core.Time.diff (Core.Time.now()) time_start 
+  let duration = Core.Time.diff (Core.Time.now()) time_start
   |> Core.Time.Span.to_string in
   Printf.printf "Wall time : %s\n\n" duration;
   if (exit_code <> 0) then
@@ -161,13 +161,13 @@ let () =
   if Command_line.show_help () then
     exit 0;
 
-  let slave = 
+  let slave =
     match Command_line.get "slave" with
     | None -> false
     | _ -> true
   in
 
-  let prefix = 
+  let prefix =
     Command_line.get "prefix"
   in
 
@@ -175,6 +175,6 @@ let () =
   match Command_line.anon_args () with
   | exe :: ezfio_file :: [] -> run slave ?prefix exe ezfio_file
   | _ ->  (Command_line.help () ; failwith "Inconsistent command line")
-  
+
 
 

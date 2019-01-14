@@ -8,14 +8,11 @@ export IRPF90=${IRPF90_PATH}/bin/irpf90
 
 function source_if_exists() {
   if [[ -f $1 ]]; then
-        if [[ "$(ps -p $$ -ocomm=)" == "zsh" ]] ; then
-          autoload bashcompinit
-          bashcompinit
-        fi
-        source $1
+     source $1
   fi
 } 
 
+source ${QP_ROOT}/etc/autocomplete.rc
 source_if_exists "${IRPF90_PATH}/irpman-completions.bash"
   
 

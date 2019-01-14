@@ -9,7 +9,7 @@ let of_string s = Float.of_string s
 
 let to_float x = x
 let to_int   x = Float.to_int x
-let to_string x = 
+let to_string x =
   if x >= 0. then
     Printf.sprintf "+%f" x
   else

@@ -62,7 +62,7 @@ BEGIN_PROVIDER [integer, degree_max_generators]
     degree_max_generators = degree
    endif
   enddo
-END_PROVIDER 
+END_PROVIDER
 
 BEGIN_PROVIDER [ integer, size_select_max]
  implicit none

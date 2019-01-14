@@ -5,7 +5,7 @@ module map_module
 ! A cache map has its own OpenMP lock
 ! To access a (key,value) pair in the map, the
 ! index of the cache_map in the map array is obtained
-! by removing the first 15 bits of the key. 
+! by removing the first 15 bits of the key.
 ! The key in the cache_map is composed of the first
 ! 15 bits of the key. Therefore, it can be stored
 ! as integer*2 and is found by applying the map_mask
@@ -17,15 +17,15 @@ module map_module
 ! should be called before getting data from the map.
 
  use omp_lib
- 
+
  integer, parameter             :: integral_kind = 8
- 
+
  integer, parameter             :: cache_key_kind = 2
  integer, parameter             :: cache_map_size_kind = 4
- 
+
  integer, parameter             :: key_kind = 8
  integer, parameter             :: map_size_kind = 8
- 
+
  integer,   parameter           :: map_shift = 15
  integer*8, parameter           :: map_mask  = ibset(0_8,15)-1_8
 
@@ -59,7 +59,7 @@ double precision function map_mb(map)
   implicit none
   type (map_type), intent(in)    :: map
   integer(map_size_kind)         :: i
-  
+
   map_mb = dble(8+map_size_kind+map_size_kind+omp_lock_kind+4)
   do i=0,map%map_size
     map_mb = map_mb + dble(map%map(i)%map_size*(cache_key_kind+integral_kind) +&
@@ -90,14 +90,14 @@ subroutine map_init(map,keymax)
   integer(map_size_kind)         :: i
   integer(cache_map_size_kind)   :: sze
   integer                        :: err
-  
+
   call omp_init_lock(map%lock)
   call omp_set_lock(map%lock)
-  
+
   map%n_elements = 0_8
   map%map_size = shiftr(keymax,map_shift)
   map%consolidated = .False.
-  
+
   allocate(map%map(0_8:map%map_size),stat=err)
   if (err /= 0) then
     print *,  'Unable to allocate map'
@@ -115,9 +115,9 @@ subroutine map_init(map,keymax)
   !$OMP ENDDO
   !$OMP END PARALLEL
   map%sorted = .True.
-  
+
   call omp_unset_lock(map%lock)
-  
+
 end
 
 subroutine cache_map_reallocate(map,sze)
@@ -125,18 +125,18 @@ subroutine cache_map_reallocate(map,sze)
   implicit none
   integer(cache_map_size_kind), intent(in) :: sze
   type (cache_map_type), intent(inout) :: map
-  
+
   integer(cache_key_kind), pointer :: key_new(:)
   real(integral_kind), pointer   :: value_new(:)
   integer(map_size_kind)         :: i
   integer                        :: err
   !DIR$ ATTRIBUTES ALIGN : 64    :: key_new, value_new
-  
+
   if (sze < map%n_elements) then
     print *,  'Unable to resize map : map too large'
     stop 3
   endif
-  
+
   ! Resize keys
   allocate( key_new(sze), stat=err )
   if (err /= 0) then
@@ -149,7 +149,7 @@ subroutine cache_map_reallocate(map,sze)
     enddo
     deallocate(map%key)
   endif
-  
+
   ! Resize values
   allocate( value_new(sze), stat=err )
   if (err /= 0) then
@@ -162,12 +162,12 @@ subroutine cache_map_reallocate(map,sze)
     enddo
     deallocate(map%value)
   endif
-  
+
   ! Set new pointers
   map%key => key_new
   map%value => value_new
   map%map_size = sze
-  
+
 end
 
 
@@ -175,9 +175,9 @@ subroutine cache_map_deinit(map)
   use map_module
   implicit none
   type (cache_map_type), intent(inout) :: map
-  
+
   integer                        :: err
-  
+
   if (associated( map % value )) then
     deallocate( map % value, stat=err )
     if (err /= 0) then
@@ -186,7 +186,7 @@ subroutine cache_map_deinit(map)
     endif
     NULLIFY(map%value)
   endif
-  
+
   if (associated( map % key )) then
     deallocate( map % key, stat=err )
     if (err /= 0) then
@@ -195,7 +195,7 @@ subroutine cache_map_deinit(map)
     endif
     NULLIFY(map%key)
   endif
-  
+
   map%n_elements = 0_8
   map%map_size   = 0_8
   call omp_destroy_lock(map%lock)
@@ -207,7 +207,7 @@ subroutine map_deinit(map)
   type (map_type), intent(inout) :: map
   integer                        :: err
   integer(map_size_kind)         :: i
-  
+
   if (allocated( map % map )) then
     do i=0_8, map%map_size
       call cache_map_deinit(map%map(i))
@@ -218,7 +218,7 @@ subroutine map_deinit(map)
       stop 6
     endif
   endif
-  
+
   map%n_elements = 0_8
   map%map_size   = 0_8
   call omp_destroy_lock(map%lock)
@@ -231,7 +231,7 @@ subroutine cache_map_sort(map)
   integer(cache_map_size_kind), allocatable :: iorder(:)
   integer(cache_map_size_kind)   :: i
   !DIR$ ATTRIBUTES ALIGN : 64    :: iorder
-  
+
   if (.not.map%sorted) then
     allocate(iorder(map%n_elements))
     do i=1,map%n_elements
@@ -252,7 +252,7 @@ subroutine cache_map_sort(map)
     deallocate(iorder)
     map%sorted = .True.
   endif
-  
+
 end
 
 subroutine map_sort(map)
@@ -260,7 +260,7 @@ subroutine map_sort(map)
   implicit none
   type (map_type), intent(inout) :: map
   integer(map_size_kind)         :: i
-  
+
   if (.not.map%sorted) then
     !$OMP PARALLEL DO SCHEDULE(static,1024) DEFAULT(SHARED) PRIVATE(i)
     do i=0_8,map%map_size
@@ -271,7 +271,7 @@ subroutine map_sort(map)
     !$OMP END PARALLEL  DO
     map%sorted = .True.
   endif
-  
+
 end
 
 subroutine cache_map_merge(map)
@@ -280,7 +280,7 @@ subroutine cache_map_merge(map)
   type (cache_map_type), intent(inout) :: map
   integer(cache_key_kind)        :: prev_key
   integer(cache_map_size_kind)   :: i, j
-  
+
   call cache_map_sort(map)
   prev_key = -1_8
   j=0
@@ -295,7 +295,7 @@ subroutine cache_map_merge(map)
     endif
   enddo
   map%n_elements = j
-  
+
 end
 
 subroutine cache_map_unique(map)
@@ -304,7 +304,7 @@ subroutine cache_map_unique(map)
   type (cache_map_type), intent(inout) :: map
   integer(cache_key_kind)        :: prev_key
   integer(cache_map_size_kind)   :: i, j
-  
+
   call cache_map_sort(map)
   prev_key = -1_8
   j=0
@@ -317,7 +317,7 @@ subroutine cache_map_unique(map)
     endif
   enddo
   map%n_elements = j
-  
+
 end
 
 subroutine cache_map_shrink(map,thr)
@@ -326,7 +326,7 @@ subroutine cache_map_shrink(map,thr)
   type (cache_map_type), intent(inout) :: map
   real(integral_kind)  , intent(in) :: thr
   integer(cache_map_size_kind)   :: i,j
-  
+
   j=0
   do i=1,map%n_elements
     if (abs(map%value(i)) > thr) then
@@ -336,7 +336,7 @@ subroutine cache_map_shrink(map,thr)
     endif
   enddo
   map%n_elements = j
-  
+
 end
 
 subroutine map_unique(map)
@@ -345,7 +345,7 @@ subroutine map_unique(map)
   type (map_type), intent(inout) :: map
   integer(map_size_kind)         :: i
   integer(map_size_kind)         :: icount
-  
+
   icount = 0_8
   !$OMP PARALLEL DO SCHEDULE(dynamic,1000) DEFAULT(SHARED) PRIVATE(i)&
       !$OMP REDUCTION(+:icount)
@@ -357,7 +357,7 @@ subroutine map_unique(map)
   enddo
   !$OMP END PARALLEL DO
   map%n_elements = icount
-  
+
 end
 
 subroutine map_merge(map)
@@ -366,7 +366,7 @@ subroutine map_merge(map)
   type (map_type), intent(inout) :: map
   integer(map_size_kind)         :: i
   integer(map_size_kind)         :: icount
-  
+
   icount = 0_8
   !$OMP PARALLEL DO SCHEDULE(dynamic,1000) DEFAULT(SHARED) PRIVATE(i)&
       !$OMP REDUCTION(+:icount)
@@ -378,7 +378,7 @@ subroutine map_merge(map)
   enddo
   !$OMP END PARALLEL DO
   map%n_elements = icount
-  
+
 end
 
 subroutine map_shrink(map,thr)
@@ -388,7 +388,7 @@ subroutine map_shrink(map,thr)
   real(integral_kind), intent(in) :: thr
   integer(map_size_kind)         :: i
   integer(map_size_kind)         :: icount
-  
+
   icount = 0_8
   !$OMP PARALLEL DO SCHEDULE(dynamic,1000) DEFAULT(SHARED) PRIVATE(i)&
       !$OMP REDUCTION(+:icount)
@@ -400,7 +400,7 @@ subroutine map_shrink(map,thr)
   enddo
   !$OMP END PARALLEL DO
   map%n_elements = icount
-  
+
 end
 
 subroutine map_update(map, key, value, sze, thr)
@@ -411,7 +411,7 @@ subroutine map_update(map, key, value, sze, thr)
   integer(key_kind), intent(inout) :: key(sze)
   real(integral_kind), intent(inout) :: value(sze)
   real(integral_kind), intent(in) :: thr
-  
+
   integer                        :: i
   integer(map_size_kind)         :: idx_cache, idx_cache_new
   integer(cache_map_size_kind)   :: idx
@@ -420,10 +420,10 @@ subroutine map_update(map, key, value, sze, thr)
   integer(map_size_kind)         :: n_elements_temp
   type (cache_map_type)          :: local_map
   logical                        :: map_sorted
-  
+
   sze2 = sze
   map_sorted = .True.
-  
+
   n_elements_temp = 0_8
   n_elements_temp = n_elements_temp + 1_8
   do while (sze2>0)
@@ -493,12 +493,12 @@ subroutine map_append(map, key, value, sze)
   integer, intent(in)            :: sze
   integer(key_kind), intent(inout) :: key(sze)
   real(integral_kind), intent(inout) :: value(sze)
-  
+
   integer                        :: i
   integer(cache_map_size_kind)   :: n_elements
   integer(map_size_kind)         :: idx_cache
   integer(cache_key_kind)        :: cache_key
-  
+
   do i=1,sze
     idx_cache = shiftr(key(i),map_shift)
     call omp_set_lock(map%map(idx_cache)%lock)
@@ -520,7 +520,7 @@ subroutine map_append(map, key, value, sze)
   call omp_set_lock(map%lock)
   map%n_elements = map%n_elements + sze
   call omp_unset_lock(map%lock)
-  
+
 end
 
 subroutine map_get(map, key, value)
@@ -531,7 +531,7 @@ subroutine map_get(map, key, value)
   real(integral_kind), intent(out) :: value
   integer(map_size_kind)         :: idx_cache
   integer(cache_map_size_kind)   :: idx
-  
+
   ! index in tha pointers array
   idx_cache = shiftr(key,map_shift)
   !DIR$ FORCEINLINE
@@ -548,7 +548,7 @@ subroutine cache_map_get_interval(map, key, value, ibegin, iend, idx)
   integer(cache_map_size_kind), intent(inout) :: idx
   double precision, pointer :: v(:)
   integer :: i
-  
+
   call search_key_big_interval(key,map%key, map%n_elements, idx, ibegin, iend)
   if (idx > 0) then
     value = map%value(idx)
@@ -571,7 +571,7 @@ subroutine map_get_many(map, key, value, sze)
   integer(cache_map_size_kind)   :: ibegin, iend
   integer(cache_map_size_kind), allocatable :: idx(:)
   !DIR$ ATTRIBUTES ALIGN : 64    :: idx
-  
+
   allocate(idx(sze))
   do i=1,sze
     idx_cache = shiftr(key(i),map_shift)
@@ -601,7 +601,7 @@ subroutine map_exists_many(map, key, sze)
   integer(cache_map_size_kind)   :: ibegin, iend
   integer(cache_map_size_kind), allocatable :: idx(:)
   !DIR$ ATTRIBUTES ALIGN : 64    :: idx
-  
+
   idx_cache_prev = -1_map_size_kind
   allocate(idx(sze))
   do i=1,sze
@@ -635,7 +635,7 @@ subroutine search_key_big(key,X,sze,idx)
   integer(key_kind)           , intent(in) :: key
   integer(cache_key_kind)     , intent(in) :: X(sze)
   integer(cache_map_size_kind), intent(out) :: idx
-  
+
   call  search_key_big_interval(key,X,sze,idx,1,sze)
 end
 
@@ -648,10 +648,10 @@ subroutine search_key_big_interval(key,X,sze,idx,ibegin_in,iend_in)
   integer(cache_key_kind)     , intent(in) :: X(sze)
   integer(cache_map_size_kind), intent(in) :: ibegin_in, iend_in
   integer(cache_map_size_kind), intent(out) :: idx
-  
+
   integer(cache_map_size_kind)   :: istep, ibegin, iend, i
   integer(cache_key_kind)        :: cache_key
-  
+
   if (sze /= 0) then
     continue
   else
@@ -662,12 +662,12 @@ subroutine search_key_big_interval(key,X,sze,idx,ibegin_in,iend_in)
   ibegin = min(ibegin_in,sze)
   iend   = min(iend_in,sze)
   if ((cache_key > X(ibegin)) .and. (cache_key < X(iend))) then
-    
+
     istep = shiftr(iend-ibegin,1)
     idx = ibegin + istep
     do while (istep > 4)
       idx = ibegin + istep
-      ! TODO : Cache misses 
+      ! TODO : Cache misses
       if (cache_key < X(idx)) then
         iend = idx
         istep = shiftr(idx-ibegin,1)
@@ -722,9 +722,9 @@ subroutine search_key_big_interval(key,X,sze,idx,ibegin_in,iend_in)
       idx = 1-idx
     endif
     return
-    
+
   else
-    
+
     if (cache_key < X(ibegin)) then
       idx = -ibegin
       return
@@ -742,7 +742,7 @@ subroutine search_key_big_interval(key,X,sze,idx,ibegin_in,iend_in)
       return
     endif
   endif
-  
+
 end
 
 subroutine search_key_value_big_interval(key,value,X,Y,sze,idx,ibegin_in,iend_in)
@@ -755,10 +755,10 @@ subroutine search_key_value_big_interval(key,value,X,Y,sze,idx,ibegin_in,iend_in
   real(integral_kind)         , intent(in) :: Y(sze)
   integer(cache_map_size_kind), intent(in) :: ibegin_in, iend_in
   integer(cache_map_size_kind), intent(out) :: idx
-  
+
   integer(cache_map_size_kind)   :: istep, ibegin, iend, i
   integer(cache_key_kind)        :: cache_key
-  
+
   if (sze /= 0) then
     continue
   else
@@ -770,12 +770,12 @@ subroutine search_key_value_big_interval(key,value,X,Y,sze,idx,ibegin_in,iend_in
   ibegin = min(ibegin_in,sze)
   iend   = min(iend_in,sze)
   if ((cache_key > X(ibegin)) .and. (cache_key < X(iend))) then
-    
+
     istep = shiftr(iend+ibegin,1)
     idx = ibegin + istep
     do while (istep > 4)
       idx = ibegin + istep
-      ! TODO : Cache misses 
+      ! TODO : Cache misses
       if (cache_key < X(idx)) then
         iend = idx
         istep = shiftr(idx-ibegin,1)
@@ -836,9 +836,9 @@ subroutine search_key_value_big_interval(key,value,X,Y,sze,idx,ibegin_in,iend_in
       value = Y(idx)
     endif
     return
-    
+
   else
-    
+
     if (cache_key < X(ibegin)) then
       idx = -ibegin
       value = 0.d0
@@ -860,7 +860,7 @@ subroutine search_key_value_big_interval(key,value,X,Y,sze,idx,ibegin_in,iend_in
       return
     endif
   endif
-  
+
 end
 
 
@@ -889,14 +889,14 @@ subroutine get_cache_map(map,map_idx,keys,values,n_elements)
   double precision, intent(out)  :: values(n_elements)
   integer(cache_map_size_kind)   :: i
   integer(key_kind)              :: shift
-  
+
   shift = shiftl(map_idx,map_shift)
-  
+
   n_elements = map%map(map_idx)%n_elements
   do i=1,n_elements
     keys(i)   = map%map(map_idx)%key(i)   + shift
     values(i) = map%map(map_idx)%value(i)
   enddo
-  
+
 end
 

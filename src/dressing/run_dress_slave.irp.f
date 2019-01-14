@@ -18,15 +18,15 @@ subroutine run_dress_slave(thread,iproce,energy)
 
   integer(ZMQ_PTR), external     :: new_zmq_push_socket
   integer(ZMQ_PTR)               :: zmq_socket_push
-  
+
   double precision,allocatable :: breve_delta_m(:,:,:)
   integer :: i_state,m,l,t,p,sum_f
-  !integer, external :: omp_get_thread_num 
+  !integer, external :: omp_get_thread_num
   double precision, allocatable :: delta_det(:,:,:,:), cp(:,:,:,:), edI(:)
   double precision, allocatable :: edI_task(:)
   integer, allocatable :: edI_index(:), edI_taskID(:)
   integer :: n_tasks
-  
+
   integer :: iproc
   integer, allocatable :: f(:)
   integer :: cp_sent, cp_done
@@ -43,7 +43,7 @@ subroutine run_dress_slave(thread,iproce,energy)
   integer :: ntask_tbd, task_tbd(Nproc), i_gen_tbd(Nproc), subset_tbd(Nproc)
   logical :: interesting
 
-  PROVIDE dress_dot_F psi_coef dress_stoch_istate dress_e N_int 
+  PROVIDE dress_dot_F psi_coef dress_stoch_istate dress_e N_int
 
   allocate(delta_det(N_states, N_det, 0:pt2_N_teeth+1, 2))
   allocate(cp(N_states, N_det, dress_N_cp, 2))
@@ -54,14 +54,14 @@ subroutine run_dress_slave(thread,iproce,energy)
   delta_det = 0d0
   cp = 0d0
   task = CHAR(0)
-  
+
 !  do i=1,dress_N_cp
 !    call omp_init_lock(lck_sto(i))
 !  end do
 !  do i=0,pt2_N_teeth+1
 !    call omp_init_lock(lck_det(i))
-!  end do 
-  
+!  end do
+
   cp_done = 0
   cp_sent = 0
   will_send = 0
@@ -98,7 +98,7 @@ subroutine run_dress_slave(thread,iproce,energy)
   allocate(breve_delta_m(N_states,N_det,2))
   allocate(task_buf(pt2_n_tasks_max))
   ntask_buf = 0
-  
+
   if(iproc==1) then
     call push_dress_results(zmq_socket_push, 0, 0, edI_task, edI_index, breve_delta_m, task_buf, ntask_buf)
   end if
@@ -126,7 +126,7 @@ subroutine run_dress_slave(thread,iproce,energy)
       call get_tasks_from_taskserver(zmq_to_qp_run_socket,worker_id, task_tbd, task, ntask_tbd)
       !task = task//"  0"
     end if
-    
+
     task_id = task_tbd(1)
     if(task_id /= 0) then
       read (task(1),*) subset, i_generator
@@ -144,7 +144,7 @@ subroutine run_dress_slave(thread,iproce,energy)
       enddo
     end if
     will_send = 0
-    
+
     cp_max(iproc) = m
     cp_done = minval(cp_max)-1
     if(cp_done > cp_sent) then
@@ -158,7 +158,7 @@ subroutine run_dress_slave(thread,iproce,energy)
       ntask_buf += 1
       task_buf(ntask_buf) = task_id
     end if
-    
+
     if(will_send /= 0 .and. will_send <= ending) then
       n_tasks = 0
       sum_f = 0
@@ -174,8 +174,8 @@ subroutine run_dress_slave(thread,iproce,energy)
         breve_delta_m, task_buf, n_tasks)
     end if
     !$OMP END CRITICAL (send)
-    
-    if(m /= dress_N_cp+1) then    
+
+    if(m /= dress_N_cp+1) then
       !UPDATE i_generator
 
       breve_delta_m(:,:,:) = 0d0
@@ -187,7 +187,7 @@ subroutine run_dress_slave(thread,iproce,energy)
       end if
       time = omp_get_wtime()
       t = dress_T(i_generator)
-    
+
       !$OMP CRITICAL(t_crit)
       do j=1,N_det
         do i=1,N_states
@@ -196,7 +196,7 @@ subroutine run_dress_slave(thread,iproce,energy)
          enddo
       enddo
       !$OMP END CRITICAL(t_crit)
-    
+
       do p=1,dress_N_cp
         if(dress_e(i_generator, p) /= 0d0) then
           fac = dress_e(i_generator, p)
@@ -210,7 +210,7 @@ subroutine run_dress_slave(thread,iproce,energy)
           !$OMP END CRITICAL(p_crit)
         end if
       end do
-      
+
       tmp = 0d0
       do i=N_det,1,-1
         tmp += psi_coef(i, dress_stoch_istate)*breve_delta_m(dress_stoch_istate, i, 1)
@@ -236,14 +236,14 @@ subroutine run_dress_slave(thread,iproce,energy)
    !$OMP MASTER
    if(purge_task_id /= 0) then
       ending = -1
-      do while (ending == -1) 
-        i = zmq_get_int_nompi(zmq_to_qp_run_socket, worker_id, "ending", ending) 
+      do while (ending == -1)
+        i = zmq_get_int_nompi(zmq_to_qp_run_socket, worker_id, "ending", ending)
         call sleep(1)
       enddo
 
       will_send = ending
       breve_delta_m = 0d0
-      
+
       double precision :: fu
       fu = 1.d0/dble(dress_M_m(will_send))
       do l=will_send, 1,-1
@@ -263,7 +263,7 @@ subroutine run_dress_slave(thread,iproce,energy)
           end do
         end do
       end do
-      
+
       sum_f = 0
       do i=1,N_det_generators
         if(dress_P(i) <= will_send) sum_f = sum_f + f(i)
@@ -271,7 +271,7 @@ subroutine run_dress_slave(thread,iproce,energy)
       task_buf(1) = purge_task_id
       call push_dress_results(zmq_socket_push, -will_send, sum_f, edI_task, edI_index, breve_delta_m, task_buf, 1)
    end if
-   
+
   !$OMP END MASTER
   !$OMP BARRIER
 
@@ -317,7 +317,7 @@ subroutine push_dress_results(zmq_socket_push, m_task, f, edI_task, edI_index, b
   integer :: rc, i, j, k
     rc = f77_zmq_send( zmq_socket_push, m_task, 4, ZMQ_SNDMORE)
     if(rc /= 4) stop "push3"
-    
+
     if(m_task > 0) then
       rc = f77_zmq_send( zmq_socket_push, n_tasks, 4, ZMQ_SNDMORE)
       if(rc /= 4) stop "push1"
@@ -359,7 +359,7 @@ subroutine pull_dress_results(zmq_socket_pull, m_task, f, edI_task, edI_index, b
   double precision, intent(out) :: breve_delta_m(N_states, N_det, 2), edI_task(N_det_generators)
   integer, intent(out) :: task_id(pt2_n_tasks_max), n_tasks
   integer :: rc, i, j, k
- 
+
     rc = f77_zmq_recv( zmq_socket_pull, m_task, 4, 0)
     if(rc /= 4) stop "pullc"
 
@@ -392,6 +392,6 @@ IRP_ELSE
 IRP_ENDIF
 
 end subroutine
- 
- 
-            
+
+
+

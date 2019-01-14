@@ -20,7 +20,7 @@ subroutine do_mono_excitation(key_in,i_hole,i_particle,ispin,i_ok)
   k = shiftr(i_hole-1,bit_kind_shift)+1
   j = i_hole-shiftl(k-1,bit_kind_shift)-1
   key_in(k,ispin) = ibclr(key_in(k,ispin),j)
-  
+
   ! particle
   k = shiftr(i_particle-1,bit_kind_shift)+1
   j = i_particle-shiftl(k-1,bit_kind_shift)-1

@@ -29,13 +29,13 @@ END_PROVIDER
 &BEGIN_PROVIDER [integer, index_final_points_reverse, (n_points_integration_angular,n_points_radial_grid,nucl_num) ]
   implicit none
   BEGIN_DOC
-!  final_grid_points(1:3,j) = (/ x, y, z /) of the jth grid point 
-! 
+!  final_grid_points(1:3,j) = (/ x, y, z /) of the jth grid point
+!
 ! final_weight_at_r_vector(i) = Total weight function of the ith grid point which contains the Lebedev, Voronoi and radial weights contributions
 !
 ! index_final_points(1:3,i) = gives the angular, radial and atomic indices associated to the ith grid point
 !
-! index_final_points_reverse(i,j,k) = index of the grid point having i as angular, j as radial and l as atomic indices 
+! index_final_points_reverse(i,j,k) = index of the grid point having i as angular, j as radial and l as atomic indices
   END_DOC
   integer                        :: i,j,k,l,i_count
   double precision               :: r(3)
@@ -61,5 +61,5 @@ END_PROVIDER
       enddo
     enddo
   enddo
-  
+
 END_PROVIDER

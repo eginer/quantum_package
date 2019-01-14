@@ -1,4 +1,4 @@
-type argument = With_arg | Without_arg | With_opt_arg 
+type argument = With_arg | Without_arg | With_opt_arg
 
 let anon_args = ref []
 and header_doc = ref ""
@@ -8,22 +8,22 @@ and specs = ref []
 let set_header_doc s = header_doc := s
 let set_footer_doc s = footer_doc := s
 
-let dict = 
+let dict =
   let d = Hashtbl.create 67 in
   d
 
-let get x = 
+let get x =
   try Some (Hashtbl.find dict x)
   with Not_found -> None
 
-let get_bool x = 
+let get_bool x =
   Hashtbl.mem dict x
 
 let show_help () =
   get_bool "help"
 
 let anonymous ?(optional=false) name doc =
-  ( ' ', name, doc, 
+  ( ' ', name, doc,
     if optional then With_opt_arg else Without_arg
   )
 
@@ -36,16 +36,16 @@ let help () =
       | _ -> failwith "Bad format for documentation"
   in
 
-  let anon = 
+  let anon =
     List.filter (fun (x,_,_,_) -> x = ' ') !specs
     |> List.map (fun x ->
-      match x with 
+      match x with
       | (_,name,doc,Without_arg) -> (name,doc,false)
       | (_,name,doc,_)  -> (name,doc,true)
       )
   in
 
-  let options = 
+  let options =
     List.filter (fun (x,_,_,_) -> x <> ' ') !specs
     |> List.sort (fun (x,_,_,_) (y,_,_,_) -> Char.compare x y)
     |> List.map (fun x ->
@@ -54,19 +54,19 @@ let help () =
             let param, doc = get_param_from_doc doc in
             (Printf.sprintf "-%c %s" short param,
              Printf.sprintf "--%s=%s" long  param,
-             doc) 
+             doc)
       | (short,long,doc,Without_arg) ->  (* without arg *)
             (Printf.sprintf "-%c" short,
              Printf.sprintf "--%s" long,
-             doc) 
+             doc)
       | (short,long,doc,With_opt_arg) -> (* with or without arg *)
             let param, doc = get_param_from_doc doc in
             (Printf.sprintf "-%c [%s]" short param,
              Printf.sprintf "--%s[=%s]" long  param,
-             doc) 
-      ) 
+             doc)
+      )
   in
-        
+
   let max_short =
     List.map (fun (x,_,_) -> String.length x) options
     |> List.fold_left max 0
@@ -77,21 +77,21 @@ let help () =
     |> List.fold_left max 0
   in
 
-  let fmt_opt max_w o = 
+  let fmt_opt max_w o =
     let l = String.length o in
     o^(String.make (max_w-l) ' ')
   in
 
 
-  let output_option ?(fixed_width=false) (short, long, doc) = 
+  let output_option ?(fixed_width=false) (short, long, doc) =
       if fixed_width then
-        Format.printf "@[%s  %s@]" 
+        Format.printf "@[%s  %s@]"
           (fmt_opt max_short short) (fmt_opt max_long long)
       else
         Format.printf "@[%s|%s@]" short long
   in
 
-  let output_anon ?(fixed_width=false) (name, doc, optional) = 
+  let output_anon ?(fixed_width=false) (name, doc, optional) =
       if optional then
         Format.printf "@[[%s]@]" name
       else
@@ -99,19 +99,19 @@ let help () =
   in
 
   Format.printf "@[<v>@[<v 2>Usage:@,@,@[<hov 4>@[%s@]" Sys.argv.(0);
-  List.iter (fun x -> 
+  List.iter (fun x ->
     Format.printf "@ @[[";
     output_option ~fixed_width:false x;
     Format.printf "]@]"
     ) options;
   Format.printf "@ @[[--]@]";
-  List.iter (fun x -> 
+  List.iter (fun x ->
     Format.printf "@ @[";
     output_anon ~fixed_width:false x;
     Format.printf "@]"
     ) anon;
   Format.printf "@]@]@,@,";
-    
+
   Format.printf "@[<v>Arguments:@,";
 
   Format.printf "@[<v 2>@," ;
@@ -137,7 +137,7 @@ let help () =
 let set_specs specs_in =
   specs := ( 'h', "help", "Prints the help message", Without_arg) :: specs_in;
 
-  let specs = 
+  let specs =
     List.filter (fun (x,_,_,_) -> x != ' ') !specs
     |> List.map (fun x ->
      match x with
@@ -148,7 +148,7 @@ let set_specs specs_in =
      | (short, long, doc, With_opt_arg) ->
          (short, long, Some (fun () -> Hashtbl.replace dict long ""),
          Some (fun x -> Hashtbl.replace dict long x) )
-    ) 
+    )
   in
 
   Getopt.parse_cmdline specs (fun x -> anon_args := !anon_args @ [x]);

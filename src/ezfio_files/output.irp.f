@@ -7,8 +7,8 @@
   call cpu_time(output_wall_time_0)
   call wall_time(output_wall_time_0)
 END_PROVIDER
- 
- 
+
+
 subroutine write_time(iunit)
   implicit none
   BEGIN_DOC
@@ -28,7 +28,7 @@ subroutine write_time(iunit)
         '  s ] [ CPU  TIME: ', ct-output_cpu_time_0, '  s ] <<<<< ..'
   write(6,*)
 end
- 
+
 subroutine write_double(iunit,value,label)
   implicit none
   BEGIN_DOC

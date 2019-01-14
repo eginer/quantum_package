@@ -15,20 +15,20 @@ double precision function ao_two_e_integral_erf(i,j,k,l)
   double precision               :: Q_new(0:max_dim,3),Q_center(3),fact_q,qq
   integer                        :: iorder_p(3), iorder_q(3)
   double precision               :: ao_two_e_integral_schwartz_accel_erf
-  
+
    if (ao_prim_num(i) * ao_prim_num(j) * ao_prim_num(k) * ao_prim_num(l) > 1024 ) then
      ao_two_e_integral_erf = ao_two_e_integral_schwartz_accel_erf(i,j,k,l)
      return
    endif
 
   dim1 = n_pt_max_integrals
-  
+
   num_i = ao_nucl(i)
   num_j = ao_nucl(j)
   num_k = ao_nucl(k)
   num_l = ao_nucl(l)
   ao_two_e_integral_erf = 0.d0
-  
+
   if (num_i /= num_j .or. num_k /= num_l .or. num_j /= num_k)then
     do p = 1, 3
       I_power(p) = ao_power(i,p)
@@ -40,7 +40,7 @@ double precision function ao_two_e_integral_erf(i,j,k,l)
       K_center(p) = nucl_coord(num_k,p)
       L_center(p) = nucl_coord(num_l,p)
     enddo
-    
+
     double precision               :: coef1, coef2, coef3, coef4
     double precision               :: p_inv,q_inv
     double precision               :: general_primitive_integral_erf
@@ -69,9 +69,9 @@ double precision function ao_two_e_integral_erf(i,j,k,l)
         enddo  ! r
       enddo   ! q
     enddo    ! p
-    
+
   else
-    
+
     do p = 1, 3
       I_power(p) = ao_power(i,p)
       J_power(p) = ao_power(j,p)
@@ -98,9 +98,9 @@ double precision function ao_two_e_integral_erf(i,j,k,l)
         enddo  ! r
       enddo   ! q
     enddo    ! p
-    
+
   endif
-  
+
 end
 
 double precision function ao_two_e_integral_schwartz_accel_erf(i,j,k,l)
@@ -120,9 +120,9 @@ double precision function ao_two_e_integral_schwartz_accel_erf(i,j,k,l)
   integer                        :: iorder_p(3), iorder_q(3)
   double precision, allocatable  :: schwartz_kl(:,:)
   double precision               :: schwartz_ij
-  
+
   dim1 = n_pt_max_integrals
-  
+
   num_i = ao_nucl(i)
   num_j = ao_nucl(j)
   num_k = ao_nucl(k)
@@ -130,7 +130,7 @@ double precision function ao_two_e_integral_schwartz_accel_erf(i,j,k,l)
   ao_two_e_integral_schwartz_accel_erf = 0.d0
   double precision               :: thr
   thr = ao_integrals_threshold*ao_integrals_threshold
-  
+
   allocate(schwartz_kl(0:ao_prim_num(l),0:ao_prim_num(k)))
 
       double precision               :: coef3
@@ -150,7 +150,7 @@ double precision function ao_two_e_integral_schwartz_accel_erf(i,j,k,l)
       K_center(p) = nucl_coord(num_k,p)
       L_center(p) = nucl_coord(num_l,p)
     enddo
-    
+
     schwartz_kl(0,0) = 0.d0
     do r = 1, ao_prim_num(k)
       coef1 = ao_coef_normalized_ordered_transp(r,k)*ao_coef_normalized_ordered_transp(r,k)
@@ -164,7 +164,7 @@ double precision function ao_two_e_integral_schwartz_accel_erf(i,j,k,l)
         schwartz_kl(s,r) = general_primitive_integral_erf(dim1,          &
             Q_new,Q_center,fact_q,qq,q_inv,iorder_q,                 &
             Q_new,Q_center,fact_q,qq,q_inv,iorder_q)      &
-            * coef2 
+            * coef2
         schwartz_kl(0,r) = max(schwartz_kl(0,r),schwartz_kl(s,r))
       enddo
       schwartz_kl(0,0) = max(schwartz_kl(0,r),schwartz_kl(0,0))
@@ -208,9 +208,9 @@ double precision function ao_two_e_integral_schwartz_accel_erf(i,j,k,l)
         enddo  ! r
       enddo   ! q
     enddo    ! p
-    
+
   else
-    
+
     do p = 1, 3
       I_power(p) = ao_power(i,p)
       J_power(p) = ao_power(j,p)
@@ -268,28 +268,28 @@ double precision function ao_two_e_integral_schwartz_accel_erf(i,j,k,l)
         enddo  ! r
       enddo   ! q
     enddo    ! p
-    
+
   endif
   deallocate (schwartz_kl)
-  
+
 end
 
 
 subroutine compute_ao_two_e_integrals_erf(j,k,l,sze,buffer_value)
   implicit none
   use map_module
-  
+
   BEGIN_DOC
   ! Compute AO 1/r12 integrals for all i and fixed j,k,l
   END_DOC
-  
+
   include 'utils/constants.include.F'
   integer, intent(in)            :: j,k,l,sze
   real(integral_kind), intent(out) :: buffer_value(sze)
   double precision               :: ao_two_e_integral_erf
-  
+
   integer                        :: i
-  
+
   if (ao_overlap_abs(j,l) < thresh) then
     buffer_value = 0._integral_kind
     return
@@ -298,7 +298,7 @@ subroutine compute_ao_two_e_integrals_erf(j,k,l,sze,buffer_value)
     buffer_value = 0._integral_kind
     return
   endif
-  
+
   do i = 1, ao_num
     if (ao_overlap_abs(i,k)*ao_overlap_abs(j,l) < thresh) then
       buffer_value(i) = 0._integral_kind
@@ -311,7 +311,7 @@ subroutine compute_ao_two_e_integrals_erf(j,k,l,sze,buffer_value)
     !DIR$ FORCEINLINE
     buffer_value(i) = ao_two_e_integral_erf(i,k,j,l)
   enddo
-  
+
 end
 
 double precision function general_primitive_integral_erf(dim,            &
@@ -327,7 +327,7 @@ double precision function general_primitive_integral_erf(dim,            &
   double precision, intent(in)   :: Q_new(0:max_dim,3),Q_center(3),fact_q,q,q_inv
   integer, intent(in)            :: iorder_p(3)
   integer, intent(in)            :: iorder_q(3)
-  
+
   double precision               :: r_cut,gama_r_cut,rho,dist
   double precision               :: dx(0:max_dim),Ix_pol(0:max_dim),dy(0:max_dim),Iy_pol(0:max_dim),dz(0:max_dim),Iz_pol(0:max_dim)
   integer                        :: n_Ix,n_Iy,n_Iz,nx,ny,nz
@@ -337,26 +337,26 @@ double precision function general_primitive_integral_erf(dim,            &
   double precision               :: pq_inv, p10_1, p10_2, p01_1, p01_2,pq_inv_2
   integer                        :: n_pt_tmp,n_pt_out, iorder
   double precision               :: d1(0:max_dim),d_poly(0:max_dim),rint,d1_screened(0:max_dim)
-  
+
   general_primitive_integral_erf = 0.d0
-  
+
   !DIR$ ATTRIBUTES ALIGN : $IRP_ALIGN :: dx,Ix_pol,dy,Iy_pol,dz,Iz_pol
   !DIR$ ATTRIBUTES ALIGN : $IRP_ALIGN :: d1, d_poly
-  
+
   ! Gaussian Product
   ! ----------------
   double precision :: p_plus_q
   p_plus_q = (p+q) * ((p*q)/(p+q) + mu_erf*mu_erf)/(mu_erf*mu_erf)
   pq = p_inv*0.5d0*q_inv
-  
+
   pq_inv = 0.5d0/p_plus_q
   p10_1 = q*pq  ! 1/(2p)
   p01_1 = p*pq  ! 1/(2q)
   pq_inv_2 = pq_inv+pq_inv
   p10_2 = pq_inv_2 * p10_1*q !0.5d0*q/(pq + p*p)
   p01_2 = pq_inv_2 * p01_1*p !0.5d0*p/(q*q + pq)
-  
-  
+
+
   accu = 0.d0
   iorder = iorder_p(1)+iorder_q(1)+iorder_p(1)+iorder_q(1)
   !DIR$ VECTOR ALIGNED
@@ -401,7 +401,7 @@ double precision function general_primitive_integral_erf(dim,            &
   if (n_Iy == -1) then
     return
   endif
-  
+
   iorder = iorder_p(3)+iorder_q(3)+iorder_p(3)+iorder_q(3)
   do ix=0,iorder
     Iz_pol(ix) = 0.d0
@@ -423,18 +423,18 @@ double precision function general_primitive_integral_erf(dim,            &
   if (n_Iz == -1) then
     return
   endif
-  
+
   rho = p*q *pq_inv_2  ! le rho qui va bien
   dist =  (P_center(1) - Q_center(1))*(P_center(1) - Q_center(1)) +  &
       (P_center(2) - Q_center(2))*(P_center(2) - Q_center(2)) +      &
       (P_center(3) - Q_center(3))*(P_center(3) - Q_center(3))
   const = dist*rho
-  
+
   n_pt_tmp = n_Ix+n_Iy
   do i=0,n_pt_tmp
     d_poly(i)=0.d0
   enddo
-  
+
   !DEC$ FORCEINLINE
   call multiply_poly(Ix_pol,n_Ix,Iy_pol,n_Iy,d_poly,n_pt_tmp)
   if (n_pt_tmp == -1) then
@@ -444,12 +444,12 @@ double precision function general_primitive_integral_erf(dim,            &
   do i=0,n_pt_out
     d1(i)=0.d0
   enddo
-  
+
   !DEC$ FORCEINLINE
   call multiply_poly(d_poly ,n_pt_tmp ,Iz_pol,n_Iz,d1,n_pt_out)
   double precision               :: rint_sum
   accu = accu + rint_sum(n_pt_out,const,d1)
-  
+
   ! change p+q in dsqrt
   general_primitive_integral_erf = fact_p * fact_q * accu *pi_5_2*p_inv*q_inv/dsqrt(p_plus_q)
 end
@@ -458,7 +458,7 @@ end
 double precision function ERI_erf(alpha,beta,delta,gama,a_x,b_x,c_x,d_x,a_y,b_y,c_y,d_y,a_z,b_z,c_z,d_z)
   implicit none
   BEGIN_DOC
-  !  ATOMIC PRIMTIVE two-electron integral between the 4 primitives :: 
+  !  ATOMIC PRIMTIVE two-electron integral between the 4 primitives ::
   !         primitive_1 = x1**(a_x) y1**(a_y) z1**(a_z) exp(-alpha * r1**2)
   !         primitive_2 = x1**(b_x) y1**(b_y) z1**(b_z) exp(- beta * r1**2)
   !         primitive_3 = x2**(c_x) y2**(c_y) z2**(c_z) exp(-delta * r2**2)
@@ -490,7 +490,7 @@ double precision function ERI_erf(alpha,beta,delta,gama,a_x,b_x,c_x,d_x,a_y,b_y,
     ERI_erf = 0.d0
     return
   endif
-    
+
   ASSERT (alpha >= 0.d0)
   ASSERT (beta >= 0.d0)
   ASSERT (delta >= 0.d0)
@@ -501,15 +501,15 @@ double precision function ERI_erf(alpha,beta,delta,gama,a_x,b_x,c_x,d_x,a_y,b_y,
   p_plus_q = (p+q) * ((p*q)/(p+q) + mu_erf*mu_erf)/(mu_erf*mu_erf)
   ASSERT (p+q >= 0.d0)
   n_pt =  ishft( nx+ny+nz,1 )
-  
+
   coeff = pi_5_2 / (p * q * dsqrt(p_plus_q))
   if (n_pt == 0) then
     ERI_erf = coeff
     return
   endif
-  
+
   call integrale_new_erf(I_f,a_x,b_x,c_x,d_x,a_y,b_y,c_y,d_y,a_z,b_z,c_z,d_z,p,q,n_pt)
-  
+
   ERI_erf = I_f * coeff
 end
 
@@ -517,12 +517,12 @@ end
 
 subroutine integrale_new_erf(I_f,a_x,b_x,c_x,d_x,a_y,b_y,c_y,d_y,a_z,b_z,c_z,d_z,p,q,n_pt)
   BEGIN_DOC
-  ! calculate the integral of the polynom :: 
+  ! calculate the integral of the polynom ::
   !         I_x1(a_x+b_x, c_x+d_x,p,q) * I_x1(a_y+b_y, c_y+d_y,p,q) * I_x1(a_z+b_z, c_z+d_z,p,q)
   ! between ( 0 ; 1)
   END_DOC
-  
-  
+
+
   implicit none
   include 'utils/constants.include.F'
   double precision               :: p,q
@@ -530,12 +530,12 @@ subroutine integrale_new_erf(I_f,a_x,b_x,c_x,d_x,a_y,b_y,c_y,d_y,a_z,b_z,c_z,d_z
   integer                        :: i, n_pt, j
   double precision               :: I_f, pq_inv, p10_1, p10_2, p01_1, p01_2,rho,pq_inv_2
   integer :: ix,iy,iz, jx,jy,jz, sx,sy,sz
-  
+
   j = ishft(n_pt,-1)
   ASSERT (n_pt > 1)
   double precision :: p_plus_q
   p_plus_q = (p+q) * ((p*q)/(p+q) + mu_erf*mu_erf)/(mu_erf*mu_erf)
-  
+
   pq_inv = 0.5d0/(p_plus_q)
   pq_inv_2 = pq_inv + pq_inv
   p10_1 = 0.5d0/p
@@ -589,11 +589,11 @@ subroutine integrale_new_erf(I_f,a_x,b_x,c_x,d_x,a_y,b_y,c_y,d_y,a_z,b_z,c_z,d_z
   do i = 1,n_pt
     I_f += gauleg_w(i,j)*t1(i)
   enddo
-  
-  
-  
+
+
+
 end
-  
+
 
 subroutine compute_ao_integrals_erf_jl(j,l,n_integrals,buffer_i,buffer_value)
   implicit none
@@ -601,7 +601,7 @@ subroutine compute_ao_integrals_erf_jl(j,l,n_integrals,buffer_i,buffer_value)
   BEGIN_DOC
   !  Parallel client for AO integrals
   END_DOC
-  
+
   integer, intent(in)            :: j,l
   integer,intent(out)            :: n_integrals
   integer(key_kind),intent(out)  :: buffer_i(ao_num*ao_num)
@@ -614,9 +614,9 @@ subroutine compute_ao_integrals_erf_jl(j,l,n_integrals,buffer_i,buffer_value)
   integer                        :: kk, m, j1, i1
 
   thr = ao_integrals_threshold
-  
+
   n_integrals = 0
-  
+
   j1 = j+ishft(l*l-l,-1)
   do k = 1, ao_num           ! r1
     i1 = ishft(k*k-k,-1)
@@ -645,5 +645,5 @@ subroutine compute_ao_integrals_erf_jl(j,l,n_integrals,buffer_i,buffer_value)
       buffer_value(n_integrals) = integral
     enddo
   enddo
-    
+
 end

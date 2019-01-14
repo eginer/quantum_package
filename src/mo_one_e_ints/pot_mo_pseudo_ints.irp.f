@@ -3,7 +3,7 @@ BEGIN_PROVIDER [double precision, mo_pseudo_integrals, (mo_num,mo_num)]
   BEGIN_DOC
   ! Pseudopotential integrals in |MO| basis
   END_DOC
-  
+
   if (read_mo_integrals_pseudo) then
     call ezfio_get_mo_one_e_ints_mo_integrals_pseudo(mo_pseudo_integrals)
     print *,  'MO pseudopotential integrals read from disk'

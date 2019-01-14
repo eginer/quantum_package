@@ -14,7 +14,7 @@ let build_mask from upto n_int =
   in
   let rec build_mask bit = function
     | 0 -> []
-    | i -> 
+    | i ->
       if ( i = upto ) then
         Bit.One::(build_mask Bit.One (i-1))
       else if ( i = from ) then
@@ -22,7 +22,7 @@ let build_mask from upto n_int =
       else
         bit::(build_mask bit (i-1))
   in
-  let starting_bit = 
+  let starting_bit =
     if ( (upto >= n_int*64) || (upto < 0) ) then Bit.One
     else Bit.Zero
   in
@@ -41,7 +41,7 @@ let set ~core ~inact ~act ~virt ~del =
   in
   let n_int =
     try  N_int_number.of_int (Ezfio.get_determinants_n_int ())
-    with _ -> Bitlist.n_int_of_mo_num mo_num 
+    with _ -> Bitlist.n_int_of_mo_num mo_num
   in
 
 
@@ -50,7 +50,7 @@ let set ~core ~inact ~act ~virt ~del =
   in
 
   (* Check input data *)
-  let apply_class l = 
+  let apply_class l =
     let rec apply_class t = function
       | [] -> ()
       | k::tail -> let i = MO_number.to_int k in
@@ -71,11 +71,11 @@ let set ~core ~inact ~act ~virt ~del =
     | MO_class.Deleted  x -> apply_class (MO_class.Deleted  []) x
   in
 
-  let check f x = 
+  let check f x =
     try f x with Invalid_argument a ->
       begin
         Printf.printf "Number of MOs: %d\n%!" mo_num;
-        raise (Invalid_argument a) 
+        raise (Invalid_argument a)
       end
   in
 
@@ -90,7 +90,7 @@ let set ~core ~inact ~act ~virt ~del =
   apply_class act   ;
   apply_class virt  ;
   apply_class del   ;
-  
+
 
 
   for i=1 to (Array.length mo_class)
@@ -108,16 +108,16 @@ let set ~core ~inact ~act ~virt ~del =
   MO_class.to_string del   |> print_endline ;
 
   (* Create masks *)
-  let ia = Excitation.create_single inact act 
-  and aa = Excitation.create_single act act 
+  let ia = Excitation.create_single inact act
+  and aa = Excitation.create_single act act
   and av = Excitation.create_single act virt
   in
   let single_excitations = [ ia ; aa ; av ]
                            |> List.map ~f:Excitation.(fun x ->
                                match x with
-                               | Single (x,y) -> 
+                               | Single (x,y) ->
                                  ( MO_class.to_bitlist n_int (Hole.to_mo_class x),
-                                   MO_class.to_bitlist n_int (Particle.to_mo_class y) ) 
+                                   MO_class.to_bitlist n_int (Particle.to_mo_class y) )
                                | Double _ -> assert false
                              )
 
@@ -131,20 +131,20 @@ let set ~core ~inact ~act ~virt ~del =
     |> List.map ~f:Excitation.(fun x ->
         match x with
         | Single _ -> assert false
-        | Double (x,y,z,t) -> 
+        | Double (x,y,z,t) ->
           ( MO_class.to_bitlist n_int (Hole.to_mo_class x),
-            MO_class.to_bitlist n_int (Particle.to_mo_class y) , 
+            MO_class.to_bitlist n_int (Particle.to_mo_class y) ,
             MO_class.to_bitlist n_int (Hole.to_mo_class z),
             MO_class.to_bitlist n_int (Particle.to_mo_class t) )
       )
   in
 
-  let extract_hole (h,_) = h 
-  and extract_particle (_,p) = p 
-  and extract_hole1 (h,_,_,_) = h 
-  and extract_particle1 (_,p,_,_) = p 
-  and extract_hole2 (_,_,h,_) = h 
-  and extract_particle2 (_,_,_,p) = p 
+  let extract_hole (h,_) = h
+  and extract_particle (_,p) = p
+  and extract_hole1 (h,_,_,_) = h
+  and extract_particle1 (_,p,_,_) = p
+  and extract_hole2 (_,_,h,_) = h
+  and extract_particle2 (_,_,_,p) = p
   in
   let result = [
     List.map ~f:extract_hole single_excitations
@@ -162,14 +162,14 @@ let set ~core ~inact ~act ~virt ~del =
   ]
   in
 
-  (* Debug masks in output 
+  (* Debug masks in output
   List.iter ~f:(fun x-> print_endline (Bitlist.to_string x)) result;
   *)
 
   (* Write masks *)
   let result =  List.map ~f:(fun x ->
       let y = Bitlist.to_int64_list x in y@y )
-      result 
+      result
                 |> List.concat
   in
 
@@ -177,13 +177,13 @@ let set ~core ~inact ~act ~virt ~del =
   Ezfio.set_bitmasks_bit_kind 8;
   Ezfio.set_bitmasks_n_mask_gen 1;
   Ezfio.ezfio_array_of_list ~rank:4 ~dim:([| (N_int_number.to_int n_int) ; 2; 6; 1|]) ~data:result
-  |> Ezfio.set_bitmasks_generators ; 
+  |> Ezfio.set_bitmasks_generators ;
 
   let result =
-    let open Excitation in 
+    let open Excitation in
     match aa with
     | Double _ -> assert false
-    | Single (x,y) -> 
+    | Single (x,y) ->
       ( MO_class.to_bitlist n_int (Hole.to_mo_class x) ) @
       ( MO_class.to_bitlist n_int (Particle.to_mo_class y) )
       |> Bitlist.to_int64_list
@@ -192,7 +192,7 @@ let set ~core ~inact ~act ~virt ~del =
   Ezfio.ezfio_array_of_list ~rank:3 ~dim:([| (N_int_number.to_int n_int) ; 2; 1|]) ~data:result
   |> Ezfio.set_bitmasks_cas;
 
-  let data = 
+  let data =
     Array.to_list mo_class
     |> List.map ~f:(fun x -> match x with
         |None -> assert false
@@ -211,9 +211,9 @@ let get () =
     | None -> failwith "Unable to read electrons"
     | Some x -> x
   in
-  let elec_alpha_num = 
+  let elec_alpha_num =
     Elec_alpha_number.to_int data.Input.Electrons.elec_alpha_num
-  and elec_beta_num = 
+  and elec_beta_num =
     Elec_beta_number.to_int data.Input.Electrons.elec_beta_num
   in
 
@@ -230,7 +230,7 @@ let get () =
 
   let n_int =
     try  N_int_number.of_int (Ezfio.get_determinants_n_int ())
-    with _ -> Bitlist.n_int_of_mo_num mo_num 
+    with _ -> Bitlist.n_int_of_mo_num mo_num
   in
 
   Printf.printf "Electrons: %d %d\n" elec_alpha_num elec_beta_num;
@@ -240,7 +240,7 @@ let get () =
 
   let rec work ?(core="[") ?(inact="[") ?(act="[") ?(virt="[") ?(del="[") i l =
     match l with
-    | [] -> 
+    | [] ->
       let (core, inact, act, virt, del) =
        (core  ^"]",
         inact ^"]",
@@ -248,7 +248,7 @@ let get () =
         virt  ^"]",
         del   ^"]")
       in
-      set ~core ~inact ~act ~virt ~del 
+      set ~core ~inact ~act ~virt ~del
     | (MO_class.Core     _) :: rest ->
         work ~core:(Printf.sprintf "%s,%d" core  i) ~inact ~act  ~virt ~del  (i+1) rest
     | (MO_class.Inactive _) :: rest ->
@@ -277,14 +277,14 @@ let run ~q ?(core="[]") ?(inact="[]") ?(act="[]") ?(virt="[]") ?(del="[]") ezfio
 
 
 let ezfio_file =
-  let failure filename = 
+  let failure filename =
         eprintf "'%s' is not an EZFIO file.\n%!" filename;
         exit 1
   in
   Command.Spec.Arg_type.create
   (fun filename ->
     match Sys.is_directory filename with
-    | `Yes -> 
+    | `Yes ->
         begin
           match Sys.is_file (filename ^ "/.version") with
           | `Yes -> filename
@@ -295,14 +295,14 @@ let ezfio_file =
 
 
 let default range =
-  let failure filename = 
+  let failure filename =
         eprintf "'%s' is not a regular file.\n%!" filename;
         exit 1
   in
   Command.Spec.Arg_type.create
   (fun filename ->
     match Sys.is_directory filename with
-    | `Yes -> 
+    | `Yes ->
         begin
           match Sys.is_file (filename^"/.version") with
           | `Yes -> filename
@@ -330,15 +330,15 @@ The range of MOs has the form : \"[36-53,72-107,126-131]\"." |> Command_line.set
   if Command_line.show_help () then
     exit 0;
 
-  let core  = Command_line.get   "core" 
-  and inact = Command_line.get  "inact" 
-  and   act = Command_line.get    "act" 
-  and  virt = Command_line.get   "virt" 
-  and   del = Command_line.get    "del" 
+  let core  = Command_line.get   "core"
+  and inact = Command_line.get  "inact"
+  and   act = Command_line.get    "act"
+  and  virt = Command_line.get   "virt"
+  and   del = Command_line.get    "del"
   and     q = Command_line.get_bool "q"
   in
 
-  let ezfio_filename = 
+  let ezfio_filename =
     match Command_line.anon_args () with
     | [x] -> x
     | _ -> (Command_line.help () ; failwith "EZFIO_FILE is missing")

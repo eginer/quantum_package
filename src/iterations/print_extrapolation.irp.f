@@ -13,7 +13,7 @@ subroutine print_extrapolated_energy
   write(*,'(A)') 'Extrapolated energies'
   write(*,'(A)') '------------------------'
   write(*,'(A)') ''
-  
+
   print *,  ''
   print *,  'State ', 1
   print *,  ''
@@ -42,5 +42,5 @@ subroutine print_extrapolated_energy
 
   print *,  ''
 
-end subroutine 
+end subroutine
 

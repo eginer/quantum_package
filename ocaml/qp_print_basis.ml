@@ -30,7 +30,7 @@ let mo () =
     | Some mo_coef -> mo_coef
     | _ -> failwith "Error reading the mo set"
   in
-  Input.Mo_basis.to_rst mo_coef 
+  Input.Mo_basis.to_rst mo_coef
   |> Rst_string.to_string
   |> print_endline
 
@@ -43,15 +43,15 @@ let psi_det () =
     failwith "Error reading EZFIO file";
   Ezfio.set_file ezfio_filename;
   let psi_det =
-    Input.Determinants_by_hand.read () 
+    Input.Determinants_by_hand.read ()
   in
-  Input.Determinants_by_hand.to_rst psi_det 
+  Input.Determinants_by_hand.to_rst psi_det
   |> Rst_string.to_string
   |> print_endline
 
 
 
-let () = 
+let () =
   basis ();
   mo ()
   (* psi_det () *)

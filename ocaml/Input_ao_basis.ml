@@ -3,7 +3,7 @@ open Qputils;;
 open Core;;
 
 module Ao_basis : sig
-  type t = 
+  type t =
     { ao_basis        : AO_basis_name.t;
       ao_num          : AO_number.t ;
       ao_prim_num     : AO_prim_number.t array;
@@ -22,7 +22,7 @@ module Ao_basis : sig
   val to_md5 : t -> MD5.t
   val to_rst : t -> Rst_string.t
 end = struct
-  type t = 
+  type t =
     { ao_basis        : AO_basis_name.t;
       ao_num          : AO_number.t ;
       ao_prim_num     : AO_prim_number.t array;
@@ -37,7 +37,7 @@ end = struct
 
   let get_default = Qpackage.get_ezfio_default "ao_basis";;
 
-  let read_ao_basis () = 
+  let read_ao_basis () =
     Ezfio.get_ao_basis_ao_basis ()
     |> AO_basis_name.of_string
   ;;
@@ -48,7 +48,7 @@ end = struct
   ;;
 
   let read_ao_prim_num () =
-    Ezfio.get_ao_basis_ao_prim_num () 
+    Ezfio.get_ao_basis_ao_prim_num ()
     |> Ezfio.flattened_ezfio
     |> Array.map ~f:AO_prim_number.of_int
   ;;
@@ -62,7 +62,7 @@ end = struct
 
   let read_ao_nucl () =
     let nmax = Nucl_number.get_max () in
-    Ezfio.get_ao_basis_ao_nucl () 
+    Ezfio.get_ao_basis_ao_nucl ()
     |> Ezfio.flattened_ezfio
     |> Array.map ~f:(fun x-> Nucl_number.of_int ~max:nmax x)
   ;;
@@ -85,7 +85,7 @@ end = struct
   ;;
 
   let read_ao_coef () =
-    Ezfio.get_ao_basis_ao_coef () 
+    Ezfio.get_ao_basis_ao_coef ()
     |> Ezfio.flattened_ezfio
     |> Array.map ~f:AO_coef.of_float
   ;;
@@ -124,12 +124,12 @@ end = struct
     in
     let rec do_work accu sym gto nucl =
       match (sym, gto, nucl) with
-        | (s::srest, g::grest, n::nrest) -> 
+        | (s::srest, g::grest, n::nrest) ->
           do_work ((s,g,n)::accu) srest grest nrest
         | ([],[],[]) -> List.rev accu
         | _ -> assert false
     in
-    do_work [] 
+    do_work []
       (Array.to_list b.ao_power)
       (Array.to_list gto_array)
       (Array.to_list b.ao_nucl)
@@ -138,18 +138,18 @@ end = struct
     to_long_basis b
     |> Long_basis.to_basis
   ;;
-      
+
   let to_md5 b =
     let short_basis = to_basis b in
     Basis.to_md5 short_basis
   ;;
-    
 
- 
+
+
   let write_md5 b =
     to_md5 b
-    |> MD5.to_string 
-    |> Ezfio.set_ao_basis_ao_md5 
+    |> MD5.to_string
+    |> Ezfio.set_ao_basis_ao_md5
   ;;
 
   let write_ao_basis name =
@@ -177,7 +177,7 @@ end = struct
   let read () =
     if (Ezfio.has_ao_basis_ao_basis ()) then
       begin
-        let result = 
+        let result =
           { ao_basis        = read_ao_basis ();
             ao_num          = read_ao_num () ;
             ao_prim_num     = read_ao_prim_num ();
@@ -197,15 +197,15 @@ end = struct
     else
       None
   ;;
-    
+
 
   let to_rst b =
-    let print_sym = 
+    let print_sym =
       let l = List.init (Array.length b.ao_power) ~f:(
          fun i -> ( (i+1),b.ao_nucl.(i),b.ao_power.(i) ) ) in
       let rec do_work = function
       | [] -> []
-      | (i,n,x)::tail  -> 
+      | (i,n,x)::tail  ->
           (Printf.sprintf " %5d  %6d     %-8s\n" i (Nucl_number.to_int n) (Symmetry.Xyz.to_string x))::
           (do_work tail)
       in do_work l
@@ -223,7 +223,7 @@ Cartesian coordinates (6d,10f,...) ::
   ao_cartesian = %s
 
 Basis set (read-only) ::
-  
+
 %s
 
 
@@ -235,16 +235,16 @@ Basis set (read-only) ::
 
 "   (AO_basis_name.to_string b.ao_basis)
     (Bool.to_string b.ao_cartesian)
-    (Basis.to_string short_basis 
+    (Basis.to_string short_basis
        |> String.split ~on:'\n'
        |> List.map ~f:(fun x-> "  "^x)
        |> String.concat ~sep:"\n"
     ) print_sym
-  
+
   |> Rst_string.of_string
   ;;
 
-  let read_rst s = 
+  let read_rst s =
     let s = Rst_string.to_string s
     |> String.split ~on:'\n'
     in
@@ -286,7 +286,7 @@ md5             = %s
       |> String.concat ~sep:", ")
     (b.ao_expo  |> Array.to_list |> List.map ~f:AO_expo.to_string
       |> String.concat ~sep:", ")
-    (b.ao_cartesian |> Bool.to_string) 
+    (b.ao_cartesian |> Bool.to_string)
     (to_md5 b |> MD5.to_string )
 
   ;;

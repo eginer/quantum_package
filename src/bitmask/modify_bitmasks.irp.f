@@ -4,7 +4,7 @@ subroutine initialize_bitmask_to_restart_ones
  implicit none
  integer :: i,j,k,l,m
  integer :: ispin
-  BEGIN_DOC 
+  BEGIN_DOC
  ! Initialization of the generators_bitmask to the restart bitmask
   END_DOC
  do i = 1, N_int
@@ -19,7 +19,7 @@ subroutine initialize_bitmask_to_restart_ones
      enddo
    enddo
  enddo
-end 
+end
 
 
 subroutine modify_bitmasks_for_hole(i_hole)
@@ -28,7 +28,7 @@ subroutine modify_bitmasks_for_hole(i_hole)
  integer :: i,j,k,l,m
  integer :: ispin
  BEGIN_DOC
-! modify the generators_bitmask in order that one can only excite 
+! modify the generators_bitmask in order that one can only excite
 ! the electrons occupying i_hole
  END_DOC
 
@@ -63,7 +63,7 @@ subroutine modify_bitmasks_for_hole_in_out(i_hole)
  integer :: i,j,k,l,m
  integer :: ispin
  BEGIN_DOC
-! modify the generators_bitmask in order that one can only excite 
+! modify the generators_bitmask in order that one can only excite
 ! the electrons occupying i_hole
  END_DOC
 
@@ -86,7 +86,7 @@ subroutine modify_bitmasks_for_particl(i_part)
  integer :: i,j,k,l,m
  integer :: ispin
  BEGIN_DOC
-! modify the generators_bitmask in order that one can only excite 
+! modify the generators_bitmask in order that one can only excite
 ! the electrons to the orbital i_part
  END_DOC
 
@@ -122,7 +122,7 @@ subroutine set_bitmask_particl_as_input(input_bimask)
  integer :: i,j,k,l,m
  integer :: ispin
  BEGIN_DOC
-! set the generators_bitmask for the particles 
+! set the generators_bitmask for the particles
 ! as the input_bimask
  END_DOC
 
@@ -131,7 +131,7 @@ subroutine set_bitmask_particl_as_input(input_bimask)
    i = index_particl_bitmask(l)
     do ispin=1,2
      do j = 1, N_int
-      generators_bitmask(j,ispin,i,k) =  input_bimask(j,ispin) 
+      generators_bitmask(j,ispin,i,k) =  input_bimask(j,ispin)
      enddo
     enddo
    enddo
@@ -156,7 +156,7 @@ subroutine set_bitmask_hole_as_input(input_bimask)
    i = index_holes_bitmask(l)
     do ispin=1,2
      do j = 1, N_int
-      generators_bitmask(j,ispin,i,k) =  input_bimask(j,ispin) 
+      generators_bitmask(j,ispin,i,k) =  input_bimask(j,ispin)
      enddo
     enddo
    enddo
@@ -178,7 +178,7 @@ subroutine print_generators_bitmasks_holes
    do j = 1, N_int
      key_tmp(j,1) = generators_bitmask(j,1,i,k)
      key_tmp(j,2) = generators_bitmask(j,2,i,k)
-   enddo  
+   enddo
    print*,''
    print*,'index hole  = ',i
    call print_det(key_tmp,N_int)
@@ -200,7 +200,7 @@ subroutine print_generators_bitmasks_particles
    do j = 1, N_int
      key_tmp(j,1) = generators_bitmask(j,1,i,k)
      key_tmp(j,2) = generators_bitmask(j,2,i,k)
-   enddo  
+   enddo
    print*,''
    print*,'index particl ',i
    call print_det(key_tmp,N_int)
@@ -223,7 +223,7 @@ subroutine print_generators_bitmasks_holes_for_one_generator(i_gen)
    do j = 1, N_int
      key_tmp(j,1) = generators_bitmask(j,1,i,k)
      key_tmp(j,2) = generators_bitmask(j,2,i,k)
-   enddo  
+   enddo
    print*,''
    print*,'index hole  = ',i
    call print_det(key_tmp,N_int)
@@ -246,7 +246,7 @@ subroutine print_generators_bitmasks_particles_for_one_generator(i_gen)
    do j = 1, N_int
      key_tmp(j,1) = generators_bitmask(j,1,i,k)
      key_tmp(j,2) = generators_bitmask(j,2,i,k)
-   enddo  
+   enddo
    print*,''
    print*,'index particl ',i
    call print_det(key_tmp,N_int)

@@ -3,7 +3,7 @@ BEGIN_PROVIDER [ double precision, CI_energy_dressed, (N_states_diag) ]
   BEGIN_DOC
   ! N_states lowest eigenvalues of the CI matrix
   END_DOC
-  
+
   integer                        :: j
   character*(8)                  :: st
   call write_time(6)
@@ -54,7 +54,7 @@ END_PROVIDER
   enddo
 
   if (diag_algorithm == "Davidson") then
-    
+
     do j=1,min(N_states,N_det)
       do i=1,N_det
         CI_eigenvectors_dressed(i,j) = psi_coef(i,j)
@@ -63,9 +63,9 @@ END_PROVIDER
     call davidson_diag_HS2(psi_det,CI_eigenvectors_dressed, CI_eigenvectors_s2_dressed,&
         size(CI_eigenvectors_dressed,1), CI_electronic_energy_dressed,&
         N_det,min(N_det,N_states),min(N_det,N_states_diag),N_int,1)
-    
+
   else if (diag_algorithm == "Lapack") then
-    
+
     allocate (eigenvectors(size(H_matrix_dressed,1),N_det))
     allocate (eigenvalues(N_det))
 
@@ -152,7 +152,7 @@ END_PROVIDER
 subroutine diagonalize_CI_dressed
   implicit none
   BEGIN_DOC
-!  Replace the coefficients of the CI states by the coefficients of the 
+!  Replace the coefficients of the CI states by the coefficients of the
 !  eigenstates of the CI matrix
   END_DOC
   integer :: i,j
@@ -162,7 +162,7 @@ subroutine diagonalize_CI_dressed
       psi_coef(i,j) = CI_eigenvectors_dressed(i,j)
     enddo
   enddo
-  SOFT_TOUCH psi_coef 
+  SOFT_TOUCH psi_coef
 end
 
 

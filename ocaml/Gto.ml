@@ -19,7 +19,7 @@ let of_prim_coef_list pc =
   let sym = p.GaussianPrimitive.sym in
   let rec check = function
   | [] -> `OK
-  | (p,c)::tl -> 
+  | (p,c)::tl ->
       if p.GaussianPrimitive.sym <> sym then
         `Failed
       else
@@ -36,7 +36,7 @@ let of_prim_coef_list pc =
 
 let read_one in_channel =
   (* Fetch number of lines to read on first line *)
-  let buffer = 
+  let buffer =
     try input_line in_channel with
     | End_of_file -> raise End_Of_Basis
   in
@@ -52,8 +52,8 @@ let read_one in_channel =
   | i ->
     begin
       let line_buffer = input_line in_channel in
-      let buffer = line_buffer 
-      |> String_ext.split ~on:' ' 
+      let buffer = line_buffer
+      |> String_ext.split ~on:' '
       |> List.filter (fun x -> x <> "")
       in
       match buffer with
@@ -63,7 +63,7 @@ let read_one in_channel =
             Str.global_replace (Str.regexp "D") "e" coef
           in
           let p =
-            GaussianPrimitive.of_sym_expo sym 
+            GaussianPrimitive.of_sym_expo sym
               (AO_expo.of_float (float_of_string expo) )
           and c = AO_coef.of_float (float_of_string coef) in
           read_lines ( (p,c)::result) (i-1)
@@ -78,16 +78,16 @@ let read_one in_channel =
 
 (** Write the GTO in Gamess format *)
 let to_string_gamess { sym = sym ; lc = lc } =
-  let result = 
+  let result =
     Printf.sprintf "%s %3d" (Symmetry.to_string sym) (List.length lc)
   in
   let rec do_work accu i = function
   | [] -> List.rev accu
-  | (p,c)::tail -> 
+  | (p,c)::tail ->
     let p = AO_expo.to_float p.GaussianPrimitive.expo
     and c = AO_coef.to_float c
     in
-    let result = 
+    let result =
       Printf.sprintf "%3d %16f  %16f" i p c
     in
     do_work (result::accu) (i+1) tail
@@ -98,16 +98,16 @@ let to_string_gamess { sym = sym ; lc = lc } =
 
 (** Write the GTO in Gaussian format *)
 let to_string_gaussian { sym = sym ; lc = lc } =
-  let result = 
+  let result =
     Printf.sprintf "%s %3d   1.00" (Symmetry.to_string sym) (List.length lc)
   in
   let rec do_work accu i = function
   | [] -> List.rev accu
-  | (p,c)::tail -> 
+  | (p,c)::tail ->
     let p = AO_expo.to_float p.GaussianPrimitive.expo
     and c = AO_coef.to_float c
     in
-    let result = 
+    let result =
       Printf.sprintf "%15.7f       %15.7f" p c
     in
     do_work (result::accu) (i+1) tail

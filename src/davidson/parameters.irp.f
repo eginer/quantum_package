@@ -31,12 +31,12 @@ subroutine davidson_converged(energy,residual,wall,iterations,cpu,N_st,converged
   E = energy - energy_old
   energy_old = energy
   if (davidson_criterion == 'energy') then
-    converged = dabs(maxval(E(1:N_st))) < threshold_davidson 
+    converged = dabs(maxval(E(1:N_st))) < threshold_davidson
   else if (davidson_criterion == 'residual') then
-    converged = dabs(maxval(residual(1:N_st))) < threshold_davidson 
+    converged = dabs(maxval(residual(1:N_st))) < threshold_davidson
   else if (davidson_criterion == 'both') then
     converged = dabs(maxval(residual(1:N_st))) + dabs(maxval(E(1:N_st)) ) &
-       < threshold_davidson  
+       < threshold_davidson
   else if (davidson_criterion == 'wall_time') then
     call wall_time(time)
     converged = time - wall > threshold_davidson

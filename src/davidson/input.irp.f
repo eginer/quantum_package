@@ -7,7 +7,7 @@ BEGIN_PROVIDER [ integer, n_states_diag  ]
   logical                        :: has
   PROVIDE ezfio_filename
   if (mpi_master) then
-    
+
     call ezfio_has_davidson_n_states_diag(has)
     if (has) then
       call ezfio_get_davidson_n_states_diag(n_states_diag)

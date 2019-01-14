@@ -28,7 +28,7 @@ let of_string ~units s =
     }
   | _ -> raise (AtomError s)
 
-  
+
 let to_string ~units a =
   [ Element.to_string a.element ;
     Charge.to_string  a.charge ;
@@ -37,7 +37,7 @@ let to_string ~units a =
 
 
 let to_xyz a =
-  Printf.sprintf "%-3s  %s" 
+  Printf.sprintf "%-3s  %s"
     (Element.to_string a.element)
     (Point3d.to_string ~units:Units.Angstrom a.coord)
 

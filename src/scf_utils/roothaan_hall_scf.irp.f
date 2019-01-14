@@ -11,12 +11,12 @@ END_DOC
   double precision, allocatable  :: Fock_matrix_DIIS(:,:,:),error_matrix_DIIS(:,:,:)
 
   integer                        :: iteration_SCF,dim_DIIS,index_dim_DIIS
- 
+
   integer                        :: i,j
   double precision, allocatable :: mo_coef_save(:,:)
 
-  PROVIDE ao_md5 mo_occ level_shift 
- 
+  PROVIDE ao_md5 mo_occ level_shift
+
   allocate(mo_coef_save(ao_num,mo_num),                          &
       Fock_matrix_DIIS (ao_num,ao_num,max_dim_DIIS),                 &
       error_matrix_DIIS(ao_num,ao_num,max_dim_DIIS)                  &
@@ -58,9 +58,9 @@ END_DOC
 ! Current size of the DIIS space
 
     dim_DIIS = min(dim_DIIS+1,max_dim_DIIS)
- 
+
     if (scf_algorithm == 'DIIS') then
-      
+
       ! Store Fock and error matrices at each iteration
       do j=1,ao_num
         do i=1,ao_num
@@ -69,7 +69,7 @@ END_DOC
           error_matrix_DIIS(i,j,index_dim_DIIS) = FPS_SPF_matrix_AO(i,j)
         enddo
       enddo
-      
+
       ! Compute the extrapolated Fock matrix
 
       call extrapolate_Fock_matrix(                                    &
@@ -158,7 +158,7 @@ END_DOC
   write(6,'(A4, 1X, A16, 1X, A16, 1X, A16)') &
     '====','================','================','================'
   write(6,*)
-  
+
   if(.not.frozen_orb_scf)then
    call mo_as_eigvectors_of_mo_matrix(Fock_matrix_mo,size(Fock_matrix_mo,1),size(Fock_matrix_mo,2),mo_label,1,.true.)
    call save_mos
@@ -170,7 +170,7 @@ END_DOC
 
 end
 
-subroutine extrapolate_Fock_matrix(      &   
+subroutine extrapolate_Fock_matrix(      &
   error_matrix_DIIS,Fock_matrix_DIIS,    &
   Fock_matrix_AO_,size_Fock_matrix_AO,   &
   iteration_SCF,dim_DIIS                 &
@@ -214,7 +214,7 @@ END_DOC
            error_matrix_DIIS(1,1,i_DIIS),size(error_matrix_DIIS,1), &
            error_matrix_DIIS(1,1,j_DIIS),size(error_matrix_DIIS,1), &
            0.d0,                                                    &
-           scratch,size(scratch,1))                                                  
+           scratch,size(scratch,1))
 
 ! Compute Trace
 
@@ -244,11 +244,11 @@ END_DOC
     ipiv(dim_DIIS+1) &
   )
 
-  double precision, allocatable :: AF(:,:) 
+  double precision, allocatable :: AF(:,:)
   allocate (AF(dim_DIIS+1,dim_DIIS+1))
   double precision :: rcond, ferr, berr
   integer :: iwork(dim_DIIS+1), lwork
-  
+
   call dsysvx('N','U',dim_DIIS+1,1,      &
     B_matrix_DIIS,size(B_matrix_DIIS,1), &
     AF, size(AF,1),                      &
@@ -285,7 +285,7 @@ END_DOC
  endif
 
  if (rcond > 1.d-12) then
-   
+
   ! Compute extrapolated Fock matrix
 
 

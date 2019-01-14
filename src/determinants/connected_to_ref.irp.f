@@ -55,17 +55,17 @@ integer function get_index_in_psi_det_sorted_bit(key,Nint)
   integer*8                      :: det_ref, det_search
   integer*8, external            :: det_search_key
   logical                        :: in_wavefunction
-  
+
   in_wavefunction = .False.
   get_index_in_psi_det_sorted_bit = 0
   ibegin = 1
   iend   = N_det+1
-  
+
   !DIR$ FORCEINLINE
   det_ref = det_search_key(key,Nint)
   !DIR$ FORCEINLINE
   det_search = det_search_key(psi_det_sorted_bit(1,1,1),Nint)
-  
+
   istep = shiftr(iend-ibegin,1)
   i=ibegin+istep
   do while (istep > 0)
@@ -79,7 +79,7 @@ integer function get_index_in_psi_det_sorted_bit(key,Nint)
       ibegin = i
     endif
     istep = shiftr(iend-ibegin,1)
-    i = ibegin + istep 
+    i = ibegin + istep
   end do
 
   !DIR$ FORCEINLINE
@@ -120,7 +120,7 @@ integer function get_index_in_psi_det_sorted_bit(key,Nint)
 !      exit
       return
     endif
-    
+
   enddo
 
 ! DEBUG is_in_wf
@@ -157,13 +157,13 @@ logical function is_connected_to(key,keys,Nint,Ndet)
   integer, intent(in)            :: Nint, Ndet
   integer(bit_kind), intent(in)  :: keys(Nint,2,Ndet)
   integer(bit_kind), intent(in)  :: key(Nint,2)
-  
+
   integer                        :: i, l
   integer                        :: degree_x2
-  
+
   ASSERT (Nint > 0)
   ASSERT (Nint == N_int)
-  
+
   is_connected_to = .false.
 
   do i=1,Ndet
@@ -194,14 +194,14 @@ logical function is_connected_to_by_mono(key,keys,Nint,Ndet)
   integer, intent(in)            :: Nint, Ndet
   integer(bit_kind), intent(in)  :: keys(Nint,2,Ndet)
   integer(bit_kind), intent(in)  :: key(Nint,2)
-  
+
   integer                        :: i, l
   integer                        :: degree_x2
-  
-  
+
+
   ASSERT (Nint > 0)
   ASSERT (Nint == N_int)
-  
+
   is_connected_to_by_mono = .false.
 
   do i=1,Ndet
@@ -227,20 +227,20 @@ integer function connected_to_ref(key,keys,Nint,N_past_in,Ndet)
   integer, intent(in)            :: Nint, N_past_in, Ndet
   integer(bit_kind), intent(in)  :: keys(Nint,2,Ndet)
   integer(bit_kind), intent(in)  :: key(Nint,2)
-  
+
   integer                        :: N_past
   integer                        :: i, l
   integer                        :: degree_x2
   logical                        :: t
   double precision               :: hij_elec
-  
- BEGIN_DOC 
+
+ BEGIN_DOC
   ! input  : key : a given Slater determinant
   !
   !        : keys: a list of Slater determinants
   !
   !        : Ndet: the number of Slater determinants in keys
-  ! 
+  !
   !        : N_past_in the number of Slater determinants for the connectivity research
   !
   ! output :   0 : key not connected to the N_past_in first Slater determinants in keys
@@ -249,14 +249,14 @@ integer function connected_to_ref(key,keys,Nint,N_past_in,Ndet)
   !
   !           -i : key is the ith determinant of the reference wf keys
  END_DOC
-  
+
   ASSERT (Nint > 0)
   ASSERT (Nint == N_int)
-  
+
   connected_to_ref = 0
   N_past = max(1,N_past_in)
   if (Nint == 1) then
-    
+
     do i=N_past-1,1,-1
       degree_x2 = popcnt(xor( key(1,1), keys(1,1,i))) +              &
           popcnt(xor( key(1,2), keys(1,2,i)))
@@ -267,12 +267,12 @@ integer function connected_to_ref(key,keys,Nint,N_past_in,Ndet)
         return
       endif
     enddo
-    
+
     return
 
-    
+
   else if (Nint==2) then
-    
+
     do i=N_past-1,1,-1
       degree_x2 = popcnt(xor( key(1,1), keys(1,1,i))) +              &
           popcnt(xor( key(1,2), keys(1,2,i))) +                      &
@@ -285,11 +285,11 @@ integer function connected_to_ref(key,keys,Nint,N_past_in,Ndet)
         return
       endif
     enddo
-    
+
     return
-    
+
   else if (Nint==3) then
-    
+
     do i=N_past-1,1,-1
       degree_x2 = popcnt(xor( key(1,1), keys(1,1,i))) +              &
           popcnt(xor( key(1,2), keys(1,2,i))) +                      &
@@ -304,11 +304,11 @@ integer function connected_to_ref(key,keys,Nint,N_past_in,Ndet)
         return
       endif
     enddo
-    
+
     return
-    
+
   else
-    
+
     do i=N_past-1,1,-1
       degree_x2 = popcnt(xor( key(1,1), keys(1,1,i))) +              &
           popcnt(xor( key(1,2), keys(1,2,i)))
@@ -326,9 +326,9 @@ integer function connected_to_ref(key,keys,Nint,N_past_in,Ndet)
         return
       endif
     enddo
-    
+
   endif
-  
+
 end
 
 
@@ -342,20 +342,20 @@ integer function connected_to_ref_by_mono(key,keys,Nint,N_past_in,Ndet)
   integer, intent(in)            :: Nint, N_past_in, Ndet
   integer(bit_kind), intent(in)  :: keys(Nint,2,Ndet)
   integer(bit_kind), intent(in)  :: key(Nint,2)
-  
+
   integer                        :: N_past
   integer                        :: i, l
   integer                        :: degree_x2
   logical                        :: t
   double precision               :: hij_elec
-  
- BEGIN_DOC 
+
+ BEGIN_DOC
   ! input  : key : a given Slater determinant
   !
   !        : keys: a list of Slater determinants
   !
   !        : Ndet: the number of Slater determinants in keys
-  ! 
+  !
   !        : N_past_in the number of Slater determinants for the connectivity research
   !
   ! output :   0 : key not connected by a MONO EXCITATION to the N_past_in first Slater determinants in keys
@@ -364,14 +364,14 @@ integer function connected_to_ref_by_mono(key,keys,Nint,N_past_in,Ndet)
   !
   !           -i : key is the ith determinant of the reference wf keys
  END_DOC
-  
+
   ASSERT (Nint > 0)
   ASSERT (Nint == N_int)
-  
+
   connected_to_ref_by_mono = 0
   N_past = max(1,N_past_in)
   if (Nint == 1) then
-    
+
     do i=N_past-1,1,-1
       degree_x2 = popcnt(xor( key(1,1), keys(1,1,i))) +              &
           popcnt(xor( key(1,2), keys(1,2,i)))
@@ -384,12 +384,12 @@ integer function connected_to_ref_by_mono(key,keys,Nint,N_past_in,Ndet)
         return
       endif
     enddo
-    
+
     return
 
-    
+
   else if (Nint==2) then
-    
+
     do i=N_past-1,1,-1
       degree_x2 = popcnt(xor( key(1,1), keys(1,1,i))) +              &
           popcnt(xor( key(1,2), keys(1,2,i))) +                      &
@@ -404,11 +404,11 @@ integer function connected_to_ref_by_mono(key,keys,Nint,N_past_in,Ndet)
         return
       endif
     enddo
-    
+
     return
-    
+
   else if (Nint==3) then
-    
+
     do i=N_past-1,1,-1
       degree_x2 = popcnt(xor( key(1,1), keys(1,1,i))) +              &
           popcnt(xor( key(1,2), keys(1,2,i))) +                      &
@@ -425,11 +425,11 @@ integer function connected_to_ref_by_mono(key,keys,Nint,N_past_in,Ndet)
         return
       endif
     enddo
-    
+
     return
-    
+
   else
-    
+
     do i=N_past-1,1,-1
       degree_x2 = popcnt(xor( key(1,1), keys(1,1,i))) +              &
           popcnt(xor( key(1,2), keys(1,2,i)))
@@ -446,9 +446,9 @@ integer function connected_to_ref_by_mono(key,keys,Nint,N_past_in,Ndet)
         return
       endif
     enddo
-    
+
   endif
-  
+
 end
 
 

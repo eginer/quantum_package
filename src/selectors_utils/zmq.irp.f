@@ -1,4 +1,4 @@
-BEGIN_TEMPLATE 
+BEGIN_TEMPLATE
 
 integer function zmq_put_$X(zmq_to_qp_run_socket,worker_id)
   use f77_zmq

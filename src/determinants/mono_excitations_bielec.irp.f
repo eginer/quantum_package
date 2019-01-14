@@ -92,8 +92,8 @@ BEGIN_PROVIDER [double precision, fock_wee_closed_shell, (mo_num, mo_num) ]
     k = occ(k0,1)
     accu += 2.d0 * array_coulomb(k) - array_exchange(k)
    enddo
-   fock_wee_closed_shell(i,j) = accu 
-   fock_wee_closed_shell(j,i) = accu 
+   fock_wee_closed_shell(i,j) = accu
+   fock_wee_closed_shell(j,i) = accu
   enddo
  enddo
 
@@ -109,8 +109,8 @@ BEGIN_PROVIDER [double precision, fock_wee_closed_shell, (mo_num, mo_num) ]
     k = occ(k0,1)
     accu += 2.d0 * array_coulomb(k) - array_exchange(k)
    enddo
-   fock_wee_closed_shell(i,j) = accu 
-   fock_wee_closed_shell(j,i) = accu 
+   fock_wee_closed_shell(i,j) = accu
+   fock_wee_closed_shell(j,i) = accu
   enddo
  enddo
 
@@ -126,8 +126,8 @@ BEGIN_PROVIDER [double precision, fock_wee_closed_shell, (mo_num, mo_num) ]
     k = occ(k0,1)
     accu += 2.d0 * array_coulomb(k) - array_exchange(k)
    enddo
-   fock_wee_closed_shell(i,j) = accu 
-   fock_wee_closed_shell(j,i) = accu 
+   fock_wee_closed_shell(i,j) = accu
+   fock_wee_closed_shell(j,i) = accu
   enddo
  enddo
 

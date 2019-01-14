@@ -3,59 +3,76 @@
 # Quantum Package configuration script
 #
 
+TEMP=`getopt -o c:i:h -l config:,install:,help -n $0 -- "$@"` || exit 1
+eval set -- "$TEMP"
+
 export QP_ROOT="$( cd "$(dirname "$0")" ; pwd -P )"
 echo "QP_ROOT="$QP_ROOT
 
 
-help()
+function help()
 {
     cat <<EOF
 Quantum Package configuration script.
 
 Usage:
-  configure -c <file>    | --config <file>
-  configure -h           | --help
-  configure -i <package> | --install <package>
+  $(basename $0) -c <file>    | --config=<file>
+  $(basename $0) -h           | --help
+  $(basename $0) -i <package> | --install=<package>
 
 Options:
-  -c <file>, --config <file>            define a configuration file, in
-                                        "${QP_ROOT}/config/". 
-  -h, --help                            print the help message
-  -i <package>, --install <package>     install <package>. Use at your own
-                                        risk: no support will be provided
-                                        for the installation of dependencies.
+  -c, --config=<file>      Define a configuration file, in "${QP_ROOT}/config/". 
+  -h, --help               Print the help message
+  -i, --install=<package>  Install <package>. Use at your own risk:
+                           no support will be provided for the installation of dependencies.
 
 Example:
-  ./configure -c config/gfortran.cfg
+  ./$(basename $0) -c config/gfortran.cfg
 
 Note:
-  - Users are encouraged to create their own configuration files instead of
-    modifying the existing ones.
+  Users are encouraged to create their own configuration files instead of
+  modifying the existing ones.
 
 EOF
     exit
 }
 
+function error() {
+    >&2 echo "$(basename $0): $@"
+    exit 2
+}
+
+
 PACKAGES=""
 OCAML_PACKAGES="ocamlbuild cryptokit zmq core sexplib ppx_sexp_conv ppx_deriving getopt"
 
-while : ; do
+while true : ; do
     case "$1" in
-        "") 
-            break;;
-        -c|--config)
-            CONFIG="$2"
-            shift;;
+        -c|--config) 
+            case "$2" in
+                "") help ; break;;
+                *) if [[ -f $2 ]] ; then
+                      CONFIG="$2"
+                   else
+                      error "error: configuration file not accessible"
+                      exit 1
+                   fi
+            esac 
+            shift 2;;
         -i|--install)
-            PACKAGES="${PACKAGE} $2"
-            shift;;
-        -h|-help|--help)
-            help;;
+            case "$2" in
+                "") help ; break;;
+                *) PACKAGES="${PACKAGE} $2"
+            esac 
+            shift 2;;
+        -h|-help|--help) 
+            help
+            exit 0;;
+        --) shift ; break ;;
         *)
-            echo "unknown option $1, try --help"
+            error "unknown option $1, try --help"
             exit 2;;
     esac
-    shift
 done
 
 # Trim leading and trailing spaces
@@ -78,21 +95,20 @@ function success() {
         exit 1
 }
 
-function error() {
-        echo "Error : $1"
-        exit 2
-}
-
 function download() {
         wget --no-check-certificate $1 --output-document=$2 || error "Unable to download $1"
 }
 
+function not_found() {
+   echo 'not_found'
+}
+
 function find_exe() {
-        which $1 2> /dev/null || echo 'not_found'
+        which $1 2> /dev/null || not_found
 }
 
 function find_python_lib() {
-        python2 -c "import $1" &> /dev/null && echo "$1" || echo 'not_found'
+        python2 -c "import $1" &> /dev/null && echo "$1" || not_found
 }
 
 function find_lib() {
@@ -103,7 +119,7 @@ function find_lib() {
                 echo "$lib"
         else
                 rm "${QP_ROOT}"/external/tmp.c
-                echo "not_found"
+                not_found
         fi
 }
 
@@ -111,7 +127,7 @@ function find_dir() {
         if [[ -d $1 ]] ; then
                 echo "$1"
         else
-                echo "not_found"
+                not_found
         fi
 }
 
@@ -216,7 +232,10 @@ EOF
             else
                 # Conventional commands
                 export OPAMROOT=${OPAMROOT:-${QP_ROOT}/external/opam}
-                echo "QP>> Please install it here: " ${QP_ROOT}/bin
+                echo "======================================================== " 
+                echo ""
+                echo "|QP>  Please install it here:  " ${QP_ROOT}/bin
+                echo "" 
                 sh ${QP_ROOT}/external/opam_installer.sh 
             fi
             source ${OPAMROOT}/opam-init/init.sh > /dev/null 2> /dev/null || true
@@ -301,62 +320,62 @@ done
         
 
 NINJA=$(find_exe ninja)
-if [[ ${NINJA} = not_found ]] ; then
-        echo "Ninja is not installed."
+if [[ ${NINJA} = $(not_found) ]] ; then
+        error "Ninja is not installed."
         fail
 fi
 
 IRPF90=$(find_exe irpf90)
-if [[ ${IRPF90} = not_found ]] ; then
-        echo "IRPf90 is not installed."
+if [[ ${IRPF90} = $(not_found) ]] ; then
+        error "IRPf90 is not installed."
         fail
 fi
 
 ZEROMQ=$(find_lib -lzmq)
-if [[ ${ZEROMQ} = not_found ]] ; then
-        echo "ZeroMQ is not installed."
+if [[ ${ZEROMQ} = $(not_found) ]] ; then
+        error "ZeroMQ is not installed."
         fail
 fi
 
 F77ZMQ=$(find_lib -lzmq -lf77zmq)
-if [[ ${F77ZMQ} = not_found ]] ; then
-        echo "Fortran binding of ZeroMQ (f77zmq) is not installed."
+if [[ ${F77ZMQ} = $(not_found) ]] ; then
+        error "Fortran binding of ZeroMQ (f77zmq) is not installed."
         fail
 fi
 
 OPAM=$(find_exe opam)
-if [[ ${OPAM} = not_found ]] ; then
-        echo "OPAM (ocaml) package manager is not installed."
+if [[ ${OPAM} = $(not_found) ]] ; then
+        error "OPAM (ocaml) package manager is not installed."
         fail
 fi
 
 OCAML=$(find_exe ocaml)
-if [[ ${OCAML} = not_found ]] ; then
-        echo "OCaml compiler is not installed."
+if [[ ${OCAML} = $(not_found) ]] ; then
+        error "OCaml compiler is not installed."
         fail
 fi
 
 EZFIO=$(find_dir "${QP_ROOT}"/external/ezfio)
-if [[ ${EZFIO} = not_found ]] ; then
-        echo "EZFIO is not installed."
+if [[ ${EZFIO} = $(not_found) ]] ; then
+        error "EZFIO is not installed."
         fail
 fi
 
 EMSL=$(find_dir "${QP_ROOT}"/external/emsl)
-if [[ ${EMSL} = not_found ]] ; then
-        echo "EMSL is not installed."
+if [[ ${EMSL} = $(not_found) ]] ; then
+        error "EMSL is not installed."
         fail
 fi
 
 DOCOPT=$(find_python_lib docopt)
-if [[ ${DOCOPT} = not_found ]] ; then
-        echo "docopt is not installed."
+if [[ ${DOCOPT} = $(not_found) ]] ; then
+        error "docopt is not installed."
         fail
 fi
 
 RESULTSFILE=$(find_python_lib resultsFile)
-if [[ ${RESULTSFILE} = not_found ]] ; then
-        echo "resultsFile is not installed."
+if [[ ${RESULTSFILE} = $(not_found) ]] ; then
+        error "resultsFile is not installed."
         fail
 fi
 

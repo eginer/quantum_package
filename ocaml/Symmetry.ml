@@ -55,7 +55,7 @@ let to_l = function
   | L -> Positive_int.of_int 9
 
 
-let of_l i = 
+let of_l i =
   let i = Positive_int.to_int i in
   match i with
   | 0 -> S
@@ -84,44 +84,44 @@ module Xyz = struct
     * The input string is like "x2z3" *)
   let of_string s =
     let flush state accu number =
-      let n = 
+      let n =
         if (number = "") then 1
-        else (int_of_string number) 
+        else (int_of_string number)
       in
       match state with
       | X -> { x= Positive_int.(of_int ( (to_int accu.x) +n));
                y= accu.y ;
                z= accu.z }
-      | Y -> { x= accu.x ; 
+      | Y -> { x= accu.x ;
                y= Positive_int.(of_int ( (to_int accu.y) +n));
                z= accu.z }
-      | Z -> { x= accu.x ; 
+      | Z -> { x= accu.x ;
                y= accu.y ;
                z= Positive_int.(of_int ( (to_int accu.z) +n))}
       | Null -> accu
     in
     let rec do_work state accu number = function
     | [] -> flush state accu number
-    | 'X'::rest | 'x'::rest -> 
-        let new_accu = flush state accu number in 
+    | 'X'::rest | 'x'::rest ->
+        let new_accu = flush state accu number in
         do_work X new_accu "" rest
-    | 'Y'::rest | 'y'::rest -> 
-        let new_accu = flush state accu number in 
+    | 'Y'::rest | 'y'::rest ->
+        let new_accu = flush state accu number in
         do_work Y new_accu "" rest
-    | 'Z'::rest | 'z'::rest -> 
-        let new_accu = flush state accu number in 
+    | 'Z'::rest | 'z'::rest ->
+        let new_accu = flush state accu number in
         do_work Z new_accu "" rest
     | c::rest -> do_work state accu (number^(String_ext.of_char c)) rest
     in
-    String_ext.to_list s 
-    |> do_work Null 
-     { x=Positive_int.of_int 0 ; 
+    String_ext.to_list s
+    |> do_work Null
+     { x=Positive_int.of_int 0 ;
        y=Positive_int.of_int 0 ;
-       z=Positive_int.of_int 0 } "" 
+       z=Positive_int.of_int 0 } ""
 
 
   (** Transforms an XYZ triplet to a string *)
-  let to_string t = 
+  let to_string t =
     let x = match (Positive_int.to_int t.x) with
     | 0 -> ""
     | 1 -> "x"
@@ -151,7 +151,7 @@ module Xyz = struct
  (** Returns a list of XYZ powers for a given symmetry *)
  let of_symmetry sym =
    let l = Positive_int.to_int (to_l sym) in
-   let create_z xyz = 
+   let create_z xyz =
     { x=xyz.x ;
       y=xyz.y ;
       z=Positive_int.(of_int (l-((to_int xyz.x)+(to_int xyz.y))))

@@ -1,4 +1,4 @@
-let global_replace x = 
+let global_replace x =
   x
   |> Str.global_replace (Str.regexp "Float.to_string") "string_of_float"
   |> Str.global_replace (Str.regexp "Float.of_string") "float_of_string"
@@ -7,72 +7,72 @@ let global_replace x =
   |> Str.global_replace (Str.regexp "String.\\(to\\|of\\)_string") ""
 
 let input_data = "
-* Positive_float : float  
+* Positive_float : float
   if not (x >= 0.) then
-    raise (Invalid_argument (Printf.sprintf \"Positive_float : (x >= 0.) : x=%f\"  x)); 
+    raise (Invalid_argument (Printf.sprintf \"Positive_float : (x >= 0.) : x=%f\"  x));
 
-* Strictly_positive_float : float  
+* Strictly_positive_float : float
   if not (x > 0.) then
     raise (Invalid_argument (Printf.sprintf \"Strictly_positive_float : (x > 0.) : x=%f\" x));
 
-* Negative_float : float  
+* Negative_float : float
   if not (x <= 0.) then
     raise (Invalid_argument (Printf.sprintf \"Negative_float : (x <= 0.) : x=%f\" x));
 
-* Strictly_negative_float : float  
+* Strictly_negative_float : float
   if not (x < 0.) then
-    raise (Invalid_argument (Printf.sprintf \"Strictly_negative_float : (x < 0.) : x=%f\" x)); 
+    raise (Invalid_argument (Printf.sprintf \"Strictly_negative_float : (x < 0.) : x=%f\" x));
 
 * Positive_int64 : int64
   if not (x >= 0L) then
-    raise (Invalid_argument (Printf.sprintf \"Positive_int64 : (x >= 0L) : x=%s\" (Int64.to_string x))); 
+    raise (Invalid_argument (Printf.sprintf \"Positive_int64 : (x >= 0L) : x=%s\" (Int64.to_string x)));
 
-* Positive_int : int  
+* Positive_int : int
   if not (x >= 0) then
-    raise (Invalid_argument (Printf.sprintf \"Positive_int : (x >= 0) : x=%d\" x)); 
+    raise (Invalid_argument (Printf.sprintf \"Positive_int : (x >= 0) : x=%d\" x));
 
-* Strictly_positive_int : int  
+* Strictly_positive_int : int
   if not (x > 0) then
-    raise (Invalid_argument (Printf.sprintf \"Strictly_positive_int : (x > 0) : x=%d\" x)); 
+    raise (Invalid_argument (Printf.sprintf \"Strictly_positive_int : (x > 0) : x=%d\" x));
 
-* Negative_int : int  
+* Negative_int : int
   if not (x <= 0) then
-    raise (Invalid_argument (Printf.sprintf \"Negative_int : (x <= 0) : x=%d\" x)); 
+    raise (Invalid_argument (Printf.sprintf \"Negative_int : (x <= 0) : x=%d\" x));
 
 * Det_coef : float
   if (x < -1.) || (x > 1.) then
-    raise (Invalid_argument (Printf.sprintf \"Det_coef : (-1. <= x <= 1.) : x=%f\" x)); 
+    raise (Invalid_argument (Printf.sprintf \"Det_coef : (-1. <= x <= 1.) : x=%f\" x));
 
 * Normalized_float : float
   if (x < 0.) || (x > 1.) then
-    raise (Invalid_argument (Printf.sprintf \"Normalized_float : (0. <= x <= 1.) : x=%f\" x)); 
+    raise (Invalid_argument (Printf.sprintf \"Normalized_float : (0. <= x <= 1.) : x=%f\" x));
 
-* Strictly_negative_int : int  
+* Strictly_negative_int : int
   if not (x < 0) then
-    raise (Invalid_argument (Printf.sprintf \"Strictly_negative_int : (x < 0) : x=%d\" x)); 
+    raise (Invalid_argument (Printf.sprintf \"Strictly_negative_int : (x < 0) : x=%d\" x));
 
 * Non_empty_string : string
   if (x = \"\") then
     raise (Invalid_argument \"Non_empty_string\");
 
 
-* Det_number_max : int 
-  assert (x > 0) ; 
+* Det_number_max : int
+  assert (x > 0) ;
   if (x > 50_00_000_000) then
     warning \"More than 50 billion determinants\";
 
-* States_number : int 
-  assert (x > 0) ; 
+* States_number : int
+  assert (x > 0) ;
   if (x > 1000) then
     warning \"More than 1000 states\";
 
-* Bit_kind_size : int  
+* Bit_kind_size : int
   begin match x with
   | 8 | 16 | 32 | 64 -> ()
   | _ -> raise (Invalid_argument \"Bit_kind_size should be (8|16|32|64).\")
   end;
 
-* Bit_kind : int  
+* Bit_kind : int
   begin match x with
   | 1 | 2 | 4 | 8 -> ()
   | _ -> raise (Invalid_argument \"Bit_kind should be (1|2|4|8).\")
@@ -84,14 +84,14 @@ let input_data = "
 * MO_coef : float
 
 * MO_occ : float
-  if x < 0. then 0.  else 
+  if x < 0. then 0.  else
   if x > 2. then 2.  else
 
 * AO_coef : float
 
-* AO_expo : float  
+* AO_expo : float
   if (x < 0.) then
-    raise (Invalid_argument (Printf.sprintf \"AO_expo : (x >= 0.) : x=%f\" x)); 
+    raise (Invalid_argument (Printf.sprintf \"AO_expo : (x >= 0.) : x=%f\" x));
 
 * AO_prim_number : int
   assert (x > 0) ;
@@ -174,7 +174,7 @@ module MO_guess : sig
   val to_string : t -> string
   val of_string : string -> t
 end = struct
-  type t = 
+  type t =
   | Huckel
   | HCore
   [@@deriving sexp]
@@ -183,7 +183,7 @@ end = struct
   | Huckel -> \"Huckel\"
   | HCore  -> \"HCore\"
 
-  let of_string  s = 
+  let of_string  s =
     match (String.lowercase_ascii s) with
     | \"huckel\" -> Huckel
     | \"hcore\"  -> HCore
@@ -196,7 +196,7 @@ module Disk_access : sig
   val to_string : t -> string
   val of_string : string -> t
 end = struct
-  type t = 
+  type t =
   | Read
   | Write
   | None
@@ -206,7 +206,7 @@ end = struct
   | Read   -> \"Read\"
   | Write  -> \"Write\"
   | None   -> \"None\"
-  let of_string  s = 
+  let of_string  s =
     match (String.lowercase_ascii s) with
     | \"read\"  -> Read
     | \"write\" -> Write
@@ -220,7 +220,7 @@ module Perturbation : sig
   val to_string : t -> string
   val of_string : string -> t
 end = struct
-  type t = 
+  type t =
   | EN
   | Barycentric
   | Variance
@@ -232,7 +232,7 @@ end = struct
   | Variance -> \"Variance\"
   | Barycentric -> \"Barycentric\"
   | SOP -> \"SOP\"
-  let of_string  s = 
+  let of_string  s =
     match (String.lowercase_ascii s) with
     | \"sop\" -> SOP
     | \"en\"  -> EN
@@ -265,8 +265,8 @@ let parse_input input=
   let rec parse result = function
     | [] -> result
     | ( "" , ""   )::tail -> parse result tail
-    | ( t  , text )::tail -> 
-        let name,typ,params,params_val = 
+    | ( t  , text )::tail ->
+        let name,typ,params,params_val =
           match String_ext.split ~on:':' t with
           | [name;typ] -> (name,typ,"","")
           | name::typ::params::params_val -> (name,typ,params,
@@ -276,13 +276,13 @@ let parse_input input=
         let typ  = String_ext.strip typ
         and name = String_ext.strip name in
         let typ_cap = String.capitalize_ascii typ in
-        let newstring = Printf.sprintf template name typ typ typ params_val typ typ 
+        let newstring = Printf.sprintf template name typ typ typ params_val typ typ
           typ typ params ( String_ext.strip text ) typ_cap
         in
         List.rev (parse (newstring::result) tail )
   in
      String_ext.split ~on:'*' input
-  |> List.map (String_ext.lsplit2_exn ~on:'\n') 
+  |> List.map (String_ext.lsplit2_exn ~on:'\n')
   |> parse []
   |> String.concat  ""
   |> global_replace
@@ -308,7 +308,7 @@ end = struct
   let get_min () =
       %s
   let to_%s x = x
-  let of_%s ?(min=get_min ()) ?(max=get_max ()) x = 
+  let of_%s ?(min=get_min ()) ?(max=get_max ()) x =
     begin
       assert (x >= min) ;
       if (x > %s) then
@@ -327,7 +327,7 @@ end
 
 
 let parse_input_ezfio input=
-  let parse s = 
+  let parse s =
     match (
       String_ext.split s ~on:'\n'
       |> List.filter (fun x -> (String_ext.strip x) <> "")
@@ -339,13 +339,13 @@ let parse_input_ezfio input=
         and ezfio_func = b
         and (min, max) = String_ext.lsplit2_exn ~on:':' c
         and msg = d
-        in 
-        let (name, typ, ezfio_func, min, max, msg) = 
+        in
+        let (name, typ, ezfio_func, min, max, msg) =
         match List.map String_ext.strip [ name ; typ ; ezfio_func ; min ; max ; msg ] with
         | [ name ; typ ; ezfio_func ; min ; max ; msg ] -> (name, typ, ezfio_func, min, max, msg)
         | _ -> assert false
         in
-        Printf.sprintf ezfio_template 
+        Printf.sprintf ezfio_template
           name typ typ typ typ typ typ typ typ (String.capitalize_ascii typ)
           ezfio_func ezfio_func max min typ typ max msg min name (String.capitalize_ascii typ)
       end
@@ -358,7 +358,7 @@ let parse_input_ezfio input=
   |> print_string
 
 
-let () = 
+let () =
   parse_input input_data ;
   parse_input_ezfio input_ezfio;
   print_endline untouched

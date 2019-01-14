@@ -19,8 +19,8 @@ let to_string = function
   | None      -> "None"
 ;;
 
-let of_string  s = 
-  match String.lowercase (String.strip s) with 
+let of_string  s =
+  match String.lowercase (String.strip s) with
   | "guess"     -> Guess
   | "canonical" -> Canonical
   | "natural"   -> Natural

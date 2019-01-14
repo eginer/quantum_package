@@ -28,7 +28,7 @@
    power_A = 1
    power_B = 0
   call overlap_gaussian_xyz(A_center,B_center,alpha,beta,power_A,power_B,overlap_y,d_a_2,overlap_z,overlap,dim1)
-  ! -- 
+  ! --
 
   !$OMP PARALLEL DO SCHEDULE(GUIDED) &
   !$OMP DEFAULT(NONE) &
@@ -125,7 +125,7 @@ BEGIN_PROVIDER [double precision, ao_kinetic_integrals, (ao_num,ao_num)]
   ! :math:`\langle \chi_i |\hat{T}| \chi_j \rangle`
   END_DOC
   integer                        :: i,j,k,l
-  
+
   if (read_ao_integrals_kinetic) then
     call ezfio_get_ao_one_e_ints_ao_integrals_kinetic(ao_kinetic_integrals)
     print *,  'AO kinetic integrals read from disk'

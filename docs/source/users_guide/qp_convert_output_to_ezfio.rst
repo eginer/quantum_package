@@ -6,26 +6,31 @@ qp_convert_output_to_ezfio
 .. program:: qp_convert_output_to_ezfio
 
 This Python script uses the `resultsFile`_ Python library to gather the
-geometry, |AOs| and |MOs| from output files of |GAMESS| or Gaussian, and
-puts this data in an |EZFIO| database. Some constraints are necessary in the
-output file : the run needs to be a single point |HF|, |DFT| or |CAS| |SCF|.
+geometry, |AOs| and |MOs| from output files of |GAMESS| or Gaussian, and puts
+this data in an |EZFIO| database.  Some constraints are necessary in the output
+file : the run needs to be a single point |HF|, |DFT| or |CAS| |SCF|.
 
 Usage 
 -----
 
 .. code:: bash
 
-    qp_convert_output_to_ezfio <FILE.out> [-o <EZFIO_DIRECTORY>]
+    qp_convert_output_to_ezfio <file.out> [-o EZFIO_DIR]
 
-.. option:: -o <EZFIO_DIRECTORY>
+.. option:: -o, --output=EZFIO_DIR
 
-    Renames the |EZFIO| directory. If this option is not present, the default
+    Renames the |EZFIO| directory.  If this option is not present, the default
     name fill be :file:`<FILE.out>.ezfio`
 
 .. note::
-   The following keywords are necessary for Gaussian ::
+   All the parameters of the wave functgion need to be presente in the output
+   file : complete description of the |AO| basis set, full set of molecular
+   orbitals, etc.
+
+   The following keywords are necessary for GAU$$IAN ::
 
       GFPRINT pop=Full 
+
 
 Example
 -------

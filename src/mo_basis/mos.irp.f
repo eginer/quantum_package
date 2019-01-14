@@ -3,7 +3,7 @@ BEGIN_PROVIDER [ integer, mo_num ]
   BEGIN_DOC
   ! Number of MOs
   END_DOC
-  
+
   logical                        :: has
   PROVIDE ezfio_filename
   if (mpi_master) then
@@ -36,7 +36,7 @@ BEGIN_PROVIDER [ integer, mo_num ]
   endif
   call write_int(6,mo_num,'mo_num')
   ASSERT (mo_num > 0)
-  
+
 END_PROVIDER
 
 
@@ -52,8 +52,8 @@ BEGIN_PROVIDER [ double precision, mo_coef, (ao_num,mo_num) ]
   integer                        :: i, j
   double precision, allocatable  :: buffer(:,:)
   logical                        :: exists
-  PROVIDE ezfio_filename 
-  
+  PROVIDE ezfio_filename
+
 
   if (mpi_master) then
     ! Coefs
@@ -151,13 +151,13 @@ BEGIN_PROVIDER [ double precision, mo_coef_transp, (mo_num,ao_num) ]
   ! |MO| coefficients on |AO| basis set
   END_DOC
   integer                        :: i, j
-  
+
   do j=1,ao_num
     do i=1,mo_num
       mo_coef_transp(i,j) = mo_coef(j,i)
     enddo
   enddo
-  
+
 END_PROVIDER
 
 
@@ -166,7 +166,7 @@ BEGIN_PROVIDER [ double precision, mo_occ, (mo_num) ]
   BEGIN_DOC
   ! |MO| occupation numbers
   END_DOC
-  PROVIDE ezfio_filename elec_beta_num elec_alpha_num 
+  PROVIDE ezfio_filename elec_beta_num elec_alpha_num
   if (mpi_master) then
     logical :: exists
     call ezfio_has_mo_basis_mo_occ(exists)
@@ -211,20 +211,20 @@ subroutine ao_to_mo(A_ao,LDA_ao,A_mo,LDA_mo)
   double precision, intent(in)   :: A_ao(LDA_ao,ao_num)
   double precision, intent(out)  :: A_mo(LDA_mo,mo_num)
   double precision, allocatable  :: T(:,:)
-  
+
   allocate ( T(ao_num,mo_num) )
   !DIR$ ATTRIBUTES ALIGN : $IRP_ALIGN :: T
-  
+
   call dgemm('N','N', ao_num, mo_num, ao_num,                    &
       1.d0, A_ao,LDA_ao,                                             &
       mo_coef, size(mo_coef,1),                                      &
       0.d0, T, size(T,1))
-  
+
   call dgemm('T','N', mo_num, mo_num, ao_num,                &
       1.d0, mo_coef,size(mo_coef,1),                                 &
-      T, ao_num,                                                     &   
+      T, ao_num,                                                     &
       0.d0, A_mo, size(A_mo,1))
-  
+
   deallocate(T)
 end
 
@@ -262,7 +262,7 @@ subroutine mix_mo_jk(j,k)
     mo_coef(i,i_plus) = array_tmp(i,1)
     mo_coef(i,i_minus) = array_tmp(i,2)
   enddo
-  
+
 end
 
 subroutine ao_ortho_cano_to_ao(A_ao,LDA_ao,A,LDA)
@@ -276,20 +276,20 @@ subroutine ao_ortho_cano_to_ao(A_ao,LDA_ao,A,LDA)
   double precision, intent(in)   :: A_ao(LDA_ao,*)
   double precision, intent(out)  :: A(LDA,*)
   double precision, allocatable  :: T(:,:)
-  
+
   allocate ( T(ao_num,ao_num) )
-  
+
   call dgemm('T','N', ao_num, ao_num, ao_num,                        &
       1.d0,                                                          &
       ao_ortho_canonical_coef_inv, size(ao_ortho_canonical_coef_inv,1),&
       A_ao,size(A_ao,1),                                             &
       0.d0, T, size(T,1))
-  
+
   call dgemm('N','N', ao_num, ao_num, ao_num, 1.d0,                  &
       T, size(T,1),                                                  &
       ao_ortho_canonical_coef_inv,size(ao_ortho_canonical_coef_inv,1),&
       0.d0, A, size(A,1))
-  
+
   deallocate(T)
 end
 

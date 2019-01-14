@@ -86,9 +86,9 @@ subroutine H_S2_u_0_nstates_openmp_work(v_t,s_t,u_t,N_st,sze,istart,iend,ishift,
   END_DOC
   integer, intent(in)            :: N_st,sze,istart,iend,ishift,istep
   double precision, intent(in)   :: u_t(N_st,N_det)
-  double precision, intent(out)  :: v_t(N_st,sze), s_t(N_st,sze) 
+  double precision, intent(out)  :: v_t(N_st,sze), s_t(N_st,sze)
 
-  
+
   PROVIDE ref_bitmask_energy N_int
 
   select case (N_int)
@@ -116,7 +116,7 @@ subroutine H_S2_u_0_nstates_openmp_work_$N_int(v_t,s_t,u_t,N_st,sze,istart,iend,
   END_DOC
   integer, intent(in)            :: N_st,sze,istart,iend,ishift,istep
   double precision, intent(in)   :: u_t(N_st,N_det)
-  double precision, intent(out)  :: v_t(N_st,sze), s_t(N_st,sze) 
+  double precision, intent(out)  :: v_t(N_st,sze), s_t(N_st,sze)
 
   double precision               :: hij, sij
   integer                        :: i,j,k,l
@@ -153,7 +153,7 @@ compute_singles=.True.
 
   maxab = max(N_det_alpha_unique, N_det_beta_unique)+1
   allocate(idx0(maxab))
-  
+
   do i=1,maxab
     idx0(i) = i
   enddo
@@ -176,17 +176,17 @@ compute_singles=.True.
       !$OMP          istart, iend, istep, irp_here, v_t, s_t,        &
       !$OMP          ishift, idx0, u_t, maxab, compute_singles,      &
       !$OMP          singles_alpha_csc,singles_alpha_csc_idx,        &
-      !$OMP          singles_beta_csc,singles_beta_csc_idx)          &        
+      !$OMP          singles_beta_csc,singles_beta_csc_idx)          &
       !$OMP   PRIVATE(krow, kcol, tmp_det, spindet, k_a, k_b, i,     &
       !$OMP          lcol, lrow, l_a, l_b,                           &
       !$OMP          buffer, doubles, n_doubles,                     &
       !$OMP          tmp_det2, hij, sij, idx, l, kcol_prev,          &
       !$OMP          singles_a, n_singles_a, singles_b, ratio,       &
       !$OMP          n_singles_b, k8, last_found,left,right,right_max)
-  
+
   ! Alpha/Beta double excitations
   ! =============================
-    
+
   allocate( buffer($N_int,maxab),                                     &
       singles_a(maxab),                                              &
       singles_b(maxab),                                              &
@@ -280,7 +280,7 @@ compute_singles=.True.
 !          do while (right-left>0_8)
 !            k8 = shiftr(right+left,1)
 !            if (singles_alpha_csc(k8) > lrow) then
-!              right = k8 
+!              right = k8
 !            else if (singles_alpha_csc(k8) < lrow) then
 !              left = k8 + 1_8
 !            else
@@ -308,7 +308,7 @@ compute_singles=.True.
 !          do while (right-left>0_8)
 !            k8 = shiftr(right+left,1)
 !            if (singles_alpha_csc(k8) > lrow) then
-!              right = k8 
+!              right = k8
 !            else if (singles_alpha_csc(k8) < lrow) then
 !              left = k8 + 1_8
 !            else
@@ -342,14 +342,14 @@ compute_singles=.True.
         !DIR$ LOOP COUNT AVG(4)
         do l=1,N_st
           v_t(l,k_a) = v_t(l,k_a) + hij * u_t(l,l_a)
-          s_t(l,k_a) = s_t(l,k_a) + sij * u_t(l,l_a) 
+          s_t(l,k_a) = s_t(l,k_a) + sij * u_t(l,l_a)
         enddo
       enddo
 
     enddo
 
   enddo
-  !$OMP END DO 
+  !$OMP END DO
 
   !$OMP DO SCHEDULE(guided,64)
   do k_a=istart+ishift,iend,istep
@@ -357,28 +357,28 @@ compute_singles=.True.
 
     ! Single and double alpha excitations
     ! ===================================
-    
-    
+
+
     ! Initial determinant is at k_a in alpha-major representation
     ! -----------------------------------------------------------------------
-    
+
     krow = psi_bilinear_matrix_rows(k_a)
     ASSERT (krow <= N_det_alpha_unique)
 
     kcol = psi_bilinear_matrix_columns(k_a)
     ASSERT (kcol <= N_det_beta_unique)
-    
+
     tmp_det(1:$N_int,1) = psi_det_alpha_unique(1:$N_int, krow)
     tmp_det(1:$N_int,2) = psi_det_beta_unique (1:$N_int, kcol)
-    
+
     ! Initial determinant is at k_b in beta-major representation
     ! ----------------------------------------------------------------------
-    
+
     k_b = psi_bilinear_matrix_order_transp_reverse(k_a)
     ASSERT (k_b <= N_det)
 
     spindet(1:$N_int) = tmp_det(1:$N_int,1)
-    
+
     ! Loop inside the beta column to gather all the connected alphas
     lcol = psi_bilinear_matrix_columns(k_a)
     l_a = psi_bilinear_matrix_columns_loc(lcol)
@@ -396,7 +396,7 @@ compute_singles=.True.
       l_a = l_a+1
     enddo
     i = i-1
-    
+
     call get_all_spin_singles_and_doubles_$N_int(                    &
         buffer, idx, spindet, i,                                     &
         singles_a, doubles, n_singles_a, n_doubles )
@@ -419,14 +419,14 @@ compute_singles=.True.
       !DIR$ LOOP COUNT AVG(4)
       do l=1,N_st
         v_t(l,k_a) = v_t(l,k_a) + hij * u_t(l,l_a)
-        ! single => sij = 0 
+        ! single => sij = 0
       enddo
     enddo
 
-    
+
     ! Compute Hij for all alpha doubles
     ! ----------------------------------
-    
+
     !DIR$ LOOP COUNT avg(50000)
     do i=1,n_doubles
       l_a = doubles(i)
@@ -442,29 +442,29 @@ compute_singles=.True.
         ! same spin => sij = 0
       enddo
     enddo
-    
+
 
     ! Single and double beta excitations
     ! ==================================
 
-    
+
     ! Initial determinant is at k_a in alpha-major representation
     ! -----------------------------------------------------------------------
-    
+
     krow = psi_bilinear_matrix_rows(k_a)
     kcol = psi_bilinear_matrix_columns(k_a)
-    
+
     tmp_det(1:$N_int,1) = psi_det_alpha_unique(1:$N_int, krow)
     tmp_det(1:$N_int,2) = psi_det_beta_unique (1:$N_int, kcol)
-    
+
     spindet(1:$N_int) = tmp_det(1:$N_int,2)
-    
+
     ! Initial determinant is at k_b in beta-major representation
     ! -----------------------------------------------------------------------
 
-    k_b = psi_bilinear_matrix_order_transp_reverse(k_a) 
+    k_b = psi_bilinear_matrix_order_transp_reverse(k_a)
     ASSERT (k_b <= N_det)
-    
+
     ! Loop inside the alpha row to gather all the connected betas
     lrow = psi_bilinear_matrix_transp_rows(k_b)
     l_b = psi_bilinear_matrix_transp_rows_loc(lrow)
@@ -481,14 +481,14 @@ compute_singles=.True.
       l_b = l_b+1
     enddo
     i = i-1
-  
+
     call get_all_spin_singles_and_doubles_$N_int(                    &
         buffer, idx, spindet, i,                                     &
         singles_b, doubles, n_singles_b, n_doubles )
-    
+
     ! Compute Hij for all beta singles
     ! ----------------------------------
-    
+
     tmp_det2(1:$N_int,1) = psi_det_alpha_unique(1:$N_int, krow)
     !DIR$ LOOP COUNT avg(1000)
     do i=1,n_singles_b
@@ -505,13 +505,13 @@ compute_singles=.True.
       !DIR$ LOOP COUNT AVG(4)
       do l=1,N_st
         v_t(l,k_a) = v_t(l,k_a) + hij * u_t(l,l_a)
-        ! single => sij = 0 
+        ! single => sij = 0
       enddo
     enddo
-    
+
     ! Compute Hij for all beta doubles
     ! ----------------------------------
-    
+
     !DIR$ LOOP COUNT avg(50000)
     do i=1,n_doubles
       l_b = doubles(i)
@@ -527,7 +527,7 @@ compute_singles=.True.
       !DIR$ LOOP COUNT AVG(4)
       do l=1,N_st
         v_t(l,k_a) = v_t(l,k_a) + hij * u_t(l,l_a)
-        ! same spin => sij = 0 
+        ! same spin => sij = 0
       enddo
     enddo
 
@@ -535,22 +535,22 @@ compute_singles=.True.
     ! Diagonal contribution
     ! =====================
 
-    
+
     ! Initial determinant is at k_a in alpha-major representation
     ! -----------------------------------------------------------------------
-    
+
     krow = psi_bilinear_matrix_rows(k_a)
     ASSERT (krow <= N_det_alpha_unique)
 
     kcol = psi_bilinear_matrix_columns(k_a)
     ASSERT (kcol <= N_det_beta_unique)
-    
+
     tmp_det(1:$N_int,1) = psi_det_alpha_unique(1:$N_int, krow)
     tmp_det(1:$N_int,2) = psi_det_beta_unique (1:$N_int, kcol)
-    
+
     double precision, external :: diag_H_mat_elem, diag_S_mat_elem
-  
-    hij = diag_H_mat_elem(tmp_det,$N_int) 
+
+    hij = diag_H_mat_elem(tmp_det,$N_int)
     sij = diag_S_mat_elem(tmp_det,$N_int)
     !DIR$ LOOP COUNT AVG(4)
     do l=1,N_st
@@ -559,7 +559,7 @@ compute_singles=.True.
     enddo
 
   end do
-  !$OMP END DO 
+  !$OMP END DO
   deallocate(buffer, singles_a, singles_b, doubles, idx)
   !$OMP END PARALLEL
 

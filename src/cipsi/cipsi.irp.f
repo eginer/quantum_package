@@ -7,7 +7,7 @@ subroutine run_cipsi
   integer                        :: i,j,k
   double precision, allocatable  :: pt2(:), variance(:), norm(:), rpt2(:)
   integer                        :: n_det_before, to_select
-  
+
   double precision :: rss
   double precision, external :: memory_of_double
   rss = memory_of_double(N_states)*4.d0
@@ -33,7 +33,7 @@ subroutine run_cipsi
   endif
   call diagonalize_CI
   call save_wavefunction
-  
+
   call ezfio_has_hartree_fock_energy(has)
   if (has) then
     call ezfio_get_hartree_fock_energy(hf_energy_ref)
@@ -52,7 +52,7 @@ subroutine run_cipsi
     call diagonalize_CI
     call save_wavefunction
   endif
-  
+
   n_det_before = 0
 
   double precision :: correlation_energy_ratio
@@ -74,7 +74,7 @@ subroutine run_cipsi
       pt2 = 0.d0
       variance = 0.d0
       norm = 0.d0
-      threshold_generators = 1.d0 
+      threshold_generators = 1.d0
       SOFT_TOUCH threshold_generators
       call ZMQ_pt2(psi_energy_with_nucl_rep,pt2,relative_error,error, variance, &
         norm, 0) ! Stochastic PT2
@@ -92,10 +92,10 @@ subroutine run_cipsi
     call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm,N_det,N_occ_pattern)
 
     do k=1,N_states
-      rpt2(:) = pt2(:)/(1.d0 + norm(k)) 
+      rpt2(:) = pt2(:)/(1.d0 + norm(k))
     enddo
 
-    call save_iterations(psi_energy_with_nucl_rep(1:N_states),rpt2,N_det) 
+    call save_iterations(psi_energy_with_nucl_rep(1:N_states),rpt2,N_det)
     call print_extrapolated_energy()
     N_iter += 1
 
@@ -104,7 +104,7 @@ subroutine run_cipsi
     to_select = max(N_states_diag, to_select)
 !    to_select = min(to_select, N_det_max-n_det_before)
     call ZMQ_selection(to_select, pt2, variance, norm)
-    
+
     PROVIDE  psi_coef
     PROVIDE  psi_det
     PROVIDE  psi_det_sorted
@@ -126,7 +126,7 @@ subroutine run_cipsi
     pt2 = 0.d0
     variance = 0.d0
     norm = 0.d0
-    threshold_generators = 1d0 
+    threshold_generators = 1d0
     SOFT_TOUCH threshold_generators
     call ZMQ_pt2(psi_energy_with_nucl_rep, pt2,relative_error,error,variance, &
       norm,0) ! Stochastic PT2
@@ -140,11 +140,11 @@ subroutine run_cipsi
 
 
   do k=1,N_states
-    rpt2(:) = pt2(:)/(1.d0 + norm(k)) 
+    rpt2(:) = pt2(:)/(1.d0 + norm(k))
   enddo
 
   call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm,N_det,N_occ_pattern)
-  call save_iterations(psi_energy_with_nucl_rep(1:N_states),rpt2,N_det) 
+  call save_iterations(psi_energy_with_nucl_rep(1:N_states),rpt2,N_det)
   call print_extrapolated_energy()
 
 end

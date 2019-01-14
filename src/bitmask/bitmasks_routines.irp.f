@@ -39,10 +39,10 @@ subroutine bitstring_to_list( string, list, n_elements, Nint)
   integer(bit_kind), intent(in)  :: string(Nint)
   integer, intent(out)           :: list(Nint*bit_kind_size)
   integer, intent(out)           :: n_elements
-  
+
   integer                        :: i, ishift
   integer(bit_kind)              :: l
-  
+
   n_elements = 0
   ishift = 2
   do i=1,Nint
@@ -54,7 +54,7 @@ subroutine bitstring_to_list( string, list, n_elements, Nint)
     enddo
     ishift = ishift + bit_kind_size
   enddo
-  
+
 end
 
 subroutine list_to_bitstring( string, list, n_elements, Nint)
@@ -68,28 +68,28 @@ subroutine list_to_bitstring( string, list, n_elements, Nint)
   integer(bit_kind), intent(out) :: string(Nint)
   integer, intent(in)            :: list(Nint*bit_kind_size)
   integer, intent(in)            :: n_elements
-  
-  
+
+
   integer                        :: i, j
   integer                        :: ipos, iint
 
-  ! 
+  !
   !                                       <== ipos ==>
   !                                                  |
   !                                                  v
   !string :|------------------------|-------------------------|------------------------|
   !        <==== bit_kind_size ====> <==== bit_kind_size ====> <==== bit_kind_size ====>
   !        {        iint            } {         iint         } {         iint         }
-  ! 
-  
+  !
+
   string = 0_bit_kind
-  
+
   do i=1,n_elements
     iint = shiftr(list(i)-1,bit_kind_shift) + 1
     ipos = list(i)-shiftl((iint-1),bit_kind_shift)-1
     string(iint) = ibset( string(iint), ipos )
   enddo
-  
+
 end
 
 
@@ -102,10 +102,10 @@ subroutine bitstring_to_str( output, string, Nint )
   character*(*), intent(out)     :: output
   integer, intent(in)            :: Nint
   integer(bit_kind), intent(in)  :: string(Nint)
-  
+
   integer                        :: i, j, ibuf
   integer(bit_kind)              :: itemp
-  
+
   ibuf = 1
   output = ''
   output(ibuf:ibuf) = '|'
@@ -138,7 +138,7 @@ subroutine bitstring_to_hexa( output, string, Nint )
   integer                        :: i, j, ibuf
   integer(bit_kind)              :: itemp
   character*(32)                 :: f
-  
+
   write(f,*) '(Z',bit_kind_size/4,'.',bit_kind_size/4,')'
   ibuf = 1
   output = ''
@@ -147,7 +147,7 @@ subroutine bitstring_to_hexa( output, string, Nint )
     ibuf = ibuf+bit_kind_size/4
   enddo
 end
-  
+
 subroutine debug_det(string,Nint)
   use bitmasks
   implicit none
@@ -194,7 +194,7 @@ subroutine debug_spindet(string,Nint)
   integer(bit_kind), intent(in)  :: string(Nint,2)
   character*(2048)                :: output(1)
   call bitstring_to_hexa( output(1), string(1,1), Nint )
-  print *,  trim(output(1)) 
+  print *,  trim(output(1))
   call print_spindet(string,Nint)
 
 end

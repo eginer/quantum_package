@@ -9,39 +9,38 @@ If pseudo-potentials are used, all the MOs are set as Active.
 For elements on the right of the periodic table, qp_set_frozen_core will work
 as expected. But for elements on the left, a small core will be chosen. For
 example, a Carbon atom will have 2 core electrons, but a Lithium atom will have
-zero. 
+zero.
 
 
 Usage:
       qp_set_frozen_core [-q|--query] <EZFIO_DIRECTORY>
 
 Options:
-    -q --query   Prints in the standard output the number of core electrons
+    -q --query   Prints in the standard output the number of frozen MOs
 
 """
 
 import os
 import sys
 import os.path
-import shutil
 
 try:
-    from docopt import docopt
-    from qp_path import QP_SRC, QP_ROOT, QP_PLUGINS
+    import qp_path
 except ImportError:
     print "source .quantum_package.rc"
     raise
 
-
+from docopt import docopt
 from ezfio import ezfio
 
 
 def main(arguments):
+    """Main function"""
 
     filename = arguments["<EZFIO_DIRECTORY>"]
     ezfio.set_filename(filename)
 
-    nb = 0
+    n_frozen = 0
     try:
         do_pseudo = ezfio.pseudo_do_pseudo
     except:
@@ -52,25 +51,25 @@ def main(arguments):
             if charge < 5:
                 pass
             elif charge < 13:
-                nb += 1
+                n_frozen += 1
             else:
-                nb += 5
+                n_frozen += 5
 
     mo_num = ezfio.mo_basis_mo_num
 
     if arguments["--query"]:
-        print nb
+        print n_frozen
         sys.exit(0)
 
-    if nb == 0:
-        os.system( """qp_set_mo_class -a "[1-%d]" %s""" % 
-            (mo_num, sys.argv[1]) )
+    if n_frozen == 0:
+        os.system("""qp_set_mo_class -a "[1-%d]" %s""" %
+                  (mo_num, sys.argv[1]))
     else:
-        os.system( """qp_set_mo_class -c "[1-%d]" -a "[%d-%d]" %s""" % 
-            (nb, nb+1, mo_num, sys.argv[1]) )
+        os.system("""qp_set_mo_class -c "[1-%d]" -a "[%d-%d]" %s""" %
+                  (n_frozen, n_frozen+1, mo_num, sys.argv[1]))
 
 
 
 if __name__ == '__main__':
-  arguments = docopt(__doc__)
-  main(arguments)
+    ARGUMENTS = docopt(__doc__)
+    main(ARGUMENTS)

@@ -6,7 +6,7 @@ use bitmasks
 &BEGIN_PROVIDER [ integer, N_det_cas ]
   implicit none
   BEGIN_DOC
-  ! |CAS| wave function, defined from the application of the |CAS| bitmask on the 
+  ! |CAS| wave function, defined from the application of the |CAS| bitmask on the
   ! determinants. idx_cas gives the indice of the |CAS| determinant in psi_det.
   END_DOC
   integer                        :: i, k, l
@@ -67,7 +67,7 @@ END_PROVIDER
  implicit none
  BEGIN_DOC
   ! Set of determinants which are not part of the |CAS|, defined from the application
-  ! of the |CAS| bitmask on the determinants. 
+  ! of the |CAS| bitmask on the determinants.
   ! idx_non_cas gives the indice of the determinant in psi_det.
  END_DOC
  integer                        :: i_non_cas,j,k
@@ -112,13 +112,13 @@ END_PROVIDER
 END_PROVIDER
 
 
-BEGIN_PROVIDER [double precision, H_matrix_cas, (N_det_cas,N_det_cas)] 
+BEGIN_PROVIDER [double precision, H_matrix_cas, (N_det_cas,N_det_cas)]
  implicit none
  integer :: i,j
  double precision :: hij
   do i = 1, N_det_cas
    do j = 1, N_det_cas
-    call i_H_j(psi_cas(1,1,i),psi_cas(1,1,j),N_int,hij) 
+    call i_H_j(psi_cas(1,1,i),psi_cas(1,1,j),N_int,hij)
     H_matrix_cas(i,j) = hij
    enddo
   enddo
@@ -164,7 +164,7 @@ END_PROVIDER
    psi_cas_energy(k) = psi_cas_energy(k) /norm
   enddo
 
-END_PROVIDER 
+END_PROVIDER
 
 
 

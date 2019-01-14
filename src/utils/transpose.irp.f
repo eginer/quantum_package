@@ -18,7 +18,7 @@ recursive subroutine transpose(A,LDA,B,LDB,d1,d2)
     enddo
    return
  else if (d1 > d2) then
- !DIR$ forceinline 
+ !DIR$ forceinline
    k=d1/2
  !DIR$ forceinline recursive
    call transpose(A(1,1),LDA,B(1,1),LDB,k,d2)
@@ -65,7 +65,7 @@ recursive subroutine dtranspose(A,LDA,B,LDB,d1,d2)
     enddo
    return
  else if (d1 > d2) then
- !DIR$ forceinline 
+ !DIR$ forceinline
    k=d1/2
  !DIR$ forceinline recursive
    call dtranspose(A(1,1),LDA,B(1,1),LDB,k,d2)

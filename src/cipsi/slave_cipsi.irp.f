@@ -16,13 +16,13 @@ end
 subroutine provide_everything
   PROVIDE H_apply_buffer_allocated mo_two_e_integrals_in_map psi_det_generators psi_coef_generators psi_det_sorted_bit psi_selectors n_det_generators n_states generators_bitmask zmq_context N_states_diag
   PROVIDE pt2_e0_denominator mo_num N_int ci_energy mpi_master zmq_state zmq_context
-  PROVIDE psi_det psi_coef threshold_generators state_average_weight 
-  PROVIDE N_det_selectors pt2_stoch_istate N_det 
+  PROVIDE psi_det psi_coef threshold_generators state_average_weight
+  PROVIDE N_det_selectors pt2_stoch_istate N_det
 end
 
 subroutine run_slave_main
   use f77_zmq
-  
+
   implicit none
   IRP_IF MPI
     include 'mpif.h'
@@ -35,8 +35,8 @@ subroutine run_slave_main
   character*(64) :: old_state
   integer :: rc, i, ierr
   double precision :: t0, t1
-  
-  integer, external              :: zmq_get_dvector, zmq_get_N_det_generators 
+
+  integer, external              :: zmq_get_dvector, zmq_get_N_det_generators
   integer, external              :: zmq_get8_dvector
   integer, external              :: zmq_get_ivector
   integer, external              :: zmq_get_psi, zmq_get_N_det_selectors, zmq_get_psi_bilinear
@@ -130,7 +130,7 @@ subroutine run_slave_main
       endif
       call wall_time(t1)
       call write_double(6,(t1-t0),'Broadcast time')
-  
+
       IRP_IF MPI_DEBUG
         call mpi_print('Entering OpenMP section')
       IRP_ENDIF

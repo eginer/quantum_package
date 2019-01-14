@@ -19,7 +19,7 @@ BEGIN_PROVIDER [ double precision, one_e_dm_mo_diff, (mo_num,mo_num,2:N_states) 
   ! Difference of the one-body density matrix with respect to the ground state
   END_DOC
   integer                        :: i,j, istate
-  
+
   do istate=2,N_states
     do j=1,mo_num
       do i=1,mo_num
@@ -29,7 +29,7 @@ BEGIN_PROVIDER [ double precision, one_e_dm_mo_diff, (mo_num,mo_num,2:N_states) 
       enddo
     enddo
   enddo
-  
+
 END_PROVIDER
 
 
@@ -44,7 +44,7 @@ BEGIN_PROVIDER [ double precision, one_e_dm_mo_spin_index, (mo_num,mo_num,N_stat
       enddo
     enddo
   enddo
-  
+
   ispin = 2
   do istate = 1, N_states
     do j = 1, mo_num
@@ -53,7 +53,7 @@ BEGIN_PROVIDER [ double precision, one_e_dm_mo_spin_index, (mo_num,mo_num,N_stat
       enddo
     enddo
   enddo
-  
+
 END_PROVIDER
 
 
@@ -70,7 +70,7 @@ BEGIN_PROVIDER [ double precision, one_e_dm_dagger_mo_spin_index, (mo_num,mo_num
        enddo
      enddo
    enddo
-   
+
    ispin = 2
    do istate = 1, N_states
      do j = 1, mo_num
@@ -81,7 +81,7 @@ BEGIN_PROVIDER [ double precision, one_e_dm_dagger_mo_spin_index, (mo_num,mo_num
        enddo
      enddo
    enddo
-   
+
 END_PROVIDER
 
  BEGIN_PROVIDER [ double precision, one_e_dm_mo_alpha, (mo_num,mo_num,N_states) ]
@@ -90,7 +90,7 @@ END_PROVIDER
   BEGIN_DOC
   ! $\alpha$ and $\beta$ one-body density matrix for each state
   END_DOC
-  
+
   integer                        :: j,k,l,m,k_a,k_b
   integer                        :: occ(N_int*bit_kind_size,2)
   double precision               :: ck, cl, ckl
@@ -100,9 +100,9 @@ END_PROVIDER
   integer                        :: exc(0:2,2),n_occ(2)
   double precision, allocatable  :: tmp_a(:,:,:), tmp_b(:,:,:)
   integer                        :: krow, kcol, lrow, lcol
-  
+
   PROVIDE psi_det
-  
+
   one_e_dm_mo_alpha = 0.d0
   one_e_dm_mo_beta  = 0.d0
   !$OMP PARALLEL DEFAULT(NONE)                                      &
@@ -121,16 +121,16 @@ END_PROVIDER
   do k_a=1,N_det
     krow = psi_bilinear_matrix_rows(k_a)
     ASSERT (krow <= N_det_alpha_unique)
-    
+
     kcol = psi_bilinear_matrix_columns(k_a)
     ASSERT (kcol <= N_det_beta_unique)
-    
+
     tmp_det(1:N_int,1) = psi_det_alpha_unique(1:N_int,krow)
     tmp_det(1:N_int,2) = psi_det_beta_unique (1:N_int,kcol)
-    
+
     ! Diagonal part
     ! -------------
-    
+
     call bitstring_to_list_ab(tmp_det, occ, n_occ, N_int)
     do m=1,N_states
       ck = psi_bilinear_matrix_values(k_a,m)*psi_bilinear_matrix_values(k_a,m)
@@ -139,7 +139,7 @@ END_PROVIDER
         tmp_a(j,j,m) += ck
       enddo
     enddo
-    
+
     if (k_a == N_det) cycle
     l = k_a+1
     lrow = psi_bilinear_matrix_rows(l)
@@ -163,30 +163,30 @@ END_PROVIDER
       lrow = psi_bilinear_matrix_rows(l)
       lcol = psi_bilinear_matrix_columns(l)
     enddo
-    
+
   enddo
   !$OMP END DO NOWAIT
-  
+
   !$OMP CRITICAL
   one_e_dm_mo_alpha(:,:,:) = one_e_dm_mo_alpha(:,:,:) + tmp_a(:,:,:)
   !$OMP END CRITICAL
   deallocate(tmp_a)
-  
+
   tmp_b = 0.d0
   !$OMP DO SCHEDULE(dynamic,64)
   do k_b=1,N_det
     krow = psi_bilinear_matrix_transp_rows(k_b)
     ASSERT (krow <= N_det_alpha_unique)
-    
+
     kcol = psi_bilinear_matrix_transp_columns(k_b)
     ASSERT (kcol <= N_det_beta_unique)
-    
+
     tmp_det(1:N_int,1) = psi_det_alpha_unique(1:N_int,krow)
     tmp_det(1:N_int,2) = psi_det_beta_unique (1:N_int,kcol)
-    
+
     ! Diagonal part
     ! -------------
-    
+
     call bitstring_to_list_ab(tmp_det, occ, n_occ, N_int)
     do m=1,N_states
       ck = psi_bilinear_matrix_transp_values(k_b,m)*psi_bilinear_matrix_transp_values(k_b,m)
@@ -195,7 +195,7 @@ END_PROVIDER
         tmp_b(j,j,m) += ck
       enddo
     enddo
-    
+
     if (k_b == N_det) cycle
     l = k_b+1
     lrow = psi_bilinear_matrix_transp_rows(l)
@@ -219,18 +219,18 @@ END_PROVIDER
       lrow = psi_bilinear_matrix_transp_rows(l)
       lcol = psi_bilinear_matrix_transp_columns(l)
     enddo
-    
+
   enddo
   !$OMP END DO NOWAIT
   !$OMP CRITICAL
   one_e_dm_mo_beta(:,:,:)  = one_e_dm_mo_beta(:,:,:)  + tmp_b(:,:,:)
   !$OMP END CRITICAL
-  
+
   deallocate(tmp_b)
   !$OMP END PARALLEL
-   
+
 END_PROVIDER
- 
+
 BEGIN_PROVIDER [ double precision, one_e_dm_mo, (mo_num,mo_num) ]
    implicit none
    BEGIN_DOC
@@ -238,7 +238,7 @@ BEGIN_PROVIDER [ double precision, one_e_dm_mo, (mo_num,mo_num) ]
    END_DOC
    one_e_dm_mo = one_e_dm_mo_alpha_average + one_e_dm_mo_beta_average
 END_PROVIDER
- 
+
 BEGIN_PROVIDER [ double precision, one_e_spin_density_mo, (mo_num,mo_num) ]
    implicit none
    BEGIN_DOC
@@ -246,7 +246,7 @@ BEGIN_PROVIDER [ double precision, one_e_spin_density_mo, (mo_num,mo_num) ]
    END_DOC
    one_e_spin_density_mo = one_e_dm_mo_alpha_average - one_e_dm_mo_beta_average
 END_PROVIDER
- 
+
 subroutine set_natural_mos
    implicit none
    BEGIN_DOC
@@ -255,11 +255,11 @@ subroutine set_natural_mos
    END_DOC
    character*(64)                 :: label
    double precision, allocatable  :: tmp(:,:)
-   
+
    label = "Natural"
    call mo_as_svd_vectors_of_mo_matrix_eig(one_e_dm_mo,size(one_e_dm_mo,1),mo_num,mo_num,mo_occ,label)
    soft_touch mo_occ
-   
+
 end
 subroutine save_natural_mos
    implicit none
@@ -269,10 +269,10 @@ subroutine save_natural_mos
    END_DOC
    call set_natural_mos
    call save_mos
-   
+
 end
- 
- 
+
+
 BEGIN_PROVIDER [ double precision, c0_weight, (N_states) ]
    implicit none
    BEGIN_DOC
@@ -293,17 +293,17 @@ BEGIN_PROVIDER [ double precision, c0_weight, (N_states) ]
    else
      c0_weight = 1.d0
    endif
-   
+
 END_PROVIDER
- 
- 
+
+
 BEGIN_PROVIDER [ double precision, state_average_weight, (N_states) ]
    implicit none
    BEGIN_DOC
    ! Weights in the state-average calculation of the density matrix
    END_DOC
    logical                        :: exists
-   
+
    state_average_weight(:) = 1.d0
    if (used_weight == 0) then
      state_average_weight(:) = c0_weight(:)
@@ -318,8 +318,8 @@ BEGIN_PROVIDER [ double precision, state_average_weight, (N_states) ]
    state_average_weight(:) = state_average_weight(:)+1.d-31
    state_average_weight(:) = state_average_weight(:)/(sum(state_average_weight(:)))
 END_PROVIDER
- 
- 
+
+
 BEGIN_PROVIDER [ double precision, one_e_spin_density_ao, (ao_num,ao_num) ]
    BEGIN_DOC
    ! One body spin density matrix on the |AO| basis : $\rho_{AO}(\alpha) - \rho_{AO}(\beta)$
@@ -327,7 +327,7 @@ BEGIN_PROVIDER [ double precision, one_e_spin_density_ao, (ao_num,ao_num) ]
    implicit none
    integer                        :: i,j,k,l
    double precision               :: dm_mo
-   
+
    one_e_spin_density_ao = 0.d0
    do k = 1, ao_num
      do l = 1, ao_num
@@ -336,14 +336,14 @@ BEGIN_PROVIDER [ double precision, one_e_spin_density_ao, (ao_num,ao_num) ]
            dm_mo = one_e_spin_density_mo(j,i)
            !    if(dabs(dm_mo).le.1.d-10)cycle
            one_e_spin_density_ao(l,k) += mo_coef(k,i) * mo_coef(l,j) * dm_mo
-           
+
          enddo
        enddo
      enddo
    enddo
-   
+
 END_PROVIDER
- 
+
  BEGIN_PROVIDER [ double precision, one_e_dm_ao_alpha, (ao_num,ao_num) ]
 &BEGIN_PROVIDER [ double precision, one_e_dm_ao_beta, (ao_num,ao_num) ]
    BEGIN_DOC
@@ -352,7 +352,7 @@ END_PROVIDER
    implicit none
    integer                        :: i,j,k,l
    double precision               :: mo_alpha,mo_beta
-   
+
    one_e_dm_ao_alpha = 0.d0
    one_e_dm_ao_beta = 0.d0
    do k = 1, ao_num
@@ -368,7 +368,7 @@ END_PROVIDER
        enddo
      enddo
    enddo
-   
+
 END_PROVIDER
- 
- 
+
+
