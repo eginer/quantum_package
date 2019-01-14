@@ -98,10 +98,11 @@ def main(arguments):
             l_result = [f for f in os.listdir(QP_PLUGINS) if f not in [".gitignore", "local"]]
 
         else:
-            # Search in src all directories with a NEED file
+            # Search in QP_PLUGINS all directories with a NEED file
             l_tmp = [dirname for (dirname, _, filenames) in \
                      os.walk(QP_PLUGINS, followlinks=False) \
-                     for f in filenames if f == 'NEED']
+                     for f in filenames if f == 'NEED' and \
+                     "IRPF90_temp" not in dirname]
 
             # Find directories which contain modules
             l_tmp = [os.path.split(f) for f in l_tmp]
