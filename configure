@@ -70,7 +70,7 @@ while true : ; do
             exit 0;;
         --) shift ; break ;;
         *)
-            error "unknown option $1, try --help"
+            error $(basename $0)": unknown option $1, try --help"
             exit 2;;
     esac
 done

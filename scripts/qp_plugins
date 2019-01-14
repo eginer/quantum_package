@@ -94,8 +94,8 @@ def main(arguments):
     arguments["<name>"] = [os.path.normpath(name) for name in arguments["<name>"]]
 
     if arguments["list"]:
-        if arguments["-q"]:
-            l_result = [f for f in os.path.listdir(QP_PLUGINS) if f not in [".gitignore", "local"]]
+        if arguments["--repositories"]:
+            l_result = [f for f in os.listdir(QP_PLUGINS) if f not in [".gitignore", "local"]]
 
         else:
             # Search in src all directories with a NEED file
@@ -113,20 +113,20 @@ def main(arguments):
             l_plugins = [module for module in m_instance.l_module]
             l_result = l_plugins
 
-            if arguments["-i"] or arguments["-u"]:
+            if arguments["--installed"] or arguments["--uninstalled"]:
                 # Search in src all symbolic links that are modules
-                l_installed = [f for f in os.path.listdir(QP_SRC) \
+                l_installed = [f for f in os.listdir(QP_SRC) \
                                if (os.path.islink(os.path.join(QP_SRC, f)) \
                                and f != ".gitignore")]
 
-            if arguments["-i"]:
+            if arguments["--installed"]:
                 l_result = [f for f in l_plugins if f in l_installed]
 
-            elif arguments["-u"]:
+            elif arguments["--uninstalled"]:
                 l_result = [f for f in l_plugins if f not in l_installed]
 
         for module in sorted(l_result):
-            print "* {0}".format(module)
+            print module
 
     if arguments["create"]:
         m_instance = ModuleHandler([QP_SRC])
@@ -135,8 +135,8 @@ def main(arguments):
 
         name = arguments["<name>"][0]
 
-        if arguments["-r"]:
-            repository = arguments["-r"]
+        if arguments["--repository"]:
+            repository = arguments["--repository"]
         else:
             repository = "local"
 
@@ -266,7 +266,7 @@ def main(arguments):
         if l_failed:
             print "Plugins not installed:"
             for name in sorted(l_failed):
-                print "* %s" % name
+                print "%s" % name
             sys.exit(1)
 
         l_name_to_remove = l_name + \

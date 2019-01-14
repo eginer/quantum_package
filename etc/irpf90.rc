@@ -8,9 +8,10 @@ export IRPF90=${IRPF90_PATH}/bin/irpf90
 
 function source_if_exists() {
   if [[ -f $1 ]]; then
-     source $1
-  fi
+        cd $(dirname $1) ; source $(basename $1) ; cd -
+  fi &> /dev/null
 } 
+
 
 source ${QP_ROOT}/etc/autocomplete.rc
 source_if_exists "${IRPF90_PATH}/irpman-completions.bash"

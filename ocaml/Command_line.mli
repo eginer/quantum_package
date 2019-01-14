@@ -8,6 +8,8 @@ let () =
   let open Command_line in
   begin
     set_header_doc (Sys.argv.(0) ^ " - quantum_package command");
+    set_description_doc
+      "Opens a text editor to edit the parameters of an EZFIO directory.";
 
     [ { short='c'; long="check"; opt=Optional;
         doc="Checks the input data";
@@ -25,8 +27,6 @@ let () =
     ]
     |> set_specs ;
 
-    set_description_doc
-      "Opens a text editor to edit the parameters of a EZFIO directory.";
   end;
 
 

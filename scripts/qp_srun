@@ -7,6 +7,15 @@ function error() {
 
 set -e
 
+PROG=$1
+INPUT=$2
+
+case ${PROG} in  
+  -h|--help)
+        exec qp_run --help
+  ;;
+esac
+
 NODES=($(srun hostname))
 
 # Test that there is one MPI process per node
@@ -28,8 +37,6 @@ In your SLURM script file, use:
   exit -1
 fi
 
-PROG=$1
-INPUT=$2
 
 # Check if quantum_package.rc is sourced
 
