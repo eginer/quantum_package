@@ -141,34 +141,32 @@ let run slave ?prefix exe ezfio_file =
 
 let () =
   (* Command-line specs *)
-  "Executes a Quantum Package binary file among these:\n\n"
-^ (Lazy.force Qpackage.executables
-    |> List.map (fun (x,_) -> Printf.sprintf " * %s" x )
-    |> String.concat "\n"
-  ) |> Command_line.set_header_doc;
+  let open Command_line in
+  begin
+    set_header_doc (Sys.argv.(0) ^ " - Quantum Package command");
+    "Executes a Quantum Package binary file among these:\n\n"
+    ^ (Lazy.force Qpackage.executables
+       |> List.map (fun (x,_) -> Printf.sprintf " * %s" x )
+       |> String.concat "\n")
+    |> set_description_doc;
 
-  [ ( 's', "slave", "Required to run slave tasks in distributed environments",
-        Command_line.Without_arg);
-    ( 'p', "prefix", "<string> Prefix before running the program, like gdb or valgrind",
-        Command_line.With_arg );
-      Command_line.anonymous "PROGRAM" "Name of the QP program to be run";
-      Command_line.anonymous "EZFIO_DIR" "EZFIO directory";
+    [ { short='s'; long="slave"; opt=Optional;
+        doc="Required to run slave tasks in distributed environments.";
+        arg=Without_arg; };
+
+      { short='p'; long="prefix"; opt=Optional;
+        doc="Prefix before running the program, like gdb or valgrind.";
+        arg=With_arg "<string>"; };
+
+      anonymous "PROGRAM"   Mandatory "Name of the QP program to be run";
+      anonymous "EZFIO_DIR" Mandatory "EZFIO directory";
     ]
-  |> Command_line.set_specs ;
-
+    |> set_specs ;
+  end;
 
   (*  Handle options *)
-  if Command_line.show_help () then
-    exit 0;
-
-  let slave =
-    match Command_line.get "slave" with
-    | None -> false
-    | _ -> true
-  in
-
-  let prefix =
-    Command_line.get "prefix"
+  let slave  = Command_line.get_bool "slave" 
+  and prefix = Command_line.get "prefix"
   in
 
   (* Run the program *)

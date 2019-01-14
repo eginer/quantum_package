@@ -3,11 +3,11 @@
 convert output of GAMESS/GAU$$IAN to ezfio
 
 Usage:
-    qp_convert_output_to_ezfio [-o EZFIO_DIR|--output=EZFIO_DIR] <file.out>
+    qp_convert_output_to_ezfio [-o EZFIO_DIR] FILE
 
 Options:
-    -o EZFIO_DIR  --output=EZFIO_DIR    Produced directory
-                                        by default is file.out.ezfio
+    -o --output=EZFIO_DIR    Produced directory
+                             by default is FILE.ezfio
 
 """
 
@@ -342,7 +342,7 @@ def get_full_path(file_path):
 if __name__ == '__main__':
     ARGUMENTS = docopt(__doc__)
 
-    FILE = get_full_path(ARGUMENTS['<file.out>'])
+    FILE = get_full_path(ARGUMENTS['FILE'])
 
     if ARGUMENTS["--output"]:
         EZFIO_FILE = get_full_path(ARGUMENTS["--output"])

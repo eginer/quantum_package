@@ -1,161 +1,199 @@
-type argument = With_arg | Without_arg | With_opt_arg
+type short_opt     = char
+type long_opt      = string 
+type optional      = Mandatory | Optional 
+type documentation = string
+type argument      = With_arg of string | Without_arg | With_opt_arg of string
 
-let anon_args = ref []
+type description   = {
+  short: short_opt ;
+  long : long_opt  ;
+  opt  : optional  ;
+  doc  : documentation ;
+  arg  : argument ;
+  }
+
+let anon_args  = ref []
 and header_doc = ref ""
+and description_doc = ref ""
 and footer_doc = ref ""
-and specs = ref []
+and specs      = ref []
 
 let set_header_doc s = header_doc := s
+let set_description_doc s = description_doc := s
 let set_footer_doc s = footer_doc := s
 
-let dict =
-  let d = Hashtbl.create 67 in
-  d
+(* Hash table containing all the options *)
+let dict = Hashtbl.create 67 
+
+let get_bool x = Hashtbl.mem dict x
+
+let show_help () = get_bool "help"
 
 let get x =
-  try Some (Hashtbl.find dict x)
-  with Not_found -> None
+    try Some (Hashtbl.find dict x)
+    with Not_found -> None
 
-let get_bool x =
-  Hashtbl.mem dict x
+let anonymous name opt doc =
+  { short=' ' ; long=name; opt; doc; arg=Without_arg; }
 
-let show_help () =
-  get_bool "help"
+let output_text t =
+  Format.printf "@[<v 0>";
+  begin
+    match Str.split (Str.regexp "\n") t with
+    | x :: [] -> Format.printf "@[<hov 0>";
+                    Str.split (Str.regexp " ") x
+                    |> List.iter (fun y -> Format.printf "@[%s@]@ " y) ;
+                    Format.printf "@]"
+    | t       -> List.iter (fun x -> 
+                    Format.printf "@[<hov 0>";
+                    Str.split (Str.regexp " ") x
+                    |> List.iter (fun y -> Format.printf "@[%s@]@ " y) ;
+                    Format.printf "@]@;") t
+  end;
+  Format.printf "@]"
+;;
+  
 
-let anonymous ?(optional=false) name doc =
-  ( ' ', name, doc,
-    if optional then With_opt_arg else Without_arg
-  )
+let output_short x =
+  match x.short, x.opt, x.arg  with
+  | ' ', Mandatory, _ -> Format.printf "@[%s@]"   x.long
+  | ' ', Optional , _ -> Format.printf "@[[%s]@]" x.long
+  |  _ , Mandatory, Without_arg -> Format.printf "@[-%c@]"   x.short
+  |  _ , Optional , Without_arg -> Format.printf "@[[-%c]@]" x.short
+  |  _ , Mandatory, With_arg arg -> Format.printf "@[-%c %s@]"   x.short arg
+  |  _ , Optional , With_arg arg -> Format.printf "@[[-%c %s]@]" x.short arg
+  |  _ , Mandatory, With_opt_arg arg -> Format.printf "@[-%c [%s]@]"   x.short arg
+  |  _ , Optional , With_opt_arg arg -> Format.printf "@[[-%c [%s]]@]" x.short arg
+
+
+let output_long max_width x =
+  let arg =
+    match x.short, x.arg with
+    | ' ' , _                -> x.long
+    |  _  , Without_arg      -> x.long
+    |  _  , With_arg     arg -> Printf.sprintf "%s=%s" x.long arg
+    |  _  , With_opt_arg arg -> Printf.sprintf "%s[=%s]" x.long arg
+  in
+  let long =
+     let l = String.length arg in
+     arg^(String.make (max_width-l) ' ')
+  in
+  Format.printf "@[<v 0>";
+  begin
+    match x.short with
+    | ' '   -> Format.printf "@[%s       @]" long
+    | short -> Format.printf "@[-%c  --%s @]" short long
+  end;
+  Format.printf "@]";
+  output_text  x.doc
+
 
 let help () =
 
-  Format.printf "@[%s@]@.@." !header_doc;
-  let get_param_from_doc doc =
-      match Str.split (Str.regexp "[ \n\r\x0c\t]+") doc with
-      | param :: doc -> param, (String.concat " " doc)
-      | _ -> failwith "Bad format for documentation"
-  in
+    (* Print the header *)
+    output_text !header_doc;
+    Format.printf "@.@.";
 
-  let anon =
-    List.filter (fun (x,_,_,_) -> x = ' ') !specs
-    |> List.map (fun x ->
-      match x with
-      | (_,name,doc,Without_arg) -> (name,doc,false)
-      | (_,name,doc,_)  -> (name,doc,true)
-      )
-  in
+    (* Find the anonymous arguments *)
+    let anon =
+      List.filter (fun x -> x.short = ' ') !specs
+    in
 
-  let options =
-    List.filter (fun (x,_,_,_) -> x <> ' ') !specs
-    |> List.sort (fun (x,_,_,_) (y,_,_,_) -> Char.compare x y)
-    |> List.map (fun x ->
-      match x with
-      | (short,long,doc,With_arg) -> (* with arg *)
-            let param, doc = get_param_from_doc doc in
-            (Printf.sprintf "-%c %s" short param,
-             Printf.sprintf "--%s=%s" long  param,
-             doc)
-      | (short,long,doc,Without_arg) ->  (* without arg *)
-            (Printf.sprintf "-%c" short,
-             Printf.sprintf "--%s" long,
-             doc)
-      | (short,long,doc,With_opt_arg) -> (* with or without arg *)
-            let param, doc = get_param_from_doc doc in
-            (Printf.sprintf "-%c [%s]" short param,
-             Printf.sprintf "--%s[=%s]" long  param,
-             doc)
-      )
-  in
+    (* Find the options *)
+    let options =
+      List.filter (fun x -> x.short <> ' ') !specs
+      |> List.sort (fun x y -> Char.compare x.short y.short)
+    in
 
-  let max_short =
-    List.map (fun (x,_,_) -> String.length x) options
-    |> List.fold_left max 0
-  in
-
-  let max_long  =
-    List.map (fun (_,x,_) -> String.length x) options
-    |> List.fold_left max 0
-  in
-
-  let fmt_opt max_w o =
-    let l = String.length o in
-    o^(String.make (max_w-l) ' ')
-  in
+    (* Find column lengths *)
+    let max_width =
+      List.map (fun x -> 
+        ( match x.arg with
+          | Without_arg      -> String.length x.long
+          | With_arg arg     -> String.length x.long + String.length arg
+          | With_opt_arg arg -> String.length x.long + String.length arg + 2
+        )
+        + ( if x.opt = Optional then 2 else 0)
+      ) !specs
+      |> List.fold_left max 0
+    in
 
 
-  let output_option ?(fixed_width=false) (short, long, doc) =
-      if fixed_width then
-        Format.printf "@[%s  %s@]"
-          (fmt_opt max_short short) (fmt_opt max_long long)
-      else
-        Format.printf "@[%s|%s@]" short long
-  in
+    (* Print usage *)
+    Format.printf "@[<v>@[<v 2>Usage:@,@,@[<hov 4>@[%s@]" Sys.argv.(0);
+    List.iter (fun x -> Format.printf "@ "; output_short x) options;
+    Format.printf "@ @[[--]@]";
+    List.iter (fun x -> Format.printf "@ "; output_short x;) anon;
+    Format.printf "@]@,@]@,";
 
-  let output_anon ?(fixed_width=false) (name, doc, optional) =
-      if optional then
-        Format.printf "@[[%s]@]" name
-      else
-        Format.printf "@[%s@]" name
-  in
 
-  Format.printf "@[<v>@[<v 2>Usage:@,@,@[<hov 4>@[%s@]" Sys.argv.(0);
-  List.iter (fun x ->
-    Format.printf "@ @[[";
-    output_option ~fixed_width:false x;
-    Format.printf "]@]"
-    ) options;
-  Format.printf "@ @[[--]@]";
-  List.iter (fun x ->
-    Format.printf "@ @[";
-    output_anon ~fixed_width:false x;
-    Format.printf "@]"
-    ) anon;
-  Format.printf "@]@]@,@,";
+    (* Print arguments and doc *)
+    Format.printf "@[<v 2>Arguments:@,";
+    Format.printf "@[<v 0>" ;
+    List.iter (fun x -> Format.printf "@ "; output_long max_width x) anon;
+    Format.printf "@]@,@]@,";
 
-  Format.printf "@[<v>Arguments:@,";
 
-  Format.printf "@[<v 2>@," ;
-  List.iter (fun (name,doc,optional) ->
-    Format.printf "@[<h>";
-    output_anon ~fixed_width:true (name,doc,optional);
-    Format.printf "@   @[<v 0>%s@]@]@," doc
-    ) anon;
-  Format.printf "@]@;";
+    (* Print options and doc *)
+    Format.printf "@[<v 2>Options:@,";
 
-  Format.printf "@[<v>Options:@,";
+    Format.printf "@[<v 0>" ;
+    List.iter (fun x -> Format.printf "@ "; output_long max_width x) options;
+    Format.printf "@]@,@]@,";
 
-  Format.printf "@[<v 2>@," ;
-  List.iter (fun (short,long,doc) ->
-    Format.printf "@[<h>";
-    output_option ~fixed_width:true (short,long,doc);
-    Format.printf "@   @[<v 0>%s@]@]@," doc
-    ) options;
-  Format.printf "@]@;";
 
-  Format.printf "@[%s@]@." !footer_doc
+    (* Print footer *)
+    if !description_doc <> "" then
+    begin
+      Format.printf "@[<v 2>Description:@,@,";
+      output_text !description_doc;
+      Format.printf "@,"
+    end;
+
+    (* Print footer *)
+    output_text !footer_doc;
+    Format.printf "@."
+
+
 
 let set_specs specs_in =
-  specs := ( 'h', "help", "Prints the help message", Without_arg) :: specs_in;
+    specs := { short='h' ;
+               long ="help" ;
+               doc  ="Prints the help message." ;
+               arg  =Without_arg ;
+               opt  =Optional ;
+             } :: specs_in;
 
-  let specs =
-    List.filter (fun (x,_,_,_) -> x != ' ') !specs
-    |> List.map (fun x ->
-     match x with
-     | (short, long, doc, With_arg) ->
-         (short, long, None, Some (fun x -> Hashtbl.replace dict long x) )
-     | (short, long, doc, Without_arg) ->
-         (short, long, Some (fun () -> Hashtbl.replace dict long ""), None)
-     | (short, long, doc, With_opt_arg) ->
-         (short, long, Some (fun () -> Hashtbl.replace dict long ""),
-         Some (fun x -> Hashtbl.replace dict long x) )
-    )
-  in
+    let cmd_specs =
+      List.filter (fun x -> x.short != ' ') !specs
+      |> List.map (fun { short ; long ; opt ; doc ; arg } ->
+                  match arg with
+                  |  With_arg _ ->
+                      (short, long, None, Some (fun x -> Hashtbl.replace dict long x) )
+                  |  Without_arg ->
+                      (short, long, Some (fun () -> Hashtbl.replace dict long ""), None)
+                  |  With_opt_arg _ ->
+                      (short, long, Some (fun () -> Hashtbl.replace dict long ""),
+                      Some (fun x -> Hashtbl.replace dict long x) )
+                  )
+    in
 
-  Getopt.parse_cmdline specs (fun x -> anon_args := !anon_args @ [x]);
+    Getopt.parse_cmdline cmd_specs (fun x -> anon_args := !anon_args @ [x]);
 
-  if show_help () then
-      (help () ; exit 0)
+    if show_help () then
+        (help () ; exit 0);
+
+    (* Check that all mandatory arguments are set *)
+    List.filter (fun x -> x.short <> ' ' && x.opt = Mandatory) !specs
+    |> List.iter (fun x -> 
+        match get x.long with
+        | Some _ -> ()
+        | None -> failwith ("Error: --"^x.long^" option is missing.")
+        )
+;;
+
 
 let anon_args () = !anon_args
+
 
 

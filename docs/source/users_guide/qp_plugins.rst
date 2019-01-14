@@ -15,11 +15,11 @@ Usage
 
 .. code:: bash
 
-    qp_plugins list [ -i, --installed | -u, --uninstalled | -q, --repositories ]
+    qp_plugins list [-i] [-u] [-q]
     qp_plugins download <url>
     qp_plugins install <name>...
     qp_plugins uninstall <name>
-    qp_plugins create -n <name> [-r, --repository=<repo>] [<needed_modules>...]
+    qp_plugins create -n <name> [-r <repo>] [<needed_modules>...]
 
 .. option:: list
 
@@ -37,7 +37,7 @@ Usage
 
     List all the downloaded repositories.
 
-.. option:: download URL
+.. option:: download <url>
 
     Download an external repository. The URL points to a tar.gz file or a
     git repository, for example:

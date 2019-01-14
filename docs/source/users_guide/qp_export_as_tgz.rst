@@ -24,7 +24,7 @@ Usage
     Prints the help message
 
 .. note::
-   There can be conflicts due to the version of Glibc. The machine on which |QP| is
+   There can be conflicts due to the version of glibc. The machine on which |QP| is
    compiled should be the oldest one.
    
 

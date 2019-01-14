@@ -15,12 +15,12 @@ Usage
 
 .. code:: bash
 
-    qp_convert_output_to_ezfio <file.out> [-o EZFIO_DIR]
+    qp_convert_output_to_ezfio [-o EZFIO_DIR] FILE
 
 .. option:: -o, --output=EZFIO_DIR
 
     Renames the |EZFIO| directory.  If this option is not present, the default
-    name fill be :file:`<FILE.out>.ezfio`
+    name fill be :file:`FILE.ezfio`
 
 .. note::
    All the parameters of the wave functgion need to be presente in the output

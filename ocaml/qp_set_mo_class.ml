@@ -314,29 +314,49 @@ let default range =
 
 
 let () =
-  "Set the orbital classes in an EZFIO directory.
-The range of MOs has the form : \"[36-53,72-107,126-131]\"." |> Command_line.set_header_doc ;
+  let open Command_line in
+  begin
+    "Set the orbital classes in an EZFIO directory. The range of MOs has the form : \"[36-53,72-107,126-131]\"."
+    |> set_footer_doc ;
 
-  [ ( 'c',  "core", "range Range of     core MOs", Command_line.With_opt_arg);
-    ( 'i', "inact", "range Range of inactive MOs", Command_line.With_opt_arg);
-    ( 'a',   "act", "range Range of   active MOs", Command_line.With_opt_arg);
-    ( 'v',  "virt", "range Range of  virtual MOs", Command_line.With_opt_arg);
-    ( 'd',   "del", "range Range of  deleted MOs", Command_line.With_opt_arg);
-    ( 'q', "query", "Print the current MOs classes", Command_line.Without_arg);
-    Command_line.anonymous "<EZFIO_FILE>" "EZFIO directory";
-  ] |> Command_line.set_specs ;
+    [ { opt=Optional ; short='c'; long="core";
+        arg=With_arg "<range>";
+        doc="Range of core MOs." };
+
+      { opt=Optional ; short='i'; long="inact";
+        arg=With_arg "<range>";
+        doc="Range of inactive MOs." };
+
+      { opt=Optional ; short='a'; long="act";
+        arg=With_arg "<range>";
+        doc="Range of active MOs." };
+
+      { opt=Optional ; short='v'; long="virt";
+        arg=With_arg "<range>";
+        doc="Range of virtual MOs." };
+
+      { opt=Optional ; short='d'; long="del";
+        arg=With_arg "<range>";
+        doc="Range of deleted MOs." };
+
+      { opt=Optional ; short='q'; long="query";
+        arg=Without_arg;
+        doc="Print the current MO classes." };
+
+      anonymous "EZFIO_DIR" Mandatory "EZFIO directory.";
+    ] |> set_specs
+  end;
 
   (*  Handle options *)
-  if Command_line.show_help () then
-    exit 0;
 
   let core  = Command_line.get   "core"
   and inact = Command_line.get  "inact"
   and   act = Command_line.get    "act"
   and  virt = Command_line.get   "virt"
   and   del = Command_line.get    "del"
-  and     q = Command_line.get_bool "q"
+  and     q = Command_line.get_bool "query"
   in
+
 
   let ezfio_filename =
     match Command_line.anon_args () with

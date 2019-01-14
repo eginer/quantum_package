@@ -2,7 +2,7 @@
 file=$1
 
 if [[ -z ${QP_ROOT} ]] ; then
-  2>& echo "please source quantum_package.rc"
+  >&2 echo "please source quantum_package.rc"
   exit 1
 fi
 source ${QP_ROOT}/quantum_package.rc

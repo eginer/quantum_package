@@ -13,14 +13,9 @@ Usage
 
 .. code:: bash
 
-   qp_create_ezfio_from_xyz [FLAGS] (<xyz_file> | <zmt_file>) 
+   qp_create_ezfio_from_xyz [-a] -b <string> [-c <int>] [-d <float>] 
+      [-h] [-m <int>] [-o EZFIO_DIR] [-p <string>] [-x] [--] FILE
 
-   Flags :
-      [-a|--au]  [-b string|--basis=string]
-      [-c int|--charge=int]  [-d float|--dummy=float]  [-h|--help]
-      [-m int|--multiplicity=int]  [-o file|--output=file]
-      [-p string|--pseudo=string]  [-x|--cartesian]
-      
 
 .. option:: -a, --au
 
@@ -37,6 +32,10 @@ Usage
       -b "cc-pvtz | 1,H:sto-3g | 3,H:6-31g"
 
    By default, the basis set is obtained from the local database of the |qp|.
+   This option is mandatory.
+
+   If  ``<string>`` is set to ``show``, the list of all available basis sets is
+   displayed.
 
 
 .. option:: -c, --charge=<int>

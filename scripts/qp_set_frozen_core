@@ -13,7 +13,7 @@ zero.
 
 
 Usage:
-      qp_set_frozen_core [-q|--query] <EZFIO_DIRECTORY>
+      qp_set_frozen_core [-q|--query] EZFIO_DIR
 
 Options:
     -q --query   Prints in the standard output the number of frozen MOs
@@ -37,7 +37,7 @@ from ezfio import ezfio
 def main(arguments):
     """Main function"""
 
-    filename = arguments["<EZFIO_DIRECTORY>"]
+    filename = arguments["EZFIO_DIR"]
     ezfio.set_filename(filename)
 
     n_frozen = 0

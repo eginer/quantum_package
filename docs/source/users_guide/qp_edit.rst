@@ -27,8 +27,7 @@ Usage
 
 .. code:: bash
 
-   qp_edit [-c|--check] [-h|--help] [-n <int>|--ndet=<int>]
-         [-s <range>|--state=<range>] [--] EZFIO_DIR
+  qp_edit [-c] [-h] [-n <int>] [-s <range>] [--] EZFIO_DIR          
 
 .. option:: -c, --check
 

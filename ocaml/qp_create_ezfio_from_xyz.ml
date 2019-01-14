@@ -69,7 +69,6 @@ let list_basis () =
       )
   in
   List.sort basis_list ~compare:String.ascending
-  |> String.concat ~sep:"\n"
 
 
 (** Run the program *)
@@ -648,36 +647,54 @@ let run ?o b au c d m p cart xyz_file =
 
 let () =
 
-  "=== Available basis sets ===
 
-" ^ (list_basis ()) ^ "
+  let open Command_line in
+  begin
+    "Creates an EZFIO directory from a standard xyz file or from a z-matrix file in Gaussian format.  The basis set is defined as a single string if all the atoms are taken from the same basis set, otherwise specific elements can be defined as follows:
 
-============================
+    -b \"cc-pcvdz | H:cc-pvdz | C:6-31g\"
+    -b \"cc-pvtz | 1,H:sto-3g | 3,H:6-31g\"
 
-Creates an EZFIO directory from a standard xyz file or from a z-matrix file
-in Gaussian format. The basis set is defined as a single string if all the
-atoms are taken from the same basis set, otherwise specific elements can be
-defined as follows:
+If a file with the same name as the basis set exists, this file will be read.  Otherwise, the basis set is obtained from the database.
+"   |> set_description_doc ;
+    set_header_doc (Sys.argv.(0) ^ " - Quantum Package command");
 
- -b \"cc-pcvdz | H:cc-pvdz | C:6-31g\"
- -b \"cc-pvtz | 1,H:sto-3g | 3,H:6-31g\"
+    [ { opt=Optional ; short='o'; long="output";
+         arg=With_arg "EZFIO_DIR";
+         doc="Name of the created EZFIO directory."} ;
 
-If a file with the same name as the basis set exists, this file will be read.
-Otherwise, the basis set is obtained from the database.
+      { opt=Mandatory; short='b'; long="basis";
+        arg=With_arg "<string>";
+        doc="Name of basis set. If <string>=show, the list of all basis sets is displayed."} ;
 
-" |> Command_line.set_header_doc ;
+      { opt=Optional ; short='a'; long="au";
+        arg=Without_arg;
+        doc="Input geometry is in atomic units."} ;
 
-  [ ( 'o', "output", "<file> Name of the created EZFIO file.", Command_line.With_arg) ;
-    ( 'b', "basis", "<string> Name of basis set.", Command_line.With_arg) ;
-    ( 'a', "au", "Input geometry is in atomic units.", Command_line.Without_arg) ;
-    ( 'c', "charge", "<int> Total charge of the molecule. Default is 0.", Command_line.With_arg) ;
-    ( 'd', "dummy", "<float> Add dummy atoms. x * (covalent radii of the atoms)",  Command_line.With_arg);
-    ( 'm', "multiplicity", "<int> Spin multiplicity (2S+1) of the molecule. Default is 1.",  Command_line.With_arg);
-    ( 'p', "pseudo", "<string> Name of the pseudopotential.", Command_line.With_arg);
-    ( 'x', "cartesian", "Compute AOs in the Cartesian basis set (6d, 10f, ...)", Command_line.Without_arg);
-    Command_line.anonymous "(xyz_file|zmt_file)" "input file in xyz format or z-matrix."
-  ]
-  |> Command_line.set_specs ;
+      { opt=Optional ; short='c'; long="charge";
+        arg=With_arg "<int>";
+        doc="Total charge of the molecule. Default is 0."} ;
+
+      { opt=Optional ; short='d'; long="dummy";
+        arg=With_arg "<float>";
+        doc="Add dummy atoms. x * (covalent radii of the atoms)."} ;
+
+      { opt=Optional ; short='m'; long="multiplicity";
+        arg=With_arg "<int>";
+        doc="Spin multiplicity (2S+1) of the molecule. Default is 1."} ;
+
+      { opt=Optional ; short='p'; long="pseudo";
+        arg=With_arg "<string>";
+        doc="Name of the pseudopotential."} ;
+
+      { opt=Optional ; short='x'; long="cartesian";
+        arg=Without_arg;
+        doc="Compute AOs in the Cartesian basis set (6d, 10f, ...)."} ;
+
+      anonymous "FILE" Mandatory "Input file in xyz format or z-matrix.";
+    ]
+    |> set_specs 
+  end;
 
 
   (*  Handle options *)
@@ -687,7 +704,7 @@ Otherwise, the basis set is obtained from the database.
 
   let basis =
     match Command_line.get "basis" with
-    | None -> (Command_line.help () ; failwith "Error: [-b|--basis] option is missing.")
+    | None -> assert false
     | Some x -> x
   in
 
@@ -720,6 +737,13 @@ Otherwise, the basis set is obtained from the database.
   let cart =
     Command_line.get_bool "cartesian"
   in
+
+  if basis = "show" then
+  begin
+    list_basis ()
+    |> List.iter ~f:print_endline;
+    exit 0
+  end;
 
   let xyz_filename =
     match Command_line.anon_args () with
