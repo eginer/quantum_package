@@ -2,7 +2,7 @@
    
 source ${QP_ROOT}/etc/autocomplete.rc
 
-_Complete()
+_configure_Complete()
 {
   local cur
 
@@ -31,5 +31,5 @@ _Complete()
   esac
 }
 
-complete -F _Complete configure
+complete -F _configure_Complete configure
 

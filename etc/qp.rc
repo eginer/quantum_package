@@ -51,13 +51,15 @@ function qp()
       shift
       # Replace ':' by spaces
       for arg in $@ ; do
-        if [[ $arg =~ -* ]] ; then
-          _ARGS+=("\"${arg//:/ }\"")
-        else
-          _ARGS+=("${arg}")
-        fi
+        case $arg in
+          -*)
+          _ARGS+=("${arg}") ;;
+          *) 
+          _ARGS+=("\"${arg//:/ }\"") ;;
+        esac
       done
-      NAME=$(eval "qp_create_ezfio_from_xyz ${_ARGS}")
+      echo "qp_create_ezfio_from_xyz ${_ARGS[@]}"
+      NAME=$(eval "qp_create_ezfio_from_xyz ${_ARGS[@]}")
       if [[ -d $NAME ]] ; then
         [[ -d $EZFIO_FILE ]] && ezfio unset_file
         ezfio set_file $NAME
@@ -144,7 +146,7 @@ function _get_basis_sets () {
 
 
 
-_Complete()
+_qp_Complete()
 {
   local cur
 
@@ -258,7 +260,7 @@ _Complete()
         return 0
         ;;
       set|has|get)
-        COMPREPLY=( $(compgen -W "$(cd ${EZFIO_FILE} ; \ls -d */ | sed 's|/||g')" -- $cur ) )
+        COMPREPLY=( $(compgen -d "$(cd ${EZFIO_FILE} ; \ls -d */ | sed 's|/||g')" -- $cur ) )
         return 0
         ;;
       edit)
@@ -278,7 +280,7 @@ _Complete()
 
     case "${prev}" in
       set_file)
-        COMPREPLY=( $(compgen -W "$(\ls -d */ | sed 's|/||g')" -- ${cur} ) )
+        COMPREPLY=( $(compgen -W "$(for i in ./* ; do [[ -f ${i}/ezfio/.version ]] && echo $i ; done)" -- ${cur} ) )
         return 0
         ;;
       *)
@@ -290,4 +292,4 @@ _Complete()
   fi
 }
 
-complete -F _Complete qp
+complete -F _qp_Complete qp
