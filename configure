@@ -42,6 +42,20 @@ function error() {
     exit 2
 }
 
+function execute () {
+    local _command
+    echo "Executing:"
+    while read -r line; do
+      echo "  " $line
+      _command+="${line} ;"
+    done 
+    sleep 1
+    echo ""
+    printf "\e[0;94m"
+    eval "set -x ; $_command set +x"
+    printf "\e[m"
+    echo ""
+}
 
 PACKAGES=""
 OCAML_PACKAGES="ocamlbuild cryptokit zmq core sexplib ppx_sexp_conv ppx_deriving getopt"
@@ -85,6 +99,7 @@ source quantum_package.rc
 
 
 function fail() {
+        echo "You can try to install it using the -i option."
         echo "Please refer to INSTALL.rst to install the missing dependencies."
         exit 1
 }
@@ -96,7 +111,13 @@ function success() {
 }
 
 function download() {
+        echo "Downloading $1"
+        echo ""
+        printf "\e[0;34m"
         wget --no-check-certificate $1 --output-document=$2 || error "Unable to download $1"
+        printf "\e[m"
+        echo "Saved dowloaded file as $2"
+        echo ""
 }
 
 function not_found() {
@@ -133,6 +154,7 @@ function find_dir() {
 
 
 if [[ "${PACKAGES}.x" != ".x" ]] ; then
+        printf "\e[0;31m"
         echo ""
 	echo "#########################################################"
 	echo "#                                                       #"
@@ -145,7 +167,9 @@ if [[ "${PACKAGES}.x" != ".x" ]] ; then
 	echo "# You may refer to the INSTALL.rst file for help.       #"
 	echo "#                                                       #"
 	echo "#########################################################"
+        printf "\e[m"
         echo ""
+        sleep 1
 fi
 
 if [[ ${PACKAGES} = all ]] ; then
@@ -160,7 +184,10 @@ for PACKAGE in ${PACKAGES} ; do
             download \
               "https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip" \
               "${QP_ROOT}"/external/ninja.zip
-            unzip "${QP_ROOT}"/external/ninja.zip -d "${QP_ROOT}"/bin
+            execute << EOF
+              rm -f "\${QP_ROOT}"/bin/ninja
+              unzip "\${QP_ROOT}"/external/ninja.zip -d "\${QP_ROOT}"/bin
+EOF
 
 
     elif [[ ${PACKAGE} = irpf90 ]] ; then
@@ -169,13 +196,13 @@ for PACKAGE in ${PACKAGES} ; do
             download \
               "https://gitlab.com/scemama/irpf90/-/archive/v1.7.4/irpf90-v1.7.4.tar.gz" \
               "${QP_ROOT}"/external/irpf90.tar.gz
-            (
-              cd "${QP_ROOT}"/external
+            execute << EOF
+              cd "\${QP_ROOT}"/external
               tar --gunzip --extract --file irpf90.tar.gz
               rm irpf90.tar.gz
               cd irpf90-*
               make
-            )
+EOF
     
 
     elif [[ ${PACKAGE} = zeromq ]] ; then
@@ -183,15 +210,15 @@ for PACKAGE in ${PACKAGES} ; do
             download \
               "https://github.com/zeromq/libzmq/releases/download/v4.2.5/zeromq-4.2.5.tar.gz" \
               "${QP_ROOT}"/external/zeromq.tar.gz
-            (
-              cd "${QP_ROOT}"/external
+            execute << EOF
+              cd "\${QP_ROOT}"/external
               tar --gunzip --extract --file zeromq.tar.gz
               rm zeromq.tar.gz
               cd zeromq-*
-              ./configure --prefix="$QP_ROOT" --without-libsodium --enable-libunwind=no
+              ./configure --prefix="\$QP_ROOT" --without-libsodium --enable-libunwind=no
               make
               make install
-            )
+EOF
 
 
     elif [[ ${PACKAGE} = f77zmq ]] ; then
@@ -199,17 +226,17 @@ for PACKAGE in ${PACKAGES} ; do
             download \
               "https://github.com/scemama/f77_zmq/archive/v4.2.5.tar.gz" \
               "${QP_ROOT}"/external/f77_zmq.tar.gz
-            (
-              cd "${QP_ROOT}"/external
+            execute << EOF
+              cd "\${QP_ROOT}"/external
               tar --gunzip --extract --file f77_zmq.tar.gz
               rm f77_zmq.tar.gz
               cd f77_zmq-*
-              export ZMQ_H="$QP_ROOT"/include/zmq.h
+              export ZMQ_H="\$QP_ROOT"/include/zmq.h
               make
-              cp libf77zmq.a "${QP_ROOT}"/lib
-              cp libf77zmq.so "${QP_ROOT}"/lib
-              cp f77_zmq_free.h "${QP_ROOT}"/include
-            )
+              cp libf77zmq.a "\${QP_ROOT}"/lib
+              cp libf77zmq.so "\${QP_ROOT}"/lib
+              cp f77_zmq_free.h "\${QP_ROOT}"/include
+EOF
 
     
     elif [[ ${PACKAGE} = ocaml ]] ; then
@@ -217,11 +244,11 @@ for PACKAGE in ${PACKAGES} ; do
             download \
               "https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh" \
               "${QP_ROOT}"/external/opam_installer.sh
-            chmod +x "${QP_ROOT}"/external/opam_installer.sh
-            rm --force ${QP_ROOT}/bin/opam
 
             if [[ -n ${TRAVIS} ]] ; then
                 # Special commands for Travis CI
+                chmod +x "${QP_ROOT}"/external/opam_installer.sh
+                rm --force ${QP_ROOT}/bin/opam
                 export OPAMROOT=${HOME}/.opam
                 cat << EOF | bash ${QP_ROOT}/external/opam_installer.sh --no-backup 
 ${QP_ROOT}/bin
@@ -229,23 +256,30 @@ ${QP_ROOT}/bin
 
 EOF
 
+                rm ${QP_ROOT}/external/opam_installer.sh
+                source ${OPAMROOT}/opam-init/init.sh > /dev/null 2> /dev/null || true
+
+                ${QP_ROOT}/bin/opam init --disable-sandboxing --verbose \
+                    --yes --comp=4.07.0
+
+                eval $(${QP_ROOT}/bin/opam env)
+                opam install -y ${OCAML_PACKAGES}  || exit 1
             else
                 # Conventional commands
-                export OPAMROOT=${OPAMROOT:-${QP_ROOT}/external/opam}
-                echo "======================================================== " 
-                echo ""
-                echo "|QP>  Please install it here:  " ${QP_ROOT}/bin
-                echo "" 
-                sh ${QP_ROOT}/external/opam_installer.sh 
+                execute << EOF
+                  chmod +x "\${QP_ROOT}"/external/opam_installer.sh
+                  rm --force \${QP_ROOT}/bin/opam
+                  export OPAMROOT=\${OPAMROOT:-\${QP_ROOT}/external/opam}
+                  echo \${QP_ROOT}/bin \
+                  | sh \${QP_ROOT}/external/opam_installer.sh 
+                  rm \${QP_ROOT}/external/opam_installer.sh
+                  source \${OPAMROOT}/opam-init/init.sh > /dev/null 2> /dev/null || true
+                  \${QP_ROOT}/bin/opam init --disable-sandboxing --verbose \
+                      --yes --comp=4.07.0
+                  eval \$(\${QP_ROOT}/bin/opam env)
+                  opam install -y \${OCAML_PACKAGES}  || exit 1
+EOF
             fi
-            source ${OPAMROOT}/opam-init/init.sh > /dev/null 2> /dev/null || true
-            rm ${QP_ROOT}/external/opam_installer.sh
-
-            ${QP_ROOT}/bin/opam init --disable-sandboxing --verbose \
-                 --yes --comp=4.07.0
-
-            eval $(${QP_ROOT}/bin/opam env)
-            opam install -y ${OCAML_PACKAGES}  || exit 1
 
             
     elif [[ ${PACKAGE} = ezfio ]] ; then
@@ -253,11 +287,12 @@ EOF
             download \
               "https://gitlab.com/scemama/EZFIO/-/archive/v1.3.4/EZFIO-v1.3.4.tar.gz" \
               "${QP_ROOT}"/external/ezfio.tar.gz
-            (
-              cd "${QP_ROOT}"/external
+            execute << EOF
+              cd "\${QP_ROOT}"/external
               tar --gunzip --extract --file ezfio.tar.gz
+              rm -rf ezfio
               mv EZFIO-* ezfio
-            )
+EOF
 
             
     elif [[ ${PACKAGE} = emsl ]] ; then
@@ -265,11 +300,11 @@ EOF
             download \
               "https://github.com/LCPQ/EMSL_Basis_Set_Exchange_Local/archive/v1.0.tar.gz" \
               "${QP_ROOT}"/external/EMSL.tar.gz
-            (
-              cd "${QP_ROOT}"/external
+            execute << EOF
+              cd "\${QP_ROOT}"/external
               tar --gunzip --extract --file EMSL.tar.gz
               mv EMSL_Basis* emsl
-            )
+EOF
 
 
     elif [[ ${PACKAGE} = docopt ]] ; then
@@ -277,12 +312,12 @@ EOF
             download \
               "https://github.com/docopt/docopt/archive/0.6.2.tar.gz" \
               "${QP_ROOT}"/external/docopt.tar.gz
-            (
-              cd "${QP_ROOT}"/external
+            execute << EOF
+              cd "\${QP_ROOT}"/external
               tar --gunzip --extract --file docopt.tar.gz 
-              mv docopt-*/docopt.py "${QP_ROOT}/external/Python"
+              mv docopt-*/docopt.py "\${QP_ROOT}/external/Python"
               rm --recursive --force -- docopt-*/ docopt.tar.gz
-            )
+EOF
 
 
     elif [[ ${PACKAGE} = resultsFile ]] ; then
@@ -290,28 +325,28 @@ EOF
             download \
               "https://gitlab.com/scemama/resultsFile/-/archive/master/resultsFile-master.tar.gz" \
               "${QP_ROOT}"/external/resultsFile.tar.gz
-            (
-              cd "${QP_ROOT}"/external
+            execute << EOF
+              cd "\${QP_ROOT}"/external
               tar --gunzip --extract --file resultsFile.tar.gz 
-              mv resultsFile-master/resultsFile "${QP_ROOT}/external/Python"
+              mv resultsFile-master/resultsFile "\${QP_ROOT}/external/Python"
               rm --recursive --force resultsFile-master resultsFile.tar.gz
-            )
+EOF
 
     elif [[ ${PACKAGE} = bats ]] ; then
 
             download \
               "https://github.com/bats-core/bats-core/archive/v1.1.0.tar.gz" \
               "${QP_ROOT}"/external/bats.tar.gz
-            (
-              cd "${QP_ROOT}"/external
+            execute << EOF
+              cd "\${QP_ROOT}"/external
               tar -zxf bats.tar.gz 
               (
               cd bats-core-1.1.0/
-              ./install.sh $QP_ROOT
+              ./install.sh \${QP_ROOT}
               )
               rm --recursive --force -- bats-core-1.1.0 \
-                  "${QP_ROOT}"/external/bats.tar.gz
-            )
+                  "\${QP_ROOT}"/external/bats.tar.gz
+EOF
 
     fi
 
