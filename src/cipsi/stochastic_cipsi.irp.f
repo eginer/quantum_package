@@ -9,7 +9,7 @@ subroutine run_stochastic_cipsi
 
   double precision :: rss
   double precision, external :: memory_of_double
-  threshold_generators = 2.d0
+  threshold_generators = 1.d0
   SOFT_TOUCH threshold_generators
 
   rss = memory_of_double(N_states)*4.d0

@@ -5,7 +5,7 @@ source $QP_ROOT/quantum_package.rc
 
 
 function run() {
-  thresh=1.e-8
+  thresh=1.e-9
   test_exe scf || skip
   qp set_file $1
   qp edit --check
@@ -21,7 +21,7 @@ function run() {
 }
 
 @test "SO" { # 0.539000
-  run so.ezfio -25.7175263371942
+  run so.ezfio -25.7175126082701
 }
 
 @test "HCO" { # 0.636700
