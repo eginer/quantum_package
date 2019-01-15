@@ -54,7 +54,7 @@ function execute () {
     sleep 1
     echo ""
     printf "\e[0;94m"
-    eval "set -x ; $_command set +x" || exit -1
+    ( eval "set -x ; $_command set +x" ) || exit -1
     printf "\e[m"
     echo ""
 }
@@ -431,7 +431,7 @@ if [[ -n $CONFIG ]] ; then
 fi
 
 if [[ -f ${QP_ROOT}/build.ninja ]] ; then
-	exec ${QP_ROOT}/bin/qpsh
+        [[ -z ${TRAVIS} ]] && exec ${QP_ROOT}/bin/qpsh
 else 
 	echo ""
 	echo "${QP_ROOT}/build.ninja does not exist,"
