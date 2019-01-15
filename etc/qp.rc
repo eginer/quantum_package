@@ -50,15 +50,16 @@ function qp()
     "create_ezfio_from_xyz")
       shift
       # Replace ':' by spaces
-      for arg in $@ ; do
+      for arg in "$@" ; do
         case $arg in
-          -*)
-          _ARGS+=("${arg}") ;;
-          *) 
-          _ARGS+=("\"${arg//:/ }\"") ;;
+          *:*) 
+            _ARGS+=("\"${arg//:/ }\"") ;;
+          *)
+            _ARGS+=("${arg}") ;;
         esac
       done
-      NAME=$(eval "qp_create_ezfio_from_xyz ${_ARGS[@]}")
+      echo qp_create_ezfio_from_xyz "${_ARGS[@]}"
+      NAME=$(qp_create_ezfio_from_xyz "${_ARGS[@]}")
       if [[ -d $NAME ]] ; then
         [[ -d $EZFIO_FILE ]] && ezfio unset_file
         ezfio set_file $NAME
