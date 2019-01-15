@@ -20,13 +20,13 @@ Usage:
   qp set         DIRECTORY   ITEM         : Array values read from stdin
 
   qp run         PROGRAM
-  qp man         PROGRAM   
+  qp man         PROGRAM
   qp srun        PROGRAM
   qp mpirun      PROGRAM
 
   qp set_frozen_core
 
-  qp create_ezfio_from_xyz 
+  qp create_ezfio_from_xyz
   qp convert_output_to_ezfio
   qp update
   qp set_mo_class
@@ -52,7 +52,7 @@ function qp()
       # Replace ':' by spaces
       for arg in "$@" ; do
         case $arg in
-          *:*) 
+          *:*)
             _ARGS+=("\"${arg//:/ }\"") ;;
           *)
             _ARGS+=("${arg}") ;;
@@ -76,12 +76,12 @@ function qp()
 
     "set_mo_class")
       shift
-      qp_set_mo_class "$@" -- ${EZFIO_FILE} 
+      qp_set_mo_class "$@" -- ${EZFIO_FILE}
       ;;
 
     "edit")
       shift
-      qp_edit "$@" -- ${EZFIO_FILE} 
+      qp_edit "$@" -- ${EZFIO_FILE}
       ;;
 
     "run")
@@ -115,7 +115,7 @@ function qp()
       }
       PS1="\$(_check_ezfio)\n$PS1"
       ;;
-      
+
     "plugins")
       shift
       qp_plugins $@
@@ -130,7 +130,7 @@ function qp()
       _qp_usage
       ;;
   esac
-  
+
 }
 
 
@@ -213,7 +213,7 @@ _qp_Complete()
           uninstall)
             COMPREPLY=( $(compgen -W "$(qp_plugins list -i)" -- $cur ) )
             return 0;;
-          create) 
+          create)
             COMPREPLY=( $(compgen -W "-n " -- $cur ) )
             return 0;;
           *)
