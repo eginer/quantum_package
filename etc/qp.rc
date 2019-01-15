@@ -38,8 +38,14 @@ Usage:
 function qp()
 {
   case $1 in
-    "has"|"set"|"get"|"set_file"|"unset_file")
-        ezfio "$@"
+    "set_file")
+        if [[ -d ${EZFIO_FILE} ]] ; then
+           ezfio "$@"
+        else
+           >&2 echo "qp: ${EZFIO_FILE} not found"
+        fi;;
+
+    "has"|"set"|"get"|"unset_file")
       ;;
 
     "set_frozen_core")
@@ -140,7 +146,7 @@ function _get_basis_sets () {
   | while IFS= read -r LINE ; do
       printf '%s\n' ${LINE}
     done
-  (cd ~/quantum_package/data/basis/ ; \ls)
+  (cd ${QP_ROOT}/data/basis/ ; \ls)
   ) | sort | uniq
 }
 
