@@ -116,6 +116,11 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error, variance, norm, N_in)
   integer(ZMQ_PTR), external     :: new_zmq_to_qp_run_socket
   type(selection_buffer)         :: b
 
+  PROVIDE psi_bilinear_matrix_columns_loc psi_det_alpha_unique psi_det_beta_unique
+  PROVIDE psi_bilinear_matrix_rows psi_det_sorted_order psi_bilinear_matrix_order
+  PROVIDE psi_bilinear_matrix_transp_rows_loc psi_bilinear_matrix_transp_columns
+  PROVIDE psi_bilinear_matrix_transp_order psi_selectors_coef_transp psi_det_sorted
+
 
   if (N_det < max(10,N_states)) then
     pt2=0.d0
