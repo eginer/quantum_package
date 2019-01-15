@@ -45,6 +45,7 @@ if [[ -z ${QP_ROOT} ]] ; then
         echo "Error: quantum_package.rc is not sourced"
         exit -1
 fi
+source ${QP_ROOT}/quantum_package.rc
 
 
 # Get host names
