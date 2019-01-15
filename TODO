@@ -60,4 +60,7 @@ Refaire les benchmarks
 # Toto
 Si un provider est un programme, generer une page a lui tout seul avec le man
 
-# qp_stop : pour forcer a terminer proprement le programme (kill clean)
+qp_stop : pour forcer a terminer proprement le programme (kill clean)
+
+Virer EMSL
+

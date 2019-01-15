@@ -240,7 +240,7 @@ _qp_Complete()
   then
 
     case "${prev2}" in
-      "set"|has|get)
+      set|has|get)
         if [[ ${prev} == "qp" ]] ; then
           COMPREPLY=( $(compgen -W "plugins set set_frozen_core set_mo_class" -- $cur ) )
         elif [[ ! -d ${EZFIO_FILE}/${prev} ]] ; then
@@ -266,7 +266,7 @@ _qp_Complete()
         return 0
         ;;
       set|has|get)
-        COMPREPLY=( $(compgen -d "$(cd ${EZFIO_FILE} ; \ls -d */ | sed 's|/||g')" -- $cur ) )
+        COMPREPLY=( $(compgen -W "$(cd ${EZFIO_FILE} ; \ls -d */ | sed 's|/||g')" -- $cur ) )
         return 0
         ;;
       edit)
