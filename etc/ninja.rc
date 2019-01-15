@@ -4,7 +4,7 @@ export NINJA=${QP_ROOT}/bin/ninja
 
 function ninja () {
   if [[ -f ${QP_ROOT}/build.ninja ]] ; then
-	exec ninja "$@"
+	${QP_ROOT}/bin/ninja "$@"
   else
 	>&2 echo "Error: build.ninja does not exists.
 You need to run ./configure  first."
