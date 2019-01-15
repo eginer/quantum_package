@@ -21,10 +21,12 @@ Usage:
   $(basename $0) -i <package> | --install=<package>
 
 Options:
-  -c, --config=<file>      Define a configuration file, in "${QP_ROOT}/config/". 
-  -h, --help               Print the help message
-  -i, --install=<package>  Install <package>. Use at your own risk:
-                           no support will be provided for the installation of dependencies.
+  -c, --config=<file>      Define a COMPILATION configuration file,
+                           in "${QP_ROOT}/config/". 
+  -h, --help               Print the HELP message
+  -i, --install=<package>  INSTALL <package>. Use at your OWN RISK:
+			   no support will be provided for the installation of
+			   dependencies.
 
 Example:
   ./$(basename $0) -c config/gfortran.cfg
@@ -68,7 +70,7 @@ while true : ; do
                 *) if [[ -f $2 ]] ; then
                       CONFIG="$2"
                    else
-                      error "error: configuration file not accessible"
+                      error "error: configuration file $2 not found."
                       exit 1
                    fi
             esac 
@@ -414,6 +416,7 @@ if [[ ${RESULTSFILE} = $(not_found) ]] ; then
         fail
 fi
 
+printf "\e[0;34m"
 echo "  ___________________________  "
 echo "< All dependencies installed. >"
 echo "  ---------------------------  "
@@ -423,22 +426,24 @@ echo "             (__)\       )\/\. "
 echo "                 ||----w |     "
 echo "                 ||     ||     "
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-echo ""
-echo "Now, if you want to use the current shell,"
-echo ""
-echo "  source $QP_ROOT/quantum_package.rc"
-echo ""
-echo "Or if you want to use a Bash shell adapted for QP:"
-echo ""
-echo "  $QP_ROOT/qpsh"
-echo ""
-   
-    
+printf "\e[m\n"
+
 
 if [[ -n $CONFIG ]] ; then
 
         "${QP_ROOT}"/scripts/compilation/qp_create_ninja create --development "${CONFIG}"
 fi
 
+if [[ -f ${QP_ROOT}/build.ninja ]] ; then
+	exec ${QP_ROOT}/bin/qpsh
+else 
+	echo ""
+	echo "${QP_ROOT}/build.ninja does not exist,"
+	echo "you need to specify the COMPILATION configuration file."
+	echo "See  ./configure --help  for more details." 
+	echo ""
+fi
+   
+    
 
 
