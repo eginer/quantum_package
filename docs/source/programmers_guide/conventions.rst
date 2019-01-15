@@ -88,11 +88,20 @@ IRPF90
 
 The code can be automatically indented with :command:`irp_indent`.
 
-Mathematical formulas in the `BEGIN_DOC...END_DOC` sections sould be written
-in LaTeX format, between `$` symbols.
+Lines sould not be longer than 80 characters.
+
+Mathematical formulas in the `BEGIN_DOC...END_DOC` sections sould be written in
+LaTeX format, between `$` symbols.
+
+All the providers, subroutines and functions should have a
+`BEGIN_DOC...END_DOC` block.
 
 Providers should never be present in the same file as a main program.
 
+String must not use double quotes (`"`) but single quotes (`'`).
 
+After a `read` statement there should be no comma.
+
+Only standard Fortran is allowed : Intel or GNU extensions are forbidden.
 
 

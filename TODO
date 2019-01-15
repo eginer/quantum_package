@@ -55,17 +55,10 @@ Refaire les benchmarks
 # Documentation de qpsh
 
 # Documentation de /etc
-# Extrapolation qui prend aussi en compe la variance
+# Extrapolation qui prend aussi en compe la variance? a tester
 # Parler dans le papier de rPT2
 
 # Toto
 Si un provider est un programme, generer une page a lui tout seul avec le man
 
-Options obligatoires dans Command_line.ml
-Documentation des commandes a updater
-
-# Completion foireuse:
-  qp create_ezfio_from_xyz -b 6-31g ./<Tab>
-  qp create_ezfio_from_xyz -b <Tab>
-
-# Verifier la doc des commandes avec les options - et --
+# qp_stop : pour forcer a terminer proprement le programme (kill clean)

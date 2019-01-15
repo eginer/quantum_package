@@ -3,23 +3,9 @@ use bitmasks
 BEGIN_PROVIDER [ double precision, selection_weight, (N_states) ]
    implicit none
    BEGIN_DOC
-   ! Weights in the state-average calculation of the density matrix
+   ! Weights used in the selection criterion
    END_DOC
-   logical                        :: exists
-
-   selection_weight(:) = 1.d0
-   if (used_weight == 0) then
-     selection_weight(:) = c0_weight(:)
-   else if (used_weight == 1) then
-     selection_weight(:) = 1./N_states
-   else
-     call ezfio_has_determinants_state_average_weight(exists)
-     if (exists) then
-       call ezfio_get_determinants_state_average_weight(selection_weight)
-     endif
-   endif
-   selection_weight(:) = selection_weight(:)+1.d-31
-   selection_weight(:) = selection_weight(:)/(sum(selection_weight(:)))
+   selection_weight(1:N_states) = c0_weight(1:N_states)
 END_PROVIDER
 
 
@@ -171,9 +157,25 @@ subroutine select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_d
   double precision :: rss
   double precision, external :: memory_of_double, memory_of_int
 
-  rss = memory_of_int( (8*N_int+5)*N_det + N_det_alpha_unique + 4*N_int*N_det_selectors)
-  rss += memory_of_double(mo_num*mo_num*(N_states+1))
+  PROVIDE psi_bilinear_matrix_columns_loc psi_det_alpha_unique psi_det_beta_unique
+  PROVIDE psi_bilinear_matrix_rows psi_det_sorted_order psi_bilinear_matrix_order
+  PROVIDE psi_bilinear_matrix_transp_rows_loc psi_bilinear_matrix_transp_columns
+  PROVIDE psi_bilinear_matrix_transp_order psi_selectors_coef_transp
+
+  rss = memory_of_double(             &
+            N_int*2*N_det             &   ! preinteresting_det
+          + N_int*2*N_det             &   ! fullminilist
+          + N_int*2*N_det_selectors   &   ! minilist
+          + N_states*mo_num*mo_num    &   ! mat
+        ) + memory_of_int(            &
+          + (N_det+1)*2               &   ! preinteresting, prefullinteresting,
+          + (N_det+1)*2               &   ! interesting, fullinteresting
+          + mo_num*mo_num/2           &   ! banned
+          + mo_num/2                  &   ! bannedOrb
+        )
+
   call check_mem(rss,irp_here)
+
   allocate (preinteresting_det(N_int,2,N_det))
 
   monoAdo = .true.
@@ -199,11 +201,6 @@ subroutine select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_d
   integer, allocatable :: indices(:), exc_degree(:), iorder(:)
   allocate (indices(N_det),  &
             exc_degree(max(N_det_alpha_unique,N_det_beta_unique)))
-
-  PROVIDE psi_bilinear_matrix_columns_loc psi_det_alpha_unique psi_det_beta_unique
-  PROVIDE psi_bilinear_matrix_rows psi_det_sorted_order psi_bilinear_matrix_order
-  PROVIDE psi_bilinear_matrix_transp_rows_loc psi_bilinear_matrix_transp_columns
-  PROVIDE psi_bilinear_matrix_transp_order
 
   k=1
   do i=1,N_det_alpha_unique
@@ -561,11 +558,11 @@ subroutine fill_buffer_double(i_generator, sp, h1, h2, bannedOrb, banned, fock_d
         variance(istate) = variance(istate) + alpha_h_psi * alpha_h_psi
         norm(istate) = norm(istate) + coef * coef
 
-        if (h0_type == "Variance") then
-          sum_e_pert = sum_e_pert - alpha_h_psi * alpha_h_psi * selection_weight(istate)
-        else
+!        if (h0_type == "Variance") then
+!          sum_e_pert = sum_e_pert - alpha_h_psi * alpha_h_psi * selection_weight(istate)
+!        else
           sum_e_pert = sum_e_pert + e_pert * selection_weight(istate)
-        endif
+!        endif
       end do
 
       if(sum_e_pert <= buf%mini) then
@@ -590,7 +587,7 @@ subroutine splash_pq(mask, sp, det, i_gen, N_sel, bannedOrb, banned, mat, intere
   integer(bit_kind)              :: perMask(N_int, 2), mobMask(N_int, 2), negMask(N_int, 2)
   integer(bit_kind)             :: phasemask(N_int,2)
 
-  PROVIDE psi_selectors_coef_transp
+  PROVIDE psi_selectors_coef_transp psi_det_sorted
   mat = 0d0
 
   do i=1,N_int

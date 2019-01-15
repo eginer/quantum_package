@@ -26,6 +26,8 @@ subroutine run_selection_slave(thread,iproc,energy)
   PROVIDE psi_bilinear_matrix_rows psi_det_sorted_order psi_bilinear_matrix_order
   PROVIDE psi_bilinear_matrix_transp_rows_loc psi_bilinear_matrix_transp_columns
   PROVIDE psi_bilinear_matrix_transp_order N_int pt2_F
+  PROVIDE psi_selectors_coef_transp psi_det_sorted
+
 
   zmq_to_qp_run_socket = new_zmq_to_qp_run_socket()
 
