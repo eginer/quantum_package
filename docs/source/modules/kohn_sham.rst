@@ -1,9 +1,9 @@
-.. _kohn_sham:
-
-.. program:: kohn_sham
-
-.. default-role:: option
-
+.. _kohn_sham: 
+ 
+.. program:: kohn_sham 
+ 
+.. default-role:: option 
+ 
 =========
 kohn_sham
 =========
@@ -12,7 +12,7 @@ kohn_sham
 The Kohn-Sham module performs *Restricted* Kohn-Sham calculations (the
 spatial part of the |MOs| is common for alpha and beta spinorbitals).
 
-The Kohn-Sham in an SCF and therefore is based on the ``scf_utils`` structure. 
+The Kohn-Sham in an SCF and therefore is based on the ``scf_utils`` structure.
 It performs the following actions:
 
 #. Compute/Read all the one- and two-electron integrals, and store them in memory
@@ -20,12 +20,12 @@ It performs the following actions:
    will read them as initial guess. Otherwise, it will create a guess.
 #. Perform the |SCF| iterations
 
-The definition of the Fock matrix is in :file:`kohn_sham fock_matrix_ks.irp.f` 
-For the keywords related to the |SCF| procedure, see the ``scf_utils`` directory where you will find all options. 
-The main are: 
+The definition of the Fock matrix is in :file:`kohn_sham fock_matrix_ks.irp.f`
+For the keywords related to the |SCF| procedure, see the ``scf_utils`` directory where you will find all options.
+The main are:
 
-#. :option:`scf_utils thresh_scf` 
-#. :option:`scf_utils level_shift` 
+#. :option:`scf_utils thresh_scf`
+#. :option:`scf_utils level_shift`
 
 At each iteration, the |MOs| are saved in the |EZFIO| database. Hence, if the calculation
 crashes for any unexpected reason, the calculation can be restarted by running again
@@ -45,111 +45,17 @@ To start a calculation from scratch, the simplest way is to remove the
 
 
 
-
-
-
-Providers
----------
-
-
-.. c:var:: ao_potential_alpha_xc
-
-    .. code:: text
-
-        double precision, allocatable	:: ao_potential_alpha_xc	(ao_num,ao_num)
-        double precision, allocatable	:: ao_potential_beta_xc	(ao_num,ao_num)
-
-    File: :file:`pot_functionals.irp.f`
-
-    
-
-
-
-
-.. c:var:: ao_potential_beta_xc
-
-    .. code:: text
-
-        double precision, allocatable	:: ao_potential_alpha_xc	(ao_num,ao_num)
-        double precision, allocatable	:: ao_potential_beta_xc	(ao_num,ao_num)
-
-    File: :file:`pot_functionals.irp.f`
-
-    
-
-
-
-
-.. c:var:: e_correlation_dft
-
-    .. code:: text
-
-        double precision	:: e_correlation_dft
-
-    File: :file:`pot_functionals.irp.f`
-
-    
-
-
-
-
-.. c:var:: e_exchange_dft
-
-    .. code:: text
-
-        double precision	:: e_exchange_dft
-
-    File: :file:`pot_functionals.irp.f`
-
-    
-
-
-
-
-.. c:var:: fock_matrix_alpha_no_xc_ao
-
-    .. code:: text
-
-        double precision, allocatable	:: fock_matrix_alpha_no_xc_ao	(ao_num,ao_num)
-        double precision, allocatable	:: fock_matrix_beta_no_xc_ao	(ao_num,ao_num)
-
-    File: :file:`fock_matrix_ks.irp.f`
-
-    Mono electronic an Coulomb matrix in ao basis set
-
-
-
-
-.. c:var:: fock_matrix_beta_no_xc_ao
-
-    .. code:: text
-
-        double precision, allocatable	:: fock_matrix_alpha_no_xc_ao	(ao_num,ao_num)
-        double precision, allocatable	:: fock_matrix_beta_no_xc_ao	(ao_num,ao_num)
-
-    File: :file:`fock_matrix_ks.irp.f`
-
-    Mono electronic an Coulomb matrix in ao basis set
-
-
-
-
-.. c:var:: fock_matrix_energy
-
-    .. code:: text
-
-        double precision	:: ks_energy
-        double precision	:: two_e_energy
-        double precision	:: one_e_energy
-        double precision	:: fock_matrix_energy
-        double precision	:: trace_potential_xc
-
-    File: :file:`ks_enery.irp.f`
-
-    Kohn-Sham energy containing the nuclear repulsion energy, and the various components of this quantity.
-
-
-
+ 
+ 
+ 
+Programs 
+-------- 
+ 
+ * :ref:`ks_scf` 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: ks_energy
 
@@ -166,83 +72,18 @@ Providers
     Kohn-Sham energy containing the nuclear repulsion energy, and the various components of this quantity.
 
 
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
-.. c:var:: one_e_energy
-
-    .. code:: text
-
-        double precision	:: ks_energy
-        double precision	:: two_e_energy
-        double precision	:: one_e_energy
-        double precision	:: fock_matrix_energy
-        double precision	:: trace_potential_xc
-
-    File: :file:`ks_enery.irp.f`
-
-    Kohn-Sham energy containing the nuclear repulsion energy, and the various components of this quantity.
-
-
-
-
-.. c:var:: trace_potential_xc
+.. c:function:: ks_cf
 
     .. code:: text
 
-        double precision	:: ks_energy
-        double precision	:: two_e_energy
-        double precision	:: one_e_energy
-        double precision	:: fock_matrix_energy
-        double precision	:: trace_potential_xc
-
-    File: :file:`ks_enery.irp.f`
-
-    Kohn-Sham energy containing the nuclear repulsion energy, and the various components of this quantity.
-
-
-
-
-.. c:var:: two_e_energy
-
-    .. code:: text
-
-        double precision	:: ks_energy
-        double precision	:: two_e_energy
-        double precision	:: one_e_energy
-        double precision	:: fock_matrix_energy
-        double precision	:: trace_potential_xc
-
-    File: :file:`ks_enery.irp.f`
-
-    Kohn-Sham energy containing the nuclear repulsion energy, and the various components of this quantity.
-
-
-
-
-Subroutines / functions
------------------------
-
-
-
-.. c:function:: check_coherence_functional
-
-    .. code:: text
-
-        subroutine check_coherence_functional
-
-    File: :file:`ks_scf.irp.f`
-
-    
-
-
-
-
-
-.. c:function:: srs_ks_cf
-
-    .. code:: text
-
-        subroutine srs_ks_cf
+        subroutine ks_cf
 
     File: :file:`ks_scf.irp.f`
 

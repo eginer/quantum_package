@@ -1,46 +1,46 @@
-.. _iterations:
-
-.. program:: iterations
-
-.. default-role:: option
-
+.. _iterations: 
+ 
+.. program:: iterations 
+ 
+.. default-role:: option 
+ 
 ==========
 iterations
 ==========
 
 Module which saves the computed energies for an extrapolation to
 the |FCI| limit.
-
-
-
-EZFIO parameters
-----------------
-
+ 
+ 
+ 
+EZFIO parameters 
+---------------- 
+ 
 .. option:: n_iter
-
+ 
     Number of saved iterations
-
+ 
     Default: 1
-
+ 
 .. option:: n_det_iterations
-
+ 
     Number of determinants at each iteration
-
-
+ 
+ 
 .. option:: energy_iterations
-
+ 
     The variational energy at each iteration
-
-
+ 
+ 
 .. option:: pt2_iterations
-
+ 
     The |PT2| correction at each iteration
-
-
-
-Providers
----------
-
+ 
+ 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: extrapolated_energy
 
@@ -53,7 +53,7 @@ Providers
     Extrapolated energy, using E_var = f(PT2) where PT2=0
 
 
-
+ 
 
 .. c:var:: n_iter
 
@@ -66,11 +66,11 @@ Providers
     number of iterations
 
 
-
-
-Subroutines / functions
------------------------
-
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
 .. c:function:: print_extrapolated_energy
@@ -84,7 +84,7 @@ Subroutines / functions
     Print the extrapolated energy in the output
 
 
-
+ 
 
 
 .. c:function:: print_summary
@@ -98,7 +98,7 @@ Subroutines / functions
     Print the extrapolated energy in the output
 
 
-
+ 
 
 
 .. c:function:: save_iterations

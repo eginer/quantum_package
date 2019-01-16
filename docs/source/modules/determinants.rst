@@ -1,9 +1,9 @@
-.. _determinants:
-
-.. program:: determinants
-
-.. default-role:: option
-
+.. _determinants: 
+ 
+.. program:: determinants 
+ 
+.. default-role:: option 
+ 
 ============
 determinants
 ============
@@ -13,122 +13,122 @@ Contains everything for the computation of the Hamiltonian matrix elements in th
 The main providers for this module are:
 
 * :option:`determinants n_states`: number of states to be computed
-* `psi_det`: list of determinants in the wave function used in many routines/providers of the |QP|. 
-* `psi_coef`: list of coefficients, for all :option:`determinants n_states` states, and all determinants. 
+* `psi_det`: list of determinants in the wave function used in many routines/providers of the |QP|.
+* `psi_coef`: list of coefficients, for all :option:`determinants n_states` states, and all determinants.
 
 The main routines for this module are:
 
 * `i_H_j`: computes the Hamiltonian matrix element between two arbitrary Slater determinants.
 * `i_H_j_s2`: computes the Hamiltonian and (:math:`S^2`) matrix element between two arbitrary Slater determinants.
-* `i_H_j_verbose`: returns the decomposition in terms of one- and two-body components of the Hamiltonian matrix elements between two arbitrary Slater determinants. Also return the fermionic phase factor. 
-* `i_H_psi`: computes the Hamiltonian matrix element between an arbitrary Slater determinant and a wave function composed of a sum of arbitrary Slater determinants. 
+* `i_H_j_verbose`: returns the decomposition in terms of one- and two-body components of the Hamiltonian matrix elements between two arbitrary Slater determinants. Also return the fermionic phase factor.
+* `i_H_psi`: computes the Hamiltonian matrix element between an arbitrary Slater determinant and a wave function composed of a sum of arbitrary Slater determinants.
 
 
-For an example of how to use these routines and providers, take a look at :file:`example.irp.f`. 
-
-
-
-EZFIO parameters
-----------------
-
+For an example of how to use these routines and providers, take a look at :file:`example.irp.f`.
+ 
+ 
+ 
+EZFIO parameters 
+---------------- 
+ 
 .. option:: n_det_max
-
+ 
     Maximum number of determinants in the wave function
-
+ 
     Default: 1000000
-
+ 
 .. option:: n_det_print_wf
-
+ 
     Maximum number of determinants to be printed with the program print_wf
-
+ 
     Default: 10000
-
+ 
 .. option:: n_det_max_full
-
+ 
     Maximum number of determinants where |H| is fully diagonalized
-
+ 
     Default: 1000
-
+ 
 .. option:: n_states
-
+ 
     Number of states to consider
-
+ 
     Default: 1
-
+ 
 .. option:: read_wf
-
+ 
     If |true|, read the wave function from the |EZFIO| file
-
+ 
     Default: False
-
+ 
 .. option:: s2_eig
-
+ 
     Force the wave function to be an eigenfunction of |S^2|
-
+ 
     Default: True
-
+ 
 .. option:: used_weight
-
-    0: 1./(c_0^2), 1: 1/N_states, 2: input state-average weight, 3: 1/(Norm_L3(Psi))
-
-    Default: 0
-
+ 
+    Weight used in the calculation of the one-electron density matrix. 0: 1./(c_0^2), 1: 1/N_states, 2: input state-average weight, 3: 1/(Norm_L3(Psi))
+ 
+    Default: 1
+ 
 .. option:: threshold_generators
-
+ 
     Thresholds on generators (fraction of the square of the norm)
-
+ 
     Default: 0.99
-
+ 
 .. option:: n_int
-
+ 
     Number of integers required to represent bitstrings (set in module :ref:`bitmask`)
-
-
+ 
+ 
 .. option:: bit_kind
-
+ 
     (set in module :ref:`bitmask`)
-
-
+ 
+ 
 .. option:: mo_label
-
+ 
     Label of the |MOs| on which the determinants are expressed
-
-
+ 
+ 
 .. option:: n_det
-
+ 
     Number of determinants in the current wave function
-
-
+ 
+ 
 .. option:: psi_coef
-
+ 
     Coefficients of the wave function
-
-
+ 
+ 
 .. option:: psi_det
-
+ 
     Determinants of the variational space
-
-
+ 
+ 
 .. option:: expected_s2
-
+ 
     Expected value of |S^2|
-
-
+ 
+ 
 .. option:: target_energy
-
+ 
     Energy that should be obtained when truncating the wave function (optional)
-
+ 
     Default: 0.
-
+ 
 .. option:: state_average_weight
-
+ 
     Weight of the states in state-average calculations.
-
-
-
-Providers
----------
-
+ 
+ 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: abs_psi_coef_max
 
@@ -144,7 +144,7 @@ Providers
     Max and min values of the coefficients
 
 
-
+ 
 
 .. c:var:: abs_psi_coef_min
 
@@ -160,7 +160,7 @@ Providers
     Max and min values of the coefficients
 
 
-
+ 
 
 .. c:var:: barycentric_electronic_energy
 
@@ -173,7 +173,7 @@ Providers
      :math:`E_n = \sum_i {c_i^{(n)}}^2 H_{ii}`
 
 
-
+ 
 
 .. c:var:: c0_weight
 
@@ -186,7 +186,7 @@ Providers
     Weight of the states in the selection :  :math:`\frac{1}{c_0^2}` .
 
 
-
+ 
 
 .. c:var:: det_alpha_norm
 
@@ -202,7 +202,7 @@ Providers
      :math:`||D_\alpha||_i = \sum_j C_{ij}^2`
 
 
-
+ 
 
 .. c:var:: det_beta_norm
 
@@ -218,7 +218,7 @@ Providers
      :math:`||D_\alpha||_i = \sum_j C_{ij}^2`
 
 
-
+ 
 
 .. c:var:: det_to_occ_pattern
 
@@ -231,7 +231,7 @@ Providers
     Returns the index of the occupation pattern for each determinant
 
 
-
+ 
 
 .. c:var:: diag_algorithm
 
@@ -244,7 +244,7 @@ Providers
     Diagonalization algorithm (Davidson or Lapack)
 
 
-
+ 
 
 .. c:var:: diagonal_h_matrix_on_psi_det
 
@@ -257,7 +257,7 @@ Providers
     Diagonal of the Hamiltonian ordered as psi_det
 
 
-
+ 
 
 .. c:var:: double_exc_bitmask
 
@@ -278,7 +278,7 @@ Providers
     for a given couple of hole/particle excitations i.
 
 
-
+ 
 
 .. c:var:: expected_s2
 
@@ -291,7 +291,7 @@ Providers
     Expected value of |S^2| : S*(S+1)
 
 
-
+ 
 
 .. c:var:: fock_operator_closed_shell_ref_bitmask
 
@@ -304,7 +304,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: fock_wee_closed_shell
 
@@ -317,7 +317,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: h_apply_buffer_allocated
 
@@ -331,7 +331,7 @@ Providers
     Buffer of determinants/coefficients/perturbative energy for H_apply. Uninitialized. Filled by H_apply subroutines.
 
 
-
+ 
 
 .. c:var:: h_apply_buffer_lock
 
@@ -345,7 +345,7 @@ Providers
     Buffer of determinants/coefficients/perturbative energy for H_apply. Uninitialized. Filled by H_apply subroutines.
 
 
-
+ 
 
 .. c:var:: h_matrix_all_dets
 
@@ -358,7 +358,7 @@ Providers
     |H| matrix on the basis of the Slater determinants defined by psi_det
 
 
-
+ 
 
 .. c:var:: h_matrix_cas
 
@@ -371,7 +371,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: idx_cas
 
@@ -387,7 +387,7 @@ Providers
     |CAS| wave function, defined from the application of the |CAS| bitmask on the determinants. idx_cas gives the indice of the |CAS| determinant in psi_det.
 
 
-
+ 
 
 .. c:var:: idx_non_cas
 
@@ -403,7 +403,7 @@ Providers
     Set of determinants which are not part of the |CAS|, defined from the application of the |CAS| bitmask on the determinants. idx_non_cas gives the indice of the determinant in psi_det.
 
 
-
+ 
 
 .. c:var:: max_degree_exc
 
@@ -416,7 +416,7 @@ Providers
     Maximum degree of excitation in the wave function with respect to the Hartree-Fock determinant.
 
 
-
+ 
 
 .. c:var:: mo_energy_expval
 
@@ -429,7 +429,7 @@ Providers
     Third index is spin. Fourth index is 1:creation, 2:annihilation
 
 
-
+ 
 
 .. c:var:: n_det
 
@@ -442,7 +442,7 @@ Providers
     Number of determinants in the wave function
 
 
-
+ 
 
 .. c:var:: n_det_alpha_unique
 
@@ -456,7 +456,7 @@ Providers
     Unique  :math:`\alpha`  determinants
 
 
-
+ 
 
 .. c:var:: n_det_beta_unique
 
@@ -470,7 +470,7 @@ Providers
     Unique  :math:`\beta`  determinants
 
 
-
+ 
 
 .. c:var:: n_det_cas
 
@@ -486,7 +486,7 @@ Providers
     |CAS| wave function, defined from the application of the |CAS| bitmask on the determinants. idx_cas gives the indice of the |CAS| determinant in psi_det.
 
 
-
+ 
 
 .. c:var:: n_det_non_cas
 
@@ -502,7 +502,7 @@ Providers
     Set of determinants which are not part of the |CAS|, defined from the application of the |CAS| bitmask on the determinants. idx_non_cas gives the indice of the determinant in psi_det.
 
 
-
+ 
 
 .. c:var:: n_double_exc_bitmasks
 
@@ -515,7 +515,7 @@ Providers
     Number of double excitation bitmasks
 
 
-
+ 
 
 .. c:var:: n_occ_pattern
 
@@ -535,7 +535,7 @@ Providers
     The occ patterns are sorted by :c:func:`occ_pattern_search_key`
 
 
-
+ 
 
 .. c:var:: n_single_exc_bitmasks
 
@@ -548,7 +548,7 @@ Providers
     Number of single excitation bitmasks
 
 
-
+ 
 
 .. c:var:: one_e_dm_ao_alpha
 
@@ -562,7 +562,7 @@ Providers
     One body density matrix on the |AO| basis :  :math:`\rho_{AO}(\alpha), \rho_{AO}(\beta)` .
 
 
-
+ 
 
 .. c:var:: one_e_dm_ao_beta
 
@@ -576,7 +576,7 @@ Providers
     One body density matrix on the |AO| basis :  :math:`\rho_{AO}(\alpha), \rho_{AO}(\beta)` .
 
 
-
+ 
 
 .. c:var:: one_e_dm_dagger_mo_spin_index
 
@@ -589,7 +589,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: one_e_dm_mo
 
@@ -602,7 +602,7 @@ Providers
     One-body density matrix
 
 
-
+ 
 
 .. c:var:: one_e_dm_mo_alpha
 
@@ -616,7 +616,7 @@ Providers
      :math:`\alpha`  and  :math:`\beta`  one-body density matrix for each state
 
 
-
+ 
 
 .. c:var:: one_e_dm_mo_alpha_average
 
@@ -630,7 +630,7 @@ Providers
      :math:`\alpha`  and  :math:`\beta`  one-body density matrix for each state
 
 
-
+ 
 
 .. c:var:: one_e_dm_mo_beta
 
@@ -644,7 +644,7 @@ Providers
      :math:`\alpha`  and  :math:`\beta`  one-body density matrix for each state
 
 
-
+ 
 
 .. c:var:: one_e_dm_mo_beta_average
 
@@ -658,7 +658,7 @@ Providers
      :math:`\alpha`  and  :math:`\beta`  one-body density matrix for each state
 
 
-
+ 
 
 .. c:var:: one_e_dm_mo_diff
 
@@ -671,7 +671,7 @@ Providers
     Difference of the one-body density matrix with respect to the ground state
 
 
-
+ 
 
 .. c:var:: one_e_dm_mo_spin_index
 
@@ -684,7 +684,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: one_e_spin_density_ao
 
@@ -697,7 +697,7 @@ Providers
     One body spin density matrix on the |AO| basis :  :math:`\rho_{AO}(\alpha) - \rho_{AO}(\beta)`
 
 
-
+ 
 
 .. c:var:: one_e_spin_density_mo
 
@@ -710,7 +710,7 @@ Providers
      :math:`\rho(\alpha) - \rho(\beta)`
 
 
-
+ 
 
 .. c:var:: psi_average_norm_contrib
 
@@ -723,7 +723,7 @@ Providers
     Contribution of determinants to the state-averaged density.
 
 
-
+ 
 
 .. c:var:: psi_average_norm_contrib_sorted
 
@@ -741,7 +741,7 @@ Providers
     psi_det_sorted_order(i) -> k : index in psi_det
 
 
-
+ 
 
 .. c:var:: psi_bilinear_matrix
 
@@ -756,7 +756,7 @@ Providers
      :math:`D_\alpha^\dagger.C.D_\beta`
 
 
-
+ 
 
 .. c:var:: psi_bilinear_matrix_columns
 
@@ -776,7 +776,7 @@ Providers
     Order refers to psi_det
 
 
-
+ 
 
 .. c:var:: psi_bilinear_matrix_columns_loc
 
@@ -795,7 +795,7 @@ Providers
     Order refers to :c:data:`psi_det`
 
 
-
+ 
 
 .. c:var:: psi_bilinear_matrix_order
 
@@ -815,7 +815,7 @@ Providers
     Order refers to psi_det
 
 
-
+ 
 
 .. c:var:: psi_bilinear_matrix_order_reverse
 
@@ -828,7 +828,7 @@ Providers
     Order which allows to go from :c:data:`psi_bilinear_matrix` to :c:data:`psi_det`
 
 
-
+ 
 
 .. c:var:: psi_bilinear_matrix_order_transp_reverse
 
@@ -841,7 +841,7 @@ Providers
     Order which allows to go from :c:data:`psi_bilinear_matrix_order_transp` to :c:data:`psi_bilinear_matrix`
 
 
-
+ 
 
 .. c:var:: psi_bilinear_matrix_rows
 
@@ -861,7 +861,7 @@ Providers
     Order refers to psi_det
 
 
-
+ 
 
 .. c:var:: psi_bilinear_matrix_transp_columns
 
@@ -881,7 +881,7 @@ Providers
     Rows are  :math:`\alpha`  determinants and columns are  :math:`\beta` , but the matrix is stored in row major format.
 
 
-
+ 
 
 .. c:var:: psi_bilinear_matrix_transp_order
 
@@ -901,7 +901,7 @@ Providers
     Rows are  :math:`\alpha`  determinants and columns are  :math:`\beta` , but the matrix is stored in row major format.
 
 
-
+ 
 
 .. c:var:: psi_bilinear_matrix_transp_rows
 
@@ -921,7 +921,7 @@ Providers
     Rows are  :math:`\alpha`  determinants and columns are  :math:`\beta` , but the matrix is stored in row major format.
 
 
-
+ 
 
 .. c:var:: psi_bilinear_matrix_transp_rows_loc
 
@@ -934,7 +934,7 @@ Providers
     Location of the columns in the :c:data:`psi_bilinear_matrix`
 
 
-
+ 
 
 .. c:var:: psi_bilinear_matrix_transp_values
 
@@ -954,7 +954,7 @@ Providers
     Rows are  :math:`\alpha`  determinants and columns are  :math:`\beta` , but the matrix is stored in row major format.
 
 
-
+ 
 
 .. c:var:: psi_bilinear_matrix_values
 
@@ -974,7 +974,7 @@ Providers
     Order refers to psi_det
 
 
-
+ 
 
 .. c:var:: psi_cas
 
@@ -990,7 +990,7 @@ Providers
     |CAS| wave function, defined from the application of the |CAS| bitmask on the determinants. idx_cas gives the indice of the |CAS| determinant in psi_det.
 
 
-
+ 
 
 .. c:var:: psi_cas_coef
 
@@ -1006,7 +1006,7 @@ Providers
     |CAS| wave function, defined from the application of the |CAS| bitmask on the determinants. idx_cas gives the indice of the |CAS| determinant in psi_det.
 
 
-
+ 
 
 .. c:var:: psi_cas_coef_sorted_bit
 
@@ -1020,7 +1020,7 @@ Providers
     |CAS| determinants sorted to accelerate the search of a random determinant in the wave function.
 
 
-
+ 
 
 .. c:var:: psi_cas_energy
 
@@ -1033,7 +1033,7 @@ Providers
     Variational energy of  :math:`\Psi_{CAS}` , where  :math:`\Psi_{CAS} =  \sum_{I \in CAS} \I \rangle \langle I | \Psi \rangle` .
 
 
-
+ 
 
 .. c:var:: psi_cas_energy_diagonalized
 
@@ -1047,7 +1047,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: psi_cas_sorted_bit
 
@@ -1061,7 +1061,7 @@ Providers
     |CAS| determinants sorted to accelerate the search of a random determinant in the wave function.
 
 
-
+ 
 
 .. c:var:: psi_coef
 
@@ -1074,7 +1074,7 @@ Providers
     The wave function coefficients. Initialized with Hartree-Fock if the |EZFIO| file is empty.
 
 
-
+ 
 
 .. c:var:: psi_coef_cas_diagonalized
 
@@ -1088,7 +1088,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: psi_coef_max
 
@@ -1104,7 +1104,7 @@ Providers
     Max and min values of the coefficients
 
 
-
+ 
 
 .. c:var:: psi_coef_min
 
@@ -1120,7 +1120,7 @@ Providers
     Max and min values of the coefficients
 
 
-
+ 
 
 .. c:var:: psi_coef_sorted
 
@@ -1138,7 +1138,7 @@ Providers
     psi_det_sorted_order(i) -> k : index in psi_det
 
 
-
+ 
 
 .. c:var:: psi_coef_sorted_bit
 
@@ -1152,7 +1152,7 @@ Providers
     Determinants on which we apply  :math:`\langle i|H|psi \rangle`  for perturbation. They are sorted by determinants interpreted as integers. Useful to accelerate the search of a random determinant in the wave function.
 
 
-
+ 
 
 .. c:var:: psi_det
 
@@ -1165,7 +1165,7 @@ Providers
     The determinants of the wave function. Initialized with Hartree-Fock if the |EZFIO| file is empty.
 
 
-
+ 
 
 .. c:var:: psi_det_alpha
 
@@ -1178,7 +1178,7 @@ Providers
     List of  :math:`\alpha`  determinants of psi_det
 
 
-
+ 
 
 .. c:var:: psi_det_alpha_unique
 
@@ -1192,7 +1192,7 @@ Providers
     Unique  :math:`\alpha`  determinants
 
 
-
+ 
 
 .. c:var:: psi_det_beta
 
@@ -1205,7 +1205,7 @@ Providers
     List of  :math:`\beta`  determinants of psi_det
 
 
-
+ 
 
 .. c:var:: psi_det_beta_unique
 
@@ -1219,7 +1219,7 @@ Providers
     Unique  :math:`\beta`  determinants
 
 
-
+ 
 
 .. c:var:: psi_det_hii
 
@@ -1232,7 +1232,7 @@ Providers
      :math:`\langle i|h|i \rangle`  for all determinants.
 
 
-
+ 
 
 .. c:var:: psi_det_size
 
@@ -1245,7 +1245,7 @@ Providers
     Size of the psi_det and psi_coef arrays
 
 
-
+ 
 
 .. c:var:: psi_det_sorted
 
@@ -1263,7 +1263,7 @@ Providers
     psi_det_sorted_order(i) -> k : index in psi_det
 
 
-
+ 
 
 .. c:var:: psi_det_sorted_bit
 
@@ -1277,7 +1277,7 @@ Providers
     Determinants on which we apply  :math:`\langle i|H|psi \rangle`  for perturbation. They are sorted by determinants interpreted as integers. Useful to accelerate the search of a random determinant in the wave function.
 
 
-
+ 
 
 .. c:var:: psi_det_sorted_order
 
@@ -1295,7 +1295,7 @@ Providers
     psi_det_sorted_order(i) -> k : index in psi_det
 
 
-
+ 
 
 .. c:var:: psi_energy_h_core
 
@@ -1310,7 +1310,7 @@ Providers
     computed using the :c:data:`one_e_dm_mo_alpha` + :c:data:`one_e_dm_mo_beta` and :c:data:`mo_one_e_integrals`
 
 
-
+ 
 
 .. c:var:: psi_non_cas
 
@@ -1326,7 +1326,7 @@ Providers
     Set of determinants which are not part of the |CAS|, defined from the application of the |CAS| bitmask on the determinants. idx_non_cas gives the indice of the determinant in psi_det.
 
 
-
+ 
 
 .. c:var:: psi_non_cas_coef
 
@@ -1342,7 +1342,7 @@ Providers
     Set of determinants which are not part of the |CAS|, defined from the application of the |CAS| bitmask on the determinants. idx_non_cas gives the indice of the determinant in psi_det.
 
 
-
+ 
 
 .. c:var:: psi_non_cas_coef_sorted_bit
 
@@ -1356,7 +1356,7 @@ Providers
     |CAS| determinants sorted to accelerate the search of a random determinant in the wave function.
 
 
-
+ 
 
 .. c:var:: psi_non_cas_sorted_bit
 
@@ -1370,7 +1370,7 @@ Providers
     |CAS| determinants sorted to accelerate the search of a random determinant in the wave function.
 
 
-
+ 
 
 .. c:var:: psi_occ_pattern
 
@@ -1390,7 +1390,7 @@ Providers
     The occ patterns are sorted by :c:func:`occ_pattern_search_key`
 
 
-
+ 
 
 .. c:var:: psi_occ_pattern_hii
 
@@ -1403,7 +1403,7 @@ Providers
      :math:`\langle I|H|I \rangle`  where  :math:`|I\rangle`  is an occupation pattern. This is the minimum  :math:`H_{ii}` , where the  :math:`|i\rangle`  are the determinants of  :math:`|I\rangle` .
 
 
-
+ 
 
 .. c:var:: ref_bitmask_e_n_energy
 
@@ -1420,7 +1420,7 @@ Providers
     Energy of the reference bitmask used in Slater rules
 
 
-
+ 
 
 .. c:var:: ref_bitmask_energy
 
@@ -1437,7 +1437,7 @@ Providers
     Energy of the reference bitmask used in Slater rules
 
 
-
+ 
 
 .. c:var:: ref_bitmask_kinetic_energy
 
@@ -1454,7 +1454,7 @@ Providers
     Energy of the reference bitmask used in Slater rules
 
 
-
+ 
 
 .. c:var:: ref_bitmask_one_e_energy
 
@@ -1471,7 +1471,7 @@ Providers
     Energy of the reference bitmask used in Slater rules
 
 
-
+ 
 
 .. c:var:: ref_bitmask_two_e_energy
 
@@ -1488,7 +1488,7 @@ Providers
     Energy of the reference bitmask used in Slater rules
 
 
-
+ 
 
 .. c:var:: ref_closed_shell_bitmask
 
@@ -1501,7 +1501,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: s2_matrix_all_dets
 
@@ -1514,7 +1514,7 @@ Providers
     |S^2| matrix on the basis of the Slater determinants defined by psi_det
 
 
-
+ 
 
 .. c:var:: s2_values
 
@@ -1527,7 +1527,7 @@ Providers
     array of the averaged values of the S^2 operator on the various states
 
 
-
+ 
 
 .. c:var:: s_z
 
@@ -1541,7 +1541,7 @@ Providers
     z component of the Spin
 
 
-
+ 
 
 .. c:var:: s_z2_sz
 
@@ -1555,7 +1555,7 @@ Providers
     z component of the Spin
 
 
-
+ 
 
 .. c:var:: single_exc_bitmask
 
@@ -1572,7 +1572,7 @@ Providers
     for a given couple of hole/particle excitations i.
 
 
-
+ 
 
 .. c:var:: singles_alpha_csc
 
@@ -1585,7 +1585,7 @@ Providers
     Indices of all single excitations
 
 
-
+ 
 
 .. c:var:: singles_alpha_csc_idx
 
@@ -1601,7 +1601,7 @@ Providers
     singles_alpha_csc_idx  : Index where the single excitations of determinant i start
 
 
-
+ 
 
 .. c:var:: singles_alpha_csc_size
 
@@ -1617,7 +1617,7 @@ Providers
     singles_alpha_csc_idx  : Index where the single excitations of determinant i start
 
 
-
+ 
 
 .. c:var:: singles_beta_csc
 
@@ -1630,7 +1630,7 @@ Providers
     Indices of all single excitations
 
 
-
+ 
 
 .. c:var:: singles_beta_csc_idx
 
@@ -1646,7 +1646,7 @@ Providers
     singles_beta_csc_idx  : Index where the single excitations of determinant i start
 
 
-
+ 
 
 .. c:var:: singles_beta_csc_size
 
@@ -1662,7 +1662,7 @@ Providers
     singles_beta_csc_idx  : Index where the single excitations of determinant i start
 
 
-
+ 
 
 .. c:var:: state_average_weight
 
@@ -1675,7 +1675,7 @@ Providers
     Weights in the state-average calculation of the density matrix
 
 
-
+ 
 
 .. c:var:: weight_occ_pattern
 
@@ -1688,11 +1688,11 @@ Providers
     Weight of the occupation patterns in the wave function
 
 
-
-
-Subroutines / functions
------------------------
-
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
 .. c:function:: a_operator
@@ -1706,7 +1706,7 @@ Subroutines / functions
     Needed for :c:func:`diag_H_mat_elem`.
 
 
-
+ 
 
 
 .. c:function:: a_operator_two_e
@@ -1720,7 +1720,7 @@ Subroutines / functions
     Needed for :c:func:`diag_Wee_mat_elem`.
 
 
-
+ 
 
 
 .. c:function:: ac_operator
@@ -1734,7 +1734,7 @@ Subroutines / functions
     Needed for :c:func:`diag_H_mat_elem`.
 
 
-
+ 
 
 
 .. c:function:: ac_operator_two_e
@@ -1748,7 +1748,7 @@ Subroutines / functions
     Needed for :c:func:`diag_Wee_mat_elem`.
 
 
-
+ 
 
 
 .. c:function:: apply_excitation
@@ -1762,7 +1762,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: apply_hole
@@ -1776,7 +1776,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: apply_holes
@@ -1790,7 +1790,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: apply_particle
@@ -1804,7 +1804,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: apply_particles
@@ -1818,7 +1818,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: au0_h_au0
@@ -1832,7 +1832,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: bitstring_to_list_ab
@@ -1846,7 +1846,7 @@ Subroutines / functions
     Gives the inidices(+1) of the bits set to 1 in the bit string For alpha/beta determinants.
 
 
-
+ 
 
 
 .. c:function:: build_fock_tmp
@@ -1860,7 +1860,7 @@ Subroutines / functions
     Build the diagonal of the Fock matrix corresponding to a generator determinant.  :math:`F_{00}`  is  :math:`\langle i|H|i \rangle = E_0` .
 
 
-
+ 
 
 
 .. c:function:: connected_to_ref
@@ -1886,7 +1886,7 @@ Subroutines / functions
     -i : key is the ith determinant of the reference wf keys
 
 
-
+ 
 
 
 .. c:function:: connected_to_ref_by_mono
@@ -1912,7 +1912,7 @@ Subroutines / functions
     -i : key is the ith determinant of the reference wf keys
 
 
-
+ 
 
 
 .. c:function:: copy_h_apply_buffer_to_wf
@@ -1926,7 +1926,7 @@ Subroutines / functions
     Copies the H_apply buffer to psi_coef. After calling this subroutine, N_det, psi_det and psi_coef need to be touched
 
 
-
+ 
 
 
 .. c:function:: copy_psi_bilinear_to_psi
@@ -1940,7 +1940,7 @@ Subroutines / functions
     Overwrites :c:data:`psi_det` and :c:data:`psi_coef` with the wave function in bilinear order
 
 
-
+ 
 
 
 .. c:function:: create_microlist
@@ -1954,7 +1954,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: create_minilist
@@ -1968,7 +1968,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: create_minilist_find_previous
@@ -1982,7 +1982,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: create_wf_of_psi_bilinear_matrix
@@ -1996,7 +1996,7 @@ Subroutines / functions
     Generates a wave function containing all possible products of  :math:`\alpha`  and  :math:`\beta`  determinants
 
 
-
+ 
 
 
 .. c:function:: decode_exc
@@ -2010,7 +2010,7 @@ Subroutines / functions
     Decodes the exc arrays returned by get_excitation. h1,h2 : Holes p1,p2 : Particles s1,s2 : Spins (1:alpha, 2:beta) degree : Degree of excitation
 
 
-
+ 
 
 
 .. c:function:: decode_exc_spin
@@ -2028,7 +2028,7 @@ Subroutines / functions
     p1,p2 : Particles
 
 
-
+ 
 
 
 .. c:function:: det_inf
@@ -2042,7 +2042,7 @@ Subroutines / functions
     Ordering function for determinants.
 
 
-
+ 
 
 
 .. c:function:: det_search_key
@@ -2056,7 +2056,7 @@ Subroutines / functions
     Return an integer*8 corresponding to a determinant index for searching
 
 
-
+ 
 
 
 .. c:function:: detcmp
@@ -2070,7 +2070,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: deteq
@@ -2084,7 +2084,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: diag_h_mat_elem
@@ -2098,7 +2098,7 @@ Subroutines / functions
     Computes  :math:`\langle i|H|i \rangle` .
 
 
-
+ 
 
 
 .. c:function:: diag_h_mat_elem_au0_h_au0
@@ -2112,7 +2112,7 @@ Subroutines / functions
     Computes  :math:`\langle i|H|i \rangle`  for any determinant  :math:`|i\rangle` . Used for wave functions with an additional electron.
 
 
-
+ 
 
 
 .. c:function:: diag_h_mat_elem_fock
@@ -2126,7 +2126,7 @@ Subroutines / functions
     Computes  :math:`\langle i|H|i \rangle`  when  :math:`i`  is at most a double excitation from a reference.
 
 
-
+ 
 
 
 .. c:function:: diag_h_mat_elem_one_e
@@ -2140,7 +2140,7 @@ Subroutines / functions
     Computes  :math:`\langle i|H|i \rangle` .
 
 
-
+ 
 
 
 .. c:function:: diag_s_mat_elem
@@ -2154,7 +2154,7 @@ Subroutines / functions
     Returns <i|S^2|i>
 
 
-
+ 
 
 
 .. c:function:: diag_wee_mat_elem
@@ -2168,7 +2168,7 @@ Subroutines / functions
     Computes  :math:`\langle i|H|i \rangle` .
 
 
-
+ 
 
 
 .. c:function:: do_mono_excitation
@@ -2182,7 +2182,7 @@ Subroutines / functions
     Apply the single excitation operator : a^{dager}_(i_particle) a_(i_hole) of spin = ispin on key_in ispin = 1  == alpha ispin = 2  == beta i_ok = 1  == the excitation is possible i_ok = -1 == the excitation is not possible
 
 
-
+ 
 
 
 .. c:function:: example_determinants
@@ -2196,7 +2196,7 @@ Subroutines / functions
     subroutine that illustrates the main features available in determinants
 
 
-
+ 
 
 
 .. c:function:: example_determinants_psi_det
@@ -2210,7 +2210,7 @@ Subroutines / functions
     subroutine that illustrates the main features available in determinants using the psi_det/psi_coef
 
 
-
+ 
 
 
 .. c:function:: fill_h_apply_buffer_no_selection
@@ -2224,7 +2224,7 @@ Subroutines / functions
     Fill the H_apply buffer with determiants for |CISD|
 
 
-
+ 
 
 
 .. c:function:: filter_connected
@@ -2246,7 +2246,7 @@ Subroutines / functions
     idx(0) is the number of determinants that interact with key1
 
 
-
+ 
 
 
 .. c:function:: filter_connected_i_h_psi0
@@ -2266,7 +2266,7 @@ Subroutines / functions
     idx(0) is the number of determinants that interact with key1
 
 
-
+ 
 
 
 .. c:function:: filter_not_connected
@@ -2286,7 +2286,7 @@ Subroutines / functions
     idx(0) is the number of determinants that DO NOT interact with key1
 
 
-
+ 
 
 
 .. c:function:: generate_all_alpha_beta_det_products
@@ -2300,7 +2300,7 @@ Subroutines / functions
     Creates a wave function from all possible  :math:`\alpha \times \beta`  determinants
 
 
-
+ 
 
 
 .. c:function:: get_all_spin_doubles
@@ -2318,7 +2318,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: get_all_spin_doubles_1
@@ -2336,7 +2336,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: get_all_spin_doubles_2
@@ -2354,7 +2354,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: get_all_spin_doubles_3
@@ -2372,7 +2372,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: get_all_spin_doubles_4
@@ -2390,7 +2390,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: get_all_spin_doubles_n_int
@@ -2408,7 +2408,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: get_all_spin_singles
@@ -2426,7 +2426,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: get_all_spin_singles_1
@@ -2444,7 +2444,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: get_all_spin_singles_2
@@ -2462,7 +2462,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: get_all_spin_singles_3
@@ -2480,7 +2480,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: get_all_spin_singles_4
@@ -2498,7 +2498,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: get_all_spin_singles_and_doubles
@@ -2518,7 +2518,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: get_all_spin_singles_and_doubles_1
@@ -2538,7 +2538,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: get_all_spin_singles_and_doubles_2
@@ -2558,7 +2558,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: get_all_spin_singles_and_doubles_3
@@ -2578,7 +2578,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: get_all_spin_singles_and_doubles_4
@@ -2598,7 +2598,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: get_all_spin_singles_and_doubles_n_int
@@ -2618,7 +2618,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: get_all_spin_singles_n_int
@@ -2636,7 +2636,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: get_double_excitation
@@ -2650,7 +2650,7 @@ Subroutines / functions
     Returns the two excitation operators between two doubly excited determinants and the phase.
 
 
-
+ 
 
 
 .. c:function:: get_double_excitation_spin
@@ -2664,7 +2664,7 @@ Subroutines / functions
     Returns the two excitation operators between two doubly excited spin-determinants and the phase.
 
 
-
+ 
 
 
 .. c:function:: get_excitation
@@ -2678,7 +2678,7 @@ Subroutines / functions
     Returns the excitation operators between two determinants and the phase.
 
 
-
+ 
 
 
 .. c:function:: get_excitation_degree
@@ -2692,7 +2692,7 @@ Subroutines / functions
     Returns the excitation degree between two determinants.
 
 
-
+ 
 
 
 .. c:function:: get_excitation_degree_spin
@@ -2706,7 +2706,7 @@ Subroutines / functions
     Returns the excitation degree between two determinants.
 
 
-
+ 
 
 
 .. c:function:: get_excitation_degree_vector
@@ -2720,7 +2720,7 @@ Subroutines / functions
     Applies get_excitation_degree to an array of determinants.
 
 
-
+ 
 
 
 .. c:function:: get_excitation_degree_vector_double_alpha_beta
@@ -2734,7 +2734,7 @@ Subroutines / functions
     Applies get_excitation_degree to an array of determinants and return only the single excitations and the connections through exchange integrals.
 
 
-
+ 
 
 
 .. c:function:: get_excitation_degree_vector_mono
@@ -2748,7 +2748,7 @@ Subroutines / functions
     Applies get_excitation_degree to an array of determinants and returns only the single excitations.
 
 
-
+ 
 
 
 .. c:function:: get_excitation_degree_vector_mono_or_exchange
@@ -2762,7 +2762,7 @@ Subroutines / functions
     Applies get_excitation_degree to an array of determinants and return only the single excitations and the connections through exchange integrals.
 
 
-
+ 
 
 
 .. c:function:: get_excitation_degree_vector_mono_or_exchange_verbose
@@ -2776,7 +2776,7 @@ Subroutines / functions
     Applies get_excitation_degree to an array of determinants and return only the single excitations and the connections through exchange integrals.
 
 
-
+ 
 
 
 .. c:function:: get_excitation_spin
@@ -2790,7 +2790,7 @@ Subroutines / functions
     Returns the excitation operators between two determinants and the phase.
 
 
-
+ 
 
 
 .. c:function:: get_index_in_psi_det_alpha_unique
@@ -2804,7 +2804,7 @@ Subroutines / functions
     Returns the index of the determinant in the :c:data:`psi_det_alpha_unique` array
 
 
-
+ 
 
 
 .. c:function:: get_index_in_psi_det_beta_unique
@@ -2818,7 +2818,7 @@ Subroutines / functions
     Returns the index of the determinant in the :c:data:`psi_det_beta_unique` array
 
 
-
+ 
 
 
 .. c:function:: get_index_in_psi_det_sorted_bit
@@ -2832,7 +2832,7 @@ Subroutines / functions
     Returns the index of the determinant in the ``psi_det_sorted_bit`` array
 
 
-
+ 
 
 
 .. c:function:: get_mono_excitation
@@ -2846,7 +2846,7 @@ Subroutines / functions
     Returns the excitation operator between two singly excited determinants and the phase.
 
 
-
+ 
 
 
 .. c:function:: get_mono_excitation_from_fock
@@ -2860,7 +2860,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: get_mono_excitation_spin
@@ -2874,7 +2874,7 @@ Subroutines / functions
     Returns the excitation operator between two singly excited determinants and the phase.
 
 
-
+ 
 
 
 .. c:function:: get_phase
@@ -2888,7 +2888,7 @@ Subroutines / functions
     Returns the phase between key1 and key2.
 
 
-
+ 
 
 
 .. c:function:: get_phasemask_bit
@@ -2902,7 +2902,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: get_s2
@@ -2916,7 +2916,7 @@ Subroutines / functions
     Returns <S^2>
 
 
-
+ 
 
 
 .. c:function:: get_uj_s2_ui
@@ -2930,7 +2930,7 @@ Subroutines / functions
     returns the matrix elements of S^2 "s2(i,j)" between the "nstates" states psi_coefs_tmp(:,i) and psi_coefs_tmp(:,j)
 
 
-
+ 
 
 
 .. c:function:: getmobiles
@@ -2944,7 +2944,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: i_h_j
@@ -2958,7 +2958,7 @@ Subroutines / functions
     Returns  :math:`\langle i|H|j \rangle`  where  :math:`i`  and  :math:`j`  are determinants.
 
 
-
+ 
 
 
 .. c:function:: i_h_j_double_alpha_beta
@@ -2972,7 +2972,7 @@ Subroutines / functions
     Returns  :math:`\langle i|H|j \rangle`  where  :math:`i`  and  :math:`j`  are determinants differing by an opposite-spin double excitation.
 
 
-
+ 
 
 
 .. c:function:: i_h_j_double_spin
@@ -2986,7 +2986,7 @@ Subroutines / functions
     Returns  :math:`\langle i|H|j \rangle`  where  :math:`i`  and  :math:`j`  are determinants differing by a same-spin double excitation.
 
 
-
+ 
 
 
 .. c:function:: i_h_j_mono_spin
@@ -3000,7 +3000,7 @@ Subroutines / functions
     Returns  :math:`\langle i|H|j \rangle`  where  :math:`i`  and  :math:`j`  are determinants differing by a single excitation.
 
 
-
+ 
 
 
 .. c:function:: i_h_j_mono_spin_one_e
@@ -3014,7 +3014,7 @@ Subroutines / functions
     Returns  :math:`\langle i|H|j \rangle`   where  :math:`i`  and  :math:`j`  are determinants differing by a single excitation.
 
 
-
+ 
 
 
 .. c:function:: i_h_j_one_e
@@ -3028,7 +3028,7 @@ Subroutines / functions
     Returns  :math:`\langle i|H|j \rangle`   where  :math:`i`  and  :math:`j`  are determinants.
 
 
-
+ 
 
 
 .. c:function:: i_h_j_s2
@@ -3042,7 +3042,7 @@ Subroutines / functions
     Returns  :math:`\langle i|H|j \rangle`  and  :math:`\langle i|S^2|j \rangle` where  :math:`i`  and  :math:`j`  are determinants.
 
 
-
+ 
 
 
 .. c:function:: i_h_j_two_e
@@ -3056,7 +3056,7 @@ Subroutines / functions
     Returns  :math:`\langle i|H|j \rangle`   where  :math:`i`  and  :math:`j`  are determinants.
 
 
-
+ 
 
 
 .. c:function:: i_h_j_verbose
@@ -3070,7 +3070,7 @@ Subroutines / functions
     Returns  :math:`\langle i|H|j \rangle`  where  :math:`i`  and  :math:`j`  are determinants.
 
 
-
+ 
 
 
 .. c:function:: i_h_psi
@@ -3086,7 +3086,7 @@ Subroutines / functions
     Uses filter_connected_i_H_psi0 to get all the  :math:`|J \rangle`  to which  :math:`|i \rangle` is connected. The i_H_psi_minilist is much faster but requires to build the minilists.
 
 
-
+ 
 
 
 .. c:function:: i_h_psi_minilist
@@ -3102,7 +3102,7 @@ Subroutines / functions
     Uses filter_connected_i_H_psi0 to get all the  :math:`|J \rangle`  to which  :math:`|i \rangle` is connected. The  :math:`|J\rangle`  are searched in short pre-computed lists.
 
 
-
+ 
 
 
 .. c:function:: i_s2_psi_minilist
@@ -3118,7 +3118,7 @@ Subroutines / functions
     Uses filter_connected_i_H_psi0 to get all the  :math:`|J\rangle`  to which  :math:`|i\rangle` is connected. The  :math:`|J\rangle`  are searched in short pre-computed lists.
 
 
-
+ 
 
 
 .. c:function:: i_wee_j_mono
@@ -3132,7 +3132,7 @@ Subroutines / functions
     Returns  :math:`\langle i|H|j \rangle`   where  :math:`i`  and  :math:`j`  are determinants differing by a single excitation.
 
 
-
+ 
 
 
 .. c:function:: is_connected_to
@@ -3146,7 +3146,7 @@ Subroutines / functions
     Returns |true| if determinant ``key`` is connected to ``keys``
 
 
-
+ 
 
 
 .. c:function:: is_connected_to_by_mono
@@ -3160,7 +3160,7 @@ Subroutines / functions
     Returns |true| is ``key`` is connected to ``keys`` by a single excitation.
 
 
-
+ 
 
 
 .. c:function:: is_in_wavefunction
@@ -3174,7 +3174,7 @@ Subroutines / functions
     |true| if the determinant ``det`` is in the wave function
 
 
-
+ 
 
 
 .. c:function:: is_spin_flip_possible
@@ -3188,7 +3188,7 @@ Subroutines / functions
     returns |true| if the spin-flip of spin ispin in the orbital i_flip is possible on key_in
 
 
-
+ 
 
 
 .. c:function:: make_s2_eigenfunction
@@ -3202,7 +3202,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: mono_excitation_wee
@@ -3216,7 +3216,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: occ_pattern_of_det
@@ -3236,7 +3236,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: occ_pattern_search_key
@@ -3250,7 +3250,7 @@ Subroutines / functions
     Return an integer*8 corresponding to a determinant index for searching
 
 
-
+ 
 
 
 .. c:function:: occ_pattern_to_dets
@@ -3264,7 +3264,7 @@ Subroutines / functions
     Generate all possible determinants for a give occ_pattern
 
 
-
+ 
 
 
 .. c:function:: occ_pattern_to_dets_size
@@ -3278,7 +3278,7 @@ Subroutines / functions
     Number of possible determinants for a given occ_pattern
 
 
-
+ 
 
 
 .. c:function:: pull_pt2
@@ -3292,7 +3292,7 @@ Subroutines / functions
     Pull |PT2| calculation in the collector
 
 
-
+ 
 
 
 .. c:function:: push_pt2
@@ -3306,7 +3306,7 @@ Subroutines / functions
     Push |PT2| calculation to the collector
 
 
-
+ 
 
 
 .. c:function:: read_dets
@@ -3320,7 +3320,7 @@ Subroutines / functions
     Reads the determinants from the |EZFIO| file
 
 
-
+ 
 
 
 .. c:function:: remove_duplicates_in_psi_det
@@ -3334,7 +3334,7 @@ Subroutines / functions
     Removes duplicate determinants in the wave function.
 
 
-
+ 
 
 
 .. c:function:: resize_h_apply_buffer
@@ -3348,7 +3348,7 @@ Subroutines / functions
     Resizes the H_apply buffer of proc iproc. The buffer lock should be set before calling this function.
 
 
-
+ 
 
 
 .. c:function:: routine_example_psi_det
@@ -3362,7 +3362,7 @@ Subroutines / functions
     subroutine that illustrates the main features available in determinants using many determinants
 
 
-
+ 
 
 
 .. c:function:: s2_u_0
@@ -3380,7 +3380,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: s2_u_0_nstates
@@ -3398,7 +3398,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: save_natural_mos
@@ -3412,7 +3412,7 @@ Subroutines / functions
     Save natural orbitals, obtained by diagonalization of the one-body density matrix in the |MO| basis
 
 
-
+ 
 
 
 .. c:function:: save_ref_determinant
@@ -3426,7 +3426,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: save_wavefunction
@@ -3440,7 +3440,7 @@ Subroutines / functions
     Save the wave function into the |EZFIO| file
 
 
-
+ 
 
 
 .. c:function:: save_wavefunction_general
@@ -3454,7 +3454,7 @@ Subroutines / functions
     Save the wave function into the |EZFIO| file
 
 
-
+ 
 
 
 .. c:function:: save_wavefunction_specified
@@ -3468,7 +3468,7 @@ Subroutines / functions
     Save the wave function into the |EZFIO| file
 
 
-
+ 
 
 
 .. c:function:: save_wavefunction_truncated
@@ -3482,7 +3482,7 @@ Subroutines / functions
     Save the wave function into the |EZFIO| file
 
 
-
+ 
 
 
 .. c:function:: save_wavefunction_unsorted
@@ -3496,7 +3496,7 @@ Subroutines / functions
     Save the wave function into the |EZFIO| file
 
 
-
+ 
 
 
 .. c:function:: set_natural_mos
@@ -3510,7 +3510,7 @@ Subroutines / functions
     Set natural orbitals, obtained by diagonalization of the one-body density matrix in the |MO| basis
 
 
-
+ 
 
 
 .. c:function:: sort_dets_ab
@@ -3524,7 +3524,7 @@ Subroutines / functions
     Deprecated routine
 
 
-
+ 
 
 
 .. c:function:: sort_dets_ab_v
@@ -3538,7 +3538,7 @@ Subroutines / functions
     Deprecated routine
 
 
-
+ 
 
 
 .. c:function:: sort_dets_ba_v
@@ -3552,7 +3552,7 @@ Subroutines / functions
     Deprecated routine
 
 
-
+ 
 
 
 .. c:function:: sort_dets_by_det_search_key
@@ -3570,7 +3570,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: spin_det_search_key
@@ -3584,7 +3584,7 @@ Subroutines / functions
     Returns an integer(8) corresponding to a determinant index for searching
 
 
-
+ 
 
 
 .. c:function:: tamiser
@@ -3598,7 +3598,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: u_0_s2_u_0
@@ -3616,7 +3616,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: wf_of_psi_bilinear_matrix
@@ -3630,7 +3630,7 @@ Subroutines / functions
     Generate a wave function containing all possible products of  :math:`\alpha`  and  :math:`\beta`  determinants
 
 
-
+ 
 
 
 .. c:function:: write_spindeterminants
@@ -3644,7 +3644,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: zmq_get_n_det
@@ -3658,7 +3658,7 @@ Subroutines / functions
     Get N_det from the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_n_det_alpha_unique
@@ -3672,7 +3672,7 @@ Subroutines / functions
     Get N_det_alpha_unique from the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_n_det_beta_unique
@@ -3686,7 +3686,7 @@ Subroutines / functions
     Get N_det_beta_unique from the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_n_states
@@ -3700,7 +3700,7 @@ Subroutines / functions
     Get N_states from the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_psi
@@ -3714,7 +3714,7 @@ Subroutines / functions
     Get the wave function from the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_psi_bilinear
@@ -3728,7 +3728,7 @@ Subroutines / functions
     Get the wave function from the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_psi_bilinear_matrix_columns
@@ -3742,7 +3742,7 @@ Subroutines / functions
     Get psi_bilinear_matrix_columns on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_psi_bilinear_matrix_order
@@ -3756,7 +3756,7 @@ Subroutines / functions
     Get psi_bilinear_matrix_order on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_psi_bilinear_matrix_rows
@@ -3770,7 +3770,7 @@ Subroutines / functions
     Get psi_bilinear_matrix_rows on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_psi_bilinear_matrix_values
@@ -3784,7 +3784,7 @@ Subroutines / functions
     get psi_bilinear_matrix_values on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_psi_coef
@@ -3798,7 +3798,7 @@ Subroutines / functions
     get psi_coef on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_psi_det
@@ -3812,7 +3812,7 @@ Subroutines / functions
     Get psi_det on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_psi_det_alpha_unique
@@ -3826,7 +3826,7 @@ Subroutines / functions
     Get psi_det_alpha_unique on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_psi_det_beta_unique
@@ -3840,7 +3840,7 @@ Subroutines / functions
     Get psi_det_beta_unique on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_psi_det_size
@@ -3854,7 +3854,7 @@ Subroutines / functions
     Get psi_det_size from the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_psi_notouch
@@ -3868,7 +3868,7 @@ Subroutines / functions
     Get the wave function from the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_n_det
@@ -3882,7 +3882,7 @@ Subroutines / functions
     Put N_det on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_n_det_alpha_unique
@@ -3896,7 +3896,7 @@ Subroutines / functions
     Put N_det_alpha_unique on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_n_det_beta_unique
@@ -3910,7 +3910,7 @@ Subroutines / functions
     Put N_det_beta_unique on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_n_states
@@ -3924,7 +3924,7 @@ Subroutines / functions
     Put N_states on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_psi
@@ -3938,7 +3938,7 @@ Subroutines / functions
     Put the wave function on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_psi_bilinear
@@ -3952,7 +3952,7 @@ Subroutines / functions
     Put the wave function on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_psi_bilinear_matrix_columns
@@ -3966,7 +3966,7 @@ Subroutines / functions
     Put psi_bilinear_matrix_columns on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_psi_bilinear_matrix_order
@@ -3980,7 +3980,7 @@ Subroutines / functions
     Put psi_bilinear_matrix_order on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_psi_bilinear_matrix_rows
@@ -3994,7 +3994,7 @@ Subroutines / functions
     Put psi_bilinear_matrix_rows on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_psi_bilinear_matrix_values
@@ -4008,7 +4008,7 @@ Subroutines / functions
     Put psi_bilinear_matrix_values on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_psi_coef
@@ -4022,7 +4022,7 @@ Subroutines / functions
     Put psi_coef on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_psi_det
@@ -4036,7 +4036,7 @@ Subroutines / functions
     Put psi_det on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_psi_det_alpha_unique
@@ -4050,7 +4050,7 @@ Subroutines / functions
     Put psi_det_alpha_unique on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_psi_det_beta_unique
@@ -4064,7 +4064,7 @@ Subroutines / functions
     Put psi_det_beta_unique on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_psi_det_size

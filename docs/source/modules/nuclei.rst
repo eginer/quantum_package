@@ -1,9 +1,9 @@
-.. _nuclei:
-
-.. program:: nuclei
-
-.. default-role:: option
-
+.. _nuclei: 
+ 
+.. program:: nuclei 
+ 
+.. default-role:: option 
+ 
 ======
 nuclei
 ======
@@ -12,47 +12,47 @@ This module contains data relative to the nuclei (coordinates, charge,
 nuclear repulsion energy, etc).
 The coordinates are expressed in atomic units.
 
-
-
-
-EZFIO parameters
-----------------
-
+ 
+ 
+ 
+EZFIO parameters 
+---------------- 
+ 
 .. option:: nucl_num
-
+ 
     Number of nuclei
-
-
+ 
+ 
 .. option:: nucl_label
-
+ 
     Nuclear labels
-
-
+ 
+ 
 .. option:: nucl_charge
-
+ 
     Nuclear charges
-
-
+ 
+ 
 .. option:: nucl_coord
-
+ 
     Nuclear coordinates in the format (:, {x,y,z})
-
-
+ 
+ 
 .. option:: disk_access_nuclear_repulsion
-
+ 
     Read/Write Nuclear Repulsion from/to disk [ Write | Read | None ]
-
+ 
     Default: None
-
+ 
 .. option:: nuclear_repulsion
-
+ 
     Nuclear repulsion (Computed automaticaly or Read in the |EZFIO|)
-
-
-
-Providers
----------
-
+ 
+ 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: center_of_mass
 
@@ -65,7 +65,7 @@ Providers
     Center of mass of the molecule
 
 
-
+ 
 
 .. c:var:: element_mass
 
@@ -79,7 +79,7 @@ Providers
     Array of the name of element, sorted by nuclear charge (integer)
 
 
-
+ 
 
 .. c:var:: element_name
 
@@ -93,7 +93,7 @@ Providers
     Array of the name of element, sorted by nuclear charge (integer)
 
 
-
+ 
 
 .. c:var:: inertia_tensor
 
@@ -106,7 +106,7 @@ Providers
     Inertia tensor
 
 
-
+ 
 
 .. c:var:: inertia_tensor_eigenvalues
 
@@ -120,7 +120,7 @@ Providers
     Eigenvectors/eigenvalues of the inertia_tensor. Used to find normal orientation.
 
 
-
+ 
 
 .. c:var:: inertia_tensor_eigenvectors
 
@@ -134,7 +134,7 @@ Providers
     Eigenvectors/eigenvalues of the inertia_tensor. Used to find normal orientation.
 
 
-
+ 
 
 .. c:var:: nucl_coord
 
@@ -147,7 +147,7 @@ Providers
     Nuclear coordinates in the format (:, {x,y,z})
 
 
-
+ 
 
 .. c:var:: nucl_coord_transp
 
@@ -160,7 +160,7 @@ Providers
     Transposed array of nucl_coord
 
 
-
+ 
 
 .. c:var:: nucl_dist
 
@@ -177,7 +177,7 @@ Providers
     nucl_dist     : Nucleus-nucleus distances nucl_dist_2   : Nucleus-nucleus distances squared nucl_dist_vec : Nucleus-nucleus distances vectors
 
 
-
+ 
 
 .. c:var:: nucl_dist_2
 
@@ -194,7 +194,7 @@ Providers
     nucl_dist     : Nucleus-nucleus distances nucl_dist_2   : Nucleus-nucleus distances squared nucl_dist_vec : Nucleus-nucleus distances vectors
 
 
-
+ 
 
 .. c:var:: nucl_dist_inv
 
@@ -207,7 +207,7 @@ Providers
     Inverse of the distance between nucleus I and nucleus J
 
 
-
+ 
 
 .. c:var:: nucl_dist_vec_x
 
@@ -224,7 +224,7 @@ Providers
     nucl_dist     : Nucleus-nucleus distances nucl_dist_2   : Nucleus-nucleus distances squared nucl_dist_vec : Nucleus-nucleus distances vectors
 
 
-
+ 
 
 .. c:var:: nucl_dist_vec_y
 
@@ -241,7 +241,7 @@ Providers
     nucl_dist     : Nucleus-nucleus distances nucl_dist_2   : Nucleus-nucleus distances squared nucl_dist_vec : Nucleus-nucleus distances vectors
 
 
-
+ 
 
 .. c:var:: nucl_dist_vec_z
 
@@ -258,7 +258,7 @@ Providers
     nucl_dist     : Nucleus-nucleus distances nucl_dist_2   : Nucleus-nucleus distances squared nucl_dist_vec : Nucleus-nucleus distances vectors
 
 
-
+ 
 
 .. c:var:: nuclear_repulsion
 
@@ -271,7 +271,7 @@ Providers
     Nuclear repulsion energy
 
 
-
+ 
 
 .. c:var:: slater_bragg_radii
 
@@ -284,7 +284,7 @@ Providers
     atomic radii in Angstrom defined in table I of JCP 41, 3199 (1964) Slater execpt for the Hydrogen atom where we took the value of Becke (1988, JCP)
 
 
-
+ 
 
 .. c:var:: slater_bragg_radii_per_atom
 
@@ -297,7 +297,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: slater_bragg_radii_per_atom_ua
 
@@ -310,7 +310,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: slater_bragg_radii_ua
 
@@ -323,7 +323,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: slater_bragg_type_inter_distance
 
@@ -336,7 +336,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: slater_bragg_type_inter_distance_ua
 

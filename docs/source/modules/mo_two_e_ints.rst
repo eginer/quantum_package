@@ -1,9 +1,9 @@
-.. _mo_two_e_ints:
-
-.. program:: mo_two_e_ints
-
-.. default-role:: option
-
+.. _mo_two_e_ints: 
+ 
+.. program:: mo_two_e_ints 
+ 
+.. default-role:: option 
+ 
 ==================
 mo_two_e_ints
 ==================
@@ -25,46 +25,46 @@ The conventions are:
 
 
 
-
-
-
-EZFIO parameters
-----------------
-
+ 
+ 
+ 
+EZFIO parameters 
+---------------- 
+ 
 .. option:: io_mo_two_e_integrals
-
+ 
     Read/Write |MO| integrals from/to disk [ Write | Read | None ]
-
+ 
     Default: None
-
+ 
 .. option:: mo_integrals_threshold
-
+ 
     If | <ij|kl> | < `mo_integrals_threshold` then <ij|kl> is zero
-
+ 
     Default: 1.e-15
-
+ 
 .. option:: no_vvvv_integrals
-
+ 
     If `True`, computes all integrals except for the integrals having 4 virtual indices
-
+ 
     Default: False
-
+ 
 .. option:: no_ivvv_integrals
-
+ 
     Can be switched on only if `no_vvvv_integrals` is `True`, then does not compute the integrals with 3 virtual indices and 1 belonging to the core inactive active orbitals
-
+ 
     Default: False
-
+ 
 .. option:: no_vvv_integrals
-
+ 
     Can be switched on only if `no_vvvv_integrals` is `True`, then does not compute the integrals with 3 virtual orbitals
-
+ 
     Default: False
-
-
-Providers
----------
-
+ 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: big_array_coulomb_integrals
 
@@ -80,7 +80,7 @@ Providers
     big_array_exchange_integrals(i,j) = <ij|ji> = (ij|ij)
 
 
-
+ 
 
 .. c:var:: big_array_exchange_integrals
 
@@ -96,7 +96,7 @@ Providers
     big_array_exchange_integrals(i,j) = <ij|ji> = (ij|ij)
 
 
-
+ 
 
 .. c:var:: core_energy
 
@@ -109,7 +109,7 @@ Providers
     energy from the core : contains all core-core contributions
 
 
-
+ 
 
 .. c:var:: core_fock_operator
 
@@ -122,7 +122,7 @@ Providers
     this is the contribution to the Fock operator from the core electrons
 
 
-
+ 
 
 .. c:var:: insert_into_mo_integrals_map
 
@@ -136,7 +136,7 @@ Providers
     Create new entry into MO map, or accumulate in an existing entry
 
 
-
+ 
 
 .. c:var:: mo_integrals_cache
 
@@ -149,7 +149,7 @@ Providers
     Cache of MO integrals for fast access
 
 
-
+ 
 
 .. c:var:: mo_integrals_cache_max
 
@@ -165,7 +165,7 @@ Providers
     Min and max values of the MOs for which the integrals are in the cache
 
 
-
+ 
 
 .. c:var:: mo_integrals_cache_max_8
 
@@ -181,7 +181,7 @@ Providers
     Min and max values of the MOs for which the integrals are in the cache
 
 
-
+ 
 
 .. c:var:: mo_integrals_cache_min
 
@@ -197,7 +197,7 @@ Providers
     Min and max values of the MOs for which the integrals are in the cache
 
 
-
+ 
 
 .. c:var:: mo_integrals_cache_min_8
 
@@ -213,7 +213,7 @@ Providers
     Min and max values of the MOs for which the integrals are in the cache
 
 
-
+ 
 
 .. c:var:: mo_integrals_map
 
@@ -226,7 +226,7 @@ Providers
     MO integrals
 
 
-
+ 
 
 .. c:var:: mo_two_e_integral_jj_from_ao
 
@@ -241,7 +241,7 @@ Providers
     mo_two_e_integral_jj_from_ao(i,j) = J_ij mo_two_e_integrals_jj_exchange_from_ao(i,j) = J_ij mo_two_e_integrals_jj_anti_from_ao(i,j) = J_ij - K_ij
 
 
-
+ 
 
 .. c:var:: mo_two_e_integrals_in_map
 
@@ -254,7 +254,7 @@ Providers
     If True, the map of MO two-electron integrals is provided
 
 
-
+ 
 
 .. c:var:: mo_two_e_integrals_jj
 
@@ -269,7 +269,7 @@ Providers
     mo_two_e_integrals_jj(i,j) = J_ij mo_two_e_integrals_jj_exchange(i,j) = K_ij mo_two_e_integrals_jj_anti(i,j) = J_ij - K_ij
 
 
-
+ 
 
 .. c:var:: mo_two_e_integrals_jj_anti
 
@@ -284,7 +284,7 @@ Providers
     mo_two_e_integrals_jj(i,j) = J_ij mo_two_e_integrals_jj_exchange(i,j) = K_ij mo_two_e_integrals_jj_anti(i,j) = J_ij - K_ij
 
 
-
+ 
 
 .. c:var:: mo_two_e_integrals_jj_anti_from_ao
 
@@ -299,7 +299,7 @@ Providers
     mo_two_e_integral_jj_from_ao(i,j) = J_ij mo_two_e_integrals_jj_exchange_from_ao(i,j) = J_ij mo_two_e_integrals_jj_anti_from_ao(i,j) = J_ij - K_ij
 
 
-
+ 
 
 .. c:var:: mo_two_e_integrals_jj_exchange
 
@@ -314,7 +314,7 @@ Providers
     mo_two_e_integrals_jj(i,j) = J_ij mo_two_e_integrals_jj_exchange(i,j) = K_ij mo_two_e_integrals_jj_anti(i,j) = J_ij - K_ij
 
 
-
+ 
 
 .. c:var:: mo_two_e_integrals_jj_exchange_from_ao
 
@@ -329,7 +329,7 @@ Providers
     mo_two_e_integral_jj_from_ao(i,j) = J_ij mo_two_e_integrals_jj_exchange_from_ao(i,j) = J_ij mo_two_e_integrals_jj_anti_from_ao(i,j) = J_ij - K_ij
 
 
-
+ 
 
 .. c:var:: mo_two_e_integrals_vv_anti_from_ao
 
@@ -344,7 +344,7 @@ Providers
     mo_two_e_integrals_vv_from_ao(i,j) = J_ij mo_two_e_integrals_vv_exchange_from_ao(i,j) = J_ij mo_two_e_integrals_vv_anti_from_ao(i,j) = J_ij - K_ij but only for the virtual orbitals
 
 
-
+ 
 
 .. c:var:: mo_two_e_integrals_vv_exchange_from_ao
 
@@ -359,7 +359,7 @@ Providers
     mo_two_e_integrals_vv_from_ao(i,j) = J_ij mo_two_e_integrals_vv_exchange_from_ao(i,j) = J_ij mo_two_e_integrals_vv_anti_from_ao(i,j) = J_ij - K_ij but only for the virtual orbitals
 
 
-
+ 
 
 .. c:var:: mo_two_e_integrals_vv_from_ao
 
@@ -374,11 +374,11 @@ Providers
     mo_two_e_integrals_vv_from_ao(i,j) = J_ij mo_two_e_integrals_vv_exchange_from_ao(i,j) = J_ij mo_two_e_integrals_vv_anti_from_ao(i,j) = J_ij - K_ij but only for the virtual orbitals
 
 
-
-
-Subroutines / functions
------------------------
-
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
 .. c:function:: add_integrals_to_map
@@ -392,7 +392,7 @@ Subroutines / functions
     Adds integrals to tha MO map according to some bitmask
 
 
-
+ 
 
 
 .. c:function:: add_integrals_to_map_no_exit_34
@@ -406,7 +406,7 @@ Subroutines / functions
     Adds integrals to tha MO map according to some bitmask
 
 
-
+ 
 
 
 .. c:function:: add_integrals_to_map_three_indices
@@ -420,7 +420,7 @@ Subroutines / functions
     Adds integrals to tha MO map according to some bitmask
 
 
-
+ 
 
 
 .. c:function:: clear_mo_map
@@ -434,7 +434,7 @@ Subroutines / functions
     Frees the memory of the MO map
 
 
-
+ 
 
 
 .. c:function:: dump_mo_integrals
@@ -448,7 +448,7 @@ Subroutines / functions
     Save to disk the |MO| integrals
 
 
-
+ 
 
 
 .. c:function:: get_mo_map_size
@@ -462,7 +462,7 @@ Subroutines / functions
     Return the number of elements in the MO map
 
 
-
+ 
 
 
 .. c:function:: get_mo_two_e_integrals
@@ -476,7 +476,7 @@ Subroutines / functions
     Returns multiple integrals <ij|kl> in the MO basis, all i for j,k,l fixed.
 
 
-
+ 
 
 
 .. c:function:: get_mo_two_e_integrals_coulomb_ii
@@ -490,7 +490,7 @@ Subroutines / functions
     Returns multiple integrals <ki|li> k(1)i(2) 1/r12 l(1)i(2) :: out_val(i1) for k,l fixed.
 
 
-
+ 
 
 
 .. c:function:: get_mo_two_e_integrals_exch_ii
@@ -504,7 +504,7 @@ Subroutines / functions
     Returns multiple integrals <ki|il> k(1)i(2) 1/r12 i(1)l(2) :: out_val(i1) for k,l fixed.
 
 
-
+ 
 
 
 .. c:function:: get_mo_two_e_integrals_i1j1
@@ -518,7 +518,7 @@ Subroutines / functions
     Returns multiple integrals <ik|jl> in the MO basis, all i(1)j(1) 1/r12 k(2)l(2) i, j for k,l fixed.
 
 
-
+ 
 
 
 .. c:function:: get_mo_two_e_integrals_ij
@@ -532,7 +532,7 @@ Subroutines / functions
     Returns multiple integrals <ij|kl> in the MO basis, all i(1)j(2) 1/r12 k(1)l(2) i, j for k,l fixed.
 
 
-
+ 
 
 
 .. c:function:: get_two_e_integral
@@ -546,7 +546,7 @@ Subroutines / functions
     Returns one integral <ij|kl> in the MO basis
 
 
-
+ 
 
 
 .. c:function:: load_mo_integrals
@@ -560,7 +560,7 @@ Subroutines / functions
     Read from disk the |MO| integrals
 
 
-
+ 
 
 
 .. c:function:: mo_two_e_integral
@@ -574,7 +574,7 @@ Subroutines / functions
     Returns one integral <ij|kl> in the MO basis
 
 
-
+ 
 
 
 .. c:function:: mo_two_e_integrals_index

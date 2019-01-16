@@ -19,7 +19,7 @@ Problem with EMSL
 * Molden format : http://cheminf.cmbi.ru.nl/molden/molden_format.html : read+write. Thomas est dessus
 * Un module pour lire les integrales Moleculaires depuis un FCIDUMP
 * Un module pour lire des integrales Atomiques (voir module de Mimi pour lire les AO Slater)
-
+* Format Fchk (gaussian)
 
 # Tests:
 
@@ -63,4 +63,6 @@ Si un provider est un programme, generer une page a lui tout seul avec le man
 qp_stop : pour forcer a terminer proprement le programme (kill clean)
 
 Virer EMSL
+
+
 

@@ -1,9 +1,9 @@
-.. _ao_basis:
-
-.. program:: ao_basis
-
-.. default-role:: option
-
+.. _ao_basis: 
+ 
+.. program:: ao_basis 
+ 
+.. default-role:: option 
+ 
 ========
 ao_basis
 ========
@@ -32,68 +32,68 @@ the two electron integrals.
 
 
 
-
-
-
-EZFIO parameters
-----------------
-
+ 
+ 
+ 
+EZFIO parameters 
+---------------- 
+ 
 .. option:: ao_basis
-
+ 
     Name of the |AO| basis set
-
-
+ 
+ 
 .. option:: ao_num
-
+ 
     Number of |AOs|
-
-
+ 
+ 
 .. option:: ao_prim_num
-
+ 
     Number of primitives per |AO|
-
-
+ 
+ 
 .. option:: ao_prim_num_max
-
+ 
     Maximum number of primitives
-
+ 
     Default: =maxval(ao_basis.ao_prim_num)
-
+ 
 .. option:: ao_nucl
-
+ 
     Index of the nucleus on which the |AO| is centered
-
-
+ 
+ 
 .. option:: ao_power
-
+ 
     Powers of x, y and z for each |AO|
-
-
+ 
+ 
 .. option:: ao_coef
-
+ 
     Primitive coefficients, read from input. Those should not be used directly, as the MOs are expressed on the basis of **normalized** AOs.
-
-
+ 
+ 
 .. option:: ao_expo
-
+ 
     Exponents for each primitive of each |AO|
-
-
+ 
+ 
 .. option:: ao_md5
-
+ 
     MD5 key, specific of the |AO| basis
-
-
+ 
+ 
 .. option:: ao_cartesian
-
+ 
     If |true|, use |AOs| in Cartesian coordinates (6d,10f,...)
-
+ 
     Default: false
-
-
-Providers
----------
-
+ 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: ao_coef_normalization_factor
 
@@ -107,7 +107,7 @@ Providers
     Coefficients including the |AO| normalization
 
 
-
+ 
 
 .. c:var:: ao_coef_normalization_libint_factor
 
@@ -120,7 +120,7 @@ Providers
     |AO| normalization for interfacing with libint
 
 
-
+ 
 
 .. c:var:: ao_coef_normalized
 
@@ -134,7 +134,7 @@ Providers
     Coefficients including the |AO| normalization
 
 
-
+ 
 
 .. c:var:: ao_coef_normalized_ordered
 
@@ -148,7 +148,7 @@ Providers
     Sorted primitives to accelerate 4 index |MO| transformation
 
 
-
+ 
 
 .. c:var:: ao_coef_normalized_ordered_transp
 
@@ -161,7 +161,7 @@ Providers
     Transposed :c:data:`ao_coef_normalized_ordered`
 
 
-
+ 
 
 .. c:var:: ao_coef_normalized_ordered_transp_per_nucl
 
@@ -174,7 +174,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: ao_expo_ordered
 
@@ -188,7 +188,7 @@ Providers
     Sorted primitives to accelerate 4 index |MO| transformation
 
 
-
+ 
 
 .. c:var:: ao_expo_ordered_transp
 
@@ -201,7 +201,7 @@ Providers
     Transposed :c:data:`ao_expo_ordered`
 
 
-
+ 
 
 .. c:var:: ao_expo_ordered_transp_per_nucl
 
@@ -214,7 +214,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: ao_l
 
@@ -229,7 +229,7 @@ Providers
     :math:`l` value of the |AO|: :math`a+b+c` in :math:`x^a y^b z^c`
 
 
-
+ 
 
 .. c:var:: ao_l_char
 
@@ -244,7 +244,7 @@ Providers
     :math:`l` value of the |AO|: :math`a+b+c` in :math:`x^a y^b z^c`
 
 
-
+ 
 
 .. c:var:: ao_l_char_space
 
@@ -257,7 +257,7 @@ Providers
     Converts an l value to a string
 
 
-
+ 
 
 .. c:var:: ao_l_max
 
@@ -272,7 +272,7 @@ Providers
     :math:`l` value of the |AO|: :math`a+b+c` in :math:`x^a y^b z^c`
 
 
-
+ 
 
 .. c:var:: ao_power_ordered_transp_per_nucl
 
@@ -285,7 +285,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: ao_prim_num_max
 
@@ -298,7 +298,7 @@ Providers
     Max number of primitives.
 
 
-
+ 
 
 .. c:var:: cart_to_sphe_0
 
@@ -311,7 +311,7 @@ Providers
     Spherical -> Cartesian Transformation matrix for l=0
 
 
-
+ 
 
 .. c:var:: cart_to_sphe_1
 
@@ -324,7 +324,7 @@ Providers
     Spherical -> Cartesian Transformation matrix for l=1
 
 
-
+ 
 
 .. c:var:: cart_to_sphe_2
 
@@ -337,7 +337,7 @@ Providers
     Spherical -> Cartesian Transformation matrix for l=2
 
 
-
+ 
 
 .. c:var:: cart_to_sphe_3
 
@@ -350,7 +350,7 @@ Providers
     Spherical -> Cartesian Transformation matrix for l=3
 
 
-
+ 
 
 .. c:var:: cart_to_sphe_4
 
@@ -363,7 +363,7 @@ Providers
     Spherical -> Cartesian Transformation matrix for l=4
 
 
-
+ 
 
 .. c:var:: cart_to_sphe_5
 
@@ -376,7 +376,7 @@ Providers
     Spherical -> Cartesian Transformation matrix for l=5
 
 
-
+ 
 
 .. c:var:: cart_to_sphe_6
 
@@ -389,7 +389,7 @@ Providers
     Spherical -> Cartesian Transformation matrix for l=6
 
 
-
+ 
 
 .. c:var:: cart_to_sphe_7
 
@@ -402,7 +402,7 @@ Providers
     Spherical -> Cartesian Transformation matrix for l=7
 
 
-
+ 
 
 .. c:var:: cart_to_sphe_8
 
@@ -415,7 +415,7 @@ Providers
     Spherical -> Cartesian Transformation matrix for l=8
 
 
-
+ 
 
 .. c:var:: cart_to_sphe_9
 
@@ -428,7 +428,7 @@ Providers
     Spherical -> Cartesian Transformation matrix for l=9
 
 
-
+ 
 
 .. c:var:: l_to_charater
 
@@ -441,7 +441,7 @@ Providers
     Character corresponding to the "l" value of an |AO|
 
 
-
+ 
 
 .. c:var:: n_aos_max
 
@@ -455,7 +455,7 @@ Providers
     Number of |AOs| per atom
 
 
-
+ 
 
 .. c:var:: n_pt_max_i_x
 
@@ -469,7 +469,7 @@ Providers
     Number of points used in the numerical integrations.
 
 
-
+ 
 
 .. c:var:: n_pt_max_integrals
 
@@ -483,7 +483,7 @@ Providers
     Number of points used in the numerical integrations.
 
 
-
+ 
 
 .. c:var:: nucl_aos
 
@@ -496,7 +496,7 @@ Providers
     List of |AOs| centered on each atom
 
 
-
+ 
 
 .. c:var:: nucl_aos_transposed
 
@@ -509,7 +509,7 @@ Providers
     List of AOs attached on each atom
 
 
-
+ 
 
 .. c:var:: nucl_list_shell_aos
 
@@ -523,7 +523,7 @@ Providers
     Index of the shell type |AOs| and of the corresponding |AOs| By convention, for p,d,f and g |AOs|, we take the index of the |AO| with the the corresponding power in the x axis
 
 
-
+ 
 
 .. c:var:: nucl_n_aos
 
@@ -537,7 +537,7 @@ Providers
     Number of |AOs| per atom
 
 
-
+ 
 
 .. c:var:: nucl_num_shell_aos
 
@@ -551,11 +551,11 @@ Providers
     Index of the shell type |AOs| and of the corresponding |AOs| By convention, for p,d,f and g |AOs|, we take the index of the |AO| with the the corresponding power in the x axis
 
 
-
-
-Subroutines / functions
------------------------
-
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
 .. c:function:: ao_power_index
@@ -571,7 +571,7 @@ Subroutines / functions
     :math:`\frac{1}{2} (l-n_x) (l-n_x+1) + n_z + 1`
 
 
-
+ 
 
 
 .. c:function:: ao_value
@@ -585,7 +585,7 @@ Subroutines / functions
     return the value of the ith ao at point r
 
 
-
+ 
 
 
 .. c:function:: give_all_aos_and_grad_and_lapl_at_r
@@ -599,7 +599,7 @@ Subroutines / functions
     input      : r(1) ==> r(1) = x, r(2) = y, r(3) = z output     : aos_array(i) = ao(i) evaluated at r : aos_grad_array(1,i) = gradient X of the ao(i) evaluated at r
 
 
-
+ 
 
 
 .. c:function:: give_all_aos_and_grad_at_r
@@ -613,7 +613,7 @@ Subroutines / functions
     input      : r(1) ==> r(1) = x, r(2) = y, r(3) = z output     : aos_array(i) = ao(i) evaluated at r : aos_grad_array(1,i) = gradient X of the ao(i) evaluated at r
 
 
-
+ 
 
 
 .. c:function:: give_all_aos_at_r
@@ -627,7 +627,7 @@ Subroutines / functions
     input : r == r(1) = x and so on aos_array(i) = aos(i) evaluated in r
 
 
-
+ 
 
 
 .. c:function:: give_all_aos_at_r_old
@@ -641,7 +641,7 @@ Subroutines / functions
     gives the values of aos at a given point r
 
 
-
+ 
 
 
 .. c:function:: primitive_value

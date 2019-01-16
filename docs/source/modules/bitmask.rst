@@ -1,9 +1,9 @@
-.. _bitmask:
-
-.. program:: bitmask
-
-.. default-role:: option
-
+.. _bitmask: 
+ 
+.. program:: bitmask 
+ 
+.. default-role:: option 
+ 
 ==============
 bitmask module
 ==============
@@ -31,13 +31,13 @@ transforming a bit string to a list of integers for example.
    bit_kind = bit_kind_size / 8
 
 
-For an example of how to use the bitmaks, see the file :file:`example.irp.f`. 
-
-
-
-Providers
----------
-
+For an example of how to use the bitmaks, see the file :file:`example.irp.f`.
+ 
+ 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: cas_bitmask
 
@@ -50,7 +50,7 @@ Providers
     Bitmasks for CAS reference determinants. (N_int, alpha/beta, CAS reference)
 
 
-
+ 
 
 .. c:var:: closed_shell_ref_bitmask
 
@@ -63,7 +63,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: core_bitmask
 
@@ -77,7 +77,7 @@ Providers
     Core + deleted orbitals bitmask
 
 
-
+ 
 
 .. c:var:: core_inact_act_bitmask_4
 
@@ -90,7 +90,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: core_inact_virt_bitmask
 
@@ -104,7 +104,7 @@ Providers
     Reunion of the inactive and virtual bitmasks
 
 
-
+ 
 
 .. c:var:: full_ijkl_bitmask
 
@@ -117,7 +117,7 @@ Providers
     Bitmask to include all possible MOs
 
 
-
+ 
 
 .. c:var:: full_ijkl_bitmask_4
 
@@ -130,7 +130,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: generators_bitmask
 
@@ -159,7 +159,7 @@ Providers
 
 
 
-
+ 
 
 .. c:var:: generators_bitmask_restart
 
@@ -188,7 +188,7 @@ Providers
 
 
 
-
+ 
 
 .. c:var:: hf_bitmask
 
@@ -201,7 +201,7 @@ Providers
     Hartree Fock bit mask
 
 
-
+ 
 
 .. c:var:: i_bitmask_gen
 
@@ -214,7 +214,7 @@ Providers
     Current bitmask for the generators
 
 
-
+ 
 
 .. c:var:: inact_bitmask
 
@@ -230,7 +230,7 @@ Providers
     inact_bitmask : Bitmask of the inactive orbitals which are supposed to be doubly excited in post CAS methods n_inact_orb   : Number of inactive orbitals virt_bitmask  : Bitmaks of vritual orbitals which are supposed to be recieve electrons in post CAS methods n_virt_orb    : Number of virtual orbitals
 
 
-
+ 
 
 .. c:var:: inact_virt_bitmask
 
@@ -244,7 +244,7 @@ Providers
     Reunion of the inactive and virtual bitmasks
 
 
-
+ 
 
 .. c:var:: index_holes_bitmask
 
@@ -257,7 +257,7 @@ Providers
     Index of the holes in the generators_bitmasks
 
 
-
+ 
 
 .. c:var:: index_particl_bitmask
 
@@ -270,7 +270,7 @@ Providers
     Index of the holes in the generators_bitmasks
 
 
-
+ 
 
 .. c:var:: list_act
 
@@ -286,7 +286,7 @@ Providers
     list_act_reverse : reverse list of active orbitals list_act_reverse(i) = 0 ::> not an active list_act_reverse(i) = k ::> IS the kth active orbital
 
 
-
+ 
 
 .. c:var:: list_act_reverse
 
@@ -302,7 +302,7 @@ Providers
     list_act_reverse : reverse list of active orbitals list_act_reverse(i) = 0 ::> not an active list_act_reverse(i) = k ::> IS the kth active orbital
 
 
-
+ 
 
 .. c:var:: list_core
 
@@ -316,7 +316,7 @@ Providers
     List of the core orbitals that are never excited in post CAS method
 
 
-
+ 
 
 .. c:var:: list_core_inact
 
@@ -330,7 +330,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: list_core_inact_act
 
@@ -344,7 +344,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: list_core_inact_act_reverse
 
@@ -358,7 +358,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: list_core_inact_reverse
 
@@ -372,7 +372,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: list_core_reverse
 
@@ -386,7 +386,7 @@ Providers
     List of the core orbitals that are never excited in post CAS method
 
 
-
+ 
 
 .. c:var:: list_inact
 
@@ -402,7 +402,7 @@ Providers
     list_inact : List of the inactive orbitals which are supposed to be doubly excited in post CAS methods list_virt  : List of vritual orbitals which are supposed to be recieve electrons in post CAS methods list_inact_reverse : reverse list of inactive orbitals list_inact_reverse(i) = 0 ::> not an inactive list_inact_reverse(i) = k ::> IS the kth inactive list_virt_reverse : reverse list of virtual orbitals list_virt_reverse(i) = 0 ::> not an virtual list_virt_reverse(i) = k ::> IS the kth virtual
 
 
-
+ 
 
 .. c:var:: list_inact_reverse
 
@@ -418,7 +418,7 @@ Providers
     list_inact : List of the inactive orbitals which are supposed to be doubly excited in post CAS methods list_virt  : List of vritual orbitals which are supposed to be recieve electrons in post CAS methods list_inact_reverse : reverse list of inactive orbitals list_inact_reverse(i) = 0 ::> not an inactive list_inact_reverse(i) = k ::> IS the kth inactive list_virt_reverse : reverse list of virtual orbitals list_virt_reverse(i) = 0 ::> not an virtual list_virt_reverse(i) = k ::> IS the kth virtual
 
 
-
+ 
 
 .. c:var:: list_virt
 
@@ -434,7 +434,7 @@ Providers
     list_inact : List of the inactive orbitals which are supposed to be doubly excited in post CAS methods list_virt  : List of vritual orbitals which are supposed to be recieve electrons in post CAS methods list_inact_reverse : reverse list of inactive orbitals list_inact_reverse(i) = 0 ::> not an inactive list_inact_reverse(i) = k ::> IS the kth inactive list_virt_reverse : reverse list of virtual orbitals list_virt_reverse(i) = 0 ::> not an virtual list_virt_reverse(i) = k ::> IS the kth virtual
 
 
-
+ 
 
 .. c:var:: list_virt_reverse
 
@@ -450,7 +450,7 @@ Providers
     list_inact : List of the inactive orbitals which are supposed to be doubly excited in post CAS methods list_virt  : List of vritual orbitals which are supposed to be recieve electrons in post CAS methods list_inact_reverse : reverse list of inactive orbitals list_inact_reverse(i) = 0 ::> not an inactive list_inact_reverse(i) = k ::> IS the kth inactive list_virt_reverse : reverse list of virtual orbitals list_virt_reverse(i) = 0 ::> not an virtual list_virt_reverse(i) = k ::> IS the kth virtual
 
 
-
+ 
 
 .. c:var:: mpi_bit_kind
 
@@ -463,7 +463,7 @@ Providers
     MPI bit kind type
 
 
-
+ 
 
 .. c:var:: n_act_orb
 
@@ -476,7 +476,7 @@ Providers
     number of active orbitals
 
 
-
+ 
 
 .. c:var:: n_cas_bitmask
 
@@ -489,7 +489,7 @@ Providers
     Number of bitmasks for CAS
 
 
-
+ 
 
 .. c:var:: n_core_inact_act_orb
 
@@ -503,7 +503,7 @@ Providers
     Reunion of the core, inactive and active bitmasks
 
 
-
+ 
 
 .. c:var:: n_core_inact_orb
 
@@ -516,7 +516,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: n_core_orb
 
@@ -530,7 +530,7 @@ Providers
     Core + deleted orbitals bitmask
 
 
-
+ 
 
 .. c:var:: n_core_orb_allocate
 
@@ -543,7 +543,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: n_generators_bitmask
 
@@ -556,7 +556,7 @@ Providers
     Number of bitmasks for generators
 
 
-
+ 
 
 .. c:var:: n_generators_bitmask_restart
 
@@ -569,7 +569,7 @@ Providers
     Number of bitmasks for generators
 
 
-
+ 
 
 .. c:var:: n_inact_orb
 
@@ -585,7 +585,7 @@ Providers
     inact_bitmask : Bitmask of the inactive orbitals which are supposed to be doubly excited in post CAS methods n_inact_orb   : Number of inactive orbitals virt_bitmask  : Bitmaks of vritual orbitals which are supposed to be recieve electrons in post CAS methods n_virt_orb    : Number of virtual orbitals
 
 
-
+ 
 
 .. c:var:: n_inact_orb_allocate
 
@@ -598,7 +598,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: n_int
 
@@ -611,7 +611,7 @@ Providers
     Number of 64-bit integers needed to represent determinants as binary strings
 
 
-
+ 
 
 .. c:var:: n_virt_orb
 
@@ -627,7 +627,7 @@ Providers
     inact_bitmask : Bitmask of the inactive orbitals which are supposed to be doubly excited in post CAS methods n_inact_orb   : Number of inactive orbitals virt_bitmask  : Bitmaks of vritual orbitals which are supposed to be recieve electrons in post CAS methods n_virt_orb    : Number of virtual orbitals
 
 
-
+ 
 
 .. c:var:: n_virt_orb_allocate
 
@@ -640,7 +640,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: ref_bitmask
 
@@ -653,7 +653,7 @@ Providers
     Reference bit mask, used in Slater rules, chosen as Hartree-Fock bitmask
 
 
-
+ 
 
 .. c:var:: reunion_of_bitmask
 
@@ -666,7 +666,7 @@ Providers
     Reunion of the inactive, active and virtual bitmasks
 
 
-
+ 
 
 .. c:var:: reunion_of_cas_inact_bitmask
 
@@ -679,7 +679,7 @@ Providers
     Reunion of the inactive, active and virtual bitmasks
 
 
-
+ 
 
 .. c:var:: reunion_of_core_inact_act_bitmask
 
@@ -693,7 +693,7 @@ Providers
     Reunion of the core, inactive and active bitmasks
 
 
-
+ 
 
 .. c:var:: reunion_of_core_inact_bitmask
 
@@ -706,7 +706,7 @@ Providers
     Reunion of the core and inactive and virtual bitmasks
 
 
-
+ 
 
 .. c:var:: unpaired_alpha_electrons
 
@@ -719,7 +719,7 @@ Providers
     Bitmask reprenting the unpaired alpha electrons in the HF_bitmask
 
 
-
+ 
 
 .. c:var:: virt_bitmask
 
@@ -735,7 +735,7 @@ Providers
     inact_bitmask : Bitmask of the inactive orbitals which are supposed to be doubly excited in post CAS methods n_inact_orb   : Number of inactive orbitals virt_bitmask  : Bitmaks of vritual orbitals which are supposed to be recieve electrons in post CAS methods n_virt_orb    : Number of virtual orbitals
 
 
-
+ 
 
 .. c:var:: virt_bitmask_4
 
@@ -748,11 +748,11 @@ Providers
     
 
 
-
-
-Subroutines / functions
------------------------
-
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
 .. c:function:: bitstring_to_hexa
@@ -766,7 +766,7 @@ Subroutines / functions
     Transform a bit string to a string in hexadecimal format for printing
 
 
-
+ 
 
 
 .. c:function:: bitstring_to_list
@@ -780,7 +780,7 @@ Subroutines / functions
     Gives the inidices(+1) of the bits set to 1 in the bit string
 
 
-
+ 
 
 
 .. c:function:: bitstring_to_str
@@ -794,7 +794,7 @@ Subroutines / functions
     Transform a bit string to a string for printing
 
 
-
+ 
 
 
 .. c:function:: broadcast_chunks_bit_kind
@@ -808,7 +808,7 @@ Subroutines / functions
     Broadcast with chunks of ~2GB
 
 
-
+ 
 
 
 .. c:function:: clear_bit_to_integer
@@ -822,7 +822,7 @@ Subroutines / functions
     set to 0 the bit number i_physical in the bitstring key
 
 
-
+ 
 
 
 .. c:function:: debug_det
@@ -836,7 +836,7 @@ Subroutines / functions
     Subroutine to print the content of a determinant in '+-' notation and hexadecimal representation.
 
 
-
+ 
 
 
 .. c:function:: debug_spindet
@@ -850,7 +850,7 @@ Subroutines / functions
     Subroutine to print the content of a determinant in '+-' notation and hexadecimal representation.
 
 
-
+ 
 
 
 .. c:function:: example_bitmask
@@ -864,7 +864,7 @@ Subroutines / functions
     subroutine that illustrates the main features available in bitmask
 
 
-
+ 
 
 
 .. c:function:: initialize_bitmask_to_restart_ones
@@ -878,7 +878,7 @@ Subroutines / functions
     Initialization of the generators_bitmask to the restart bitmask
 
 
-
+ 
 
 
 .. c:function:: is_a_1h
@@ -892,7 +892,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: is_a_1h1p
@@ -906,7 +906,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: is_a_1h2p
@@ -920,7 +920,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: is_a_1p
@@ -934,7 +934,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: is_a_2h
@@ -948,7 +948,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: is_a_2h1p
@@ -962,7 +962,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: is_a_2p
@@ -976,7 +976,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: is_a_two_holes_two_particles
@@ -990,7 +990,7 @@ Subroutines / functions
     logical function that returns True if the determinant 'key_in' belongs to the 2h-2p excitation class of the DDCI space this is calculated using the CAS_bitmask that defines the active orbital space, the inact_bitmasl that defines the inactive oribital space and the virt_bitmask that defines the virtual orbital space
 
 
-
+ 
 
 
 .. c:function:: is_i_in_virtual
@@ -1004,7 +1004,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: is_the_hole_in_det
@@ -1018,7 +1018,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: is_the_particl_in_det
@@ -1032,7 +1032,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: list_to_bitstring
@@ -1046,7 +1046,7 @@ Subroutines / functions
     Returns the physical string "string(N_int,2)" from the array of occupations "list(N_int*bit_kind_size,2)
 
 
-
+ 
 
 
 .. c:function:: modify_bitmasks_for_hole
@@ -1060,7 +1060,7 @@ Subroutines / functions
     modify the generators_bitmask in order that one can only excite the electrons occupying i_hole
 
 
-
+ 
 
 
 .. c:function:: modify_bitmasks_for_hole_in_out
@@ -1074,7 +1074,7 @@ Subroutines / functions
     modify the generators_bitmask in order that one can only excite the electrons occupying i_hole
 
 
-
+ 
 
 
 .. c:function:: modify_bitmasks_for_particl
@@ -1088,7 +1088,7 @@ Subroutines / functions
     modify the generators_bitmask in order that one can only excite the electrons to the orbital i_part
 
 
-
+ 
 
 
 .. c:function:: number_of_holes
@@ -1102,7 +1102,7 @@ Subroutines / functions
     Function that returns the number of holes in the inact space
 
 
-
+ 
 
 
 .. c:function:: number_of_holes_verbose
@@ -1116,7 +1116,7 @@ Subroutines / functions
     function that returns the number of holes in the inact space
 
 
-
+ 
 
 
 .. c:function:: number_of_particles
@@ -1130,7 +1130,7 @@ Subroutines / functions
     function that returns the number of particles in the virtual space
 
 
-
+ 
 
 
 .. c:function:: number_of_particles_verbose
@@ -1144,7 +1144,7 @@ Subroutines / functions
     function that returns the number of particles in the inact space
 
 
-
+ 
 
 
 .. c:function:: print_det
@@ -1158,7 +1158,7 @@ Subroutines / functions
     Subroutine to print the content of a determinant using the '+-' notation
 
 
-
+ 
 
 
 .. c:function:: print_generators_bitmasks_holes
@@ -1172,7 +1172,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: print_generators_bitmasks_holes_for_one_generator
@@ -1186,7 +1186,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: print_generators_bitmasks_particles
@@ -1200,7 +1200,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: print_generators_bitmasks_particles_for_one_generator
@@ -1214,7 +1214,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: print_spindet
@@ -1228,7 +1228,7 @@ Subroutines / functions
     Subroutine to print the content of a determinant using the '+-' notation
 
 
-
+ 
 
 
 .. c:function:: set_bit_to_integer
@@ -1242,7 +1242,7 @@ Subroutines / functions
     set to 1 the bit number i_physical in the bitstring key
 
 
-
+ 
 
 
 .. c:function:: set_bitmask_hole_as_input
@@ -1256,7 +1256,7 @@ Subroutines / functions
     set the generators_bitmask for the holes as the input_bimask
 
 
-
+ 
 
 
 .. c:function:: set_bitmask_particl_as_input

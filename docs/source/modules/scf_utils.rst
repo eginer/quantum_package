@@ -1,9 +1,9 @@
-.. _scf_utils:
-
-.. program:: scf_utils
-
-.. default-role:: option
-
+.. _scf_utils: 
+ 
+.. program:: scf_utils 
+ 
+.. default-role:: option 
+ 
 =========
 scf_utils
 =========
@@ -13,8 +13,8 @@ scf_utils
 The scf_utils module is an abstract module which contains the basics to perform *Restricted* SCF calculations (the
 spatial part of the |MOs| is common for alpha and beta spinorbitals) based on a single-determinant wave function.
 
-This module does not produce any executable *and must not do*, but instead it contains everything one needs to perform an orbital optimization based on an Fock matrix. 
-The ``scf_utils`` module is meant to be included in the :file:`NEED` of the various single determinant SCF procedures, such as ``hartree_fock`` or ``kohn_sham``, where a specific definition of the Fock matrix is given (see :file:`hartree_fock fock_matrix_hf.irp.f` for an example). 
+This module does not produce any executable *and must not do*, but instead it contains everything one needs to perform an orbital optimization based on an Fock matrix.
+The ``scf_utils`` module is meant to be included in the :file:`NEED` of the various single determinant SCF procedures, such as ``hartree_fock`` or ``kohn_sham``, where a specific definition of the Fock matrix is given (see :file:`hartree_fock fock_matrix_hf.irp.f` for an example).
 
 All SCF programs perform the following actions:
 
@@ -23,13 +23,13 @@ All SCF programs perform the following actions:
 
 #. Check in the |EZFIO| database if there is a set of |MOs|. If there is, it
    will read them as initial guess. Otherwise, it will create a guess.
-#. Perform the |SCF| iterations based on the definition of the Fock matrix 
+#. Perform the |SCF| iterations based on the definition of the Fock matrix
 
 
-The main keywords/options are: 
+The main keywords/options are:
 
-* :option:`scf_utils thresh_scf` 
-* :option:`scf_utils level_shift` 
+* :option:`scf_utils thresh_scf`
+* :option:`scf_utils level_shift`
 
 At each iteration, the |MOs| are saved in the |EZFIO| database. Hence, if the calculation
 crashes for any unexpected reason, the calculation can be restarted by running again
@@ -44,69 +44,69 @@ To start a calculation from scratch, the simplest way is to remove the
 .. _DIIS: https://en.wikipedia.org/w/index.php?title=DIIS
 .. _level-shifting: https://doi.org/10.1002/qua.560070407
 
-
-
-
-EZFIO parameters
-----------------
-
+ 
+ 
+ 
+EZFIO parameters 
+---------------- 
+ 
 .. option:: max_dim_diis
-
+ 
     Maximum size of the DIIS extrapolation procedure
-
+ 
     Default: 15
-
+ 
 .. option:: threshold_diis
-
+ 
     Threshold on the convergence of the DIIS error vector during a Hartree-Fock calculation. If 0. is chosen, the square root of thresh_scf will be used.
-
+ 
     Default: 0.
-
+ 
 .. option:: thresh_scf
-
+ 
     Threshold on the convergence of the Hartree Fock energy.
-
+ 
     Default: 1.e-10
-
+ 
 .. option:: n_it_scf_max
-
+ 
     Maximum number of SCF iterations
-
+ 
     Default: 500
-
+ 
 .. option:: level_shift
-
+ 
     Energy shift on the virtual MOs to improve SCF convergence
-
+ 
     Default: 0.
-
+ 
 .. option:: scf_algorithm
-
+ 
     Type of SCF algorithm used. Possible choices are [ Simple | DIIS]
-
+ 
     Default: DIIS
-
+ 
 .. option:: mo_guess_type
-
+ 
     Initial MO guess. Can be [ Huckel | HCore ]
-
+ 
     Default: Huckel
-
+ 
 .. option:: energy
-
+ 
     Calculated HF energy
-
-
+ 
+ 
 .. option:: frozen_orb_scf
-
+ 
     If true, leave untouched all the orbitals defined as core and optimize all the orbitals defined as active with qp_set_mo_class
-
+ 
     Default: False
-
-
-Providers
----------
-
+ 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: eigenvalues_fock_matrix_ao
 
@@ -120,7 +120,7 @@ Providers
     Eigenvalues and eigenvectors of the Fock matrix over the AO basis
 
 
-
+ 
 
 .. c:var:: eigenvectors_fock_matrix_ao
 
@@ -134,7 +134,7 @@ Providers
     Eigenvalues and eigenvectors of the Fock matrix over the AO basis
 
 
-
+ 
 
 .. c:var:: eigenvectors_fock_matrix_mo
 
@@ -147,7 +147,7 @@ Providers
     Eigenvector of the Fock matrix in the MO basis obtained with level shift.
 
 
-
+ 
 
 .. c:var:: extrapolate_fock_matrix
 
@@ -164,7 +164,7 @@ Providers
     Compute the extrapolated Fock matrix using the DIIS procedure
 
 
-
+ 
 
 .. c:var:: fock_matrix_ao
 
@@ -177,7 +177,7 @@ Providers
     Fock matrix in AO basis set
 
 
-
+ 
 
 .. c:var:: fock_matrix_diag_mo
 
@@ -201,7 +201,7 @@ Providers
 
 
 
-
+ 
 
 .. c:var:: fock_matrix_mo
 
@@ -225,7 +225,7 @@ Providers
 
 
 
-
+ 
 
 .. c:var:: fock_matrix_mo_alpha
 
@@ -238,7 +238,7 @@ Providers
     Fock matrix on the MO basis
 
 
-
+ 
 
 .. c:var:: fock_matrix_mo_beta
 
@@ -251,7 +251,7 @@ Providers
     Fock matrix on the MO basis
 
 
-
+ 
 
 .. c:var:: fps_spf_matrix_ao
 
@@ -264,7 +264,7 @@ Providers
     Commutator FPS - SPF
 
 
-
+ 
 
 .. c:var:: fps_spf_matrix_mo
 
@@ -277,7 +277,7 @@ Providers
     Commutator FPS - SPF in MO basis
 
 
-
+ 
 
 .. c:var:: scf_density_matrix_ao
 
@@ -290,7 +290,7 @@ Providers
     S^{-1}.P.S^{-1}  where P = C.C^t
 
 
-
+ 
 
 .. c:var:: scf_density_matrix_ao_alpha
 
@@ -303,7 +303,7 @@ Providers
     S^{-1}.P_alpha.S^{-1}
 
 
-
+ 
 
 .. c:var:: scf_density_matrix_ao_beta
 
@@ -316,7 +316,7 @@ Providers
     S^{-1}.P_beta.S^{-1}
 
 
-
+ 
 
 .. c:var:: scf_energy
 
@@ -329,7 +329,7 @@ Providers
     Hartree-Fock energy
 
 
-
+ 
 
 .. c:var:: threshold_diis_nonzero
 
@@ -342,11 +342,11 @@ Providers
     If threshold_DIIS is zero, choose sqrt(thresh_scf)
 
 
-
-
-Subroutines / functions
------------------------
-
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
 .. c:function:: damping_scf
@@ -360,7 +360,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: huckel_guess
@@ -374,7 +374,7 @@ Subroutines / functions
     Build the MOs using the extended Huckel model
 
 
-
+ 
 
 
 .. c:function:: roothaan_hall_scf

@@ -2,7 +2,10 @@
 
 from __future__ import print_function
 import os
+import sys
 import ConfigParser
+
+from module_handler import get_binaries
 
 
 def generate_modules(abs_module, entities):
@@ -37,15 +40,28 @@ def generate_modules(abs_module, entities):
             rst += [ ".. option:: %s\n"%(section), doc, default ]
 
   providers = []
-  subroutines = []
+  subroutines = {}
   for k in sorted(entities.keys()):
     e = entities[k]
     if e["module"].lower() == module.lower():
         if "/" not in e["file"] and e["file"] != "ezfio_interface.irp.f":
             if e["type"] == 's':
-                subroutines.append(e)
+                subroutines[e["name"]] = e
             elif e["type"] == 'p':
                 providers.append(e)
+
+  binaries = [ os.path.basename(f) for f in get_binaries(abs_module) ]
+
+  if binaries:
+    rst += ["", "Programs", "--------", ""]
+    for b in binaries:
+        try:
+            b = subroutines[b]
+        except KeyError:
+            print("Error: The program %s in %s does not have the same name as the file"%
+                (b, abs_module))
+            sys.exit(1)
+        rst += [" * :ref:`%s`"%(b["name"])]
 
   if providers:
     rst += [ "", "Providers", "---------", "" ]
@@ -72,7 +88,10 @@ def generate_modules(abs_module, entities):
 
   if subroutines:
     rst += [ "", "Subroutines / functions", "-----------------------", "" ]
-    for p in subroutines:
+    for p in sorted(subroutines.keys()):
+        p = subroutines[p]
+        if p["name"] in binaries:
+           continue
         rst += [ """
 
 .. c:function:: %s
@@ -93,10 +112,21 @@ def generate_modules(abs_module, entities):
       ) ]
 
 
-
   rst_file = os.path.join('modules',module+".rst")
   with open(rst_file,'w') as f: 
-    f.write("\n".join(rst))
+    f.write(" \n".join(rst))
+
+  for b in binaries:
+    rst = [
+        ".. _.%s.:"%(b), "", 
+        ".. program:: %s"%(b), "", 
+        "="*len(b), b, "="*len(b), "", "",
+        " ".join(subroutines[b]["doc"]), "", 
+        "File: :file:`%s`"%(os.path.join(module, subroutines[b]["file"]))
+    ]
+    rst_file = os.path.join('programs',b+".rst")
+    with open(rst_file,'w') as f: 
+        f.write(" \n".join(rst))
 
 
 
@@ -202,7 +232,7 @@ def generate_index(entities):
         if e["type"] == 's':
             rst.append("* :c:func:`%s`" % (e["name"]))
 
-    f.write("\n".join(rst))
+    f.write(" \n".join(rst))
 
 
 

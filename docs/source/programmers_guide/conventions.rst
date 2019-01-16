@@ -104,4 +104,12 @@ After a `read` statement there should be no comma.
 
 Only standard Fortran is allowed : Intel or GNU extensions are forbidden.
 
+The name of a program should be the same as the name of the file. For example,
+for the :ref:`fci` program, we have
+
+.. code-block:: fortan
+
+   program fci
+
+and the file is named :file:`fci.irp.f`.
 

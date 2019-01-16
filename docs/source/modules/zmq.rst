@@ -1,9 +1,9 @@
-.. _zmq:
-
-.. program:: zmq
-
-.. default-role:: option
-
+.. _zmq: 
+ 
+.. program:: zmq 
+ 
+.. default-role:: option 
+ 
 ===
 zmq
 ===
@@ -11,12 +11,12 @@ zmq
 Definition of |ZeroMQ| sockets and messages.
 
 
-
-
-
-Providers
----------
-
+ 
+ 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: is_zmq_slave
 
@@ -29,7 +29,7 @@ Providers
     If |true|, the current process is a |ZeroMQ| slave.
 
 
-
+ 
 
 .. c:var:: qp_run_address
 
@@ -43,7 +43,7 @@ Providers
     Address of the qp_run socket Example : tcp://130.120.229.139:12345
 
 
-
+ 
 
 .. c:var:: zmq_context
 
@@ -57,7 +57,7 @@ Providers
     Context for the ZeroMQ library
 
 
-
+ 
 
 .. c:var:: zmq_lock
 
@@ -71,7 +71,7 @@ Providers
     Context for the ZeroMQ library
 
 
-
+ 
 
 .. c:var:: zmq_port_start
 
@@ -85,7 +85,7 @@ Providers
     Address of the qp_run socket Example : tcp://130.120.229.139:12345
 
 
-
+ 
 
 .. c:var:: zmq_socket_pair_inproc_address
 
@@ -103,7 +103,7 @@ Providers
     Socket which pulls the results (2)
 
 
-
+ 
 
 .. c:var:: zmq_socket_pull_inproc_address
 
@@ -121,7 +121,7 @@ Providers
     Socket which pulls the results (2)
 
 
-
+ 
 
 .. c:var:: zmq_socket_pull_tcp_address
 
@@ -139,7 +139,7 @@ Providers
     Socket which pulls the results (2)
 
 
-
+ 
 
 .. c:var:: zmq_socket_push_inproc_address
 
@@ -157,7 +157,7 @@ Providers
     Socket which pulls the results (2)
 
 
-
+ 
 
 .. c:var:: zmq_socket_push_tcp_address
 
@@ -175,7 +175,7 @@ Providers
     Socket which pulls the results (2)
 
 
-
+ 
 
 .. c:var:: zmq_socket_sub_tcp_address
 
@@ -193,7 +193,7 @@ Providers
     Socket which pulls the results (2)
 
 
-
+ 
 
 .. c:var:: zmq_state
 
@@ -206,11 +206,11 @@ Providers
     Threads executing work through the ZeroMQ interface
 
 
-
-
-Subroutines / functions
------------------------
-
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
 .. c:function:: add_task_to_taskserver
@@ -224,7 +224,7 @@ Subroutines / functions
     Get a task from the task server
 
 
-
+ 
 
 
 .. c:function:: connect_to_taskserver
@@ -238,7 +238,7 @@ Subroutines / functions
     Connect to the task server and obtain the worker ID
 
 
-
+ 
 
 
 .. c:function:: disconnect_from_taskserver
@@ -252,7 +252,7 @@ Subroutines / functions
     Disconnect from the task server
 
 
-
+ 
 
 
 .. c:function:: disconnect_from_taskserver_state
@@ -266,7 +266,7 @@ Subroutines / functions
     Disconnect from the task server
 
 
-
+ 
 
 
 .. c:function:: end_parallel_job
@@ -280,7 +280,7 @@ Subroutines / functions
     End a new parallel job with name 'name'. The slave tasks execute subroutine 'slave'
 
 
-
+ 
 
 
 .. c:function:: end_zmq_pair_socket
@@ -294,7 +294,7 @@ Subroutines / functions
     Terminate socket on which the results are sent.
 
 
-
+ 
 
 
 .. c:function:: end_zmq_pull_socket
@@ -308,7 +308,7 @@ Subroutines / functions
     Terminate socket on which the results are sent.
 
 
-
+ 
 
 
 .. c:function:: end_zmq_push_socket
@@ -322,7 +322,7 @@ Subroutines / functions
     Terminate socket on which the results are sent.
 
 
-
+ 
 
 
 .. c:function:: end_zmq_sub_socket
@@ -336,7 +336,7 @@ Subroutines / functions
     Terminate socket on which the results are sent.
 
 
-
+ 
 
 
 .. c:function:: end_zmq_to_qp_run_socket
@@ -350,7 +350,7 @@ Subroutines / functions
     Terminate the socket from the application to qp_run
 
 
-
+ 
 
 
 .. c:function:: get_task_from_taskserver
@@ -364,7 +364,7 @@ Subroutines / functions
     Get a task from the task server
 
 
-
+ 
 
 
 .. c:function:: get_tasks_from_taskserver
@@ -378,7 +378,7 @@ Subroutines / functions
     Get multiple tasks from the task server
 
 
-
+ 
 
 
 .. c:function:: new_parallel_job
@@ -392,7 +392,7 @@ Subroutines / functions
     Start a new parallel job with name 'name'. The slave tasks execute subroutine 'slave'
 
 
-
+ 
 
 
 .. c:function:: new_zmq_pair_socket
@@ -406,7 +406,7 @@ Subroutines / functions
     Socket on which the collector and the main communicate
 
 
-
+ 
 
 
 .. c:function:: new_zmq_pull_socket
@@ -420,7 +420,7 @@ Subroutines / functions
     Socket on which the results are sent. If thread is 1, use inproc
 
 
-
+ 
 
 
 .. c:function:: new_zmq_push_socket
@@ -434,7 +434,7 @@ Subroutines / functions
     Socket on which the results are sent. If thread is 1, use inproc
 
 
-
+ 
 
 
 .. c:function:: new_zmq_sub_socket
@@ -448,7 +448,7 @@ Subroutines / functions
     Socket to read the state published by the Task server
 
 
-
+ 
 
 
 .. c:function:: new_zmq_to_qp_run_socket
@@ -462,7 +462,7 @@ Subroutines / functions
     Socket on which the qp_run process replies
 
 
-
+ 
 
 
 .. c:function:: reset_zmq_addresses
@@ -476,7 +476,7 @@ Subroutines / functions
     Socket which pulls the results (2)
 
 
-
+ 
 
 
 .. c:function:: switch_qp_run_to_master
@@ -490,7 +490,7 @@ Subroutines / functions
     Address of the master qp_run socket Example : tcp://130.120.229.139:12345
 
 
-
+ 
 
 
 .. c:function:: task_done_to_taskserver
@@ -504,7 +504,7 @@ Subroutines / functions
     Get a task from the task server
 
 
-
+ 
 
 
 .. c:function:: tasks_done_to_taskserver
@@ -518,7 +518,7 @@ Subroutines / functions
     Get a task from the task server
 
 
-
+ 
 
 
 .. c:function:: wait_for_next_state
@@ -532,7 +532,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: wait_for_state
@@ -546,7 +546,7 @@ Subroutines / functions
     Wait for the ZMQ state to be ready
 
 
-
+ 
 
 
 .. c:function:: wait_for_states
@@ -560,7 +560,7 @@ Subroutines / functions
     Wait for the ZMQ state to be ready
 
 
-
+ 
 
 
 .. c:function:: zmq_abort
@@ -574,7 +574,7 @@ Subroutines / functions
     Aborts a running parallel computation
 
 
-
+ 
 
 
 .. c:function:: zmq_delete_task
@@ -588,7 +588,7 @@ Subroutines / functions
     When a task is done, it has to be removed from the list of tasks on the qp_run queue. This guarantees that the results have been received in the pull.
 
 
-
+ 
 
 
 .. c:function:: zmq_delete_tasks
@@ -602,7 +602,7 @@ Subroutines / functions
     When a task is done, it has to be removed from the list of tasks on the qp_run queue. This guarantees that the results have been received in the pull.
 
 
-
+ 
 
 
 .. c:function:: zmq_delete_tasks_async_recv
@@ -616,7 +616,7 @@ Subroutines / functions
     When a task is done, it has to be removed from the list of tasks on the qp_run queue. This guarantees that the results have been received in the pull.
 
 
-
+ 
 
 
 .. c:function:: zmq_delete_tasks_async_send
@@ -630,7 +630,7 @@ Subroutines / functions
     When a task is done, it has to be removed from the list of tasks on the qp_run queue. This guarantees that the results have been received in the pull.
 
 
-
+ 
 
 
 .. c:function:: zmq_get8_dvector
@@ -644,7 +644,7 @@ Subroutines / functions
     Get a float vector from the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get8_ivector
@@ -658,7 +658,7 @@ Subroutines / functions
     Get a vector of integers from the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_dmatrix
@@ -672,7 +672,7 @@ Subroutines / functions
     Get a float vector from the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_dvector
@@ -686,7 +686,7 @@ Subroutines / functions
     Get a float vector from the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_i8matrix
@@ -700,7 +700,7 @@ Subroutines / functions
     Get a float vector from the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_imatrix
@@ -714,7 +714,7 @@ Subroutines / functions
     Get a float vector from the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_int
@@ -728,7 +728,7 @@ Subroutines / functions
     Get a vector of integers from the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_int_nompi
@@ -742,7 +742,7 @@ Subroutines / functions
     Get a vector of integers from the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_ivector
@@ -756,7 +756,7 @@ Subroutines / functions
     Get a vector of integers from the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_port
@@ -770,7 +770,7 @@ Subroutines / functions
     Return the value of the ZMQ port from the corresponding integer
 
 
-
+ 
 
 
 .. c:function:: zmq_put8_dvector
@@ -784,7 +784,7 @@ Subroutines / functions
     Put a float vector on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put8_ivector
@@ -798,7 +798,7 @@ Subroutines / functions
     Put a vector of integers on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_dmatrix
@@ -812,7 +812,7 @@ Subroutines / functions
     Put a float vector on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_dvector
@@ -826,7 +826,7 @@ Subroutines / functions
     Put a float vector on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_i8matrix
@@ -840,7 +840,7 @@ Subroutines / functions
     Put a float vector on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_imatrix
@@ -854,7 +854,7 @@ Subroutines / functions
     Put a float vector on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_int
@@ -868,7 +868,7 @@ Subroutines / functions
     Put a vector of integers on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_ivector
@@ -882,7 +882,7 @@ Subroutines / functions
     Put a vector of integers on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_set_running

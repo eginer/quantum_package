@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "QP_CREATE_EZFIO_FROM_XYZ" "1" "Jan 14, 2019" "2.0" "Quantum Package"
+.TH "QP_CREATE_EZFIO_FROM_XYZ" "1" "Jan 16, 2019" "2.0" "Quantum Package"
 .SH NAME
 qp_create_ezfio_from_xyz \-  | Quantum Package >
 .
@@ -39,17 +39,20 @@ This command creates an \fI\%EZFIO\fP directory from a standard \fIxyz\fP file o
 .sp
 .nf
 .ft C
-qp_create_ezfio_from_xyz [FLAGS] (<xyz_file> | <zmt_file>)
-Flags :
-   \-b [\-au] [\-c int] [\-cart] [\-d float]
-   [\-m int] [\-o file] [\-p string] [\-help]
+qp_create_ezfio_from_xyz [\-a] \-b <string> [\-c <int>] [\-d <float>]
+   [\-h] [\-m <int>] [\-o EZFIO_DIR] [\-p <string>] [\-x] [\-\-] FILE
 .ft P
 .fi
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-b <basis_name>
+.B \-a, \-\-au
+If present, input geometry is in atomic units.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-b, \-\-basis=<string>
 Name of basis set.  The basis set is defined as a single string if all the
 atoms are taken from the same basis set, otherwise specific elements can be
 defined as follows:
@@ -66,46 +69,47 @@ defined as follows:
 .UNINDENT
 .sp
 By default, the basis set is obtained from the local database of the \fIQuantum Package\fP\&.
+This option is mandatory.
+.sp
+If  \fB<string>\fP is set to \fBshow\fP, the list of all available basis sets is
+displayed.
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-au
-If present, input geometry is in atomic units.
-.UNINDENT
-.INDENT 0.0
-.TP
-.B \-c <float>
+.B \-c, \-\-charge=<int>
 Total charge of the molecule. Default is 0.
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-cart
-Compute AOs in the Cartesian basis set (6d, 10f, …)
+.B \-d, \-\-dummy=<float>
+Add dummy atoms (X) between atoms when the distance between two atoms
+is less than x \etimes \esum R_\emathrm{cov}, the covalent radii
+of the atoms. The default is x=0, so no dummy atom is added.
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-d <float>
-Add dummy atoms. x * (covalent radii of the atoms)
+.B \-h, \-\-help
+Print the help text and exit
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-m <int>
-Spin multiplicity (2S+1) of the molecule. Default is 1.
+.B \-m, \-\-multiplicity=<int>
+Spin multiplicity 2S+1 of the molecule. Default is 1.
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-o <EZFIO_DIRECTORY>
+.B \-o, \-\-output=EZFIO_DIR
 Name of the created \fI\%EZFIO\fP directory.
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-p <string>
-Name of the pseudo\-potential
+.B \-p <string>, \-\-pseudo=<string>
+Name of the pseudo\-potential. Follows the same conventions as the basis set.
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-help, \-?
-Print the help text and exit
+.B \-x, \-\-cart
+Compute AOs in the Cartesian basis set (6d, 10f, …)
 .UNINDENT
 .SH USING CUSTOM ATOMIC BASIS SETS
 .sp
@@ -124,8 +128,8 @@ qp_create_ezfio_from_xyz \-b custom.basis molecule.xyz
 .UNINDENT
 .sp
 Basis set files should be given in \fI\%GAMESS\fP format, where the full names of the
-atoms are given, and the basis sets for each element are separated by a blank line.
-Here is an example
+atoms are given, and the basis sets for each element are separated by a blank
+line.  Here is an example
 .INDENT 0.0
 .INDENT 3.5
 .sp
@@ -177,10 +181,10 @@ D   1
 .SH USING CUSTOM PSEUDO-POTENTIALS
 .sp
 As for the basis set, if a file with the same name as the pseudo\-potential
-exists, this file will be read.
-For example, if the file containing the custom pseudo\-potential is named
-\fBcustom.pseudo\fP, the basis set is named \fBcustom.basis\fP, and the \fIxyz\fP
-geometry is in \fBmolecule.xyz\fP, the following command should be used
+exists, this file will be read.  For example, if the file containing the custom
+pseudo\-potential is named \fBcustom.pseudo\fP, the basis set is named
+\fBcustom.basis\fP, and the \fIxyz\fP geometry is in \fBmolecule.xyz\fP, the following
+command should be used
 .INDENT 0.0
 .INDENT 3.5
 .sp
@@ -193,12 +197,11 @@ qp_create_ezfio_from_xyz \-b custom.basis \-p custom.pseudo molecule.xyz
 .UNINDENT
 .sp
 Pseudo\-potential files should be given in a format very close to \fI\%GAMESS\fP
-format. The first line should be formatted as \fB%s GEN %d %d\fP where the
-first string is the chemical symbol, the first integer is the number of
-core electrons to be removed and the second integer is LMAX+1 as in \fI\%GAMESS\fP
-format.
-The pseudo\-potential for each element are separated by a blank line.
-Here is an example
+format.  The first line should be formatted as \fB%s GEN %d %d\fP where the first
+string is the chemical symbol, the first integer is the number of core
+electrons to be removed and the second integer is LMAX+1 as in \fI\%GAMESS\fP format.
+The pseudo\-potential for each element are separated by a blank line.  Here is
+an example
 .INDENT 0.0
 .INDENT 3.5
 .sp

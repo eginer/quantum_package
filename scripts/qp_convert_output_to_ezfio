@@ -346,11 +346,8 @@ if __name__ == '__main__':
 
     if ARGUMENTS["--output"]:
         EZFIO_FILE = get_full_path(ARGUMENTS["--output"])
-    elif ARGUMENTS["-o"]:
-        EZFIO_FILE = get_full_path(ARGUMENTS["-o"])
     else:
         EZFIO_FILE = "{0}.ezfio".format(FILE)
-    print EZFIO_FILE
 
     try:
         RES_FILE = getFile(FILE)

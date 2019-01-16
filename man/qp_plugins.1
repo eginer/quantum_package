@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "QP_PLUGINS" "1" "Jan 14, 2019" "2.0" "Quantum Package"
+.TH "QP_PLUGINS" "1" "Jan 16, 2019" "2.0" "Quantum Package"
 .SH NAME
 qp_plugins \-  | Quantum Package >
 .
@@ -31,20 +31,20 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
 .sp
-This command deals with all external plugins of \fIQuantum Package\fP\&. Plugin repositories can
+This command deals with all external plugins of \fIQuantum Package\fP\&.  Plugin repositories can
 be downloaded, and the plugins in these repositories can be
-installed/uninstalled of created.
+installed/uninstalled or created.
 .SH USAGE
 .INDENT 0.0
 .INDENT 3.5
 .sp
 .nf
 .ft C
-qp_plugins list [ \-i | \-u | \-q ]
+qp_plugins list [\-i] [\-u] [\-q]
 qp_plugins download <url>
 qp_plugins install <name>...
 qp_plugins uninstall <name>
-qp_plugins create \-n <name> [\-r <repository>] [<needed_modules>...]
+qp_plugins create \-n <name> [\-r <repo>] [<needed_modules>...]
 .ft P
 .fi
 .UNINDENT
@@ -56,17 +56,17 @@ List all the available plugins.
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-i
+.B \-i, \-\-installed
 List all the \fIinstalled\fP plugins.
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-u
+.B \-u, \-\-uninstalled
 List all the \fIuninstalled\fP plugins.
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-q
+.B \-q, \-\-repositories
 List all the downloaded repositories.
 .UNINDENT
 .INDENT 0.0
@@ -93,19 +93,21 @@ Uninstall the plugin \fBplugin_name\fP\&.
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-n <plugin_name>
+.B \-n, \-\-name=<plugin_name>
 Create a new plugin named \fBplugin_name\fP (in local repository by default).
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-r <repository>
+.B \-r, \-\-repository=<repo>
 Specify in which repository the new plugin will be created.
 .UNINDENT
 .SH EXAMPLE
 .sp
-Let us download, install and compile some specific external plugins from \fI\%https://gitlab.com/eginer/qp_plugins_eginer\fP .
+Let us download, install and compile some specific external plugins from
+\fI\%https://gitlab.com/eginer/qp_plugins_eginer\fP .
 .sp
-First, download the git repo associated to these plugins. To do so, first go to the \fIplugins\fP directory in the \fIQuantum Package\fP and execute:
+First, download the git repo associated to these plugins.  To do so, first go
+to the \fIplugins\fP directory in the \fIQuantum Package\fP and execute:
 .INDENT 0.0
 .INDENT 3.5
 .sp
@@ -117,8 +119,8 @@ qp_plugins download https://gitlab.com/eginer/qp_plugins_eginer
 .UNINDENT
 .UNINDENT
 .sp
-This will create in the directory \fIplugins\fP a local copy of the git repo located at the URL you indicated.
-Then, go in \fIqp_plugins_eginer/stable/\fP
+This will create in the directory \fIplugins\fP a local copy of the git repo
+located at the URL you indicated.  Then, go in \fIqp_plugins_eginer/stable/\fP
 .INDENT 0.0
 .INDENT 3.5
 .sp
@@ -130,8 +132,9 @@ cd qp_plugins_eginer/stable/
 .UNINDENT
 .UNINDENT
 .sp
-In the directory \fIstable\fP, there are many directories which all correspond to a specific plugin that have been developed
-by the person in charge of the git repo. All these plugins might use some global variables and routines contained
+In the directory \fIstable\fP, there are many directories which all correspond to a
+specific plugin that have been developed by the person in charge of the git
+repo.  All these plugins might use some global variables and routines contained
 in the core modules of the \fIQuantum Package\fP\&.
 .sp
 Now let us install the plugin \fIrsdft_cipsi\fP:
@@ -146,10 +149,13 @@ qp_plugins install rsdft_cipsi
 .UNINDENT
 .UNINDENT
 .sp
-This will link this directory to the \fIQuantum Package\fP which means that when the code will be compiled, this plugin will be compiled to and therefore
-all the executables/scripts/input keywords contained in this module will be available as if there were part of the core of the \fIQuantum Package\fP\&.
+This will link this directory to the \fIQuantum Package\fP which means that when the code will
+be compiled, this plugin will be compiled to and therefore all the
+executables/scripts/input keywords contained in this module will be available
+as if there were part of the core of the \fIQuantum Package\fP\&.
 .sp
-Then, to compile the new plugin, just recompile the \fIQuantum Package\fP as usual by going at the root of the \fIQuantum Package\fP directory:
+Then, to compile the new plugin, just recompile the \fIQuantum Package\fP as usual by going at
+the root of the \fIQuantum Package\fP directory:
 .INDENT 0.0
 .INDENT 3.5
 .sp
@@ -162,8 +168,9 @@ ninja
 .UNINDENT
 .UNINDENT
 .sp
-Then, if you go back to the plugin directory you just installed, you should see all the executables/scripts which have been created and
-which are now available with the \fIqp_run\fP command.
+Finally, if you go back to the plugin directory you just installed, you should see
+all the executables/scripts which have been created and which are now available
+with the \fIqp_run\fP command.
 .SH AUTHOR
 A. Scemama, E. Giner
 .SH COPYRIGHT

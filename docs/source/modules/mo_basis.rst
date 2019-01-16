@@ -1,14 +1,14 @@
-.. _mo_basis:
-
-.. program:: mo_basis
-
-.. default-role:: option
-
+.. _mo_basis: 
+ 
+.. program:: mo_basis 
+ 
+.. default-role:: option 
+ 
 ========
 mo_basis
 ========
 
-Molecular orbitals are expressed as 
+Molecular orbitals are expressed as
 
 .. math::
 
@@ -28,46 +28,46 @@ this is done with the script named :file:`save_current_mos.sh` in the
 
 
 
-
-
-
-EZFIO parameters
-----------------
-
+ 
+ 
+ 
+EZFIO parameters 
+---------------- 
+ 
 .. option:: mo_num
-
+ 
     Total number of |MOs|
-
-
+ 
+ 
 .. option:: mo_coef
-
+ 
     Coefficient of the i-th |AO| on the j-th |MO|
-
-
+ 
+ 
 .. option:: mo_label
-
+ 
     Label characterizing the MOS (Local, Canonical, Natural, *etc*)
-
-
+ 
+ 
 .. option:: mo_occ
-
+ 
     |MO| occupation numbers
-
-
+ 
+ 
 .. option:: mo_class
-
+ 
     [ Core | Inactive | Active | Virtual | Deleted ], as defined by :ref:`qp_set_mo_class`
-
-
+ 
+ 
 .. option:: ao_md5
-
+ 
     MD5 checksum characterizing the |AO| basis set.
-
-
-
-Providers
----------
-
+ 
+ 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: mo_coef
 
@@ -84,7 +84,7 @@ Providers
     mo_label : Label characterizing the MOS (local, canonical, natural, etc)
 
 
-
+ 
 
 .. c:var:: mo_coef_begin_iteration
 
@@ -99,7 +99,7 @@ Providers
     Usefull to track some orbitals
 
 
-
+ 
 
 .. c:var:: mo_coef_in_ao_ortho_basis
 
@@ -114,7 +114,7 @@ Providers
      :math:`C^{-1}.C_{mo}`
 
 
-
+ 
 
 .. c:var:: mo_coef_transp
 
@@ -127,7 +127,7 @@ Providers
     |MO| coefficients on |AO| basis set
 
 
-
+ 
 
 .. c:var:: mo_label
 
@@ -144,7 +144,7 @@ Providers
     mo_label : Label characterizing the |MOs| (local, canonical, natural, etc)
 
 
-
+ 
 
 .. c:var:: mo_num
 
@@ -157,7 +157,7 @@ Providers
     Number of MOs
 
 
-
+ 
 
 .. c:var:: mo_occ
 
@@ -170,11 +170,11 @@ Providers
     |MO| occupation numbers
 
 
-
-
-Subroutines / functions
------------------------
-
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
 .. c:function:: ao_ortho_cano_to_ao
@@ -190,7 +190,7 @@ Subroutines / functions
      :math:`C^{-1}.A_{ao}.C^{\dagger-1}`
 
 
-
+ 
 
 
 .. c:function:: ao_to_mo
@@ -206,7 +206,7 @@ Subroutines / functions
      :math:`C^\dagger.A_{ao}.C`
 
 
-
+ 
 
 
 .. c:function:: give_all_mos_and_grad_and_lapl_at_r
@@ -220,7 +220,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: give_all_mos_and_grad_at_r
@@ -234,7 +234,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: give_all_mos_at_r
@@ -248,7 +248,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: initialize_mo_coef_begin_iteration
@@ -264,7 +264,7 @@ Subroutines / functions
     Initialize :c:data:`mo_coef_begin_iteration` to the current :c:data:`mo_coef`
 
 
-
+ 
 
 
 .. c:function:: mix_mo_jk
@@ -284,7 +284,7 @@ Subroutines / functions
     by convention, the '+' |MO| is in the lowest  index (min(j,k)) by convention, the '-' |MO| is in the highest index (max(j,k))
 
 
-
+ 
 
 
 .. c:function:: mo_as_eigvectors_of_mo_matrix
@@ -298,7 +298,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: mo_as_svd_vectors_of_mo_matrix
@@ -312,7 +312,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: mo_as_svd_vectors_of_mo_matrix_eig
@@ -326,7 +326,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: reorder_core_orb
@@ -340,7 +340,7 @@ Subroutines / functions
     routines that takes the current :c:data:`mo_coef` and reorder the core orbitals (see :c:data:`list_core` and :c:data:`n_core_orb`) according to the overlap with :c:data:`mo_coef_begin_iteration`
 
 
-
+ 
 
 
 .. c:function:: save_mos
@@ -354,7 +354,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: save_mos_truncated

@@ -1,21 +1,21 @@
-.. _selectors_utils:
-
-.. program:: selectors_utils
-
-.. default-role:: option
-
+.. _selectors_utils: 
+ 
+.. program:: selectors_utils 
+ 
+.. default-role:: option 
+ 
 ===============
 selectors_utils
 ===============
 
 Helper functions for selectors.
 
-
-
-
-Providers
----------
-
+ 
+ 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: coef_hf_selector
 
@@ -41,7 +41,7 @@ Providers
     coef_hf_selector = coefficient of the Hartree Fock determinant in the selectors determinants
 
 
-
+ 
 
 .. c:var:: delta_e_per_selector
 
@@ -67,7 +67,7 @@ Providers
     coef_hf_selector = coefficient of the Hartree Fock determinant in the selectors determinants
 
 
-
+ 
 
 .. c:var:: double_index_selectors
 
@@ -86,7 +86,7 @@ Providers
     n_double_selectors = number of double excitations in the selectors determinants
 
 
-
+ 
 
 .. c:var:: e_corr_double_only
 
@@ -112,7 +112,7 @@ Providers
     coef_hf_selector = coefficient of the Hartree Fock determinant in the selectors determinants
 
 
-
+ 
 
 .. c:var:: e_corr_per_selectors
 
@@ -138,7 +138,7 @@ Providers
     coef_hf_selector = coefficient of the Hartree Fock determinant in the selectors determinants
 
 
-
+ 
 
 .. c:var:: e_corr_second_order
 
@@ -164,7 +164,7 @@ Providers
     coef_hf_selector = coefficient of the Hartree Fock determinant in the selectors determinants
 
 
-
+ 
 
 .. c:var:: exc_degree_per_selectors
 
@@ -183,7 +183,7 @@ Providers
     n_double_selectors = number of double excitations in the selectors determinants
 
 
-
+ 
 
 .. c:var:: i_h_hf_per_selectors
 
@@ -209,7 +209,7 @@ Providers
     coef_hf_selector = coefficient of the Hartree Fock determinant in the selectors determinants
 
 
-
+ 
 
 .. c:var:: inv_selectors_coef_hf
 
@@ -235,7 +235,7 @@ Providers
     coef_hf_selector = coefficient of the Hartree Fock determinant in the selectors determinants
 
 
-
+ 
 
 .. c:var:: inv_selectors_coef_hf_squared
 
@@ -261,7 +261,7 @@ Providers
     coef_hf_selector = coefficient of the Hartree Fock determinant in the selectors determinants
 
 
-
+ 
 
 .. c:var:: n_double_selectors
 
@@ -280,7 +280,7 @@ Providers
     n_double_selectors = number of double excitations in the selectors determinants
 
 
-
+ 
 
 .. c:var:: psi_selectors_coef_transp
 
@@ -293,7 +293,7 @@ Providers
     Transposed psi_selectors
 
 
-
+ 
 
 .. c:var:: psi_selectors_diag_h_mat
 
@@ -306,7 +306,7 @@ Providers
     Diagonal elements of the H matrix for each selectors
 
 
-
+ 
 
 .. c:var:: psi_selectors_size
 
@@ -319,11 +319,11 @@ Providers
     
 
 
-
-
-Subroutines / functions
------------------------
-
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
 .. c:function:: zmq_get_n_det_generators
@@ -337,7 +337,7 @@ Subroutines / functions
     Get N_det_generators from the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_get_n_det_selectors
@@ -351,7 +351,7 @@ Subroutines / functions
     Get N_det_selectors from the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_n_det_generators
@@ -365,7 +365,7 @@ Subroutines / functions
     Put N_det_generators on the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_n_det_selectors

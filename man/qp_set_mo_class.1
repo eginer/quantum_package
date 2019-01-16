@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "QP_SET_MO_CLASS" "1" "Jan 14, 2019" "2.0" "Quantum Package"
+.TH "QP_SET_MO_CLASS" "1" "Jan 16, 2019" "2.0" "Quantum Package"
 .SH NAME
 qp_set_mo_class \-  | Quantum Package >
 .
@@ -67,48 +67,41 @@ can be used.
 .sp
 .nf
 .ft C
-qp_set_mo_class [FLAGS] <EZFIO_DIRECTORY>
-Flags:
-   [\-act range]    [\-core range]   [\-del range]
-   [\-inact range]  [\-q]            [\-virt range]
-   [\-help]
+qp_set_mo_class [\-a <range>] [\-c <range>] [\-d <range>] [\-h] [\-i <range>]
+    [\-q] [\-v <range>] [\-\-] EZFIO_DIR
 .ft P
 .fi
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-act <range>
+.B \-a, \-\-act=<range>
 Range of active orbitals
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-core <range>
+.B \-c, \-\-core=<range>
 Range of core orbitals
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-del <range>
+.B \-d, \-\-del=<range>
 Range of deleted orbitals
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-inact <range>
+.B \-i, \-\-inact=<range>
 Range of inactive orbitals
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-q
-Query: print the current masks
+.B \-q, \-\-query
+Print the MO classes
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-virt <range>
+.B \-v, \-\-virt=<range>
 Range of virtual orbitals
-.UNINDENT
-.INDENT 0.0
-.TP
-.B \-help, \-?
 .UNINDENT
 .SH AUTHOR
 A. Scemama, E. Giner
