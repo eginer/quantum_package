@@ -57,157 +57,7 @@ Providers
 --------- 
  
 
-.. c:var:: ao_potential_alpha_xc
-
-    .. code:: text
-
-        double precision, allocatable	:: ao_potential_alpha_xc	(ao_num,ao_num)
-        double precision, allocatable	:: ao_potential_beta_xc	(ao_num,ao_num)
-
-    File: :file:`pot_functionals.irp.f`
-
-    
-
-
- 
-
-.. c:var:: ao_potential_beta_xc
-
-    .. code:: text
-
-        double precision, allocatable	:: ao_potential_alpha_xc	(ao_num,ao_num)
-        double precision, allocatable	:: ao_potential_beta_xc	(ao_num,ao_num)
-
-    File: :file:`pot_functionals.irp.f`
-
-    
-
-
- 
-
-.. c:var:: e_correlation_dft
-
-    .. code:: text
-
-        double precision	:: e_correlation_dft
-
-    File: :file:`pot_functionals.irp.f`
-
-    
-
-
- 
-
-.. c:var:: e_exchange_dft
-
-    .. code:: text
-
-        double precision	:: e_exchange_dft
-
-    File: :file:`pot_functionals.irp.f`
-
-    
-
-
- 
-
-.. c:var:: fock_matrix_alpha_no_xc_ao
-
-    .. code:: text
-
-        double precision, allocatable	:: fock_matrix_alpha_no_xc_ao	(ao_num,ao_num)
-        double precision, allocatable	:: fock_matrix_beta_no_xc_ao	(ao_num,ao_num)
-
-    File: :file:`fock_matrix_ks.irp.f`
-
-    Mono electronic an Coulomb matrix in ao basis set
-
-
- 
-
-.. c:var:: fock_matrix_beta_no_xc_ao
-
-    .. code:: text
-
-        double precision, allocatable	:: fock_matrix_alpha_no_xc_ao	(ao_num,ao_num)
-        double precision, allocatable	:: fock_matrix_beta_no_xc_ao	(ao_num,ao_num)
-
-    File: :file:`fock_matrix_ks.irp.f`
-
-    Mono electronic an Coulomb matrix in ao basis set
-
-
- 
-
-.. c:var:: fock_matrix_energy
-
-    .. code:: text
-
-        double precision	:: ks_energy
-        double precision	:: two_e_energy
-        double precision	:: one_e_energy
-        double precision	:: fock_matrix_energy
-        double precision	:: trace_potential_xc
-
-    File: :file:`ks_enery.irp.f`
-
-    Kohn-Sham energy containing the nuclear repulsion energy, and the various components of this quantity.
-
-
- 
-
 .. c:var:: ks_energy
-
-    .. code:: text
-
-        double precision	:: ks_energy
-        double precision	:: two_e_energy
-        double precision	:: one_e_energy
-        double precision	:: fock_matrix_energy
-        double precision	:: trace_potential_xc
-
-    File: :file:`ks_enery.irp.f`
-
-    Kohn-Sham energy containing the nuclear repulsion energy, and the various components of this quantity.
-
-
- 
-
-.. c:var:: one_e_energy
-
-    .. code:: text
-
-        double precision	:: ks_energy
-        double precision	:: two_e_energy
-        double precision	:: one_e_energy
-        double precision	:: fock_matrix_energy
-        double precision	:: trace_potential_xc
-
-    File: :file:`ks_enery.irp.f`
-
-    Kohn-Sham energy containing the nuclear repulsion energy, and the various components of this quantity.
-
-
- 
-
-.. c:var:: trace_potential_xc
-
-    .. code:: text
-
-        double precision	:: ks_energy
-        double precision	:: two_e_energy
-        double precision	:: one_e_energy
-        double precision	:: fock_matrix_energy
-        double precision	:: trace_potential_xc
-
-    File: :file:`ks_enery.irp.f`
-
-    Kohn-Sham energy containing the nuclear repulsion energy, and the various components of this quantity.
-
-
- 
-
-.. c:var:: two_e_energy
 
     .. code:: text
 
@@ -226,28 +76,12 @@ Providers
  
 Subroutines / functions 
 ----------------------- 
- 
 
-
-.. c:function:: check_coherence_functional
+.. c:function:: ks_cf
 
     .. code:: text
 
-        subroutine check_coherence_functional
-
-    File: :file:`ks_scf.irp.f`
-
-    
-
-
- 
-
-
-.. c:function:: srs_ks_cf
-
-    .. code:: text
-
-        subroutine srs_ks_cf
+        subroutine ks_cf
 
     File: :file:`ks_scf.irp.f`
 

@@ -287,7 +287,7 @@ EOF
     elif [[ ${PACKAGE} = ezfio ]] ; then
 
             download \
-              "https://gitlab.com/scemama/EZFIO/-/archive/v1.3.4/EZFIO-v1.3.4.tar.gz" \
+              "https://gitlab.com/scemama/EZFIO/-/archive/v1.3.5/EZFIO-v1.3.5.tar.gz" \
               "${QP_ROOT}"/external/ezfio.tar.gz
             execute << EOF
               cd "\${QP_ROOT}"/external
@@ -431,7 +431,7 @@ if [[ -n $CONFIG ]] ; then
 fi
 
 if [[ -f ${QP_ROOT}/build.ninja ]] ; then
-        [[ -z ${TRAVIS} ]] && exec ${QP_ROOT}/bin/qpsh
+  [[ -z ${TRAVIS} ]] && echo "You can now run ./bin/qpsh to enter in the QP shell mode :)"
 else 
       echo ""
       echo "${QP_ROOT}/build.ninja does not exist,"

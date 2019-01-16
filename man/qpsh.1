@@ -31,82 +31,190 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
 .sp
-\fBqpsh\fP is the \fIQuantum Package\fP shell. It is a 
-.nf
-|Bash|
-.fi
- shell with all
+\fBqpsh\fP is the \fIQuantum Package\fP shell. It is a Bash shell with all
 the required evironment variables loaded, a modified prompt, and the
-qp command.
+\fI\%qp\fP command.
+.SH QP
 .sp
-This command reads the content of the \fI\%EZFIO\fP directory and creates a temporary
-file containing the data.  The data is presented as a \fIReStructured Text\fP (rst)
-document, where each section corresponds to the corresponding \fIQuantum Package\fP module.  The
-content of the file can be modified to change the input parameters.  When the
-text editor is closed, the updated data is saved into the \fI\%EZFIO\fP directory.
-.sp
-\fBNOTE:\fP
+This command is a hub to the most used command within \fIQuantum Package\fP\&.
+The power of the \fI\%qpsh\fP shell is the auto\-completion that comes
+when the \fB<Tab>\fP key is pressed with the \fI\%qp\fP command.
+.SS EZFIO access
 .INDENT 0.0
-.INDENT 3.5
-The text editor which will be opened is defined by the \fBEDITOR\fP
-environment variable. If this variable is not set, the \fBvi\fP
-text editor will be used by default.
-.UNINDENT
-.UNINDENT
-.sp
-\fBWARNING:\fP
-.INDENT 0.0
-.INDENT 3.5
-When the wave function is too large (more than 10 000 determinants), the
-determinants are not displayed.
-.UNINDENT
-.UNINDENT
-.SH USAGE
-.INDENT 0.0
+.TP
+.B set_file
+.INDENT 7.0
 .INDENT 3.5
 .sp
 .nf
 .ft C
-qp_edit [\-c] [\-h] [\-n <int>] [\-s <range>] [\-\-] EZFIO_DIR
-.ft P
-.fi
-.UNINDENT
-.UNINDENT
-.INDENT 0.0
-.TP
-.B \-c, \-\-check
-Checks the input data
-.UNINDENT
-.INDENT 0.0
-.TP
-.B \-h, \-\-help
-Print the help text and exits
-.UNINDENT
-.INDENT 0.0
-.TP
-.B \-n, \-\-ndet=<int>
-Truncates the wavefunction to the target number of determinants
-.UNINDENT
-.INDENT 0.0
-.TP
-.B \-s, \-\-state=<range>
-Select the states to extract from the \fI\%EZFIO\fP directory, using the same conventions
-as qp_set_mo_class\&. See example below.
-.UNINDENT
-.SH EXAMPLE
-.INDENT 0.0
-.INDENT 3.5
-.sp
-.nf
-.ft C
-qp_edit \-\-state="[1,3\-5]" test.ezfio
+qp set_file EZFIO_DIR
 .ft P
 .fi
 .UNINDENT
 .UNINDENT
 .sp
-Removes all states except states 1,3,4 and 5 from \fBtest.ezfio\fP\&.  The
-resulting \fI\%EZFIO\fP directory has 4 states.
+Sets the current \fI\%EZFIO\fP directory. All the following instruction will be
+relative to this directory.
+.sp
+This command is equivalent to \fBezfio set_file EZFIO_DIR\fP\&.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B unset_file
+.INDENT 7.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+qp unset_file
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Unsets the current \fI\%EZFIO\fP directory.
+.sp
+This command is equivalent to \fBezfio unset_file\fP\&.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B has
+.INDENT 7.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+qp has <module> <parameter>
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+If the \fI<module>/<parameter>\fP is set in the \fI\%EZFIO\fP directory, returns 1.
+Otherwise returns 0.
+.sp
+This command is equivalent to \fBezfio has <module> <parameter>\fP\&.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B get
+.INDENT 7.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+qp get <module> <parameter>
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Returns the value of \fI<module>/<parameter>\fP\&.
+.sp
+This command is equivalent to \fBezfio get <module> <parameter>\fP\&.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B set
+.INDENT 7.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+qp set <module> <parameter> [<value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Sets the value of \fI<module>/<parameter>\fP\&. If the value is not given in
+the command line it is read from the standard input.
+.sp
+This command is equivalent to
+\fBezfio set <module> <parameter> [<value>]\fP\&.
+.UNINDENT
+.SS Running programs
+.INDENT 0.0
+.TP
+.B run
+.INDENT 7.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+qp (run|srun|mpirun) [options] <program>
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Runs qp_run, qp_srun, or qp_mpirun using the current
+\fI\%EZFIO\fP directory.
+.UNINDENT
+.SS Getting help
+.INDENT 0.0
+.TP
+.B man
+.INDENT 7.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+qp man (<program>|<qp_command>)
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Displays a man page for a \fIQuantum Package\fP program or a \fIQuantum Package\fP command.
+.UNINDENT
+.SS Running quantum package commands
+.sp
+The \fBqp_\fP commands can be run without specifying the \fI\%EZFIO\fP directory:
+.INDENT 0.0
+.TP
+.B convert_output_to_ezfio
+\fBqp convert_output_to_ezfio\fP : runs qp_convert_output_to_ezfio
+.UNINDENT
+.INDENT 0.0
+.TP
+.B create_ezfio
+\fBqp create_ezfio\fP : runs qp_create_ezfio
+.UNINDENT
+.INDENT 0.0
+.TP
+.B plugins
+\fBqp plugins\fP : runs qp_plugins
+.UNINDENT
+.INDENT 0.0
+.TP
+.B reset
+\fBqp reset\fP : runs qp_reset
+.UNINDENT
+.INDENT 0.0
+.TP
+.B set_frozen_core
+\fBqp set_frozen_core\fP : runs qp_set_frozen_core
+.UNINDENT
+.INDENT 0.0
+.TP
+.B set_mo_class
+\fBqp set_mo_class\fP : runs qp_set_mo_class
+.UNINDENT
+.INDENT 0.0
+.TP
+.B update
+\fBqp update\fP : runs qp_update
+.UNINDENT
 .SH AUTHOR
 A. Scemama, E. Giner
 .SH COPYRIGHT

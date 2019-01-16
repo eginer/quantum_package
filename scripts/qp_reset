@@ -93,10 +93,10 @@ ezfio=$1
 qp set_file $ezfio
 
 if [[ $dets -eq 1 ]] ; then
-  rm -- ${ezfio}/determinants/psi_{det,coef}.gz
+  rm --force -- ${ezfio}/determinants/n_det
+  rm --force -- ${ezfio}/determinants/psi_{det,coef}.gz
 fi
 
-set -x
 if [[ $mos -eq 1 ]] ; then
   if [[ -f ${ezfio}/mo_basis/mo_class.gz ]] && [[ $(qp get mo_basis mo_num) -ne \
         $(zcat ${ezfio}/mo_basis/mo_class.gz |grep Active | wc -l) ]] ; then

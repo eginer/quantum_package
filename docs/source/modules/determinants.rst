@@ -126,6 +126,11 @@ EZFIO parameters
  
  
  
+Programs 
+-------- 
+ 
+ * :ref:`test_det` 
+ 
 Providers 
 --------- 
  
