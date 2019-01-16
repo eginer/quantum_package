@@ -11,7 +11,10 @@ program cis
   !
   ! This program can be useful in many cases:
   !
-  ! # Ground state calculation
+  !
+  ! Ground state calculation
+  ! 
+  ! ------------------------
   !
   ! To be sure to have the lowest |SCF| solution, perform an :ref:`.scf.` 
   ! (see the :ref:`hartree_fock` module), then a :ref:`.cis.`, save
@@ -19,7 +22,9 @@ program cis
   ! :ref:`.scf.` optimization from this |MO| guess.
   !
   !
-  ! # Excited states calculations
+  ! Excited states calculations
+  !
+  ! ---------------------------
   !
   ! The lowest excited states are much likely to be dominated by
   ! single-excitations. Therefore, running a :ref:`.cis.` will save
@@ -35,7 +40,9 @@ program cis
   ! the lowest :option:`determinants n_states`, whatever multiplicity
   ! they are.
   !
-  ! # Note
+  ! Note
+  !
+  ! ----
   !
   ! To discard some orbitals, use the :ref:`qp_set_mo_class` 
   ! command to specify:
