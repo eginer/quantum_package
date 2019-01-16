@@ -1,9 +1,9 @@
-.. _perturbation:
-
-.. program:: perturbation
-
-.. default-role:: option
-
+.. _perturbation: 
+ 
+.. program:: perturbation 
+ 
+.. default-role:: option 
+ 
 ============
 perturbation
 ============
@@ -38,19 +38,19 @@ The arguments of the `pt2_` are always:
 
 `psi_ref`
   bitstring of the determinants present in the various `N_st` states
- 
+
 `psi_ref_coefs`
   coefficients of the determinants on the various `N_st` states
- 
+
 `E_refs`
   Energy of the various `N_st` states
- 
+
 `det_pert`
   Perturber determinant
 
 `c_pert`
   Perturbative coefficients for the various states
- 
+
 `e_2_pert`
   Perturbative energetic contribution for the various states
 
@@ -68,50 +68,44 @@ The arguments of the `pt2_` are always:
 
 
 
-
-
-
-EZFIO parameters
-----------------
-
+ 
+ 
+ 
+EZFIO parameters 
+---------------- 
+ 
 .. option:: do_pt2
-
+ 
     If `True`, compute the |PT2| contribution
-
+ 
     Default: True
-
+ 
 .. option:: pt2_max
-
+ 
     The selection process stops when the largest |PT2| (for all the state) is lower
 
     than `pt2_max` in absolute value
-
+ 
     Default: 0.0001
-
+ 
 .. option:: pt2_relative_error
-
+ 
     Stop stochastic |PT2| when the relative error is smaller than `PT2_relative_error`
-
-    Default: 0.005
-
+ 
+    Default: 0.002
+ 
 .. option:: correlation_energy_ratio_max
-
+ 
     The selection process stops at a fixed correlation ratio (useful for getting same accuracy between molecules).
 
     Defined as :math:`{E_{CI}-E_{HF}}/{E_{CI}+E_{PT2} - E_{HF}}`.
-
+ 
     Default: 1.00
-
-.. option:: h0_type
-
-    Type of zeroth-order Hamiltonian [ EN | Barycentric | Variance | SOP ]
-
-    Default: EN
-
-
-Providers
----------
-
+ 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: fill_h_apply_buffer_selection
 
@@ -125,7 +119,20 @@ Providers
     Fill the H_apply buffer with determiants for the selection
 
 
+ 
 
+.. c:var:: h0_type
+
+    .. code:: text
+
+        character*32	:: h0_type
+
+    File: :file:`h0_type.irp.f`
+
+    Type of zeroth-order Hamiltonian
+
+
+ 
 
 .. c:var:: max_exc_pert
 
@@ -138,7 +145,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: selection_criterion
 
@@ -153,7 +160,7 @@ Providers
     Threshold to select determinants. Set by selection routines.
 
 
-
+ 
 
 .. c:var:: selection_criterion_factor
 
@@ -168,7 +175,7 @@ Providers
     Threshold to select determinants. Set by selection routines.
 
 
-
+ 
 
 .. c:var:: selection_criterion_min
 
@@ -183,7 +190,7 @@ Providers
     Threshold to select determinants. Set by selection routines.
 
 
-
+ 
 
 .. c:var:: var_pt2_ratio
 
@@ -196,11 +203,11 @@ Providers
     The selection process stops when the energy ratio variational/(variational+PT2) is equal to var_pt2_ratio
 
 
-
-
-Subroutines / functions
------------------------
-
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
 .. c:function:: perturb_buffer_by_mono_dummy
@@ -214,7 +221,7 @@ Subroutines / functions
     Applly pertubration ``dummy`` to the buffer of determinants generated in the H_apply routine.
 
 
-
+ 
 
 
 .. c:function:: perturb_buffer_by_mono_epstein_nesbet
@@ -228,7 +235,7 @@ Subroutines / functions
     Applly pertubration ``epstein_nesbet`` to the buffer of determinants generated in the H_apply routine.
 
 
-
+ 
 
 
 .. c:function:: perturb_buffer_by_mono_epstein_nesbet_2x2
@@ -242,7 +249,7 @@ Subroutines / functions
     Applly pertubration ``epstein_nesbet_2x2`` to the buffer of determinants generated in the H_apply routine.
 
 
-
+ 
 
 
 .. c:function:: perturb_buffer_by_mono_epstein_nesbet_2x2_no_ci_diag
@@ -256,7 +263,7 @@ Subroutines / functions
     Applly pertubration ``epstein_nesbet_2x2_no_ci_diag`` to the buffer of determinants generated in the H_apply routine.
 
 
-
+ 
 
 
 .. c:function:: perturb_buffer_by_mono_h_core
@@ -270,7 +277,7 @@ Subroutines / functions
     Applly pertubration ``h_core`` to the buffer of determinants generated in the H_apply routine.
 
 
-
+ 
 
 
 .. c:function:: perturb_buffer_by_mono_moller_plesset
@@ -284,7 +291,7 @@ Subroutines / functions
     Applly pertubration ``moller_plesset`` to the buffer of determinants generated in the H_apply routine.
 
 
-
+ 
 
 
 .. c:function:: perturb_buffer_by_mono_moller_plesset_general
@@ -298,7 +305,7 @@ Subroutines / functions
     Applly pertubration ``moller_plesset_general`` to the buffer of determinants generated in the H_apply routine.
 
 
-
+ 
 
 
 .. c:function:: perturb_buffer_by_mono_qdpt
@@ -312,7 +319,7 @@ Subroutines / functions
     Applly pertubration ``qdpt`` to the buffer of determinants generated in the H_apply routine.
 
 
-
+ 
 
 
 .. c:function:: perturb_buffer_dummy
@@ -326,7 +333,7 @@ Subroutines / functions
     Applly pertubration ``dummy`` to the buffer of determinants generated in the H_apply routine.
 
 
-
+ 
 
 
 .. c:function:: perturb_buffer_epstein_nesbet
@@ -340,7 +347,7 @@ Subroutines / functions
     Applly pertubration ``epstein_nesbet`` to the buffer of determinants generated in the H_apply routine.
 
 
-
+ 
 
 
 .. c:function:: perturb_buffer_epstein_nesbet_2x2
@@ -354,7 +361,7 @@ Subroutines / functions
     Applly pertubration ``epstein_nesbet_2x2`` to the buffer of determinants generated in the H_apply routine.
 
 
-
+ 
 
 
 .. c:function:: perturb_buffer_epstein_nesbet_2x2_no_ci_diag
@@ -368,7 +375,7 @@ Subroutines / functions
     Applly pertubration ``epstein_nesbet_2x2_no_ci_diag`` to the buffer of determinants generated in the H_apply routine.
 
 
-
+ 
 
 
 .. c:function:: perturb_buffer_h_core
@@ -382,7 +389,7 @@ Subroutines / functions
     Applly pertubration ``h_core`` to the buffer of determinants generated in the H_apply routine.
 
 
-
+ 
 
 
 .. c:function:: perturb_buffer_moller_plesset
@@ -396,7 +403,7 @@ Subroutines / functions
     Applly pertubration ``moller_plesset`` to the buffer of determinants generated in the H_apply routine.
 
 
-
+ 
 
 
 .. c:function:: perturb_buffer_moller_plesset_general
@@ -410,7 +417,7 @@ Subroutines / functions
     Applly pertubration ``moller_plesset_general`` to the buffer of determinants generated in the H_apply routine.
 
 
-
+ 
 
 
 .. c:function:: perturb_buffer_qdpt
@@ -424,7 +431,7 @@ Subroutines / functions
     Applly pertubration ``qdpt`` to the buffer of determinants generated in the H_apply routine.
 
 
-
+ 
 
 
 .. c:function:: pt2_dummy
@@ -438,7 +445,7 @@ Subroutines / functions
     Dummy perturbation to add all connected determinants.
 
 
-
+ 
 
 
 .. c:function:: pt2_epstein_nesbet
@@ -458,7 +465,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: pt2_epstein_nesbet_2x2
@@ -478,7 +485,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: pt2_epstein_nesbet_2x2_no_ci_diag
@@ -500,7 +507,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: pt2_h_core
@@ -522,7 +529,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: pt2_moller_plesset
@@ -542,7 +549,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: pt2_moller_plesset_general
@@ -562,7 +569,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: pt2_qdpt
@@ -580,7 +587,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: remove_small_contributions
@@ -594,7 +601,7 @@ Subroutines / functions
     Remove determinants with small contributions. N_states is assumed to be provided.
 
 
-
+ 
 
 
 .. c:function:: repeat_all_e_corr

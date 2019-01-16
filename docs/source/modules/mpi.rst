@@ -1,20 +1,20 @@
-.. _mpi:
-
-.. program:: mpi
-
-.. default-role:: option
-
+.. _mpi: 
+ 
+.. program:: mpi 
+ 
+.. default-role:: option 
+ 
 ===
 mpi
 ===
 
 Contains all the functions and providers for parallelization with |MPI|.
-
-
-
-Providers
----------
-
+ 
+ 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: mpi_initialized
 
@@ -27,7 +27,7 @@ Providers
     Always true. Initialized MPI
 
 
-
+ 
 
 .. c:var:: mpi_master
 
@@ -40,7 +40,7 @@ Providers
     If true, rank is zero
 
 
-
+ 
 
 .. c:var:: mpi_rank
 
@@ -54,7 +54,7 @@ Providers
     Rank of MPI process and number of MPI processes
 
 
-
+ 
 
 .. c:var:: mpi_size
 
@@ -68,11 +68,11 @@ Providers
     Rank of MPI process and number of MPI processes
 
 
-
-
-Subroutines / functions
------------------------
-
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
 .. c:function:: broadcast_chunks_double
@@ -86,7 +86,7 @@ Subroutines / functions
     Broadcast with chunks of ~2GB
 
 
-
+ 
 
 
 .. c:function:: broadcast_chunks_integer
@@ -100,7 +100,7 @@ Subroutines / functions
     Broadcast with chunks of ~2GB
 
 
-
+ 
 
 
 .. c:function:: broadcast_chunks_integer8
@@ -114,7 +114,7 @@ Subroutines / functions
     Broadcast with chunks of ~2GB
 
 
-
+ 
 
 
 .. c:function:: mpi_print

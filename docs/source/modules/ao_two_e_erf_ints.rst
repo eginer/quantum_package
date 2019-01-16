@@ -1,9 +1,9 @@
-.. _ao_two_e_erf_ints:
-
-.. program:: ao_two_e_erf_ints
-
-.. default-role:: option
-
+.. _ao_two_e_erf_ints: 
+ 
+.. program:: ao_two_e_erf_ints 
+ 
+.. default-role:: option 
+ 
 ======================
 ao_two_e_erf_ints
 ======================
@@ -12,10 +12,10 @@ Here, all two-electron integrals (:math:`erf(\mu r_{12})/r_{12}`) are computed.
 As they have 4 indices and many are zero, they are stored in a map, as defined
 in :file:`utils/map_module.f90`.
 
-The main parameter of this module is :option:`ao_two_e_erf_ints mu_erf` which is the range-separation parameter. 
+The main parameter of this module is :option:`ao_two_e_erf_ints mu_erf` which is the range-separation parameter.
 
 To fetch an |AO| integral, use the
-`get_ao_two_e_integral_erf(i,j,k,l,ao_integrals_erf_map)` function. 
+`get_ao_two_e_integral_erf(i,j,k,l,ao_integrals_erf_map)` function.
 
 
 The conventions are:
@@ -23,28 +23,28 @@ The conventions are:
 
 
 
-
-
-
-EZFIO parameters
-----------------
-
+ 
+ 
+ 
+EZFIO parameters 
+---------------- 
+ 
 .. option:: io_ao_two_e_integrals_erf
-
+ 
     Read/Write |AO| integrals with the long range interaction from/to disk [ Write | Read | None ]
-
+ 
     Default: None
-
+ 
 .. option:: mu_erf
-
+ 
     cutting of the interaction in the range separated model
-
+ 
     Default: 0.5
-
-
-Providers
----------
-
+ 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: ao_integrals_erf_cache
 
@@ -57,7 +57,7 @@ Providers
     Cache of |AO| integrals for fast access
 
 
-
+ 
 
 .. c:var:: ao_integrals_erf_cache_max
 
@@ -71,7 +71,7 @@ Providers
     Min and max values of the AOs for which the integrals are in the cache
 
 
-
+ 
 
 .. c:var:: ao_integrals_erf_cache_min
 
@@ -85,7 +85,7 @@ Providers
     Min and max values of the AOs for which the integrals are in the cache
 
 
-
+ 
 
 .. c:var:: ao_integrals_erf_map
 
@@ -98,7 +98,7 @@ Providers
     |AO| integrals
 
 
-
+ 
 
 .. c:var:: ao_two_e_integral_erf_schwartz
 
@@ -111,7 +111,7 @@ Providers
     Needed to compute Schwartz inequalities
 
 
-
+ 
 
 .. c:var:: ao_two_e_integrals_erf_in_map
 
@@ -124,7 +124,7 @@ Providers
     Map of Atomic integrals i(r1) j(r2) 1/r12 k(r1) l(r2)
 
 
-
+ 
 
 .. c:var:: general_primitive_integral_erf
 
@@ -139,11 +139,11 @@ Providers
     Computes the integral <pq|rs> where p,q,r,s are Gaussian primitives
 
 
-
-
-Subroutines / functions
------------------------
-
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
 .. c:function:: ao_two_e_integral_erf
@@ -157,7 +157,7 @@ Subroutines / functions
     integral of the AO basis <ik|jl> or (ij|kl) i(r1) j(r1) 1/r12 k(r2) l(r2)
 
 
-
+ 
 
 
 .. c:function:: ao_two_e_integral_schwartz_accel_erf
@@ -171,7 +171,7 @@ Subroutines / functions
     integral of the AO basis <ik|jl> or (ij|kl) i(r1) j(r1) 1/r12 k(r2) l(r2)
 
 
-
+ 
 
 
 .. c:function:: ao_two_e_integrals_erf_in_map_collector
@@ -185,7 +185,7 @@ Subroutines / functions
     Collects results from the AO integral calculation
 
 
-
+ 
 
 
 .. c:function:: ao_two_e_integrals_erf_in_map_slave
@@ -199,7 +199,7 @@ Subroutines / functions
     Computes a buffer of integrals
 
 
-
+ 
 
 
 .. c:function:: ao_two_e_integrals_erf_in_map_slave_inproc
@@ -213,7 +213,7 @@ Subroutines / functions
     Computes a buffer of integrals. i is the ID of the current thread.
 
 
-
+ 
 
 
 .. c:function:: ao_two_e_integrals_erf_in_map_slave_tcp
@@ -227,7 +227,7 @@ Subroutines / functions
     Computes a buffer of integrals. i is the ID of the current thread.
 
 
-
+ 
 
 
 .. c:function:: clear_ao_erf_map
@@ -241,7 +241,7 @@ Subroutines / functions
     Frees the memory of the |AO| map
 
 
-
+ 
 
 
 .. c:function:: compute_ao_integrals_erf_jl
@@ -255,7 +255,7 @@ Subroutines / functions
     Parallel client for AO integrals
 
 
-
+ 
 
 
 .. c:function:: compute_ao_two_e_integrals_erf
@@ -269,7 +269,7 @@ Subroutines / functions
     Compute AO 1/r12 integrals for all i and fixed j,k,l
 
 
-
+ 
 
 
 .. c:function:: dump_ao_integrals_erf
@@ -283,7 +283,7 @@ Subroutines / functions
     Save to disk the |AO| erf integrals
 
 
-
+ 
 
 
 .. c:function:: eri_erf
@@ -297,7 +297,7 @@ Subroutines / functions
     ATOMIC PRIMTIVE two-electron integral between the 4 primitives :: primitive_1 = x1**(a_x) y1**(a_y) z1**(a_z) exp(-alpha * r1**2) primitive_2 = x1**(b_x) y1**(b_y) z1**(b_z) exp(- beta * r1**2) primitive_3 = x2**(c_x) y2**(c_y) z2**(c_z) exp(-delta * r2**2) primitive_4 = x2**(d_x) y2**(d_y) z2**(d_z) exp(- gama * r2**2)
 
 
-
+ 
 
 
 .. c:function:: get_ao_erf_map_size
@@ -311,7 +311,7 @@ Subroutines / functions
     Returns the number of elements in the |AO| map
 
 
-
+ 
 
 
 .. c:function:: get_ao_two_e_integral_erf
@@ -325,7 +325,7 @@ Subroutines / functions
     Gets one |AO| two-electron integral from the |AO| map
 
 
-
+ 
 
 
 .. c:function:: get_ao_two_e_integrals_erf
@@ -339,7 +339,7 @@ Subroutines / functions
     Gets multiple |AO| two-electron integral from the |AO| map . All i are retrieved for j,k,l fixed.
 
 
-
+ 
 
 
 .. c:function:: get_ao_two_e_integrals_erf_non_zero
@@ -353,7 +353,7 @@ Subroutines / functions
     Gets multiple |AO| two-electron integrals from the |AO| map . All non-zero i are retrieved for j,k,l fixed.
 
 
-
+ 
 
 
 .. c:function:: insert_into_ao_integrals_erf_map
@@ -367,7 +367,7 @@ Subroutines / functions
     Create new entry into |AO| map
 
 
-
+ 
 
 
 .. c:function:: integrale_new_erf
@@ -381,7 +381,7 @@ Subroutines / functions
     calculate the integral of the polynom :: I_x1(a_x+b_x, c_x+d_x,p,q) * I_x1(a_y+b_y, c_y+d_y,p,q) * I_x1(a_z+b_z, c_z+d_z,p,q) between ( 0 ; 1)
 
 
-
+ 
 
 
 .. c:function:: load_ao_integrals_erf
@@ -395,7 +395,7 @@ Subroutines / functions
     Read from disk the |AO| erf integrals
 
 
-
+ 
 
 
 .. c:function:: save_erf_two_e_integrals_ao
@@ -409,7 +409,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: save_erf_two_e_ints_ao_into_ints_ao

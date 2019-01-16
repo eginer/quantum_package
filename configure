@@ -3,7 +3,7 @@
 # Quantum Package configuration script
 #
 
-TEMP=`getopt -o c:i:h -l config:,install:,help -n $0 -- "$@"` || exit 1
+TEMP=$(getopt -o c:i:h -l config:,install:,help -n $0 -- "$@") || exit 1
 eval set -- "$TEMP"
 
 export QP_ROOT="$( cd "$(dirname "$0")" ; pwd -P )"
@@ -25,8 +25,8 @@ Options:
                            in "${QP_ROOT}/config/". 
   -h, --help               Print the HELP message
   -i, --install=<package>  INSTALL <package>. Use at your OWN RISK:
-			   no support will be provided for the installation of
-			   dependencies.
+                           no support will be provided for the installation of
+                           dependencies.
 
 Example:
   ./$(basename $0) -c config/gfortran.cfg
@@ -62,7 +62,7 @@ function execute () {
 PACKAGES=""
 OCAML_PACKAGES="ocamlbuild cryptokit zmq core sexplib ppx_sexp_conv ppx_deriving getopt"
 
-while true : ; do
+while true ; do
     case "$1" in
         -c|--config) 
             case "$2" in
@@ -158,17 +158,17 @@ function find_dir() {
 if [[ "${PACKAGES}.x" != ".x" ]] ; then
         printf "\e[0;31m"
         echo ""
-	echo "#########################################################"
-	echo "#                                                       #"
-	echo "#       Automatic installation of dependencies          #"
-	echo "#                                                       #"
-	echo "# USE AT YOUR OWN RISK :                                #"
-	echo "# No support will be provided by the quantum package    #"
-	echo "# developers for the installation of external software. #"
-	echo "#                                                       #"
-	echo "# You may refer to the INSTALL.rst file for help.       #"
-	echo "#                                                       #"
-	echo "#########################################################"
+      echo "#########################################################"
+      echo "#                                                       #"
+      echo "#       Automatic installation of dependencies          #"
+      echo "#                                                       #"
+      echo "# USE AT YOUR OWN RISK :                                #"
+      echo "# No support will be provided by the quantum package    #"
+      echo "# developers for the installation of external software. #"
+      echo "#                                                       #"
+      echo "# You may refer to the INSTALL.rst file for help.       #"
+      echo "#                                                       #"
+      echo "#########################################################"
         printf "\e[m"
         echo ""
         sleep 1
@@ -433,11 +433,11 @@ fi
 if [[ -f ${QP_ROOT}/build.ninja ]] ; then
         [[ -z ${TRAVIS} ]] && exec ${QP_ROOT}/bin/qpsh
 else 
-	echo ""
-	echo "${QP_ROOT}/build.ninja does not exist,"
-	echo "you need to specify the COMPILATION configuration file."
-	echo "See  ./configure --help  for more details." 
-	echo ""
+      echo ""
+      echo "${QP_ROOT}/build.ninja does not exist,"
+      echo "you need to specify the COMPILATION configuration file."
+      echo "See  ./configure --help  for more details." 
+      echo ""
 fi
    
     

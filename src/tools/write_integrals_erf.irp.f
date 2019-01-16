@@ -1,4 +1,4 @@
-program write_integrals
+program write_integrals_erf
  implicit none
  BEGIN_DOC
  ! Saves the two-electron integrals with the :math:`erf(\mu r_{12})/r_{12}` oprerator into the EZFIO folder

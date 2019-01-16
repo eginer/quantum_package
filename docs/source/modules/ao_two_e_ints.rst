@@ -1,9 +1,9 @@
-.. _ao_two_e_ints:
-
-.. program:: ao_two_e_ints
-
-.. default-role:: option
-
+.. _ao_two_e_ints: 
+ 
+.. program:: ao_two_e_ints 
+ 
+.. default-role:: option 
+ 
 ==================
 ao_two_e_ints
 ==================
@@ -13,7 +13,7 @@ As they have 4 indices and many are zero, they are stored in a map, as defined
 in :file:`utils/map_module.f90`.
 
 To fetch an |AO| integral, use the
-`get_ao_two_e_integral(i,j,k,l,ao_integrals_map)` function. 
+`get_ao_two_e_integral(i,j,k,l,ao_integrals_map)` function.
 
 
 The conventions are:
@@ -21,34 +21,34 @@ The conventions are:
 
 
 
-
-
-
-EZFIO parameters
-----------------
-
+ 
+ 
+ 
+EZFIO parameters 
+---------------- 
+ 
 .. option:: io_ao_two_e_integrals
-
+ 
     Read/Write |AO| integrals from/to disk [ Write | Read | None ]
-
+ 
     Default: None
-
+ 
 .. option:: ao_integrals_threshold
-
+ 
     If | (pq|rs) | < `ao_integrals_threshold` then (pq|rs) is zero
-
+ 
     Default: 1.e-15
-
+ 
 .. option:: do_direct_integrals
-
+ 
     Compute integrals on the fly (very slow, only for debugging)
-
+ 
     Default: False
-
-
-Providers
----------
-
+ 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: ao_integrals_cache
 
@@ -61,7 +61,7 @@ Providers
     Cache of AO integrals for fast access
 
 
-
+ 
 
 .. c:var:: ao_integrals_cache_max
 
@@ -75,7 +75,7 @@ Providers
     Min and max values of the AOs for which the integrals are in the cache
 
 
-
+ 
 
 .. c:var:: ao_integrals_cache_min
 
@@ -89,7 +89,7 @@ Providers
     Min and max values of the AOs for which the integrals are in the cache
 
 
-
+ 
 
 .. c:var:: ao_integrals_map
 
@@ -102,7 +102,7 @@ Providers
     AO integrals
 
 
-
+ 
 
 .. c:var:: ao_two_e_integral_schwartz
 
@@ -115,7 +115,7 @@ Providers
     Needed to compute Schwartz inequalities
 
 
-
+ 
 
 .. c:var:: ao_two_e_integrals_in_map
 
@@ -128,7 +128,7 @@ Providers
     Map of Atomic integrals i(r1) j(r2) 1/r12 k(r1) l(r2)
 
 
-
+ 
 
 .. c:var:: gauleg_t2
 
@@ -142,7 +142,7 @@ Providers
     t_w(i,1,k) = w(i) t_w(i,2,k) = t(i)
 
 
-
+ 
 
 .. c:var:: gauleg_w
 
@@ -156,7 +156,7 @@ Providers
     t_w(i,1,k) = w(i) t_w(i,2,k) = t(i)
 
 
-
+ 
 
 .. c:var:: general_primitive_integral
 
@@ -171,7 +171,7 @@ Providers
     Computes the integral <pq|rs> where p,q,r,s are Gaussian primitives
 
 
-
+ 
 
 .. c:var:: i_x1_new
 
@@ -184,7 +184,7 @@ Providers
     recursive function involved in the two-electron integral
 
 
-
+ 
 
 .. c:var:: i_x1_pol_mult_a1
 
@@ -197,7 +197,7 @@ Providers
     recursive function involved in the two-electron integral
 
 
-
+ 
 
 .. c:var:: i_x1_pol_mult_a2
 
@@ -210,7 +210,7 @@ Providers
     recursive function involved in the two-electron integral
 
 
-
+ 
 
 .. c:var:: i_x1_pol_mult_recurs
 
@@ -223,7 +223,7 @@ Providers
     recursive function involved in the two-electron integral
 
 
-
+ 
 
 .. c:var:: i_x2_new
 
@@ -236,7 +236,7 @@ Providers
     recursive function involved in the two-electron integral
 
 
-
+ 
 
 .. c:var:: i_x2_pol_mult
 
@@ -249,11 +249,11 @@ Providers
     recursive function involved in the two-electron integral
 
 
-
-
-Subroutines / functions
------------------------
-
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
 .. c:function:: ao_l4
@@ -267,7 +267,7 @@ Subroutines / functions
     Computes the product of l values of i,j,k,and l
 
 
-
+ 
 
 
 .. c:function:: ao_two_e_integral
@@ -281,7 +281,7 @@ Subroutines / functions
     integral of the AO basis <ik|jl> or (ij|kl) i(r1) j(r1) 1/r12 k(r2) l(r2)
 
 
-
+ 
 
 
 .. c:function:: ao_two_e_integral_schwartz_accel
@@ -295,7 +295,7 @@ Subroutines / functions
     integral of the AO basis <ik|jl> or (ij|kl) i(r1) j(r1) 1/r12 k(r2) l(r2)
 
 
-
+ 
 
 
 .. c:function:: ao_two_e_integrals_in_map_collector
@@ -309,7 +309,7 @@ Subroutines / functions
     Collects results from the AO integral calculation
 
 
-
+ 
 
 
 .. c:function:: ao_two_e_integrals_in_map_slave
@@ -323,7 +323,7 @@ Subroutines / functions
     Computes a buffer of integrals
 
 
-
+ 
 
 
 .. c:function:: ao_two_e_integrals_in_map_slave_inproc
@@ -337,7 +337,7 @@ Subroutines / functions
     Computes a buffer of integrals. i is the ID of the current thread.
 
 
-
+ 
 
 
 .. c:function:: ao_two_e_integrals_in_map_slave_tcp
@@ -351,7 +351,7 @@ Subroutines / functions
     Computes a buffer of integrals. i is the ID of the current thread.
 
 
-
+ 
 
 
 .. c:function:: clear_ao_map
@@ -365,7 +365,7 @@ Subroutines / functions
     Frees the memory of the AO map
 
 
-
+ 
 
 
 .. c:function:: compute_ao_integrals_jl
@@ -379,7 +379,7 @@ Subroutines / functions
     Parallel client for AO integrals
 
 
-
+ 
 
 
 .. c:function:: compute_ao_two_e_integrals
@@ -393,7 +393,7 @@ Subroutines / functions
     Compute AO 1/r12 integrals for all i and fixed j,k,l
 
 
-
+ 
 
 
 .. c:function:: dump_ao_integrals
@@ -407,7 +407,7 @@ Subroutines / functions
     Save to disk the |AO| integrals
 
 
-
+ 
 
 
 .. c:function:: eri
@@ -421,7 +421,7 @@ Subroutines / functions
     ATOMIC PRIMTIVE two-electron integral between the 4 primitives :: primitive_1 = x1**(a_x) y1**(a_y) z1**(a_z) exp(-alpha * r1**2) primitive_2 = x1**(b_x) y1**(b_y) z1**(b_z) exp(- beta * r1**2) primitive_3 = x2**(c_x) y2**(c_y) z2**(c_z) exp(-delta * r2**2) primitive_4 = x2**(d_x) y2**(d_y) z2**(d_z) exp(- gama * r2**2)
 
 
-
+ 
 
 
 .. c:function:: gauleg
@@ -435,7 +435,7 @@ Subroutines / functions
     Gauss-Legendre
 
 
-
+ 
 
 
 .. c:function:: get_ao_map_size
@@ -449,7 +449,7 @@ Subroutines / functions
     Returns the number of elements in the AO map
 
 
-
+ 
 
 
 .. c:function:: get_ao_two_e_integral
@@ -463,7 +463,7 @@ Subroutines / functions
     Gets one AO bi-electronic integral from the AO map
 
 
-
+ 
 
 
 .. c:function:: get_ao_two_e_integrals
@@ -477,7 +477,7 @@ Subroutines / functions
     Gets multiple AO bi-electronic integral from the AO map . All i are retrieved for j,k,l fixed.
 
 
-
+ 
 
 
 .. c:function:: get_ao_two_e_integrals_non_zero
@@ -491,7 +491,7 @@ Subroutines / functions
     Gets multiple AO bi-electronic integral from the AO map . All non-zero i are retrieved for j,k,l fixed.
 
 
-
+ 
 
 
 .. c:function:: give_polynom_mult_center_x
@@ -505,7 +505,7 @@ Subroutines / functions
     subroutine that returns the explicit polynom in term of the "t" variable of the following polynomw : I_x1(a_x, d_x,p,q) * I_x1(a_y, d_y,p,q) * I_x1(a_z, d_z,p,q)
 
 
-
+ 
 
 
 .. c:function:: i_x1_pol_mult
@@ -519,7 +519,7 @@ Subroutines / functions
     recursive function involved in the two-electron integral
 
 
-
+ 
 
 
 .. c:function:: insert_into_ao_integrals_map
@@ -533,7 +533,7 @@ Subroutines / functions
     Create new entry into AO map
 
 
-
+ 
 
 
 .. c:function:: integrale_new
@@ -547,7 +547,7 @@ Subroutines / functions
     calculate the integral of the polynom :: I_x1(a_x+b_x, c_x+d_x,p,q) * I_x1(a_y+b_y, c_y+d_y,p,q) * I_x1(a_z+b_z, c_z+d_z,p,q) between ( 0 ; 1)
 
 
-
+ 
 
 
 .. c:function:: load_ao_integrals
@@ -561,7 +561,7 @@ Subroutines / functions
     Read from disk the |AO| integrals
 
 
-
+ 
 
 
 .. c:function:: n_pt_sup
@@ -575,7 +575,7 @@ Subroutines / functions
     Returns the upper boundary of the degree of the polynomial involved in the bielctronic integral : Ix(a_x,b_x,c_x,d_x) * Iy(a_y,b_y,c_y,d_y) * Iz(a_z,b_z,c_z,d_z)
 
 
-
+ 
 
 
 .. c:function:: push_integrals
@@ -589,7 +589,7 @@ Subroutines / functions
     Push integrals in the push socket
 
 
-
+ 
 
 
 .. c:function:: two_e_integrals_index
@@ -603,7 +603,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: two_e_integrals_index_reverse

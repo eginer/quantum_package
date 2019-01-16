@@ -1,45 +1,51 @@
 program cis
   implicit none
   BEGIN_DOC
+  !
   ! Configuration Interaction with Single excitations.
   !
-  ! This program takes a reference Slater determinant of ROHF-like occupancy,
-  !
-  ! and performs all single excitations on top of it, disregarding spatial
-  ! symmetry and compute the "n_states" lowest eigenstates of that CI matrix.
-  ! (see  :option:`determinants n_states`)
+  ! This program takes a reference Slater determinant of ROHF-like
+  ! occupancy, and performs all single excitations on top of it.
+  ! Disregarding spatial symmetry, it computes the `n_states` lowest
+  ! eigenstates of that CI matrix. (see :option:`determinants n_states`)
   !
   ! This program can be useful in many cases:
   !
-  ! * GROUND STATE CALCULATION: to be sure to have the lowest scf solution,
-  !   perform an :c:func:`scf` (see the :ref:`hartree_fock` module), then a :c:func:`cis`,
-  !   save the natural orbitals (see :c:func:`save_natorb`) and reperform an :c:func:`scf`
-  !   optimization from this MO guess
+  ! # Ground state calculation
+  !
+  ! To be sure to have the lowest |SCF| solution, perform an :ref:`.scf.` 
+  ! (see the :ref:`hartree_fock` module), then a :ref:`.cis.`, save
+  ! the natural orbitals (see :ref:`.save_natorb.`) and re-run an
+  ! :ref:`.scf.` optimization from this |MO| guess.
   !
   !
+  ! # Excited states calculations
   !
+  ! The lowest excited states are much likely to be dominated by
+  ! single-excitations. Therefore, running a :ref:`.cis.` will save
+  ! the `n_states` lowest states within the |CIS| space in the |EZFIO|
+  ! directory, which can afterwards be used as guess wave functions for
+  ! a further multi-state |FCI| calculation if :option:`determinants
+  ! read_wf` is set to |true| before running the :ref:`.fci.`
+  ! executable.
   !
-  ! * EXCITED STATES CALCULATIONS: the lowest excited states are much likely to
-  !   be dominanted by single-excitations.
-  !   Therefore, running a :c:func:`cis` will save the "n_states" lowest states within
-  !   the CIS space
-  !   in the EZFIO folder, which can afterward be used as guess wave functions
-  !   for a further multi-state fci calculation if you specify "read_wf" = True
-  !   before running the fci executable (see :option:`determinants read_wf`).
-  !   Also, if you specify "s2_eig" = True, the cis will only retain states
-  !   having the good value :math:`S^2` value (see :option:`determinants
-  !   s2_eig` and :option:`determinants expected_s2`).
-  !   If "s2_eig" = False, it will take the lowest n_states, whatever multiplicity they are.
+  ! If :option:`determinants s2_eig` is set to |true|, the |CIS|
+  ! will only retain states having the expected |S^2| value (see
+  ! :option:`determinants expected_s2`). Otherwise, the |CIS| will take
+  ! the lowest :option:`determinants n_states`, whatever multiplicity
+  ! they are.
   !
+  ! # Note
   !
+  ! To discard some orbitals, use the :ref:`qp_set_mo_class` 
+  ! command to specify:
   !
-  !   Note: if you would like to discard some orbitals, use :ref:`qp_set_mo_class` to specify:
+  ! * *core* orbitals which will be always doubly occupied
   !
-  !   * "core" orbitals which will be always doubly occupied
+  ! * *act* orbitals where an electron can be either excited from or to
   !
-  !   * "act" orbitals where an electron can be either excited from or to
+  ! * *del* orbitals which will be never occupied
   !
-  !   * "del" orbitals which will be never occupied
   END_DOC
   read_wf = .False.
   SOFT_TOUCH read_wf

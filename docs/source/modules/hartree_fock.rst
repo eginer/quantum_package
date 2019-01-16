@@ -1,9 +1,9 @@
-.. _hartree_fock:
-
-.. program:: hartree_fock
-
-.. default-role:: option
-
+.. _hartree_fock: 
+ 
+.. program:: hartree_fock 
+ 
+.. default-role:: option 
+ 
 ============
 hartree_fock
 ============
@@ -12,7 +12,7 @@ hartree_fock
 The Hartree-Fock module performs *Restricted* Hartree-Fock calculations (the
 spatial part of the |MOs| is common for alpha and beta spinorbitals).
 
-The Hartree-Fock in an SCF and therefore is based on the ``scf_utils`` structure. 
+The Hartree-Fock in an SCF and therefore is based on the ``scf_utils`` structure.
 It performs the following actions:
 
 #. Compute/Read all the one- and two-electron integrals, and store them in memory
@@ -21,13 +21,13 @@ It performs the following actions:
    will read them as initial guess. Otherwise, it will create a guess.
 #. Perform the |SCF| iterations
 
-The definition of the Fock matrix is in :file:`hartree_fock fock_matrix_hf.irp.f` 
-For the keywords related to the |SCF| procedure, see the ``scf_utils`` directory where you will find all options. 
-The main are: 
+The definition of the Fock matrix is in :file:`hartree_fock fock_matrix_hf.irp.f`
+For the keywords related to the |SCF| procedure, see the ``scf_utils`` directory where you will find all options.
+The main are:
 
-# :option:`scf_utils thresh_scf` 
+# :option:`scf_utils thresh_scf`
 
-# :option:`scf_utils level_shift` 
+# :option:`scf_utils level_shift`
 
 At each iteration, the |MOs| are saved in the |EZFIO| database. Hence, if the calculation
 crashes for any unexpected reason, the calculation can be restarted by running again
@@ -47,21 +47,26 @@ To start a calculation from scratch, the simplest way is to remove the
 
 
 
-
-
-
-EZFIO parameters
-----------------
-
+ 
+ 
+ 
+EZFIO parameters 
+---------------- 
+ 
 .. option:: energy
-
+ 
     Energy HF
-
-
-
-Providers
----------
-
+ 
+ 
+ 
+Programs 
+-------- 
+ 
+ * :ref:`scf` 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: ao_two_e_integral_alpha
 
@@ -75,7 +80,7 @@ Providers
     Alpha Fock matrix in AO basis set
 
 
-
+ 
 
 .. c:var:: ao_two_e_integral_beta
 
@@ -89,7 +94,7 @@ Providers
     Alpha Fock matrix in AO basis set
 
 
-
+ 
 
 .. c:var:: extra_e_contrib_density
 
@@ -106,7 +111,7 @@ Providers
     For a Kohn-Sham or Range-separated Kohn-Sham: the exchange/correlation - trace of the V_xc potential
 
 
-
+ 
 
 .. c:var:: fock_matrix_ao_alpha
 
@@ -120,7 +125,7 @@ Providers
     Alpha Fock matrix in AO basis set
 
 
-
+ 
 
 .. c:var:: fock_matrix_ao_beta
 
@@ -134,7 +139,7 @@ Providers
     Alpha Fock matrix in AO basis set
 
 
-
+ 
 
 .. c:var:: hf_energy
 
@@ -149,7 +154,7 @@ Providers
     Hartree-Fock energy containing the nuclear repulsion, and its one- and two-body components.
 
 
-
+ 
 
 .. c:var:: hf_one_electron_energy
 
@@ -164,7 +169,7 @@ Providers
     Hartree-Fock energy containing the nuclear repulsion, and its one- and two-body components.
 
 
-
+ 
 
 .. c:var:: hf_two_electron_energy
 
@@ -179,11 +184,11 @@ Providers
     Hartree-Fock energy containing the nuclear repulsion, and its one- and two-body components.
 
 
-
-
-Subroutines / functions
------------------------
-
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
 .. c:function:: create_guess
@@ -197,7 +202,7 @@ Subroutines / functions
     Create a MO guess if no MOs are present in the EZFIO directory
 
 
-
+ 
 
 
 .. c:function:: run
@@ -209,25 +214,5 @@ Subroutines / functions
     File: :file:`scf.irp.f`
 
     Run SCF calculation
-
-
-
-
-
-.. c:function:: scf
-
-    .. code:: text
-
-        subroutine scf
-
-    File: :file:`scf.irp.f`
-
-    Produce `Hartree_Fock` |MOs| 
-
-    output: mo_basis.mo_num mo_basis.mo_label mo_basis.ao_md5 mo_basis.mo_coef mo_basis.mo_occ 
-
-    output: hartree_fock.energy 
-
-    optional: mo_basis.mo_coef
 
 

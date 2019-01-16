@@ -1,9 +1,9 @@
-.. _ezfio_files:
-
-.. program:: ezfio_files
-
-.. default-role:: option
-
+.. _ezfio_files: 
+ 
+.. program:: ezfio_files 
+ 
+.. default-role:: option 
+ 
 ===========
 ezfio_files
 ===========
@@ -12,12 +12,12 @@ This modules essentially contains the name of the |EZFIO| directory in the
 :c:data:`ezfio_filename` variable. This is read as the first argument of the
 command-line, or as the :envvar:`QP_INPUT` environment variable.
 
-
-
-
-Providers
----------
-
+ 
+ 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: ezfio_filename
 
@@ -30,7 +30,7 @@ Providers
     Name of EZFIO file. It is obtained from the QPACKAGE_INPUT environment variable if it is set, or as the 1st argument of the command line.
 
 
-
+ 
 
 .. c:var:: ezfio_work_dir
 
@@ -43,7 +43,7 @@ Providers
     EZFIO/work/
 
 
-
+ 
 
 .. c:var:: output_cpu_time_0
 
@@ -57,7 +57,7 @@ Providers
     Initial CPU and wall times when printing in the output files
 
 
-
+ 
 
 .. c:var:: output_wall_time_0
 
@@ -71,11 +71,11 @@ Providers
     Initial CPU and wall times when printing in the output files
 
 
-
-
-Subroutines / functions
------------------------
-
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
 .. c:function:: getunitandopen
@@ -93,7 +93,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: write_bool
@@ -107,7 +107,7 @@ Subroutines / functions
     Write an logical value in output
 
 
-
+ 
 
 
 .. c:function:: write_double
@@ -121,7 +121,7 @@ Subroutines / functions
     Write a double precision value in output
 
 
-
+ 
 
 
 .. c:function:: write_int
@@ -135,7 +135,7 @@ Subroutines / functions
     Write an integer value in output
 
 
-
+ 
 
 
 .. c:function:: write_time

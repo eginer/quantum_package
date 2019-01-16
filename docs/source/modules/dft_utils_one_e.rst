@@ -1,15 +1,15 @@
-.. _dft_utils_one_e:
-
-.. program:: dft_utils_one_e
-
-.. default-role:: option
-
+.. _dft_utils_one_e: 
+ 
+.. program:: dft_utils_one_e 
+ 
+.. default-role:: option 
+ 
 ===============
 dft_utils_one_e
 ===============
 
-This module contains all the one-body related quantities needed to perform DFT or RS-DFT calculations. 
-Therefore, it contains most of the properties which depends on the one-body density and density matrix. 
+This module contains all the one-body related quantities needed to perform DFT or RS-DFT calculations.
+Therefore, it contains most of the properties which depends on the one-body density and density matrix.
 
 The most important files and variables are:
 
@@ -17,10 +17,10 @@ The most important files and variables are:
 * The general *providers* for the x/c potentials in :file:`pot_general.irp.f`
 * The short-range hartree operator and all related quantities in :file:`sr_coulomb.irp.f`
 
-These *providers* will be used in many DFT-related programs, such as :file:`ks_scf.irp.f` or :file:`rs_ks_scf.irp.f`. 
-It is also needed to compute the effective one-body operator needed in multi-determinant RS-DFT (see plugins by eginer). 
+These *providers* will be used in many DFT-related programs, such as :file:`ks_scf.irp.f` or :file:`rs_ks_scf.irp.f`.
+It is also needed to compute the effective one-body operator needed in multi-determinant RS-DFT (see plugins by eginer).
 
-Some other interesting quantities: 
+Some other interesting quantities:
 
 * The LDA and PBE *providers* for the x/c energies in :file:`e_xc.irp.f` and :file:`sr_exc.irp.f`
 * The LDA and PBE *providers* for the x/c potentials on the AO basis in :file:`pot_ao.irp.f` and  :file:`sr_pot_ao.irp.f`
@@ -28,12 +28,44 @@ Some other interesting quantities:
 * LDA and PBE short-range functionals *subroutines* in :file:`exc_sr_lda.irp.f` and :file:`exc_sr_pbe.irp.f`
 
 
+ 
+ 
+ 
+Providers 
+--------- 
+ 
+
+.. c:var:: ao_effective_one_e_potential
+
+    .. code:: text
+
+        double precision, allocatable	:: ao_effective_one_e_potential	(ao_num,ao_num,N_states)
+        double precision, allocatable	:: ao_effective_one_e_potential_without_kin	(ao_num,ao_num,N_states)
+
+    File: :file:`effective_pot.irp.f`
+
+    ao_effective_one_e_potential(i,j) =  :math:`\rangle i_{AO}| v_{H}^{sr} |j_{AO}\rangle  + \rangle i_{AO}| h_{core} |j_{AO}\rangle  + \rangle i_{AO}|v_{xc} |j_{AO}\rangle` 
 
 
 
-Providers
----------
 
+ 
+
+.. c:var:: ao_effective_one_e_potential_without_kin
+
+    .. code:: text
+
+        double precision, allocatable	:: ao_effective_one_e_potential	(ao_num,ao_num,N_states)
+        double precision, allocatable	:: ao_effective_one_e_potential_without_kin	(ao_num,ao_num,N_states)
+
+    File: :file:`effective_pot.irp.f`
+
+    ao_effective_one_e_potential(i,j) =  :math:`\rangle i_{AO}| v_{H}^{sr} |j_{AO}\rangle  + \rangle i_{AO}| h_{core} |j_{AO}\rangle  + \rangle i_{AO}|v_{xc} |j_{AO}\rangle` 
+
+
+
+
+ 
 
 .. c:var:: aos_dsr_vc_alpha_pbe_w
 
@@ -57,7 +89,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_dsr_vc_beta_pbe_w
 
@@ -81,7 +113,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_dsr_vx_alpha_pbe_w
 
@@ -105,7 +137,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_dsr_vx_beta_pbe_w
 
@@ -129,7 +161,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_dvc_alpha_pbe_w
 
@@ -153,7 +185,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_dvc_beta_pbe_w
 
@@ -177,7 +209,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_dvx_alpha_pbe_w
 
@@ -201,7 +233,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_dvx_beta_pbe_w
 
@@ -225,7 +257,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_sr_vc_alpha_lda_w
 
@@ -241,7 +273,7 @@ Providers
     aos_sr_vxc_alpha_LDA_w(j,i) = ao_i(r_j) * (sr_v^x_alpha(r_j) + sr_v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_sr_vc_alpha_pbe_w
 
@@ -265,7 +297,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_sr_vc_beta_lda_w
 
@@ -281,7 +313,7 @@ Providers
     aos_sr_vxc_alpha_LDA_w(j,i) = ao_i(r_j) * (sr_v^x_alpha(r_j) + sr_v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_sr_vc_beta_pbe_w
 
@@ -305,7 +337,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_sr_vx_alpha_lda_w
 
@@ -321,7 +353,7 @@ Providers
     aos_sr_vxc_alpha_LDA_w(j,i) = ao_i(r_j) * (sr_v^x_alpha(r_j) + sr_v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_sr_vx_alpha_pbe_w
 
@@ -345,7 +377,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_sr_vx_beta_lda_w
 
@@ -361,7 +393,7 @@ Providers
     aos_sr_vxc_alpha_LDA_w(j,i) = ao_i(r_j) * (sr_v^x_alpha(r_j) + sr_v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_sr_vx_beta_pbe_w
 
@@ -385,7 +417,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_vc_alpha_lda_w
 
@@ -401,7 +433,7 @@ Providers
     aos_vxc_alpha_LDA_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_vc_alpha_pbe_w
 
@@ -425,7 +457,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_vc_beta_lda_w
 
@@ -441,7 +473,7 @@ Providers
     aos_vxc_alpha_LDA_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_vc_beta_pbe_w
 
@@ -465,7 +497,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_vx_alpha_lda_w
 
@@ -481,7 +513,7 @@ Providers
     aos_vxc_alpha_LDA_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_vx_alpha_pbe_w
 
@@ -505,7 +537,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_vx_beta_lda_w
 
@@ -521,7 +553,7 @@ Providers
     aos_vxc_alpha_LDA_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: aos_vx_beta_pbe_w
 
@@ -545,7 +577,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: effective_one_e_potential
 
@@ -563,7 +595,7 @@ Providers
     shifted_effective_one_e_potential_without_kin = effective_one_e_potential_without_kin + shifting_constant on the diagonal
 
 
-
+ 
 
 .. c:var:: effective_one_e_potential_without_kin
 
@@ -581,7 +613,7 @@ Providers
     shifted_effective_one_e_potential_without_kin = effective_one_e_potential_without_kin + shifting_constant on the diagonal
 
 
-
+ 
 
 .. c:var:: energy_c
 
@@ -595,7 +627,7 @@ Providers
     correlation and exchange energies general providers.
 
 
-
+ 
 
 .. c:var:: energy_c_lda
 
@@ -609,7 +641,7 @@ Providers
     exchange/correlation energy with the short range LDA functional
 
 
-
+ 
 
 .. c:var:: energy_c_pbe
 
@@ -623,7 +655,7 @@ Providers
     exchange/correlation energy with the short range PBE functional
 
 
-
+ 
 
 .. c:var:: energy_sr_c_lda
 
@@ -637,7 +669,7 @@ Providers
     exchange/correlation energy with the short range LDA functional
 
 
-
+ 
 
 .. c:var:: energy_sr_c_pbe
 
@@ -651,7 +683,7 @@ Providers
     exchange/correlation energy with the short range PBE functional
 
 
-
+ 
 
 .. c:var:: energy_sr_x_lda
 
@@ -665,7 +697,7 @@ Providers
     exchange/correlation energy with the short range LDA functional
 
 
-
+ 
 
 .. c:var:: energy_sr_x_pbe
 
@@ -679,7 +711,7 @@ Providers
     exchange/correlation energy with the short range PBE functional
 
 
-
+ 
 
 .. c:var:: energy_x
 
@@ -693,7 +725,7 @@ Providers
     correlation and exchange energies general providers.
 
 
-
+ 
 
 .. c:var:: energy_x_lda
 
@@ -707,7 +739,7 @@ Providers
     exchange/correlation energy with the short range LDA functional
 
 
-
+ 
 
 .. c:var:: energy_x_pbe
 
@@ -721,7 +753,7 @@ Providers
     exchange/correlation energy with the short range PBE functional
 
 
-
+ 
 
 .. c:var:: gga_sr_type_functionals
 
@@ -736,7 +768,7 @@ Providers
     routine that helps in building the x/c potentials on the AO basis for a GGA functional with a short-range interaction
 
 
-
+ 
 
 .. c:var:: gga_type_functionals
 
@@ -751,7 +783,7 @@ Providers
     routine that helps in building the x/c potentials on the AO basis for a GGA functional
 
 
-
+ 
 
 .. c:var:: grad_aos_dsr_vc_alpha_pbe_w
 
@@ -775,7 +807,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: grad_aos_dsr_vc_beta_pbe_w
 
@@ -799,7 +831,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: grad_aos_dsr_vx_alpha_pbe_w
 
@@ -823,7 +855,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: grad_aos_dsr_vx_beta_pbe_w
 
@@ -847,7 +879,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: grad_aos_dvc_alpha_pbe_w
 
@@ -871,7 +903,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: grad_aos_dvc_beta_pbe_w
 
@@ -895,7 +927,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: grad_aos_dvx_alpha_pbe_w
 
@@ -919,7 +951,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: grad_aos_dvx_beta_pbe_w
 
@@ -943,7 +975,7 @@ Providers
     aos_vxc_alpha_PBE_w(j,i) = ao_i(r_j) * (v^x_alpha(r_j) + v^c_alpha(r_j)) * W(r_j)
 
 
-
+ 
 
 .. c:var:: mu_erf_dft
 
@@ -956,7 +988,7 @@ Providers
     range separation parameter used in RS-DFT. It is set to mu_erf in order to be consistent with the two electrons integrals erf
 
 
-
+ 
 
 .. c:var:: potential_c_alpha_ao
 
@@ -972,7 +1004,7 @@ Providers
     general providers for the alpha/beta exchange/correlation potentials on the AO basis
 
 
-
+ 
 
 .. c:var:: potential_c_alpha_ao_lda
 
@@ -988,7 +1020,7 @@ Providers
     short range exchange/correlation alpha/beta potentials with LDA functional on the AO basis
 
 
-
+ 
 
 .. c:var:: potential_c_alpha_ao_pbe
 
@@ -1004,7 +1036,7 @@ Providers
     exchange/correlation alpha/beta potentials with the short range PBE functional on the AO basis
 
 
-
+ 
 
 .. c:var:: potential_c_alpha_mo
 
@@ -1020,7 +1052,7 @@ Providers
     general providers for the alpha/beta exchange/correlation potentials on the MO basis
 
 
-
+ 
 
 .. c:var:: potential_c_beta_ao
 
@@ -1036,7 +1068,7 @@ Providers
     general providers for the alpha/beta exchange/correlation potentials on the AO basis
 
 
-
+ 
 
 .. c:var:: potential_c_beta_ao_lda
 
@@ -1052,7 +1084,7 @@ Providers
     short range exchange/correlation alpha/beta potentials with LDA functional on the AO basis
 
 
-
+ 
 
 .. c:var:: potential_c_beta_ao_pbe
 
@@ -1068,7 +1100,7 @@ Providers
     exchange/correlation alpha/beta potentials with the short range PBE functional on the AO basis
 
 
-
+ 
 
 .. c:var:: potential_c_beta_mo
 
@@ -1084,7 +1116,7 @@ Providers
     general providers for the alpha/beta exchange/correlation potentials on the MO basis
 
 
-
+ 
 
 .. c:var:: potential_sr_c_alpha_ao_lda
 
@@ -1098,7 +1130,7 @@ Providers
     short range correlation alpha/beta potentials with LDA functional on the |AO| basis
 
 
-
+ 
 
 .. c:var:: potential_sr_c_alpha_ao_pbe
 
@@ -1114,7 +1146,7 @@ Providers
     exchange/correlation alpha/beta potentials with the short range PBE functional on the AO basis
 
 
-
+ 
 
 .. c:var:: potential_sr_c_beta_ao_lda
 
@@ -1128,7 +1160,7 @@ Providers
     short range correlation alpha/beta potentials with LDA functional on the |AO| basis
 
 
-
+ 
 
 .. c:var:: potential_sr_c_beta_ao_pbe
 
@@ -1144,7 +1176,7 @@ Providers
     exchange/correlation alpha/beta potentials with the short range PBE functional on the AO basis
 
 
-
+ 
 
 .. c:var:: potential_sr_x_alpha_ao_lda
 
@@ -1158,7 +1190,7 @@ Providers
     short range exchange alpha/beta potentials with LDA functional on the |AO| basis
 
 
-
+ 
 
 .. c:var:: potential_sr_x_alpha_ao_pbe
 
@@ -1174,7 +1206,7 @@ Providers
     exchange/correlation alpha/beta potentials with the short range PBE functional on the AO basis
 
 
-
+ 
 
 .. c:var:: potential_sr_x_beta_ao_lda
 
@@ -1188,7 +1220,7 @@ Providers
     short range exchange alpha/beta potentials with LDA functional on the |AO| basis
 
 
-
+ 
 
 .. c:var:: potential_sr_x_beta_ao_pbe
 
@@ -1204,7 +1236,7 @@ Providers
     exchange/correlation alpha/beta potentials with the short range PBE functional on the AO basis
 
 
-
+ 
 
 .. c:var:: potential_x_alpha_ao
 
@@ -1220,7 +1252,7 @@ Providers
     general providers for the alpha/beta exchange/correlation potentials on the AO basis
 
 
-
+ 
 
 .. c:var:: potential_x_alpha_ao_lda
 
@@ -1236,7 +1268,7 @@ Providers
     short range exchange/correlation alpha/beta potentials with LDA functional on the AO basis
 
 
-
+ 
 
 .. c:var:: potential_x_alpha_ao_pbe
 
@@ -1252,7 +1284,7 @@ Providers
     exchange/correlation alpha/beta potentials with the short range PBE functional on the AO basis
 
 
-
+ 
 
 .. c:var:: potential_x_alpha_mo
 
@@ -1268,7 +1300,7 @@ Providers
     general providers for the alpha/beta exchange/correlation potentials on the MO basis
 
 
-
+ 
 
 .. c:var:: potential_x_beta_ao
 
@@ -1284,7 +1316,7 @@ Providers
     general providers for the alpha/beta exchange/correlation potentials on the AO basis
 
 
-
+ 
 
 .. c:var:: potential_x_beta_ao_lda
 
@@ -1300,7 +1332,7 @@ Providers
     short range exchange/correlation alpha/beta potentials with LDA functional on the AO basis
 
 
-
+ 
 
 .. c:var:: potential_x_beta_ao_pbe
 
@@ -1316,7 +1348,7 @@ Providers
     exchange/correlation alpha/beta potentials with the short range PBE functional on the AO basis
 
 
-
+ 
 
 .. c:var:: potential_x_beta_mo
 
@@ -1332,7 +1364,7 @@ Providers
     general providers for the alpha/beta exchange/correlation potentials on the MO basis
 
 
-
+ 
 
 .. c:var:: psi_dft_energy_h_core
 
@@ -1347,7 +1379,7 @@ Providers
     kinetic, electron-nuclear and total h_core energy computed with the density matrix one_e_dm_mo_beta_for_dft+one_e_dm_mo_alpha_for_dft
 
 
-
+ 
 
 .. c:var:: psi_dft_energy_kinetic
 
@@ -1362,7 +1394,7 @@ Providers
     kinetic, electron-nuclear and total h_core energy computed with the density matrix one_e_dm_mo_beta_for_dft+one_e_dm_mo_alpha_for_dft
 
 
-
+ 
 
 .. c:var:: psi_dft_energy_nuclear_elec
 
@@ -1377,7 +1409,7 @@ Providers
     kinetic, electron-nuclear and total h_core energy computed with the density matrix one_e_dm_mo_beta_for_dft+one_e_dm_mo_alpha_for_dft
 
 
-
+ 
 
 .. c:var:: shifting_constant
 
@@ -1390,7 +1422,7 @@ Providers
     shifting_constant = (E_{Hxc} - <\Psi | V_{Hxc} | \Psi>) / N_elec constant to add to the potential in order to obtain the variational energy as the eigenvalue of the effective long-range Hamiltonian (see original paper of Levy PRL 113, 113002 (2014), equation (17) )
 
 
-
+ 
 
 .. c:var:: short_range_hartree
 
@@ -1408,7 +1440,7 @@ Providers
     =  :math:`1/2  \int dr \int r' \rho(r) \rho(r') W_{ee}^{sr}`
 
 
-
+ 
 
 .. c:var:: short_range_hartree_operator
 
@@ -1426,7 +1458,7 @@ Providers
     =  :math:`1/2  \int dr \int r' \rho(r) \rho(r') W_{ee}^{sr}`
 
 
-
+ 
 
 .. c:var:: trace_v_h
 
@@ -1441,7 +1473,7 @@ Providers
     Trace_v_xc  = \sum_{i,j} (rho_{ij}_\alpha v^{xc}_{ij}^\alpha  + rho_{ij}_\beta v^{xc}_{ij}^\beta) Trace_v_Hxc = \sum_{i,j} v^{H}_{ij} (rho_{ij}_\alpha + rho_{ij}_\beta) Trace_v_Hxc = \sum_{i,j} rho_{ij} v^{Hxc}_{ij}
 
 
-
+ 
 
 .. c:var:: trace_v_hxc
 
@@ -1456,7 +1488,7 @@ Providers
     Trace_v_xc  = \sum_{i,j} (rho_{ij}_\alpha v^{xc}_{ij}^\alpha  + rho_{ij}_\beta v^{xc}_{ij}^\beta) Trace_v_Hxc = \sum_{i,j} v^{H}_{ij} (rho_{ij}_\alpha + rho_{ij}_\beta) Trace_v_Hxc = \sum_{i,j} rho_{ij} v^{Hxc}_{ij}
 
 
-
+ 
 
 .. c:var:: trace_v_xc
 
@@ -1471,11 +1503,11 @@ Providers
     Trace_v_xc  = \sum_{i,j} (rho_{ij}_\alpha v^{xc}_{ij}^\alpha  + rho_{ij}_\beta v^{xc}_{ij}^\beta) Trace_v_Hxc = \sum_{i,j} v^{H}_{ij} (rho_{ij}_\alpha + rho_{ij}_\beta) Trace_v_Hxc = \sum_{i,j} rho_{ij} v^{Hxc}_{ij}
 
 
-
-
-Subroutines / functions
------------------------
-
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
 .. c:function:: berf
@@ -1489,7 +1521,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: dberfda
@@ -1503,7 +1535,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: dpol
@@ -1517,7 +1549,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: dpold
@@ -1531,7 +1563,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: dpoldd
@@ -1545,7 +1577,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: ec_lda
@@ -1559,7 +1591,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: ec_lda_sr
@@ -1573,7 +1605,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: ec_only_lda_sr
@@ -1587,7 +1619,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: ec_pbe_only
@@ -1619,7 +1651,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: ec_pbe_sr
@@ -1661,7 +1693,7 @@ Subroutines / functions
     vsigmaoo   = derivative with respect to the square of the gradient of the psin density
 
 
-
+ 
 
 
 .. c:function:: ecorrlr
@@ -1675,7 +1707,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: ecpw
@@ -1689,7 +1721,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: ex_lda
@@ -1703,7 +1735,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: ex_lda_sr
@@ -1717,7 +1749,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: ex_pbe_sr
@@ -1731,7 +1763,7 @@ Subroutines / functions
     mu    = range separation parameter rho_a = density alpha rho_b = density beta grd_rho_a_2 = (gradient rho_a)^2 grd_rho_b_2 = (gradient rho_b)^2 grd_rho_a_b = (gradient rho_a).(gradient rho_b) ex = exchange energy density at the density and corresponding gradients of the density vx_rho_a = d ex / d rho_a vx_rho_b = d ex / d rho_b vx_grd_rho_a_2 = d ex / d grd_rho_a_2 vx_grd_rho_b_2 = d ex / d grd_rho_b_2 vx_grd_rho_a_b = d ex / d grd_rho_a_b
 
 
-
+ 
 
 
 .. c:function:: ex_pbe_sr_only
@@ -1745,7 +1777,7 @@ Subroutines / functions
     rho_a = density alpha rho_b = density beta grd_rho_a_2 = (gradient rho_a)^2 grd_rho_b_2 = (gradient rho_b)^2 grd_rho_a_b = (gradient rho_a).(gradient rho_b) ex = exchange energy density at point r
 
 
-
+ 
 
 
 .. c:function:: g0d
@@ -1759,7 +1791,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: g0dd
@@ -1773,7 +1805,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: g0f
@@ -1787,7 +1819,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: gpw
@@ -1801,7 +1833,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: grad_rho_ab_to_grad_rho_oc
@@ -1815,7 +1847,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: qrpa
@@ -1829,7 +1861,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: qrpad
@@ -1843,7 +1875,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: qrpadd
@@ -1857,7 +1889,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: rho_ab_to_rho_oc
@@ -1871,7 +1903,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: rho_oc_to_rho_ab
@@ -1885,7 +1917,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: v_grad_rho_oc_to_v_grad_rho_ab
@@ -1899,7 +1931,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: v_rho_ab_to_v_rho_oc
@@ -1913,7 +1945,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: v_rho_oc_to_v_rho_ab
@@ -1927,7 +1959,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: vcorrlr

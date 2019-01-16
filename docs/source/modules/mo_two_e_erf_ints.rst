@@ -1,45 +1,45 @@
-.. _mo_two_e_erf_ints:
-
-.. program:: mo_two_e_erf_ints
-
-.. default-role:: option
-
+.. _mo_two_e_erf_ints: 
+ 
+.. program:: mo_two_e_erf_ints 
+ 
+.. default-role:: option 
+ 
 ======================
 mo_two_e_erf_ints
 ======================
 
 Here, all two-electron integrals (:math:`erf({\mu}_{erf} * r_{12})/r_{12}`) are computed.
 As they have 4 indices and many are zero, they are stored in a map, as defined
-in :file:`Utils/map_module.f90`. 
+in :file:`Utils/map_module.f90`.
 
-The range separation parameter :math:`{\mu}_{erf}` is the variable :option:`ao_two_e_erf_ints mu_erf`. 
+The range separation parameter :math:`{\mu}_{erf}` is the variable :option:`ao_two_e_erf_ints mu_erf`.
 
 To fetch an |MO| integral, use
 `get_mo_two_e_integral_erf(i,j,k,l,mo_integrals_map_erf)`
 
-The conventions are: 
+The conventions are:
 
 * For |MO| integrals : <ij|kl> = <12|12>
 
-Be aware that it might not be the same conventions for |MO| and |AO| integrals. 
+Be aware that it might not be the same conventions for |MO| and |AO| integrals.
 
 
-
-
-
-EZFIO parameters
-----------------
-
+ 
+ 
+ 
+EZFIO parameters 
+---------------- 
+ 
 .. option:: io_mo_two_e_integrals_erf
-
+ 
     Read/Write MO integrals with the long range interaction from/to disk [    Write | Read | None ]
-
+ 
     Default: None
-
-
-Providers
----------
-
+ 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: core_energy_erf
 
@@ -52,7 +52,7 @@ Providers
     energy from the core : contains all core-core contributionswith the erf interaction
 
 
-
+ 
 
 .. c:var:: core_fock_operator_erf
 
@@ -65,7 +65,7 @@ Providers
     this is the contribution to the Fock operator from the core electrons with the erf interaction
 
 
-
+ 
 
 .. c:var:: insert_into_mo_integrals_erf_map
 
@@ -79,7 +79,7 @@ Providers
     Create new entry into |MO| map, or accumulate in an existing entry
 
 
-
+ 
 
 .. c:var:: int_erf_3_index
 
@@ -95,7 +95,7 @@ Providers
     int_erf_3_index_exc(i,j) = <ij|ji> = (ij|ij) with the erf interaction
 
 
-
+ 
 
 .. c:var:: int_erf_3_index_exc
 
@@ -111,7 +111,7 @@ Providers
     int_erf_3_index_exc(i,j) = <ij|ji> = (ij|ij) with the erf interaction
 
 
-
+ 
 
 .. c:var:: mo_integrals_erf_cache
 
@@ -124,7 +124,7 @@ Providers
     Cache of |MO| integrals for fast access
 
 
-
+ 
 
 .. c:var:: mo_integrals_erf_cache_max
 
@@ -138,7 +138,7 @@ Providers
     Min and max values of the MOs for which the integrals are in the cache
 
 
-
+ 
 
 .. c:var:: mo_integrals_erf_cache_min
 
@@ -152,7 +152,7 @@ Providers
     Min and max values of the MOs for which the integrals are in the cache
 
 
-
+ 
 
 .. c:var:: mo_integrals_erf_map
 
@@ -165,7 +165,7 @@ Providers
     |MO| integrals
 
 
-
+ 
 
 .. c:var:: mo_two_e_int_erf_jj
 
@@ -180,7 +180,7 @@ Providers
     mo_two_e_integrals_jj(i,j) = J_ij mo_two_e_integrals_jj_exchange(i,j) = K_ij mo_two_e_integrals_jj_anti(i,j) = J_ij - K_ij
 
 
-
+ 
 
 .. c:var:: mo_two_e_int_erf_jj_anti
 
@@ -195,7 +195,7 @@ Providers
     mo_two_e_integrals_jj(i,j) = J_ij mo_two_e_integrals_jj_exchange(i,j) = K_ij mo_two_e_integrals_jj_anti(i,j) = J_ij - K_ij
 
 
-
+ 
 
 .. c:var:: mo_two_e_int_erf_jj_anti_from_ao
 
@@ -210,7 +210,7 @@ Providers
     mo_two_e_integral_jj_from_ao(i,j) = J_ij mo_two_e_integrals_jj_exchange_from_ao(i,j) = J_ij mo_two_e_integrals_jj_anti_from_ao(i,j) = J_ij - K_ij
 
 
-
+ 
 
 .. c:var:: mo_two_e_int_erf_jj_exchange
 
@@ -225,7 +225,7 @@ Providers
     mo_two_e_integrals_jj(i,j) = J_ij mo_two_e_integrals_jj_exchange(i,j) = K_ij mo_two_e_integrals_jj_anti(i,j) = J_ij - K_ij
 
 
-
+ 
 
 .. c:var:: mo_two_e_int_erf_jj_exchange_from_ao
 
@@ -240,7 +240,7 @@ Providers
     mo_two_e_integral_jj_from_ao(i,j) = J_ij mo_two_e_integrals_jj_exchange_from_ao(i,j) = J_ij mo_two_e_integrals_jj_anti_from_ao(i,j) = J_ij - K_ij
 
 
-
+ 
 
 .. c:var:: mo_two_e_int_erf_jj_from_ao
 
@@ -255,7 +255,7 @@ Providers
     mo_two_e_integral_jj_from_ao(i,j) = J_ij mo_two_e_integrals_jj_exchange_from_ao(i,j) = J_ij mo_two_e_integrals_jj_anti_from_ao(i,j) = J_ij - K_ij
 
 
-
+ 
 
 .. c:var:: mo_two_e_integrals_erf_in_map
 
@@ -268,11 +268,11 @@ Providers
     If True, the map of MO two-electron integrals is provided
 
 
-
-
-Subroutines / functions
------------------------
-
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
 .. c:function:: add_integrals_to_map_erf
@@ -286,7 +286,7 @@ Subroutines / functions
     Adds integrals to tha MO map according to some bitmask
 
 
-
+ 
 
 
 .. c:function:: clear_mo_erf_map
@@ -300,7 +300,7 @@ Subroutines / functions
     Frees the memory of the MO map
 
 
-
+ 
 
 
 .. c:function:: get_mo_erf_map_size
@@ -314,7 +314,7 @@ Subroutines / functions
     Returns the number of elements in the |MO| map
 
 
-
+ 
 
 
 .. c:function:: get_mo_two_e_integral_erf
@@ -328,7 +328,7 @@ Subroutines / functions
     Returns one integral  :math:`\langle ij|kl \rangle`  in the |MO| basis
 
 
-
+ 
 
 
 .. c:function:: get_mo_two_e_integrals_erf
@@ -342,7 +342,7 @@ Subroutines / functions
     Returns multiple integrals  :math:`\langle ij|kl \rangle`  in the |MO| basis, all i for j,k,l fixed.
 
 
-
+ 
 
 
 .. c:function:: get_mo_two_e_integrals_erf_coulomb_ii
@@ -358,7 +358,7 @@ Subroutines / functions
     k(1)i(2) 1/r12 l(1)i(2) :: out_val(i1) for k,l fixed.
 
 
-
+ 
 
 
 .. c:function:: get_mo_two_e_integrals_erf_exch_ii
@@ -374,7 +374,7 @@ Subroutines / functions
      :math:`\int k(1)i(2) \frac{1}{r_{12}} i(1)l(2)`  :: out_val(i1) for k,l fixed.
 
 
-
+ 
 
 
 .. c:function:: get_mo_two_e_integrals_erf_i1j1
@@ -388,7 +388,7 @@ Subroutines / functions
     Returns multiple integrals  :math:`\langle ik|jl \rangle`  in the |MO| basis, all  :math:`\int i(1)j(1) \frac{\erf(\mu * r_{12})}{r_{12}} k(2)l(2)` i, j for k,l fixed.
 
 
-
+ 
 
 
 .. c:function:: get_mo_two_e_integrals_erf_ij
@@ -402,7 +402,7 @@ Subroutines / functions
     Returns multiple integrals  :math:`\langle ij|kl \rangle`  in the |MO| basis, all  :math:`\int i(1)j(2) \frac{1}{r_{12}} k(1)l(2)` i, j for k,l fixed.
 
 
-
+ 
 
 
 .. c:function:: load_mo_integrals_erf
@@ -416,7 +416,7 @@ Subroutines / functions
     Read from disk the |MO| erf integrals
 
 
-
+ 
 
 
 .. c:function:: mo_two_e_integral_erf
@@ -430,7 +430,7 @@ Subroutines / functions
     Returns one integral  :math:`\langle ij|kl \rangle`  in the |MO| basis
 
 
-
+ 
 
 
 .. c:function:: mo_two_e_integrals_erf_index
@@ -444,7 +444,7 @@ Subroutines / functions
     Computes an unique index for i,j,k,l integrals
 
 
-
+ 
 
 
 .. c:function:: provide_all_mo_integrals_erf
@@ -458,7 +458,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: save_erf_two_e_integrals_mo
@@ -472,7 +472,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: save_erf_two_e_ints_mo_into_ints_mo

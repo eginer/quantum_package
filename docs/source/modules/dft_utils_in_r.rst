@@ -1,16 +1,16 @@
-.. _dft_utils_in_r:
-
-.. program:: dft_utils_in_r
-
-.. default-role:: option
-
+.. _dft_utils_in_r: 
+ 
+.. program:: dft_utils_in_r 
+ 
+.. default-role:: option 
+ 
 ==============
 dft_utils_in_r
 ==============
 
-This module contains most of the fundamental quantities (AOs, MOs or density derivatives) evaluated in real-space representation that are needed for the various DFT modules. 
+This module contains most of the fundamental quantities (AOs, MOs or density derivatives) evaluated in real-space representation that are needed for the various DFT modules.
 
-As these quantities might be used and re-used, the values at each point of the grid are stored (see ``becke_numerical_grid`` for more information on the grid).  
+As these quantities might be used and re-used, the values at each point of the grid are stored (see ``becke_numerical_grid`` for more information on the grid).
 
 The main providers for this module are:
 
@@ -18,12 +18,12 @@ The main providers for this module are:
 * `mos_in_r_array`: values of the |MO| basis on the grid point.
 * `one_e_dm_and_grad_alpha_in_r`: values of the density and its gradienst on the grid points.
 
-
-
-
-Providers
----------
-
+ 
+ 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: aos_grad_in_r_array
 
@@ -42,7 +42,7 @@ Providers
     k = 1 : x, k= 2, y, k  3, z
 
 
-
+ 
 
 .. c:var:: aos_grad_in_r_array_transp
 
@@ -61,7 +61,7 @@ Providers
     k = 1 : x, k= 2, y, k  3, z
 
 
-
+ 
 
 .. c:var:: aos_grad_in_r_array_transp_xyz
 
@@ -80,7 +80,7 @@ Providers
     k = 1 : x, k= 2, y, k  3, z
 
 
-
+ 
 
 .. c:var:: aos_in_r_array
 
@@ -96,7 +96,7 @@ Providers
     aos_in_r_array_transp(i,j) = value of the jth ao on the ith grid point
 
 
-
+ 
 
 .. c:var:: aos_in_r_array_transp
 
@@ -112,7 +112,7 @@ Providers
     aos_in_r_array_transp(i,j) = value of the jth ao on the ith grid point
 
 
-
+ 
 
 .. c:var:: aos_lapl_in_r_array
 
@@ -130,7 +130,7 @@ Providers
     k = 1 : x, k= 2, y, k  3, z
 
 
-
+ 
 
 .. c:var:: aos_lapl_in_r_array_transp
 
@@ -148,7 +148,7 @@ Providers
     k = 1 : x, k= 2, y, k  3, z
 
 
-
+ 
 
 .. c:var:: mos_grad_in_r_array
 
@@ -165,7 +165,7 @@ Providers
     k = 1 : x, k= 2, y, k  3, z
 
 
-
+ 
 
 .. c:var:: mos_in_r_array
 
@@ -181,7 +181,7 @@ Providers
     mos_in_r_array_transp(i,j) = value of the jth mo on the ith grid point
 
 
-
+ 
 
 .. c:var:: mos_in_r_array_transp
 
@@ -197,7 +197,7 @@ Providers
     mos_in_r_array_transp(i,j) = value of the jth mo on the ith grid point
 
 
-
+ 
 
 .. c:var:: mos_lapl_in_r_array
 
@@ -214,7 +214,7 @@ Providers
     k = 1 : x, k= 2, y, k  3, z
 
 
-
+ 
 
 .. c:var:: one_e_dm_alpha_at_r
 
@@ -228,7 +228,7 @@ Providers
     one_e_dm_alpha_at_r(i,istate) = n_alpha(r_i,istate) one_e_dm_beta_at_r(i,istate) =  n_beta(r_i,istate) where r_i is the ith point of the grid and istate is the state number
 
 
-
+ 
 
 .. c:var:: one_e_dm_alpha_in_r
 
@@ -242,7 +242,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: one_e_dm_and_grad_alpha_in_r
 
@@ -258,7 +258,7 @@ Providers
     one_e_dm_and_grad_alpha_in_r(1,i,i_state) = d\dx n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(2,i,i_state) = d\dy n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(3,i,i_state) = d\dz n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(4,i,i_state) = n_alpha(r_i,istate) one_e_grad_2_dm_alpha_at_r(i,istate)      = d\dx n_alpha(r_i,istate)^2 + d\dy n_alpha(r_i,istate)^2 + d\dz n_alpha(r_i,istate)^2 where r_i is the ith point of the grid and istate is the state number
 
 
-
+ 
 
 .. c:var:: one_e_dm_and_grad_beta_in_r
 
@@ -274,7 +274,7 @@ Providers
     one_e_dm_and_grad_alpha_in_r(1,i,i_state) = d\dx n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(2,i,i_state) = d\dy n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(3,i,i_state) = d\dz n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(4,i,i_state) = n_alpha(r_i,istate) one_e_grad_2_dm_alpha_at_r(i,istate)      = d\dx n_alpha(r_i,istate)^2 + d\dy n_alpha(r_i,istate)^2 + d\dz n_alpha(r_i,istate)^2 where r_i is the ith point of the grid and istate is the state number
 
 
-
+ 
 
 .. c:var:: one_e_dm_beta_at_r
 
@@ -288,7 +288,7 @@ Providers
     one_e_dm_alpha_at_r(i,istate) = n_alpha(r_i,istate) one_e_dm_beta_at_r(i,istate) =  n_beta(r_i,istate) where r_i is the ith point of the grid and istate is the state number
 
 
-
+ 
 
 .. c:var:: one_e_dm_beta_in_r
 
@@ -302,7 +302,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: one_e_grad_2_dm_alpha_at_r
 
@@ -318,7 +318,7 @@ Providers
     one_e_dm_and_grad_alpha_in_r(1,i,i_state) = d\dx n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(2,i,i_state) = d\dy n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(3,i,i_state) = d\dz n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(4,i,i_state) = n_alpha(r_i,istate) one_e_grad_2_dm_alpha_at_r(i,istate)      = d\dx n_alpha(r_i,istate)^2 + d\dy n_alpha(r_i,istate)^2 + d\dz n_alpha(r_i,istate)^2 where r_i is the ith point of the grid and istate is the state number
 
 
-
+ 
 
 .. c:var:: one_e_grad_2_dm_beta_at_r
 
@@ -334,11 +334,11 @@ Providers
     one_e_dm_and_grad_alpha_in_r(1,i,i_state) = d\dx n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(2,i,i_state) = d\dy n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(3,i,i_state) = d\dz n_alpha(r_i,istate) one_e_dm_and_grad_alpha_in_r(4,i,i_state) = n_alpha(r_i,istate) one_e_grad_2_dm_alpha_at_r(i,istate)      = d\dx n_alpha(r_i,istate)^2 + d\dy n_alpha(r_i,istate)^2 + d\dz n_alpha(r_i,istate)^2 where r_i is the ith point of the grid and istate is the state number
 
 
-
-
-Subroutines / functions
------------------------
-
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
 .. c:function:: density_and_grad_alpha_beta_and_all_aos_and_grad_aos_at_r
@@ -352,7 +352,7 @@ Subroutines / functions
     input      : r(1) ==> r(1) = x, r(2) = y, r(3) = z output     : dm_a = alpha density evaluated at r : dm_b = beta  density evaluated at r : aos_array(i) = ao(i) evaluated at r : grad_dm_a(1) = X gradient of the alpha density evaluated in r : grad_dm_a(1) = X gradient of the beta  density evaluated in r : grad_aos_array(1) = X gradient of the aos(i) evaluated at r
 
 
-
+ 
 
 
 .. c:function:: dm_dft_alpha_beta_and_all_aos_at_r
@@ -366,7 +366,7 @@ Subroutines / functions
     input: r(1) ==> r(1) = x, r(2) = y, r(3) = z output : dm_a = alpha density evaluated at r output : dm_b = beta  density evaluated at r output : aos_array(i) = ao(i) evaluated at r
 
 
-
+ 
 
 
 .. c:function:: dm_dft_alpha_beta_at_r

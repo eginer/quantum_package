@@ -1,9 +1,9 @@
-.. _davidson:
-
-.. program:: davidson
-
-.. default-role:: option
-
+.. _davidson: 
+ 
+.. program:: davidson 
+ 
+.. default-role:: option 
+ 
 ========
 davidson
 ========
@@ -16,60 +16,60 @@ the :ref:`davidson` module should be used, and it has a default zero dressing ve
 
 The important providers for that module are:
 
-# `psi_energy` which is the expectation value over the wave function (`psi_det`, `psi_coef`) of the Hamiltonian, dressed or not. It uses the general subroutine `u_0_H_u_0`. 
-# `psi_energy_two_e` which is the expectation value over the wave function (`psi_det`, `psi_coef`) of the standard two-electrons coulomb operator. It uses the general routine `u_0_H_u_0_two_e`. 
-
-
-
-EZFIO parameters
-----------------
-
+# `psi_energy` which is the expectation value over the wave function (`psi_det`, `psi_coef`) of the Hamiltonian, dressed or not. It uses the general subroutine `u_0_H_u_0`.
+# `psi_energy_two_e` which is the expectation value over the wave function (`psi_det`, `psi_coef`) of the standard two-electrons coulomb operator. It uses the general routine `u_0_H_u_0_two_e`.
+ 
+ 
+ 
+EZFIO parameters 
+---------------- 
+ 
 .. option:: threshold_davidson
-
+ 
     Thresholds of Davidson's algorithm
-
+ 
     Default: 1.e-10
-
+ 
 .. option:: n_states_diag
-
+ 
     Number of states to consider during the Davdison diagonalization
-
+ 
     Default: 4
-
+ 
 .. option:: davidson_sze_max
-
+ 
     Number of micro-iterations before re-contracting
-
+ 
     Default: 8
-
+ 
 .. option:: state_following
-
+ 
     If |true|, the states are re-ordered to match the input states
-
+ 
     Default: False
-
+ 
 .. option:: disk_based_davidson
-
+ 
     If |true|, disk space is used to store the vectors
-
+ 
     Default: False
-
+ 
 .. option:: distributed_davidson
-
+ 
     If |true|, use the distributed algorithm
-
+ 
     Default: True
-
+ 
 .. option:: only_expected_s2
-
+ 
     If |true|, use filter out all vectors with bad |S^2| values
-
+ 
     Default: True
-
-
-Providers
----------
-
+ 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: ci_eigenvectors
 
@@ -84,7 +84,7 @@ Providers
     Eigenvectors/values of the |CI| matrix
 
 
-
+ 
 
 .. c:var:: ci_eigenvectors_s2
 
@@ -99,7 +99,7 @@ Providers
     Eigenvectors/values of the |CI| matrix
 
 
-
+ 
 
 .. c:var:: ci_electronic_energy
 
@@ -114,7 +114,7 @@ Providers
     Eigenvectors/values of the |CI| matrix
 
 
-
+ 
 
 .. c:var:: ci_energy
 
@@ -127,7 +127,7 @@ Providers
     :c:data:`n_states` lowest eigenvalues of the |CI| matrix
 
 
-
+ 
 
 .. c:var:: davidson_criterion
 
@@ -140,7 +140,7 @@ Providers
     Can be : [  energy  | residual | both | wall_time | cpu_time | iterations ]
 
 
-
+ 
 
 .. c:var:: dressed_column_idx
 
@@ -153,7 +153,7 @@ Providers
     Index of the dressed columns
 
 
-
+ 
 
 .. c:var:: n_states_diag
 
@@ -166,7 +166,7 @@ Providers
     Number of states to consider during the Davdison diagonalization
 
 
-
+ 
 
 .. c:var:: nthreads_davidson
 
@@ -179,7 +179,7 @@ Providers
     Number of threads for Davidson
 
 
-
+ 
 
 .. c:var:: psi_energy
 
@@ -192,7 +192,7 @@ Providers
     Electronic energy of the current wave function
 
 
-
+ 
 
 .. c:var:: psi_energy_two_e
 
@@ -205,7 +205,7 @@ Providers
     Energy of the current wave function
 
 
-
+ 
 
 .. c:var:: psi_energy_with_nucl_rep
 
@@ -218,11 +218,11 @@ Providers
     Energy of the wave function with the nuclear repulsion energy.
 
 
-
-
-Subroutines / functions
------------------------
-
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
 .. c:function:: davidson_collector
@@ -236,7 +236,7 @@ Subroutines / functions
     Routine collecting the results of the workers in Davidson's algorithm.
 
 
-
+ 
 
 
 .. c:function:: davidson_converged
@@ -250,7 +250,7 @@ Subroutines / functions
     True if the Davidson algorithm is converged
 
 
-
+ 
 
 
 .. c:function:: davidson_diag_hjj_sjj
@@ -282,7 +282,7 @@ Subroutines / functions
     Initial guess vectors are not necessarily orthonormal
 
 
-
+ 
 
 
 .. c:function:: davidson_diag_hs2
@@ -308,7 +308,7 @@ Subroutines / functions
     Initial guess vectors are not necessarily orthonormal
 
 
-
+ 
 
 
 .. c:function:: davidson_pull_results
@@ -322,7 +322,7 @@ Subroutines / functions
     Pull the results of  :math:`H|U \rangle`  on the master.
 
 
-
+ 
 
 
 .. c:function:: davidson_push_results
@@ -336,7 +336,7 @@ Subroutines / functions
     Push the results of  :math:`H|U \rangle`  from a worker to the master.
 
 
-
+ 
 
 
 .. c:function:: davidson_run_slave
@@ -350,7 +350,7 @@ Subroutines / functions
     Slave routine for Davidson's diagonalization.
 
 
-
+ 
 
 
 .. c:function:: davidson_slave_inproc
@@ -364,7 +364,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: davidson_slave_tcp
@@ -378,7 +378,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: davidson_slave_work
@@ -392,7 +392,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: diagonalize_ci
@@ -406,7 +406,7 @@ Subroutines / functions
     Replace the coefficients of the |CI| states by the coefficients of the eigenstates of the |CI| matrix.
 
 
-
+ 
 
 
 .. c:function:: h_s2_u_0_nstates_openmp
@@ -424,7 +424,7 @@ Subroutines / functions
     istart, iend, ishift, istep are used in ZMQ parallelization.
 
 
-
+ 
 
 
 .. c:function:: h_s2_u_0_nstates_openmp_work
@@ -440,7 +440,7 @@ Subroutines / functions
     Default should be 1,N_det,0,1
 
 
-
+ 
 
 
 .. c:function:: h_s2_u_0_nstates_openmp_work_1
@@ -456,7 +456,7 @@ Subroutines / functions
     Default should be 1,N_det,0,1
 
 
-
+ 
 
 
 .. c:function:: h_s2_u_0_nstates_openmp_work_2
@@ -472,7 +472,7 @@ Subroutines / functions
     Default should be 1,N_det,0,1
 
 
-
+ 
 
 
 .. c:function:: h_s2_u_0_nstates_openmp_work_3
@@ -488,7 +488,7 @@ Subroutines / functions
     Default should be 1,N_det,0,1
 
 
-
+ 
 
 
 .. c:function:: h_s2_u_0_nstates_openmp_work_4
@@ -504,7 +504,7 @@ Subroutines / functions
     Default should be 1,N_det,0,1
 
 
-
+ 
 
 
 .. c:function:: h_s2_u_0_nstates_openmp_work_n_int
@@ -520,7 +520,7 @@ Subroutines / functions
     Default should be 1,N_det,0,1
 
 
-
+ 
 
 
 .. c:function:: h_s2_u_0_nstates_zmq
@@ -540,7 +540,7 @@ Subroutines / functions
     S2_jj : array of  :math:`\langle j|S^2|j \rangle`
 
 
-
+ 
 
 
 .. c:function:: h_s2_u_0_two_e_nstates_openmp
@@ -558,7 +558,7 @@ Subroutines / functions
     istart, iend, ishift, istep are used in ZMQ parallelization.
 
 
-
+ 
 
 
 .. c:function:: h_s2_u_0_two_e_nstates_openmp_work
@@ -574,7 +574,7 @@ Subroutines / functions
     Default should be 1,N_det,0,1
 
 
-
+ 
 
 
 .. c:function:: h_s2_u_0_two_e_nstates_openmp_work_1
@@ -590,7 +590,7 @@ Subroutines / functions
     Default should be 1,N_det,0,1
 
 
-
+ 
 
 
 .. c:function:: h_s2_u_0_two_e_nstates_openmp_work_2
@@ -606,7 +606,7 @@ Subroutines / functions
     Default should be 1,N_det,0,1
 
 
-
+ 
 
 
 .. c:function:: h_s2_u_0_two_e_nstates_openmp_work_3
@@ -622,7 +622,7 @@ Subroutines / functions
     Default should be 1,N_det,0,1
 
 
-
+ 
 
 
 .. c:function:: h_s2_u_0_two_e_nstates_openmp_work_4
@@ -638,7 +638,7 @@ Subroutines / functions
     Default should be 1,N_det,0,1
 
 
-
+ 
 
 
 .. c:function:: h_s2_u_0_two_e_nstates_openmp_work_n_int
@@ -654,7 +654,7 @@ Subroutines / functions
     Default should be 1,N_det,0,1
 
 
-
+ 
 
 
 .. c:function:: u_0_h_u_0
@@ -672,7 +672,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: u_0_h_u_0_two_e
@@ -690,7 +690,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: zmq_get_n_states_diag
@@ -704,7 +704,7 @@ Subroutines / functions
     Get N_states_diag from the qp_run scheduler
 
 
-
+ 
 
 
 .. c:function:: zmq_put_n_states_diag

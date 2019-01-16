@@ -1,9 +1,9 @@
-.. _selectors_full:
-
-.. program:: selectors_full
-
-.. default-role:: option
-
+.. _selectors_full: 
+ 
+.. program:: selectors_full 
+ 
+.. default-role:: option 
+ 
 ==============
 selectors_full
 ==============
@@ -11,12 +11,12 @@ selectors_full
 All the determinants are possible selectors. Only the largest contributions are kept, where
 a threshold is applied to the squared norm of the wave function, with the :option:`determinants
 threshold_selectors` flag.
-
-
-
-Providers
----------
-
+ 
+ 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: n_det_selectors
 
@@ -29,7 +29,7 @@ Providers
     For Single reference wave functions, the number of selectors is 1 : the Hartree-Fock determinant
 
 
-
+ 
 
 .. c:var:: psi_selectors
 
@@ -43,7 +43,7 @@ Providers
     Determinants on which we apply <i|H|psi> for perturbation.
 
 
-
+ 
 
 .. c:var:: psi_selectors_coef
 
@@ -57,7 +57,7 @@ Providers
     Determinants on which we apply <i|H|psi> for perturbation.
 
 
-
+ 
 
 .. c:var:: threshold_selectors
 

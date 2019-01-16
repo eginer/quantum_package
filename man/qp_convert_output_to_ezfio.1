@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "QP_CONVERT_OUTPUT_TO_EZFIO" "1" "Jan 14, 2019" "2.0" "Quantum Package"
+.TH "QP_CONVERT_OUTPUT_TO_EZFIO" "1" "Jan 16, 2019" "2.0" "Quantum Package"
 .SH NAME
 qp_convert_output_to_ezfio \-  | Quantum Package >
 .
@@ -32,31 +32,35 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 ..
 .sp
 This Python script uses the \fI\%resultsFile\fP Python library to gather the
-geometry, AOs and MOs from output files of \fI\%GAMESS\fP or Gaussian, and
-puts this data in an \fI\%EZFIO\fP database. Some constraints are necessary in the
-output file : the run needs to be a single point HF, DFT or CAS SCF\&.
+geometry, AOs and MOs from output files of \fI\%GAMESS\fP or Gaussian, and puts
+this data in an \fI\%EZFIO\fP database.  Some constraints are necessary in the output
+file : the run needs to be a single point HF, DFT or CAS SCF\&.
 .SH USAGE
 .INDENT 0.0
 .INDENT 3.5
 .sp
 .nf
 .ft C
-qp_convert_output_to_ezfio <FILE.out> [\-o <EZFIO_DIRECTORY>]
+qp_convert_output_to_ezfio [\-o EZFIO_DIR] FILE
 .ft P
 .fi
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-o <EZFIO_DIRECTORY>
-Renames the \fI\%EZFIO\fP directory. If this option is not present, the default
-name fill be \fB<FILE.out>.ezfio\fP
+.B \-o, \-\-output=EZFIO_DIR
+Renames the \fI\%EZFIO\fP directory.  If this option is not present, the default
+name fill be \fBFILE.ezfio\fP
 .UNINDENT
 .sp
 \fBNOTE:\fP
 .INDENT 0.0
 .INDENT 3.5
-The following keywords are necessary for Gaussian
+All the parameters of the wave functgion need to be presente in the output
+file : complete description of the AO basis set, full set of molecular
+orbitals, etc.
+.sp
+The following keywords are necessary for GAU$$IAN
 .INDENT 0.0
 .INDENT 3.5
 .sp

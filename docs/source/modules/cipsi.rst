@@ -1,9 +1,9 @@
-.. _cipsi:
-
-.. program:: cipsi
-
-.. default-role:: option
-
+.. _cipsi: 
+ 
+.. program:: cipsi 
+ 
+.. default-role:: option 
+ 
 =====
 cipsi
 =====
@@ -76,17 +76,17 @@ When the deterministic algorithm is chosen (:option:`perturbation do_pt2`
 is set to |false|), :math:`Psi_G` is a truncation of |Psi| using
 :option:`determinants threshold_generators`, and :math:`Psi_S` is a truncation
 of |Psi| using :option:`determinants threshold_selectors`, and re-weighted
-by :math:`1/\langle \Psi_s | \Psi_s \rangle`. 
+by :math:`1/\langle \Psi_s | \Psi_s \rangle`.
 
 At every iteration, while computing the |PT2|, the variance of the wave
 function is also computed:
 
-.. math:: 
+.. math::
 
   \sigma^2 & = \langle \Psi | \hat{H}^2 | \Psi \rangle -
                \langle  \Psi | \hat{H}   | \Psi \rangle^2 \\
            & = \sum_{i \in \text{FCI}}
-               \langle \Psi | \hat{H} | i \rangle 
+               \langle \Psi | \hat{H} | i \rangle
                \langle i | \hat{H} | \Psi \rangle -
                \langle  \Psi | \hat{H} | \Psi \rangle^2 \\
            & = \sum_{ \alpha }
@@ -101,7 +101,7 @@ a selection method by minimization of the energy.
 
 If :option:`perturbation do_pt2` is set to |false|, then the stochastic
 |PT2| is not computed, and an approximate value is obtained from the |CIPSI|
-selection. The calculation is faster, but the extrapolated |FCI| value is 
+selection. The calculation is faster, but the extrapolated |FCI| value is
 less accurate. This way of running the code should be used when the only
 goal is to generate a wave function, as for using |CIPSI| wave functions as
 trial wave functions of |QMC| calculations for example.
@@ -132,12 +132,12 @@ The extrapolations are given considering the 2 last points, the 3 last points, .
 the 7 last points. The extrapolated value should be chosen such that the extrpolated
 value is stable with the number of points.
 
-
-
-
-Providers
----------
-
+ 
+ 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: initialize_pt2_e0_denominator
 
@@ -150,7 +150,7 @@ Providers
     If true, initialize pt2_E0_denominator
 
 
-
+ 
 
 .. c:var:: pt2_collector
 
@@ -164,7 +164,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: pt2_cw
 
@@ -181,7 +181,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: pt2_e0_denominator
 
@@ -194,7 +194,7 @@ Providers
     E0 in the denominator of the PT2
 
 
-
+ 
 
 .. c:var:: pt2_f
 
@@ -208,7 +208,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: pt2_j
 
@@ -222,7 +222,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: pt2_mindetinfirstteeth
 
@@ -236,7 +236,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: pt2_n_0
 
@@ -253,7 +253,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: pt2_n_tasks
 
@@ -266,7 +266,7 @@ Providers
     Number of parallel tasks for the Monte Carlo
 
 
-
+ 
 
 .. c:var:: pt2_n_tasks_max
 
@@ -280,7 +280,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: pt2_n_teeth
 
@@ -294,7 +294,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: pt2_r
 
@@ -308,7 +308,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: pt2_stoch_istate
 
@@ -321,7 +321,7 @@ Providers
     State for stochatsic PT2
 
 
-
+ 
 
 .. c:var:: pt2_u
 
@@ -334,7 +334,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: pt2_u_0
 
@@ -351,7 +351,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: pt2_w
 
@@ -368,7 +368,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: pt2_w_t
 
@@ -385,7 +385,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: selection_weight
 
@@ -395,14 +395,14 @@ Providers
 
     File: :file:`selection.irp.f`
 
-    Weights in the state-average calculation of the density matrix
+    Weights used in the selection criterion
 
 
-
-
-Subroutines / functions
------------------------
-
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
 .. c:function:: add_to_selection_buffer
@@ -416,7 +416,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: bitstring_to_list_in_selection
@@ -430,7 +430,7 @@ Subroutines / functions
     Gives the inidices(+1) of the bits set to 1 in the bit string
 
 
-
+ 
 
 
 .. c:function:: create_selection_buffer
@@ -444,7 +444,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: delete_selection_buffer
@@ -458,7 +458,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: fill_buffer_double
@@ -472,7 +472,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: get_d0
@@ -486,7 +486,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: get_d1
@@ -500,7 +500,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: get_d2
@@ -514,7 +514,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: get_mask_phase
@@ -528,7 +528,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: get_phase_bi
@@ -542,7 +542,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: make_selection_buffer_s2
@@ -556,7 +556,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: merge_selection_buffers
@@ -570,7 +570,7 @@ Subroutines / functions
     Merges the selection buffers b1 and b2 into b2
 
 
-
+ 
 
 
 .. c:function:: past_d1
@@ -584,7 +584,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: past_d2
@@ -598,7 +598,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: provide_everything
@@ -612,7 +612,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: pt2_find_sample
@@ -626,7 +626,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: pt2_find_sample_lr
@@ -640,7 +640,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: pt2_slave_inproc
@@ -654,7 +654,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: pull_pt2_results
@@ -668,7 +668,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: pull_selection_results
@@ -682,7 +682,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: push_pt2_results
@@ -696,7 +696,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: push_selection_results
@@ -710,7 +710,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: remove_duplicates_in_selection_buffer
@@ -724,7 +724,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: run_cipsi
@@ -738,7 +738,7 @@ Subroutines / functions
     Selected Full Configuration Interaction with deterministic selection and stochastic PT2.
 
 
-
+ 
 
 
 .. c:function:: run_pt2_slave
@@ -752,7 +752,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: run_selection_slave
@@ -766,7 +766,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: run_slave_cipsi
@@ -780,7 +780,7 @@ Subroutines / functions
     Helper program for distributed parallelism
 
 
-
+ 
 
 
 .. c:function:: run_slave_main
@@ -794,7 +794,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: run_stochastic_cipsi
@@ -808,7 +808,7 @@ Subroutines / functions
     Selected Full Configuration Interaction with Stochastic selection and PT2.
 
 
-
+ 
 
 
 .. c:function:: select_connected
@@ -822,7 +822,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: select_singles_and_doubles
@@ -836,7 +836,7 @@ Subroutines / functions
     WARNING /!\ : It is assumed that the generators and selectors are psi_det_sorted
 
 
-
+ 
 
 
 .. c:function:: selection_collector
@@ -850,7 +850,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: selection_slave_inproc
@@ -864,7 +864,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: sort_selection_buffer
@@ -878,7 +878,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: splash_pq
@@ -892,7 +892,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: spot_isinwf
@@ -906,7 +906,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: testteethbuilding
@@ -920,7 +920,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: zmq_pt2
@@ -934,7 +934,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: zmq_selection

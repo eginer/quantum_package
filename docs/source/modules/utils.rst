@@ -1,21 +1,21 @@
-.. _utils:
-
-.. program:: utils
-
-.. default-role:: option
-
+.. _utils: 
+ 
+.. program:: utils 
+ 
+.. default-role:: option 
+ 
 =====
 utils
 =====
 
 Contains general purpose utilities (sorting, maps, etc).
 
-
-
-
-Providers
----------
-
+ 
+ 
+ 
+Providers 
+--------- 
+ 
 
 .. c:var:: binom
 
@@ -29,7 +29,7 @@ Providers
     Binomial coefficients
 
 
-
+ 
 
 .. c:var:: binom_int
 
@@ -43,7 +43,7 @@ Providers
     Binomial coefficients, as integers*8
 
 
-
+ 
 
 .. c:var:: binom_int_transp
 
@@ -57,7 +57,7 @@ Providers
     Binomial coefficients, as integers*8
 
 
-
+ 
 
 .. c:var:: binom_transp
 
@@ -71,7 +71,7 @@ Providers
     Binomial coefficients
 
 
-
+ 
 
 .. c:var:: degree_max_integration_lebedev
 
@@ -84,7 +84,7 @@ Providers
     integrate correctly a polynom of order "degree_max_integration_lebedev" needed for the angular integration according to LEBEDEV formulae
 
 
-
+ 
 
 .. c:var:: dtranspose
 
@@ -97,7 +97,7 @@ Providers
     Transpose input matrix A into output matrix B
 
 
-
+ 
 
 .. c:var:: fact_inv
 
@@ -110,7 +110,7 @@ Providers
     1/n!
 
 
-
+ 
 
 .. c:var:: i2radix_sort
 
@@ -123,7 +123,7 @@ Providers
     Sort integer array x(isize) using the radix sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements. iradix should be -1 in input.
 
 
-
+ 
 
 .. c:var:: i8radix_sort
 
@@ -136,7 +136,7 @@ Providers
     Sort integer array x(isize) using the radix sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements. iradix should be -1 in input.
 
 
-
+ 
 
 .. c:var:: i8radix_sort_big
 
@@ -149,7 +149,7 @@ Providers
     Sort integer array x(isize) using the radix sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements. iradix should be -1 in input.
 
 
-
+ 
 
 .. c:var:: inv_int
 
@@ -162,7 +162,7 @@ Providers
     1/i
 
 
-
+ 
 
 .. c:var:: iradix_sort
 
@@ -175,7 +175,7 @@ Providers
     Sort integer array x(isize) using the radix sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements. iradix should be -1 in input.
 
 
-
+ 
 
 .. c:var:: iradix_sort_big
 
@@ -188,7 +188,7 @@ Providers
     Sort integer array x(isize) using the radix sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements. iradix should be -1 in input.
 
 
-
+ 
 
 .. c:var:: n_points_integration_angular_lebedev
 
@@ -201,7 +201,7 @@ Providers
     Number of points needed for the angular integral
 
 
-
+ 
 
 .. c:var:: nproc
 
@@ -214,7 +214,7 @@ Providers
     Number of current OpenMP threads
 
 
-
+ 
 
 .. c:var:: overlap_gaussian_xyz
 
@@ -232,7 +232,7 @@ Providers
 
 
 
-
+ 
 
 .. c:var:: phi_angular_integration_lebedev
 
@@ -247,7 +247,7 @@ Providers
     Theta phi values together with the weights values for the angular integration : integral [dphi,dtheta] f(x,y,z) = 4 * pi * sum (1<i<n_points_integration_angular_lebedev) f(xi,yi,zi) Note that theta and phi are in DEGREES !!
 
 
-
+ 
 
 .. c:var:: qp_max_mem
 
@@ -260,7 +260,7 @@ Providers
     Maximum memory in Gb
 
 
-
+ 
 
 .. c:var:: rec__quicksort
 
@@ -273,7 +273,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: rec_d_quicksort
 
@@ -286,7 +286,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: rec_i2_quicksort
 
@@ -299,7 +299,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: rec_i8_quicksort
 
@@ -312,7 +312,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: rec_i_quicksort
 
@@ -325,7 +325,7 @@ Providers
     
 
 
-
+ 
 
 .. c:var:: theta_angular_integration_lebedev
 
@@ -340,7 +340,7 @@ Providers
     Theta phi values together with the weights values for the angular integration : integral [dphi,dtheta] f(x,y,z) = 4 * pi * sum (1<i<n_points_integration_angular_lebedev) f(xi,yi,zi) Note that theta and phi are in DEGREES !!
 
 
-
+ 
 
 .. c:var:: transpose
 
@@ -353,7 +353,7 @@ Providers
     Transpose input matrix A into output matrix B
 
 
-
+ 
 
 .. c:var:: weights_angular_integration_lebedev
 
@@ -368,11 +368,11 @@ Providers
     Theta phi values together with the weights values for the angular integration : integral [dphi,dtheta] f(x,y,z) = 4 * pi * sum (1<i<n_points_integration_angular_lebedev) f(xi,yi,zi) Note that theta and phi are in DEGREES !!
 
 
-
-
-Subroutines / functions
------------------------
-
+ 
+ 
+Subroutines / functions 
+----------------------- 
+ 
 
 
 .. c:function:: a_coef
@@ -386,7 +386,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: add_poly
@@ -400,7 +400,7 @@ Subroutines / functions
     Add two polynomials D(t) =! D(t) +( B(t)+C(t))
 
 
-
+ 
 
 
 .. c:function:: add_poly_multiply
@@ -414,7 +414,7 @@ Subroutines / functions
     Add a polynomial multiplied by a constant D(t) =! D(t) +( cst * B(t))
 
 
-
+ 
 
 
 .. c:function:: apply_rotation
@@ -428,7 +428,7 @@ Subroutines / functions
     Apply the rotation found by find_rotation
 
 
-
+ 
 
 
 .. c:function:: approx_dble
@@ -442,7 +442,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: b_coef
@@ -456,7 +456,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: binom_func
@@ -474,7 +474,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: check_mem
@@ -488,7 +488,7 @@ Subroutines / functions
     Checks if n gigabytes can be allocated. If not, exit the run.
 
 
-
+ 
 
 
 .. c:function:: dble_fact
@@ -502,7 +502,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: dble_fact_even
@@ -516,7 +516,7 @@ Subroutines / functions
     n!!
 
 
-
+ 
 
 
 .. c:function:: dble_fact_odd
@@ -530,7 +530,7 @@ Subroutines / functions
     n!!
 
 
-
+ 
 
 
 .. c:function:: dble_logfact
@@ -544,7 +544,7 @@ Subroutines / functions
     n!!
 
 
-
+ 
 
 
 .. c:function:: ddfact2
@@ -558,7 +558,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: dset_order
@@ -572,7 +572,7 @@ Subroutines / functions
     array A has already been sorted, and iorder has contains the new order of elements of A. This subroutine changes the order of x to match the new order of A.
 
 
-
+ 
 
 
 .. c:function:: dset_order_big
@@ -586,7 +586,7 @@ Subroutines / functions
     array A has already been sorted, and iorder has contains the new order of elements of A. This subroutine changes the order of x to match the new order of A. This is a version for very large arrays where the indices need to be in integer*8 format
 
 
-
+ 
 
 
 .. c:function:: dsort
@@ -600,7 +600,7 @@ Subroutines / functions
     Sort array x(isize). iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements.
 
 
-
+ 
 
 
 .. c:function:: erf0
@@ -614,7 +614,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: extrapolate_data
@@ -628,7 +628,7 @@ Subroutines / functions
     Extrapolate the data to the FCI limit
 
 
-
+ 
 
 
 .. c:function:: f_integral
@@ -642,7 +642,7 @@ Subroutines / functions
     function that calculates the following integral \int_{\-infty}^{+\infty} x^n \exp(-p x^2) dx
 
 
-
+ 
 
 
 .. c:function:: fact
@@ -656,7 +656,7 @@ Subroutines / functions
     n!
 
 
-
+ 
 
 
 .. c:function:: find_rotation
@@ -670,7 +670,7 @@ Subroutines / functions
     Find A.C = B
 
 
-
+ 
 
 
 .. c:function:: gammln
@@ -684,7 +684,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: gammp
@@ -698,7 +698,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: gaussian_product
@@ -712,7 +712,7 @@ Subroutines / functions
     Gaussian product in 1D. e^{-a (x-x_A)^2} e^{-b (x-x_B)^2} = K_{ab}^x e^{-p (x-x_P)^2}
 
 
-
+ 
 
 
 .. c:function:: gaussian_product_x
@@ -726,7 +726,7 @@ Subroutines / functions
     Gaussian product in 1D. e^{-a (x-x_A)^2} e^{-b (x-x_B)^2} = K_{ab}^x e^{-p (x-x_P)^2}
 
 
-
+ 
 
 
 .. c:function:: gcf
@@ -740,7 +740,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: get_inverse
@@ -754,7 +754,7 @@ Subroutines / functions
     Returns the inverse of the square matrix A
 
 
-
+ 
 
 
 .. c:function:: get_pseudo_inverse
@@ -768,7 +768,7 @@ Subroutines / functions
     Find C = A^-1
 
 
-
+ 
 
 
 .. c:function:: give_explicit_poly_and_gaussian
@@ -782,7 +782,7 @@ Subroutines / functions
     Transforms the product of (x-x_A)^a(1) (x-x_B)^b(1) (x-x_A)^a(2) (y-y_B)^b(2) (z-z_A)^a(3) (z-z_B)^b(3) exp(-(r-A)^2 alpha) exp(-(r-B)^2 beta) into fact_k * [ sum (l_x = 0,i_order(1)) P_new(l_x,1) * (x-P_center(1))^l_x ] exp (- p (x-P_center(1))^2 ) * [ sum (l_y = 0,i_order(2)) P_new(l_y,2) * (y-P_center(2))^l_y ] exp (- p (y-P_center(2))^2 ) * [ sum (l_z = 0,i_order(3)) P_new(l_z,3) * (z-P_center(3))^l_z ] exp (- p (z-P_center(3))^2 )
 
 
-
+ 
 
 
 .. c:function:: give_explicit_poly_and_gaussian_double
@@ -798,7 +798,7 @@ Subroutines / functions
     into fact_k * [ sum (l_x = 0,i_order(1)) P_new(l_x,1) * (x-P_center(1))^l_x ] exp (- p (x-P_center(1))^2 ) * [ sum (l_y = 0,i_order(2)) P_new(l_y,2) * (y-P_center(2))^l_y ] exp (- p (y-P_center(2))^2 ) * [ sum (l_z = 0,i_order(3)) P_new(l_z,3) * (z-P_center(3))^l_z ] exp (- p (z-P_center(3))^2 )
 
 
-
+ 
 
 
 .. c:function:: give_explicit_poly_and_gaussian_x
@@ -812,7 +812,7 @@ Subroutines / functions
     Transform the product of (x-x_A)^a(1) (x-x_B)^b(1) (x-x_A)^a(2) (y-y_B)^b(2) (z-z_A)^a(3) (z-z_B)^b(3) exp(-(r-A)^2 alpha) exp(-(r-B)^2 beta) into fact_k  (x-x_P)^iorder(1)  (y-y_P)^iorder(2)  (z-z_P)^iorder(3) exp(-p(r-P)^2)
 
 
-
+ 
 
 
 .. c:function:: gser
@@ -826,7 +826,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: heap_dsort
@@ -840,7 +840,7 @@ Subroutines / functions
     Sort array x(isize) using the heap sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements.
 
 
-
+ 
 
 
 .. c:function:: heap_dsort_big
@@ -854,7 +854,7 @@ Subroutines / functions
     Sort array x(isize) using the heap sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements. This is a version for very large arrays where the indices need to be in integer*8 format
 
 
-
+ 
 
 
 .. c:function:: heap_i2sort
@@ -868,7 +868,7 @@ Subroutines / functions
     Sort array x(isize) using the heap sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements.
 
 
-
+ 
 
 
 .. c:function:: heap_i2sort_big
@@ -882,7 +882,7 @@ Subroutines / functions
     Sort array x(isize) using the heap sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements. This is a version for very large arrays where the indices need to be in integer*8 format
 
 
-
+ 
 
 
 .. c:function:: heap_i8sort
@@ -896,7 +896,7 @@ Subroutines / functions
     Sort array x(isize) using the heap sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements.
 
 
-
+ 
 
 
 .. c:function:: heap_i8sort_big
@@ -910,7 +910,7 @@ Subroutines / functions
     Sort array x(isize) using the heap sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements. This is a version for very large arrays where the indices need to be in integer*8 format
 
 
-
+ 
 
 
 .. c:function:: heap_isort
@@ -924,7 +924,7 @@ Subroutines / functions
     Sort array x(isize) using the heap sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements.
 
 
-
+ 
 
 
 .. c:function:: heap_isort_big
@@ -938,7 +938,7 @@ Subroutines / functions
     Sort array x(isize) using the heap sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements. This is a version for very large arrays where the indices need to be in integer*8 format
 
 
-
+ 
 
 
 .. c:function:: heap_sort
@@ -952,7 +952,7 @@ Subroutines / functions
     Sort array x(isize) using the heap sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements.
 
 
-
+ 
 
 
 .. c:function:: heap_sort_big
@@ -966,7 +966,7 @@ Subroutines / functions
     Sort array x(isize) using the heap sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements. This is a version for very large arrays where the indices need to be in integer*8 format
 
 
-
+ 
 
 
 .. c:function:: hermite
@@ -980,7 +980,7 @@ Subroutines / functions
     Hermite polynomial
 
 
-
+ 
 
 
 .. c:function:: i2set_order
@@ -994,7 +994,7 @@ Subroutines / functions
     array A has already been sorted, and iorder has contains the new order of elements of A. This subroutine changes the order of x to match the new order of A.
 
 
-
+ 
 
 
 .. c:function:: i2set_order_big
@@ -1008,7 +1008,7 @@ Subroutines / functions
     array A has already been sorted, and iorder has contains the new order of elements of A. This subroutine changes the order of x to match the new order of A. This is a version for very large arrays where the indices need to be in integer*8 format
 
 
-
+ 
 
 
 .. c:function:: i2sort
@@ -1022,7 +1022,7 @@ Subroutines / functions
     Sort array x(isize). iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements.
 
 
-
+ 
 
 
 .. c:function:: i8set_order
@@ -1036,7 +1036,7 @@ Subroutines / functions
     array A has already been sorted, and iorder has contains the new order of elements of A. This subroutine changes the order of x to match the new order of A.
 
 
-
+ 
 
 
 .. c:function:: i8set_order_big
@@ -1050,7 +1050,7 @@ Subroutines / functions
     array A has already been sorted, and iorder has contains the new order of elements of A. This subroutine changes the order of x to match the new order of A. This is a version for very large arrays where the indices need to be in integer*8 format
 
 
-
+ 
 
 
 .. c:function:: i8sort
@@ -1064,7 +1064,7 @@ Subroutines / functions
     Sort array x(isize). iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements.
 
 
-
+ 
 
 
 .. c:function:: insertion_dsort
@@ -1078,7 +1078,7 @@ Subroutines / functions
     Sort array x(isize) using the insertion sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements.
 
 
-
+ 
 
 
 .. c:function:: insertion_dsort_big
@@ -1092,7 +1092,7 @@ Subroutines / functions
     Sort array x(isize) using the insertion sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements. This is a version for very large arrays where the indices need to be in integer*8 format
 
 
-
+ 
 
 
 .. c:function:: insertion_i2sort
@@ -1106,7 +1106,7 @@ Subroutines / functions
     Sort array x(isize) using the insertion sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements.
 
 
-
+ 
 
 
 .. c:function:: insertion_i2sort_big
@@ -1120,7 +1120,7 @@ Subroutines / functions
     Sort array x(isize) using the insertion sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements. This is a version for very large arrays where the indices need to be in integer*8 format
 
 
-
+ 
 
 
 .. c:function:: insertion_i8sort
@@ -1134,7 +1134,7 @@ Subroutines / functions
     Sort array x(isize) using the insertion sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements.
 
 
-
+ 
 
 
 .. c:function:: insertion_i8sort_big
@@ -1148,7 +1148,7 @@ Subroutines / functions
     Sort array x(isize) using the insertion sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements. This is a version for very large arrays where the indices need to be in integer*8 format
 
 
-
+ 
 
 
 .. c:function:: insertion_isort
@@ -1162,7 +1162,7 @@ Subroutines / functions
     Sort array x(isize) using the insertion sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements.
 
 
-
+ 
 
 
 .. c:function:: insertion_isort_big
@@ -1176,7 +1176,7 @@ Subroutines / functions
     Sort array x(isize) using the insertion sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements. This is a version for very large arrays where the indices need to be in integer*8 format
 
 
-
+ 
 
 
 .. c:function:: insertion_sort
@@ -1190,7 +1190,7 @@ Subroutines / functions
     Sort array x(isize) using the insertion sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements.
 
 
-
+ 
 
 
 .. c:function:: insertion_sort_big
@@ -1204,7 +1204,7 @@ Subroutines / functions
     Sort array x(isize) using the insertion sort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements. This is a version for very large arrays where the indices need to be in integer*8 format
 
 
-
+ 
 
 
 .. c:function:: iset_order
@@ -1218,7 +1218,7 @@ Subroutines / functions
     array A has already been sorted, and iorder has contains the new order of elements of A. This subroutine changes the order of x to match the new order of A.
 
 
-
+ 
 
 
 .. c:function:: iset_order_big
@@ -1232,7 +1232,7 @@ Subroutines / functions
     array A has already been sorted, and iorder has contains the new order of elements of A. This subroutine changes the order of x to match the new order of A. This is a version for very large arrays where the indices need to be in integer*8 format
 
 
-
+ 
 
 
 .. c:function:: isort
@@ -1246,7 +1246,7 @@ Subroutines / functions
     Sort array x(isize). iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements.
 
 
-
+ 
 
 
 .. c:function:: lapack_diag
@@ -1268,7 +1268,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: lapack_diagd
@@ -1290,7 +1290,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: logfact
@@ -1304,7 +1304,7 @@ Subroutines / functions
     n!
 
 
-
+ 
 
 
 .. c:function:: lowercase
@@ -1318,7 +1318,7 @@ Subroutines / functions
     Transform to lower case
 
 
-
+ 
 
 
 .. c:function:: map_load_from_disk
@@ -1332,7 +1332,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: map_save_to_disk
@@ -1346,7 +1346,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: memory_of_double
@@ -1360,7 +1360,7 @@ Subroutines / functions
     Computes the memory required for n double precision elements in gigabytes.
 
 
-
+ 
 
 
 .. c:function:: memory_of_int
@@ -1374,7 +1374,7 @@ Subroutines / functions
     Computes the memory required for n double precision elements in gigabytes.
 
 
-
+ 
 
 
 .. c:function:: multiply_poly
@@ -1388,7 +1388,7 @@ Subroutines / functions
     Multiply two polynomials D(t) =! D(t) +( B(t)*C(t))
 
 
-
+ 
 
 
 .. c:function:: normalize
@@ -1402,7 +1402,7 @@ Subroutines / functions
     Normalizes vector u
 
 
-
+ 
 
 
 .. c:function:: ortho_canonical
@@ -1430,7 +1430,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: ortho_lowdin
@@ -1458,7 +1458,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: ortho_qr
@@ -1482,7 +1482,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: ortho_qr_unblocked
@@ -1506,7 +1506,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: overlap_gaussian_x
@@ -1524,7 +1524,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: overlap_x_abs
@@ -1542,7 +1542,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: print_memory_usage
@@ -1556,7 +1556,7 @@ Subroutines / functions
     Prints the memory usage in the output
 
 
-
+ 
 
 
 .. c:function:: quick_dsort
@@ -1570,7 +1570,7 @@ Subroutines / functions
     Sort array x(isize) using the quicksort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements.
 
 
-
+ 
 
 
 .. c:function:: quick_i2sort
@@ -1584,7 +1584,7 @@ Subroutines / functions
     Sort array x(isize) using the quicksort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements.
 
 
-
+ 
 
 
 .. c:function:: quick_i8sort
@@ -1598,7 +1598,7 @@ Subroutines / functions
     Sort array x(isize) using the quicksort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements.
 
 
-
+ 
 
 
 .. c:function:: quick_isort
@@ -1612,7 +1612,7 @@ Subroutines / functions
     Sort array x(isize) using the quicksort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements.
 
 
-
+ 
 
 
 .. c:function:: quick_sort
@@ -1626,7 +1626,7 @@ Subroutines / functions
     Sort array x(isize) using the quicksort algorithm. iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements.
 
 
-
+ 
 
 
 .. c:function:: recentered_poly2
@@ -1640,7 +1640,7 @@ Subroutines / functions
     Recenter two polynomials
 
 
-
+ 
 
 
 .. c:function:: resident_memory
@@ -1654,7 +1654,7 @@ Subroutines / functions
     Returns the current used memory in gigabytes used by the current process.
 
 
-
+ 
 
 
 .. c:function:: rint
@@ -1672,7 +1672,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: rint1
@@ -1686,7 +1686,7 @@ Subroutines / functions
     Standard version of rint
 
 
-
+ 
 
 
 .. c:function:: rint_large_n
@@ -1700,7 +1700,7 @@ Subroutines / functions
     Version of rint for large values of n
 
 
-
+ 
 
 
 .. c:function:: rint_sum
@@ -1714,7 +1714,7 @@ Subroutines / functions
     Needed for the calculation of two-electron integrals.
 
 
-
+ 
 
 
 .. c:function:: rinteg
@@ -1728,7 +1728,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: rintgauss
@@ -1742,7 +1742,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: sabpartial
@@ -1756,7 +1756,7 @@ Subroutines / functions
     
 
 
-
+ 
 
 
 .. c:function:: set_order
@@ -1770,7 +1770,7 @@ Subroutines / functions
     array A has already been sorted, and iorder has contains the new order of elements of A. This subroutine changes the order of x to match the new order of A.
 
 
-
+ 
 
 
 .. c:function:: set_order_big
@@ -1784,7 +1784,7 @@ Subroutines / functions
     array A has already been sorted, and iorder has contains the new order of elements of A. This subroutine changes the order of x to match the new order of A. This is a version for very large arrays where the indices need to be in integer*8 format
 
 
-
+ 
 
 
 .. c:function:: sort
@@ -1798,7 +1798,7 @@ Subroutines / functions
     Sort array x(isize). iorder in input should be (1,2,3,...,isize), and in output contains the new order of the elements.
 
 
-
+ 
 
 
 .. c:function:: sorted_dnumber
@@ -1812,7 +1812,7 @@ Subroutines / functions
     Returns the number of sorted elements
 
 
-
+ 
 
 
 .. c:function:: sorted_i2number
@@ -1826,7 +1826,7 @@ Subroutines / functions
     Returns the number of sorted elements
 
 
-
+ 
 
 
 .. c:function:: sorted_i8number
@@ -1840,7 +1840,7 @@ Subroutines / functions
     Returns the number of sorted elements
 
 
-
+ 
 
 
 .. c:function:: sorted_inumber
@@ -1854,7 +1854,7 @@ Subroutines / functions
     Returns the number of sorted elements
 
 
-
+ 
 
 
 .. c:function:: sorted_number
@@ -1868,7 +1868,7 @@ Subroutines / functions
     Returns the number of sorted elements
 
 
-
+ 
 
 
 .. c:function:: svd
@@ -1888,7 +1888,7 @@ Subroutines / functions
 
 
 
-
+ 
 
 
 .. c:function:: total_memory
@@ -1902,7 +1902,7 @@ Subroutines / functions
     Returns the current used memory in gigabytes used by the current process.
 
 
-
+ 
 
 
 .. c:function:: u_dot_u
@@ -1916,7 +1916,7 @@ Subroutines / functions
     Compute <u|u>
 
 
-
+ 
 
 
 .. c:function:: u_dot_v
@@ -1930,7 +1930,7 @@ Subroutines / functions
     Compute <u|v>
 
 
-
+ 
 
 
 .. c:function:: wall_time
@@ -1944,7 +1944,7 @@ Subroutines / functions
     The equivalent of cpu_time, but for the wall time.
 
 
-
+ 
 
 
 .. c:function:: write_git_log
