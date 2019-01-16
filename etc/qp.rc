@@ -37,6 +37,18 @@ Usage:
 
 function qp()
 {
+  function clean_ezfio() {
+    RESULT=""
+    while [[ -n $1 ]] ; do
+      case "$1" in
+        None) RESULT+='"None" ' ;;
+        *)    RESULT+="$1 " ;;
+      esac
+      shift
+    done
+    eval set -- "$RESULT"
+  }
+
   case $1 in
     "set_file")
         if [[ -d ${2} ]] ; then
@@ -46,6 +58,7 @@ function qp()
         fi;;
 
     "has"|"set"|"get"|"unset_file")
+        clean_ezfio
         ezfio "$@"
       ;;
 
