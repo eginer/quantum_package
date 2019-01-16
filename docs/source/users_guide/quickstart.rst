@@ -44,12 +44,12 @@ The file :file:`hcn.xyz` contains::
    N    0.0    0.0    -1.156
 
 
-This xyz file is now used with the :ref:`qp_create_ezfio_from_xyz` command to
+This xyz file is now used with the :ref:`qp_create_ezfio` command to
 create an |EZFIO| database with the 6-31G basis set:
 
 .. code:: bash
 
-  qp_create_ezfio_from_xyz -b "6-31G" hcn.xyz -o hcn
+  qp_create_ezfio -b "6-31G" hcn.xyz -o hcn
 
 The EZFIO database now contains data relative to the nuclear coordinates and the atomic
 basis set:

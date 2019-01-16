@@ -15,19 +15,27 @@ cis
 
  This program can be useful in many cases: 
 
- # Ground state calculation 
+ 
+
+ Ground state calculation 
+
+ ------------------------ 
 
  To be sure to have the lowest |SCF| solution, perform an :ref:`.scf.` (see the :ref:`hartree_fock` module), then a :ref:`.cis.`, save the natural orbitals (see :ref:`.save_natorb.`) and re-run an :ref:`.scf.` optimization from this |MO| guess. 
 
  
 
- # Excited states calculations 
+ Excited states calculations 
+
+ --------------------------- 
 
  The lowest excited states are much likely to be dominated by single-excitations. Therefore, running a :ref:`.cis.` will save the `n_states` lowest states within the |CIS| space in the |EZFIO| directory, which can afterwards be used as guess wave functions for a further multi-state |FCI| calculation if :option:`determinants read_wf` is set to |true| before running the :ref:`.fci.` executable. 
 
  If :option:`determinants s2_eig` is set to |true|, the |CIS| will only retain states having the expected |S^2| value (see :option:`determinants expected_s2`). Otherwise, the |CIS| will take the lowest :option:`determinants n_states`, whatever multiplicity they are. 
 
- # Note 
+ Note 
+
+ ---- 
 
  To discard some orbitals, use the :ref:`qp_set_mo_class` command to specify: 
 

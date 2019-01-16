@@ -287,7 +287,7 @@ EOF
     elif [[ ${PACKAGE} = ezfio ]] ; then
 
             download \
-              "https://gitlab.com/scemama/EZFIO/-/archive/v1.3.4/EZFIO-v1.3.4.tar.gz" \
+              "https://gitlab.com/scemama/EZFIO/-/archive/v1.3.5/EZFIO-v1.3.5.tar.gz" \
               "${QP_ROOT}"/external/ezfio.tar.gz
             execute << EOF
               cd "\${QP_ROOT}"/external
