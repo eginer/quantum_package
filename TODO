@@ -65,4 +65,6 @@ qp_stop : pour forcer a terminer proprement le programme (kill clean)
 Virer EMSL
 
 
+qp_create... -> qp_create_ezfio
+
 
