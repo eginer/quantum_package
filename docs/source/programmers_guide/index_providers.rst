@@ -1092,7 +1092,6 @@ Index of Subroutines/Functions
 * :c:func:`iset_order_big` 
 * :c:func:`isort` 
 * :c:func:`knowles_function` 
-* :c:func:`ks_cf` 
 * :c:func:`ks_scf` 
 * :c:func:`lapack_diag` 
 * :c:func:`lapack_diagd` 
@@ -1293,6 +1292,7 @@ Index of Subroutines/Functions
 * :c:func:`spin_det_search_key` 
 * :c:func:`splash_pq` 
 * :c:func:`spot_isinwf` 
+* :c:func:`srs_ks_cf` 
 * :c:func:`step_function_becke` 
 * :c:func:`svd` 
 * :c:func:`switch_qp_run_to_master` 
@@ -1328,6 +1328,7 @@ Index of Subroutines/Functions
 * :c:func:`write_geometry` 
 * :c:func:`write_git_log` 
 * :c:func:`write_int` 
+* :c:func:`write_integrals` 
 * :c:func:`write_integrals_erf` 
 * :c:func:`write_intro_gamess` 
 * :c:func:`write_mo_basis` 

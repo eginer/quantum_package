@@ -586,13 +586,13 @@ Providers
         double precision, allocatable	:: effective_one_e_potential	(mo_num,mo_num,N_states)
         double precision, allocatable	:: effective_one_e_potential_without_kin	(mo_num,mo_num,N_states)
 
-    File: :file:`sr_coulomb.irp.f`
+    File: :file:`effective_pot.irp.f`
 
-    Effective_one_e_potential(i,j) =  :math:`\rangle i| v_{H}^{sr} |j\rangle  + \rangle i| h_{core} |j\rangle  + \rangle i|v_{xc} |j\rangle` 
+    Effective_one_e_potential(i,j) =  :math:`\rangle i_{MO}| v_{H}^{sr} |j_{MO}\rangle  + \rangle i_{MO}| h_{core} |j_{MO}\rangle  + \rangle i_{MO}|v_{xc} |j_{MO}\rangle` 
 
-    Taking the expectation value does not provide any energy, but effective_one_e_potential(i,j) is the potential coupling DFT and WFT part to be used in any WFT calculation. 
+    on the |MO| basis Taking the expectation value does not provide any energy, but effective_one_e_potential(i,j) is the potential coupling DFT and WFT part to be used in any WFT calculation. 
 
-    shifted_effective_one_e_potential_without_kin = effective_one_e_potential_without_kin + shifting_constant on the diagonal
+
 
 
  
@@ -604,13 +604,13 @@ Providers
         double precision, allocatable	:: effective_one_e_potential	(mo_num,mo_num,N_states)
         double precision, allocatable	:: effective_one_e_potential_without_kin	(mo_num,mo_num,N_states)
 
-    File: :file:`sr_coulomb.irp.f`
+    File: :file:`effective_pot.irp.f`
 
-    Effective_one_e_potential(i,j) =  :math:`\rangle i| v_{H}^{sr} |j\rangle  + \rangle i| h_{core} |j\rangle  + \rangle i|v_{xc} |j\rangle` 
+    Effective_one_e_potential(i,j) =  :math:`\rangle i_{MO}| v_{H}^{sr} |j_{MO}\rangle  + \rangle i_{MO}| h_{core} |j_{MO}\rangle  + \rangle i_{MO}|v_{xc} |j_{MO}\rangle` 
 
-    Taking the expectation value does not provide any energy, but effective_one_e_potential(i,j) is the potential coupling DFT and WFT part to be used in any WFT calculation. 
+    on the |MO| basis Taking the expectation value does not provide any energy, but effective_one_e_potential(i,j) is the potential coupling DFT and WFT part to be used in any WFT calculation. 
 
-    shifted_effective_one_e_potential_without_kin = effective_one_e_potential_without_kin + shifting_constant on the diagonal
+
 
 
  

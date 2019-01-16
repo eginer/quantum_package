@@ -44,7 +44,7 @@ To be sure to have the lowest SCF solution, perform an \&.scf. (see the hartree_
 .sp
 # Excited states calculations
 .sp
-The lowest excited states are much likely to be dominated by single\-excitations. Therefore, running a cis/cis will save the \fIn_states\fP lowest states within the CIS space in the \fI\%EZFIO\fP directory, which can afterwards be used as guess wave functions for a further multi\-state FCI calculation if \fBdeterminants read_wf\fP is set to \fBtrue\fP before running the fci/fci executable.
+The lowest excited states are much likely to be dominated by single\-excitations. Therefore, running a \fI\%cis\fP will save the \fIn_states\fP lowest states within the CIS space in the \fI\%EZFIO\fP directory, which can afterwards be used as guess wave functions for a further multi\-state FCI calculation if \fBdeterminants read_wf\fP is set to \fBtrue\fP before running the \&.fci. executable.
 .sp
 If \fBdeterminants s2_eig\fP is set to \fBtrue\fP, the CIS will only retain states having the expected \ewidehat{S^2} value (see \fBdeterminants expected_s2\fP). Otherwise, the CIS will take the lowest \fBdeterminants n_states\fP, whatever multiplicity they are.
 .sp

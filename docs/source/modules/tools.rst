@@ -101,6 +101,20 @@ Subroutines / functions
  
 
 
+.. c:function:: write_integrals
+
+    .. code:: text
+
+        subroutine write_integrals
+
+    File: :file:`write_integrals_erf.irp.f`
+
+    Saves the two-electron integrals with the :math:`erf(\mu r_{12})/r_{12}` oprerator into the EZFIO folder
+
+
+ 
+
+
 .. c:function:: write_intro_gamess
 
     .. code:: text
