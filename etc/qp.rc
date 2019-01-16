@@ -39,13 +39,14 @@ function qp()
 {
   case $1 in
     "set_file")
-        if [[ -d ${EZFIO_FILE} ]] ; then
+        if [[ -d ${2} ]] ; then
            ezfio "$@"
         else
-           >&2 echo "qp: ${EZFIO_FILE} not found"
+           >&2 echo "qp: ${2} not found"
         fi;;
 
     "has"|"set"|"get"|"unset_file")
+        ezfio "$@"
       ;;
 
     "set_frozen_core")
@@ -287,7 +288,7 @@ _qp_Complete()
 
     case "${prev}" in
       set_file)
-        COMPREPLY=( $(compgen -W "$(for i in ./* ; do [[ -f ${i}/ezfio/.version ]] && echo $i ; done)" -- ${cur} ) )
+        COMPREPLY=( $(compgen -W "$(for i in * ; do [[ -f ${i}/ezfio/.version ]] && echo $i ; done)" -- ${cur} ) )
         return 0
         ;;
       *)
