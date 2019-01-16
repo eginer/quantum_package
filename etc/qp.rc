@@ -76,7 +76,7 @@ function qp()
       qp_reset "$@" ${EZFIO_FILE}
       ;;
 
-    "create_ezfio_from_xyz")
+    "create_ezfio")
       shift
       # Replace ':' by spaces
       for arg in "$@" ; do
@@ -87,13 +87,13 @@ function qp()
             _ARGS+=("${arg}") ;;
         esac
       done
-      echo qp_create_ezfio_from_xyz "${_ARGS[@]}"
-      NAME=$(qp_create_ezfio_from_xyz "${_ARGS[@]}")
+      echo qp_create_ezfio "${_ARGS[@]}"
+      NAME=$(qp_create_ezfio "${_ARGS[@]}")
       if [[ -d $NAME ]] ; then
         [[ -d $EZFIO_FILE ]] && ezfio unset_file
         ezfio set_file $NAME
       else
-        qp_create_ezfio_from_xyz -h | more
+        qp_create_ezfio -h | more
       fi
       unset _ARGS
       ;;
@@ -165,7 +165,7 @@ function qp()
 
 
 function _get_basis_sets () {
-  ( qp_create_ezfio_from_xyz -b show \
+  ( qp_create_ezfio -b show \
   | tr ' ' ':' \
   | while IFS= read -r LINE ; do
       printf '%s\n' ${LINE}
@@ -199,9 +199,9 @@ _qp_Complete()
         COMPREPLY=( $(compgen -W "-o $(\ls)" -- ${cur} ) )
         return 0
         ;;
-      create_ezfio_from_xyz)
+      create_ezfio)
         case "${prev}" in
-          create_ezfio_from_xyz)
+          create_ezfio)
             COMPREPLY=( $(compgen -W "-b -a -c -d -h -m -o -p -x" -- $cur ) )
             return 0
             ;;
@@ -254,7 +254,7 @@ _qp_Complete()
       *)
         COMPREPLY=( $(compgen -W 'plugins \
                                    man \
-                                   create_ezfio_from_xyz \
+                                   create_ezfio \
                                    convert_output_to_ezfio \
                                    -h update' -- $cur ) )
 
