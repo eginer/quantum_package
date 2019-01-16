@@ -1092,6 +1092,7 @@ Index of Subroutines/Functions
 * :c:func:`iset_order_big` 
 * :c:func:`isort` 
 * :c:func:`knowles_function` 
+* :c:func:`ks_cf` 
 * :c:func:`ks_scf` 
 * :c:func:`lapack_diag` 
 * :c:func:`lapack_diagd` 

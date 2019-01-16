@@ -1,9 +1,9 @@
-.. _qp_create_ezfio_from_xyz:
+.. _qp_create_ezfio:
 
-qp_create_ezfio_from_xyz
-========================
+qp_create_ezfio
+===============
 
-.. program:: qp_create_ezfio_from_xyz
+.. program:: qp_create_ezfio
 
 This command creates an |EZFIO| directory from a standard `xyz` file or from a
 `z-matrix` file in Gaussian format.
@@ -13,7 +13,7 @@ Usage
 
 .. code:: bash
 
-   qp_create_ezfio_from_xyz [-a] -b <string> [-c <int>] [-d <float>] 
+   qp_create_ezfio [-a] -b <string> [-c <int>] [-d <float>] 
       [-h] [-m <int>] [-o EZFIO_DIR] [-p <string>] [-x] [--] FILE
 
 
@@ -80,7 +80,7 @@ If a file with the same name as the basis set exists, this file will be read.
 For example, if the file containing the basis set is named ``custom.basis``,
 and the *xyz* geometry is in ``molecule.xyz``, the following should be used::
 
-    qp_create_ezfio_from_xyz -b custom.basis molecule.xyz
+    qp_create_ezfio -b custom.basis molecule.xyz
 
 Basis set files should be given in |GAMESS| format, where the full names of the
 atoms are given, and the basis sets for each element are separated by a blank
@@ -138,7 +138,7 @@ command should be used
 
 .. code:: bash
 
-    qp_create_ezfio_from_xyz -b custom.basis -p custom.pseudo molecule.xyz
+    qp_create_ezfio -b custom.basis -p custom.pseudo molecule.xyz
 
 Pseudo-potential files should be given in a format very close to |GAMESS|
 format.  The first line should be formatted as ``%s GEN %d %d`` where the first
