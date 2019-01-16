@@ -1292,13 +1292,13 @@ Index of Subroutines/Functions
 * :c:func:`spin_det_search_key` 
 * :c:func:`splash_pq` 
 * :c:func:`spot_isinwf` 
-* :c:func:`srs_ks_cf` 
 * :c:func:`step_function_becke` 
 * :c:func:`svd` 
 * :c:func:`switch_qp_run_to_master` 
 * :c:func:`tamiser` 
 * :c:func:`task_done_to_taskserver` 
 * :c:func:`tasks_done_to_taskserver` 
+* :c:func:`test_det` 
 * :c:func:`testteethbuilding` 
 * :c:func:`total_memory` 
 * :c:func:`two_e_integrals_index` 
@@ -1328,7 +1328,6 @@ Index of Subroutines/Functions
 * :c:func:`write_geometry` 
 * :c:func:`write_git_log` 
 * :c:func:`write_int` 
-* :c:func:`write_integrals` 
 * :c:func:`write_integrals_erf` 
 * :c:func:`write_intro_gamess` 
 * :c:func:`write_mo_basis` 

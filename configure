@@ -431,7 +431,7 @@ if [[ -n $CONFIG ]] ; then
 fi
 
 if [[ -f ${QP_ROOT}/build.ninja ]] ; then
-        [[ -z ${TRAVIS} ]] && exec ${QP_ROOT}/bin/qpsh
+  [[ -z ${TRAVIS} ]] && echo "You can now run ./bin/qpsh to enter in the QP shell mode :)"
 else 
       echo ""
       echo "${QP_ROOT}/build.ninja does not exist,"
