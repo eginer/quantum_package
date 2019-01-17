@@ -118,7 +118,7 @@ subroutine run_slave_main
       IRP_ENDIF
       if (zmq_get_dvector(zmq_to_qp_run_socket,1,'state_average_weight',state_average_weight,N_states) == -1) cycle
       psi_energy(1:N_states) = energy(1:N_states)
-      TOUCH psi_energy state_average_weight threshold_generators
+      TOUCH psi_energy psi_s2 state_average_weight threshold_generators
 
       if (mpi_master) then
         print *,  'N_det', N_det
@@ -222,7 +222,7 @@ subroutine run_slave_main
       IRP_ENDIF
       if (zmq_get_dvector(zmq_to_qp_run_socket,1,'state_average_weight',state_average_weight,N_states) == -1) cycle
       psi_energy(1:N_states) = energy(1:N_states)
-      TOUCH psi_energy state_average_weight pt2_stoch_istate threshold_generators
+      TOUCH psi_energy psi_s2 state_average_weight pt2_stoch_istate threshold_generators
       if (mpi_master) then
         print *,  'N_det', N_det
         print *,  'N_det_generators', N_det_generators

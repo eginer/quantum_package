@@ -99,6 +99,20 @@ Subroutines / functions
  
 
 
+.. c:function:: run
+
+    .. code:: text
+
+        subroutine run
+
+    File: :file:`pt2.irp.f`
+
+    
+
+
+ 
+
+
 .. c:function:: save_energy
 
     .. code:: text
