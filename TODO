@@ -55,16 +55,13 @@ Refaire les benchmarks
 
 # Documentation de /etc
 # Extrapolation qui prend aussi en compe la variance? a tester
-# Parler dans le papier de rPT2
+Parler dans le papier de rPT2
 
 # Toto
-Si un provider est un programme, generer une page a lui tout seul avec le man
-
 qp_stop : pour forcer a terminer proprement le programme (kill clean)
 
 Virer EMSL
 
+Changer irpf90 pour qu'il produise des fichiers rst.
 
-qp_create... -> qp_create_ezfio
-
-
+Re-design de qp command

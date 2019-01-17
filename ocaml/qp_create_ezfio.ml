@@ -58,15 +58,20 @@ let dummy_centers ~threshold ~molecule ~nuclei =
 (** Returns the list of available basis sets *)
 let list_basis () =
   let basis_list =
-    "python2 "^ Qpackage.root ^ "/external/emsl/EMSL_api.py list_basis"
-    |> Unix.open_process_in
-    |> In_channel.input_lines
-    |> List.map ~f:(fun x ->
-       match String.split x ~on:'\'' with
-       | [] -> ""
-       | a :: []
-       | _ :: a :: _ -> String.strip a
-      )
+    let ic = Pervasives.open_in (Qpackage.root ^ "/data/basis/00_README.rst") in
+    let n = Pervasives.in_channel_length ic in
+    let s = Bytes.create n in
+    Pervasives.really_input ic s 0 n;
+    Pervasives.close_in ic;
+    Bytes.to_string s
+    |> String.split ~on:'\n' 
+    |> List.filter ~f:(fun line -> String.length line > 1 && line.[0] <> '#')
+    |> List.map ~f:(fun line ->
+          match String.split ~on:'\'' line with
+          | file :: name :: descr :: _ ->
+              Printf.sprintf "%s\n  %s\n  %s\n\n" file name (String.strip descr)
+          | _ -> assert false
+        )
   in
   List.sort basis_list ~compare:String.ascending
 
@@ -120,10 +125,6 @@ let run ?o b au c d m p cart xyz_file =
   in
 
   let fetch_channel basis =
-    let command =
-      Qpackage.root ^ "/scripts/get_basis \"" ^ temp_filename
-          ^ "." ^ basis ^ "\" \"" ^ basis ^"\""
-    in
     let long_basis =
       Qpackage.root ^ "/data/basis/" ^ basis
     in
@@ -133,19 +134,7 @@ let run ?o b au c d m p cart xyz_file =
     with
     | `Yes, _    -> In_channel.create basis
     | `No , `Yes -> In_channel.create long_basis
-    | _ ->
-      begin
-        let filename =
-          Unix.open_process_in command
-          |> In_channel.input_all
-          |> String.strip
-        in
-        let new_channel =
-          In_channel.create filename
-        in
-        Unix.unlink filename;
-        new_channel
-      end
+    | _ -> failwith ("Basis "^basis^" not found")
   in
 
   let rec build_basis = function

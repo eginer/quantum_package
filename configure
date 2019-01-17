@@ -175,7 +175,7 @@ if [[ "${PACKAGES}.x" != ".x" ]] ; then
 fi
 
 if [[ ${PACKAGES} = all ]] ; then
-        PACKAGES="ninja irpf90 zeromq f77zmq ocaml ezfio emsl docopt resultsFile bats"
+        PACKAGES="ninja irpf90 zeromq f77zmq ocaml ezfio docopt resultsFile bats"
 fi
 
 
@@ -297,18 +297,6 @@ EOF
 EOF
 
             
-    elif [[ ${PACKAGE} = emsl ]] ; then
-
-            download \
-              "https://github.com/LCPQ/EMSL_Basis_Set_Exchange_Local/archive/v1.0.tar.gz" \
-              "${QP_ROOT}"/external/EMSL.tar.gz
-            execute << EOF
-              cd "\${QP_ROOT}"/external
-              tar --gunzip --extract --file EMSL.tar.gz
-              mv EMSL_Basis* emsl
-EOF
-
-
     elif [[ ${PACKAGE} = docopt ]] ; then
 
             download \
@@ -391,12 +379,6 @@ fi
 EZFIO=$(find_dir "${QP_ROOT}"/external/ezfio)
 if [[ ${EZFIO} = $(not_found) ]] ; then
         error "EZFIO is not installed."
-        fail
-fi
-
-EMSL=$(find_dir "${QP_ROOT}"/external/emsl)
-if [[ ${EMSL} = $(not_found) ]] ; then
-        error "EMSL is not installed."
         fail
 fi
 
