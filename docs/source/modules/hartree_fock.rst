@@ -202,17 +202,3 @@ Subroutines / functions
     Create a MO guess if no MOs are present in the EZFIO directory
 
 
- 
-
-
-.. c:function:: run
-
-    .. code:: text
-
-        subroutine run
-
-    File: :file:`scf.irp.f`
-
-    Run SCF calculation
-
-

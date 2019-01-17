@@ -1,11 +1,11 @@
-subroutine print_summary(e_,pt2_,error_,variance_,norm_,n_det_,n_occ_pattern_,n_st)
+subroutine print_summary(e_,pt2_,error_,variance_,norm_,n_det_,n_occ_pattern_,n_st,s2_)
   implicit none
   BEGIN_DOC
 ! Print the extrapolated energy in the output
   END_DOC
 
   integer, intent(in)            :: n_det_, n_occ_pattern_, n_st
-  double precision, intent(in)   :: e_(n_st), pt2_(n_st), variance_(n_st), norm_(n_st), error_(n_st)
+  double precision, intent(in)   :: e_(n_st), pt2_(n_st), variance_(n_st), norm_(n_st), error_(n_st), s2_(n_st)
   integer                        :: i, k
   integer                        :: N_states_p
   character*(9)                  :: pt2_string
@@ -65,11 +65,12 @@ subroutine print_summary(e_,pt2_,error_,variance_,norm_,n_det_,n_occ_pattern_,n_
 
   do k=1, N_states_p
     print*,'* State ',k
+    print *,  '< S^2 >         = ', s2_(k)
+    print *,  'E               = ', e_(k)
     print *,  'Variance        = ', variance_(k)
     print *,  'PT norm         = ', dsqrt(norm_(k))
     print *,  'PT2             = ', pt2_(k)
     print *,  'rPT2            = ', pt2_(k)*f(k)
-    print *,  'E               = ', e_(k)
     print *,  'E+PT2 '//pt2_string//'  = ', e_(k)+pt2_(k), ' +/- ', error_(k)
     print *,  'E+rPT2'//pt2_string//'  = ', e_(k)+pt2_(k)*f(k), ' +/- ', error_(k)*f(k)
     print *,  ''

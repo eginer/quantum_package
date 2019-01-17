@@ -1299,6 +1299,7 @@ Index of Subroutines/Functions
 * :c:func:`tamiser` 
 * :c:func:`task_done_to_taskserver` 
 * :c:func:`tasks_done_to_taskserver` 
+* :c:func:`test_det` 
 * :c:func:`testteethbuilding` 
 * :c:func:`total_memory` 
 * :c:func:`two_e_integrals_index` 

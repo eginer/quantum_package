@@ -89,7 +89,7 @@ subroutine run_cipsi
 
     call save_energy(psi_energy_with_nucl_rep, pt2)
     call write_double(6,correlation_energy_ratio, 'Correlation ratio')
-    call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm,N_det,N_occ_pattern)
+    call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm,N_det,N_occ_pattern,psi_s2)
 
     do k=1,N_states
       rpt2(:) = pt2(:)/(1.d0 + norm(k))
@@ -143,7 +143,7 @@ subroutine run_cipsi
     rpt2(:) = pt2(:)/(1.d0 + norm(k))
   enddo
 
-  call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm,N_det,N_occ_pattern)
+  call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm,N_det,N_occ_pattern,psi_s2)
   call save_iterations(psi_energy_with_nucl_rep(1:N_states),rpt2,N_det)
   call print_extrapolated_energy()
 

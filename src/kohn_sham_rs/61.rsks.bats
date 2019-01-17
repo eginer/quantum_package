@@ -14,6 +14,7 @@ function run() {
   qp set dft_keywords correlation_functional $functional
   qp set ao_two_e_erf_ints mu_erf 0.5 
   qp set becke_numerical_grid grid_type_sgn 1 
+  qp_reset --mos $1 
   qp run rs_ks_scf 
   energy="$(ezfio get kohn_sham_rs energy)"
   eq $energy $3 $thresh

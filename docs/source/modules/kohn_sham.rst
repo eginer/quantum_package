@@ -76,8 +76,6 @@ Providers
  
 Subroutines / functions 
 ----------------------- 
- 
-
 
 .. c:function:: ks_cf
 

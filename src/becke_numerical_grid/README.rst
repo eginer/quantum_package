@@ -2,12 +2,12 @@
 becke_numerical_grid
 ====================
 
-This module contains all quantities needed to build the Becke's grid used in general for DFT integration. Note that it can be used for whatever integration in R^3 as long as the functions to be integrated are mostly concentrated near the atomic regions.
+This module contains all quantities needed to build Becke's grid used in general for DFT integration. Note that it can be used for whatever integration in R^3 as long as the functions to be integrated are mostly concentrated near the atomic regions.
 
 This grid is built as the reunion of a spherical grid around each atom. Each spherical grid contains
 a certain number of radial and angular points. No pruning is done on the angular part of the grid.
 
-The main keyword for that modue is:
+The main keyword for that module is:
 
 * :option:`becke_numerical_grid grid_type_sgn` which controls the precision of the grid according the standard **SG-n** grids. This keyword controls the two providers `n_points_integration_angular` `n_points_radial_grid`.
 
