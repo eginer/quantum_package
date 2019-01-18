@@ -131,7 +131,7 @@ function run() {
   [[ -n $TRAVIS ]] && skip
   qp set_file n2h4.ezfio
   qp set_mo_class --core="[1-2]" --act="[3-24]" --del="[25-48]"
-  run -111.382897119687 1.e-5
+  run -111.367234092521 1.e-5
 }
 
 @test "CO2" { # 21.1748s
