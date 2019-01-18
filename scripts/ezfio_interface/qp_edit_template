@@ -172,6 +172,7 @@ let run check_only ?ndet ?state ezfio_filename =
     Array.sort ~compare test ;
     if test <> ordering then
     begin
+      Printf.eprintf "Warning: Basis set is not properly ordered. Redordering.\n";
       let new_aos = Input.Ao_basis.reorder aos in
       Input.Ao_basis.write new_aos;
       match Input.Mo_basis.read() with

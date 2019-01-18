@@ -255,23 +255,31 @@ end = struct
       |> Array.of_list
     in
     let find x a =
-      let rec find x a = function
-        | -1 -> find2 x a ((Array.length a)-1)
-        |  i -> if a.(i) = x then i else find x a (i-1)
-      and find2 (s,g,n) a = function
-        | -1 -> -1
-        | i  -> match a.(i) with 
-                | (s', g', n')  ->
-                   if s <> s' || n <> n' then find2 (s,g,n) a (i-1)
+      let rec find x a i =
+        if i = Array.length a then
+          find2 x a 0
+        else
+          if a.(i) = Some x then
+            (a.(i) <- None ; i)
+          else
+            find x a (i+1)
+      and find2 (s,g,n) a i = 
+        if i = Array.length a then -1
+        else
+            match a.(i) with 
+                | None -> find2 (s,g,n) a (i+1)
+                | Some (s', g', n')  ->
+                   if s <> s' || n <> n' then find2 (s,g,n) a (i+1)
                    else
                    let lc  = List.map ~f:(fun (prim, _) -> prim) g.Gto.lc 
                    and lc' = List.map ~f:(fun (prim, _) -> prim) g'.Gto.lc
                    in
-                   if lc <> lc' then find2 (s,g,n) a (i-1) else i
+                   if lc <> lc' then find2 (s,g,n) a (i+1) else (a.(i) <- None ; i)
       in
-      find x a ((Array.length a)-1)
+      find x a 0
     in
-    Array.map ~f:(fun x -> find x unordered_basis) ordered_basis
+    let search_array = Array.map ~f:(fun i -> Some i) unordered_basis in
+    Array.map ~f:(fun x -> find x search_array) ordered_basis
   ;;
 
 
@@ -338,11 +346,27 @@ end = struct
   ;;
 
   let reorder b = 
-    let long_basis = 
-      to_basis b
-      |> Long_basis.of_basis
+    let order = ordering b in
+    let f a = Array.init (Array.length a) ~f:(fun i -> a.(order.(i))) in
+    let ao_prim_num_max = AO_prim_number.to_int b.ao_prim_num_max
+    and ao_num = AO_number.to_int b.ao_num in
+    let ao_coef =
+      Array.init ao_prim_num_max ~f:(fun i ->
+        f @@ Array.init ao_num ~f:(fun j -> b.ao_coef.(i*ao_num + j) )
+      ) |> Array.to_list |> Array.concat
     in
-    of_long_basis long_basis b.ao_basis b.ao_cartesian
+    let ao_expo =
+      Array.init ao_prim_num_max ~f:(fun i ->
+        f @@ Array.init ao_num ~f:(fun j -> b.ao_expo.(i*ao_num + j) )
+      ) |> Array.to_list |> Array.concat
+    in
+    { b with
+      ao_prim_num = f b.ao_prim_num ;
+      ao_nucl     = f b.ao_nucl  ;
+      ao_power    = f b.ao_power ;
+      ao_coef ;
+      ao_expo ;
+    }
   ;;
 
 
