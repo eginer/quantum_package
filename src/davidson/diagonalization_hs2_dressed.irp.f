@@ -516,6 +516,13 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
         exit
       endif
 
+      logical, external :: qp_stop
+      if (qp_stop()) then
+        converged = .True.
+        exit
+      endif
+
+
     enddo
 
     ! Re-contract to u_in

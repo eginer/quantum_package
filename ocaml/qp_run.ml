@@ -6,6 +6,7 @@ open Qputils
 
 *)
 
+  
 let print_list () =
   Lazy.force Qpackage.executables
   |> List.iter (fun (x,_) -> Printf.printf " * %s\n" x)
@@ -51,6 +52,11 @@ let run slave ?prefix exe ezfio_file =
   if (not (Sys.file_exists ezfio_file)) then
     failwith ("EZFIO directory "^ezfio_file^" not found");
 
+
+  (* handle_usr1 *)
+  Sys.set_signal Sys.sigusr1 (Sys.Signal_handle (fun _signum ->
+        ignore @@ Sys.command ("qp_stop "^ezfio_file)));
+
   let executables = Lazy.force Qpackage.executables in
   if (not (List.exists (fun (x,_) -> x = exe) executables)) then
     begin
@@ -67,7 +73,6 @@ let run slave ?prefix exe ezfio_file =
   Printf.printf "EZFIO Dir : %s\n" ezfio_file;
   Printf.printf "\n\n%!";
 
-
   (** Check input *)
   if (not slave) then
     begin
@@ -77,7 +82,7 @@ let run slave ?prefix exe ezfio_file =
     end;
 
   let qp_run_address_filename =
-   Filename.concat (Qpackage.ezfio_work ezfio_file) "qp_run_address"
+    Filename.concat (Qpackage.ezfio_work ezfio_file) "qp_run_address"
   in
 
   let () =

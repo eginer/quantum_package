@@ -47,6 +47,7 @@ Usage:
     qp set_frozen_core                <qp_command> --help
     qp set_mo_class
     qp update
+    qp stop
 
 EOF
 }

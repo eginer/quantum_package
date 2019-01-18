@@ -10,6 +10,14 @@ qp_run
 
 Command used to run a calculation.
 
+If the ``USR1`` signal is sent to :ref:`qp_run`, the application will call
+:ref:`qp_stop` to request a clean termination. In a SLURM script, you can
+ask SLURM to send the ``USR1`` signal 120 seconds before end of the time limit
+with ::
+
+    #SBATCH --signal=B:USR1@120
+
+
 Usage
 -----
 

@@ -39,7 +39,6 @@ BEGIN_PROVIDER [ character*(128), ezfio_filename ]
   write(command,*) 'echo 15 > /proc//'//trim(adjustl(pidc))//'/oom_adj'
   call system(command)
 
-
 END_PROVIDER
 
 BEGIN_PROVIDER [ character*(128), ezfio_work_dir ]

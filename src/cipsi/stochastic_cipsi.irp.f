@@ -6,6 +6,7 @@ subroutine run_stochastic_cipsi
   integer                        :: i,j,k
   double precision, allocatable  :: pt2(:), variance(:), norm(:), rpt2(:)
   integer                        :: to_select
+  logical, external :: qp_stop
 
   double precision :: rss
   double precision, external :: memory_of_double
@@ -63,7 +64,7 @@ subroutine run_stochastic_cipsi
   do while (                                                         &
         (N_det < N_det_max) .and.                                    &
         (maxval(abs(pt2(1:N_states))) > pt2_max) .and.               &
-        (correlation_energy_ratio <= correlation_energy_ratio_max)    &
+        (correlation_energy_ratio <= correlation_energy_ratio_max)   &
         )
       write(*,'(A)')  '--------------------------------------------------------------------------------'
 
@@ -93,6 +94,8 @@ subroutine run_stochastic_cipsi
     call print_extrapolated_energy()
     N_iter += 1
 
+    if (qp_stop()) exit 
+
     ! Add selected determinants
     call copy_H_apply_buffer_to_wf()
     call save_wavefunction
@@ -105,28 +108,31 @@ subroutine run_stochastic_cipsi
     call save_wavefunction
     rpt2(:) = 0.d0
     call save_energy(psi_energy_with_nucl_rep, rpt2)
+    if (qp_stop()) exit 
   enddo
 
-  if (N_det < N_det_max) then
-      call diagonalize_CI
-      call save_wavefunction
-      rpt2(:) = 0.d0
-      call save_energy(psi_energy_with_nucl_rep, rpt2)
+  if (.not.qp_stop()) then
+    if (N_det < N_det_max) then
+        call diagonalize_CI
+        call save_wavefunction
+        rpt2(:) = 0.d0
+        call save_energy(psi_energy_with_nucl_rep, rpt2)
+    endif
+
+    pt2 = 0.d0
+    variance = 0.d0
+    norm = 0.d0
+    call ZMQ_pt2(psi_energy_with_nucl_rep, pt2,relative_error,error,variance, &
+      norm,0) ! Stochastic PT2
+    call save_energy(psi_energy_with_nucl_rep, pt2)
+
+    do k=1,N_states
+      rpt2(:) = pt2(:)/(1.d0 + norm(k))
+    enddo
+
+    call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm,N_det,N_occ_pattern,N_states,psi_s2)
+    call save_iterations(psi_energy_with_nucl_rep(1:N_states),rpt2,N_det)
+    call print_extrapolated_energy()
   endif
-
-  pt2 = 0.d0
-  variance = 0.d0
-  norm = 0.d0
-  call ZMQ_pt2(psi_energy_with_nucl_rep, pt2,relative_error,error,variance, &
-    norm,0) ! Stochastic PT2
-  call save_energy(psi_energy_with_nucl_rep, pt2)
-
-  do k=1,N_states
-    rpt2(:) = pt2(:)/(1.d0 + norm(k))
-  enddo
-
-  call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm,N_det,N_occ_pattern,N_states,psi_s2)
-  call save_iterations(psi_energy_with_nucl_rep(1:N_states),rpt2,N_det)
-  call print_extrapolated_energy()
 
 end
