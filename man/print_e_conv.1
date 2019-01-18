@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "PRINT_E_CONV" "1" "Jan 16, 2019" "2.0" "Quantum Package"
+.TH "PRINT_E_CONV" "1" "Jan 17, 2019" "2.0" "Quantum Package"
 .SH NAME
 print_e_conv \-  | Quantum Package >
 .
@@ -30,21 +30,57 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.sp
-program that prints in a human readable format the convergence of the CIPSI algorithm.
 .INDENT 0.0
 .INDENT 3.5
-for all istate, this program produces
+File : \fBmolden.irp.f\fP
 .INDENT 0.0
-.IP \(bu 2
-a file “EZFIO.istate.conv” containing the variational and var+PT2 energies as a function of N_det
-.IP \(bu 2
-for istate > 1, a file EZFIO.istate.delta_e.conv containing the energy difference (both var and var+PT2) with the ground state as a function of N_det
-.UNINDENT
+.INDENT 3.5
+.sp
+.nf
+.ft C
+subroutine write_Mo_basis(i_unit_output)
+.ft P
+.fi
 .UNINDENT
 .UNINDENT
 .sp
-File: \fBtools/print_e_conv.irp.f\fP
+Needs:
+.INDENT 0.0
+.INDENT 2.0
+.IP \(bu 2
+\fBmo_num\fP
+.IP \(bu 2
+\fBmo_coef\fP
+.IP \(bu 2
+\fBao_num\fP
+.UNINDENT
+.INDENT 2.0
+.IP \(bu 2
+\fBao_l_char_space\fP
+.IP \(bu 2
+\fBnucl_charge\fP
+.UNINDENT
+.INDENT 2.0
+.IP \(bu 2
+\fBao_nucl\fP
+.IP \(bu 2
+\fBelement_name\fP
+.UNINDENT
+.UNINDENT
+.sp
+Called by:
+.INDENT 0.0
+.INDENT 2.0
+.IP \(bu 2
+\fBmolden()\fP
+.UNINDENT
+.INDENT 2.0
+.UNINDENT
+.INDENT 2.0
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
 .SH AUTHOR
 A. Scemama, E. Giner
 .SH COPYRIGHT

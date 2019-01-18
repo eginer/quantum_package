@@ -1,4 +1,4 @@
-.. _psiref_cas: 
+.. _module_psiref_cas: 
  
 .. program:: psiref_cas 
  

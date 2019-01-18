@@ -143,26 +143,11 @@ to Parameters (IRP) method.
 * Extract the archive and go into the :file:`irpf90-*` directory to run
   :command:`make`
 
-* Create scripts to facilitate the access to :command:`irpf90` and
-  :command:`irpman` as follows
+.. note::
 
-.. code:: bash
+    The :envvar:`IRPF90_PATH` variable may need to be updated in the configuration
+    file :file:`${QP_ROOT}/etc/irpf90.rc`.
 
-   for i in irpf90 irpman irpf90_indent
-   do
-   cat << EOF > ${QP_ROOT}/bin/$i
-   #!/bin/sh
-   exec $PWD/bin/$i \$@
-   EOF
-
-   chmod +x ${QP_ROOT}/bin/$i 
-   done
-
-Otherwise, IRPF90 can be installed with PIP:
-
-.. code:: bash
-
-   pip2 install --user irpf90
 
 
 ZeroMQ and its Fortran binding

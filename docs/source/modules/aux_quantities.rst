@@ -1,4 +1,4 @@
-.. _aux_quantities: 
+.. _module_aux_quantities: 
  
 .. program:: aux_quantities 
  

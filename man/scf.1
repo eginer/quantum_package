@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "SCF" "1" "Jan 16, 2019" "2.0" "Quantum Package"
+.TH "SCF" "1" "Jan 17, 2019" "2.0" "Quantum Package"
 .SH NAME
 scf \-  | Quantum Package >
 .
@@ -30,19 +30,61 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.sp
-Produce \fIHartree_Fock\fP MOs
 .INDENT 0.0
 .INDENT 3.5
+File : \fBhartree_fock/scf.irp.f\fP
+.sp
+Produce \fIHartree_Fock\fP MOs
+.sp
 output: mo_basis.mo_num mo_basis.mo_label mo_basis.ao_md5 mo_basis.mo_coef mo_basis.mo_occ
 .sp
 output: hartree_fock.energy
 .sp
 optional: mo_basis.mo_coef
+.sp
+Calls:
+.INDENT 0.0
+.INDENT 2.0
+.IP \(bu 2
+\fBcreate_guess()\fP
+.UNINDENT
+.INDENT 2.0
+.IP \(bu 2
+\fBorthonormalize_mos()\fP
+.UNINDENT
+.INDENT 2.0
+.IP \(bu 2
+\fBrun()\fP
 .UNINDENT
 .UNINDENT
 .sp
-File: \fBhartree_fock/scf.irp.f\fP
+Touches:
+.INDENT 0.0
+.INDENT 2.0
+.IP \(bu 2
+\fBfock_matrix_ao_alpha\fP
+.IP \(bu 2
+\fBfock_matrix_ao_alpha\fP
+.IP \(bu 2
+\fBfock_matrix_ao_alpha\fP
+.UNINDENT
+.INDENT 2.0
+.IP \(bu 2
+\fBfock_matrix_ao_alpha\fP
+.IP \(bu 2
+\fBmo_coef\fP
+.IP \(bu 2
+\fBlevel_shift\fP
+.UNINDENT
+.INDENT 2.0
+.IP \(bu 2
+\fBmo_coef\fP
+.IP \(bu 2
+\fBmo_label\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
 .SH AUTHOR
 A. Scemama, E. Giner
 .SH COPYRIGHT

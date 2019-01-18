@@ -1,4 +1,4 @@
-.. _electrons: 
+.. _module_electrons: 
  
 .. program:: electrons 
  
@@ -47,30 +47,68 @@ EZFIO parameters
 Providers 
 --------- 
  
-
 .. c:var:: elec_num
 
-    .. code:: text
 
-        integer	:: elec_num
+    File : :file:`electrons/electrons.irp.f`
+
+    .. code:: fortran
+
+        integer	:: elec_num	
         integer, allocatable	:: elec_num_tab	(2)
 
-    File: :file:`electrons.irp.f`
 
     Numbers of alpha ("up") , beta ("down") and total electrons
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`elec_alpha_num`
+       * :c:data:`elec_beta_num`
+       * :c:data:`ezfio_filename`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`diagonal_h_matrix_on_psi_det`
+       * :c:data:`psi_det_hii`
+       * :c:data:`psi_selectors_diag_h_mat`
+       * :c:data:`pt2_f`
 
  
-
 .. c:var:: elec_num_tab
 
-    .. code:: text
 
-        integer	:: elec_num
+    File : :file:`electrons/electrons.irp.f`
+
+    .. code:: fortran
+
+        integer	:: elec_num	
         integer, allocatable	:: elec_num_tab	(2)
 
-    File: :file:`electrons.irp.f`
 
     Numbers of alpha ("up") , beta ("down") and total electrons
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`elec_alpha_num`
+       * :c:data:`elec_beta_num`
+       * :c:data:`ezfio_filename`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`diagonal_h_matrix_on_psi_det`
+       * :c:data:`psi_det_hii`
+       * :c:data:`psi_selectors_diag_h_mat`
+       * :c:data:`pt2_f`
 

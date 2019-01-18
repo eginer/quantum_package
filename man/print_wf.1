@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "PRINT_WF" "1" "Jan 16, 2019" "2.0" "Quantum Package"
+.TH "PRINT_WF" "1" "Jan 17, 2019" "2.0" "Quantum Package"
 .SH NAME
 print_wf \-  | Quantum Package >
 .
@@ -30,19 +30,57 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.sp
-Print the ground state wave function stored in the \fI\%EZFIO\fP folder in the intermediate normalization.
 .INDENT 0.0
 .INDENT 3.5
-It also prints a lot of information regarding the excitation operators from the reference determinant
+File : \fBmolden.irp.f\fP
+.INDENT 0.0
+.INDENT 3.5
 .sp
-and a first\-order perturbative analysis of the wave function.
-.sp
-If the wave function strongly deviates from the first\-order analysis, something funny is going on :)
+.nf
+.ft C
+subroutine write_Mo_basis(i_unit_output)
+.ft P
+.fi
 .UNINDENT
 .UNINDENT
 .sp
-File: \fBtools/print_wf.irp.f\fP
+Needs:
+.INDENT 0.0
+.INDENT 2.0
+.IP \(bu 2
+\fBmo_num\fP
+.IP \(bu 2
+\fBmo_coef\fP
+.IP \(bu 2
+\fBao_num\fP
+.UNINDENT
+.INDENT 2.0
+.IP \(bu 2
+\fBao_l_char_space\fP
+.IP \(bu 2
+\fBnucl_charge\fP
+.UNINDENT
+.INDENT 2.0
+.IP \(bu 2
+\fBao_nucl\fP
+.IP \(bu 2
+\fBelement_name\fP
+.UNINDENT
+.UNINDENT
+.sp
+Called by:
+.INDENT 0.0
+.INDENT 2.0
+.IP \(bu 2
+\fBmolden()\fP
+.UNINDENT
+.INDENT 2.0
+.UNINDENT
+.INDENT 2.0
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
 .SH AUTHOR
 A. Scemama, E. Giner
 .SH COPYRIGHT

@@ -62,13 +62,12 @@ def main(arguments):
         if arguments["-v"]:
             p = None
             if arguments["TEST"]:
-                test = "export TEST=%s\n"%arguments["TEST"]
+                test = "export TEST=%s ; "%arguments["TEST"]
             else:
                 test = ""
-            script = test+(subprocess.check_output(["python2", \
-                       "bats_to_sh.py", bats_file]))
             try:
-                p = subprocess.check_call(script, shell=True, env=os.environ)
+                os.system(test+" python2 bats_to_sh.py "+bats_file+
+                                    "| bash")
             except:
                 if p:
                     p.terminate()

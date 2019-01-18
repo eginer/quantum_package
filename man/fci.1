@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "FCI" "1" "Jan 16, 2019" "2.0" "Quantum Package"
+.TH "FCI" "1" "Jan 17, 2019" "2.0" "Quantum Package"
 .SH NAME
 fci \-  | Quantum Package >
 .
@@ -30,45 +30,63 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.sp
-Selected Full Configuration Interaction with stochastic selection and PT2 .
 .INDENT 0.0
 .INDENT 3.5
-This program performs a CIPSI\-like selected CI using a stochastic scheme for both
-.sp
-the selection of the important Slater determinants and the computation of the PT2 correction.
-.sp
-This CIPSI\-like algorithm will be performed for the “n_states” lowest states of the variational space (see \fBdeterminants n_det_max\fP)
-.sp
-The fci program will stop when reaching at least one the two following conditions:
+File : \fBfci/save_energy.irp.f\fP
 .INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+subroutine save_energy(E,pt2)
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Saves the energy in \fI\%EZFIO\fP\&.
+.sp
+Needs:
+.INDENT 0.0
+.INDENT 2.0
 .IP \(bu 2
-number of Slater determinant > “n_det_max” (see \fBdeterminants n_det_max\fP)
+\fBn_states\fP
+.UNINDENT
+.INDENT 2.0
+.UNINDENT
+.INDENT 2.0
+.UNINDENT
+.UNINDENT
+.sp
+Called by:
+.INDENT 0.0
+.INDENT 2.0
 .IP \(bu 2
-PT2 < “pt2_max” (see \fBperturbation pt2_max\fP)
+\fBrun_cipsi()\fP
 .UNINDENT
-.sp
-The following other options can be of interest:
-.sp
-If “read_wf” = False, it starts with a ROHF\-like Slater determinant as a guess wave function.
-.sp
-If “read_wf” = True , it starts with the wave function(s) stored in the EZFIO folder as guess wave function(s).
-.sp
-(see \fBdeterminants read_wf\fP)
-.sp
-If “s2_eig” = True, it will systematically add all necessary Slater determinants in order
-.sp
-to have a pure spin wave function with an S^2 value corresponding to “expected_s2”.
-.sp
-(see \fBdeterminants s2_eig\fP and \fBdeterminants expected_s2\fP)
-.sp
-For excited states calculations, it is recommended to start with a \fBcis()\fP or \fBcisd()\fP guess wave functions
-.sp
-for the “n_states”, and to set “s2_eig” = True.
+.INDENT 2.0
+.IP \(bu 2
+\fBrun_stochastic_cipsi()\fP
+.UNINDENT
+.INDENT 2.0
 .UNINDENT
 .UNINDENT
 .sp
-File: \fBfci/fci.irp.f\fP
+Calls:
+.INDENT 0.0
+.INDENT 2.0
+.IP \(bu 2
+\fBezfio_set_fci_energy()\fP
+.UNINDENT
+.INDENT 2.0
+.IP \(bu 2
+\fBezfio_set_fci_energy_pt2()\fP
+.UNINDENT
+.INDENT 2.0
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
 .SH AUTHOR
 A. Scemama, E. Giner
 .SH COPYRIGHT

@@ -7,6 +7,7 @@ function run() {
   thresh=$2
   test_exe fci || skip
   qp edit --check
+  qp set perturbation do_pt2 false
   qp set determinants n_det_max 8000
   qp set determinants n_states  1
   qp set davidson threshold_davidson 1.e-10
