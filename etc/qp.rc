@@ -55,6 +55,9 @@ EOF
 function qp()
 {
   case $1 in
+    -h|--help)
+      _qp_usage ;;
+
     "set_file")
         if [[ -d ${2} ]] ; then
            ezfio "$@"
@@ -66,29 +69,9 @@ function qp()
         ezfio "$@"
       ;;
 
-    "set_frozen_core")
-      shift
-      qp_set_frozen_core "$@" ${EZFIO_FILE}
-      ;;
-
-    "reset")
-      shift
-      qp_reset "$@" ${EZFIO_FILE}
-      ;;
-
     "create_ezfio")
       shift
-      # Replace ':' by spaces
-      for arg in "$@" ; do
-        case $arg in
-          *:*)
-            _ARGS+=("\"${arg//:/ }\"") ;;
-          *)
-            _ARGS+=("${arg}") ;;
-        esac
-      done
-      echo qp_create_ezfio "${_ARGS[@]}"
-      NAME=$(qp_create_ezfio "${_ARGS[@]}")
+      NAME=$(qp_create_ezfio "$@")
       if [[ -d $NAME ]] ; then
         [[ -d $EZFIO_FILE ]] && ezfio unset_file
         ezfio set_file $NAME
@@ -96,36 +79,6 @@ function qp()
         qp_create_ezfio -h | more
       fi
       unset _ARGS
-      ;;
-
-    "convert_output_to_ezfio")
-      shift
-      qp_convert_output_to_ezfio "$@"
-      ;;
-
-    "set_mo_class")
-      shift
-      qp_set_mo_class "$@" -- ${EZFIO_FILE}
-      ;;
-
-    "edit")
-      shift
-      qp_edit "$@" -- ${EZFIO_FILE}
-      ;;
-
-    "run")
-      shift
-      qp_run "$@" -- ${EZFIO_FILE}
-      ;;
-
-    "srun")
-      shift
-      qp_srun "$@" ${EZFIO_FILE}
-      ;;
-
-    "mpirun")
-      shift
-      qp_mpirun "$@" ${EZFIO_FILE}
       ;;
 
     "man")
@@ -146,18 +99,17 @@ function qp()
       PS1="\$(_check_ezfio)\n$PS1"
       ;;
 
-    "plugins")
-      shift
-      qp_plugins $@
-      ;;
-
-    "update")
-      shift
-      qp_update $@
+    "plugins"|"update"|"convert_output_to_ezfio")
+      eval "qp_$@"
       ;;
 
     *)
-      _qp_usage
+      which "qp_$1" &> /dev/null
+      if [[ $? -eq 0 ]] ; then
+         eval "qp_$@ ${EZFIO_FILE}"
+      else
+         _qp_usage
+      fi
       ;;
   esac
 
@@ -209,15 +161,11 @@ _qp_Complete()
             COMPREPLY=( $(compgen -W "" -- $cur ) )
             return 0;;
           -b)
-            for iter in $(_get_basis_sets); do
-              if [[ $iter =~ ^$cur ]]; then
-                 COMPREPLY+=( "${iter}" )
-              fi
-            done;
+            COMPREPLY=( $(compgen -W "$( cut -d ' ' -f 1 ${QP_ROOT}/data/basis/00_README.rst | grep -v \'#\' )" -- $cur ) )
             return 0
             ;;
           -p)
-            COMPREPLY=( $(compgen -W "$(cd ~/quantum_package/data/pseudo ; \ls)" -- $cur ) )
+            COMPREPLY=( $(compgen -W "$(cd ${QP_ROOT}/data/pseudo ; \ls)" -- $cur ) )
             return 0
             ;;
           *)
@@ -235,7 +183,7 @@ _qp_Complete()
             COMPREPLY=( $(compgen -W "-i -u -q" -- $cur ) )
             return 0;;
           download)
-            COMPREPLY=( $(compgen -W "http:// git@github.com: git@gitlab.com: " -- $cur ) )
+            COMPREPLY=( $(compgen -W "https://github.com/ https://gitlab.com/ git@github.com: git@gitlab.com: http:// https://" -- $cur ) )
             return 0;;
           install)
             COMPREPLY=( $(compgen -W "$(qp_plugins list -u)" -- $cur ) )
@@ -247,7 +195,7 @@ _qp_Complete()
             COMPREPLY=( $(compgen -W "-n " -- $cur ) )
             return 0;;
           *)
-            COMPREPLY=( $(compgen -W "$( \ls ; cd ~/quantum_package/src ; \ls )" -- $cur ) )
+            COMPREPLY=( $(compgen -W "$( \ls ; cd ${QP_ROOT}/src ; \ls )" -- $cur ) )
             return 0
             ;;
         esac;;

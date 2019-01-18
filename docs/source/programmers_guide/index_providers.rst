@@ -590,6 +590,7 @@ Index of Providers
 * :c:data:`psi_non_cas_sorted_bit` 
 * :c:data:`psi_occ_pattern` 
 * :c:data:`psi_occ_pattern_hii` 
+* :c:data:`psi_s2` 
 * :c:data:`psi_selectors` 
 * :c:data:`psi_selectors_coef` 
 * :c:data:`psi_selectors_coef_transp` 
@@ -1092,7 +1093,6 @@ Index of Subroutines/Functions
 * :c:func:`iset_order_big` 
 * :c:func:`isort` 
 * :c:func:`knowles_function` 
-* :c:func:`ks_cf` 
 * :c:func:`ks_scf` 
 * :c:func:`lapack_diag` 
 * :c:func:`lapack_diagd` 
@@ -1299,7 +1299,6 @@ Index of Subroutines/Functions
 * :c:func:`tamiser` 
 * :c:func:`task_done_to_taskserver` 
 * :c:func:`tasks_done_to_taskserver` 
-* :c:func:`test_det` 
 * :c:func:`testteethbuilding` 
 * :c:func:`total_memory` 
 * :c:func:`two_e_integrals_index` 

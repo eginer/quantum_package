@@ -1,4 +1,4 @@
-.. _dressing: 
+.. _module_dressing: 
  
 .. program:: dressing 
  

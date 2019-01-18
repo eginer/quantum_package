@@ -8,6 +8,8 @@
   integer :: i
   integer, external              :: ao_power_index
   integer                        :: ibegin,j,k
+  integer                        :: prev
+  prev = 0
   ao_cart_to_sphe_coef(:,:) = 0.d0
   ! Assume order provided by ao_power_index
   i = 1

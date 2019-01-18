@@ -1,4 +1,4 @@
-.. _dft_keywords: 
+.. _module_dft_keywords: 
  
 .. program:: dft_keywords 
  
@@ -45,15 +45,24 @@ EZFIO parameters
 Providers 
 --------- 
  
-
 .. c:var:: dft_type
 
-    .. code:: text
 
-        character*(32)	:: dft_type
+    File : :file:`dft_keywords/keywords.irp.f`
 
-    File: :file:`keywords.irp.f`
+    .. code:: fortran
+
+        character*(32)	:: dft_type	
+
 
     defines the type of DFT applied: LDA, GGA etc ...
+
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`correlation_functional`
+       * :c:data:`exchange_functional`
 
 

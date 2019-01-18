@@ -1,4 +1,4 @@
-.. _selectors_cassd: 
+.. _module_selectors_cassd: 
  
 .. program:: selectors_cassd 
  

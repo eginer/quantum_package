@@ -101,7 +101,7 @@ function run() {
   [[ -n $TRAVIS ]] && skip
   qp set_file cu_nh3_4_2plus.ezfio
   qp set_mo_class --core="[1-24]" --act="[25-45]" --del="[46-87]"
-  run -1862.98684406958  -1862.68818035746
+  run -1862.98611018932    -1862.68751252590     
 }
 
 @test "ClF" { # 30.3225s

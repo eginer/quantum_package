@@ -1,4 +1,4 @@
-.. _.write_integrals_erf.: 
+.. _write_integrals_erf: 
  
 .. program:: write_integrals_erf 
  
@@ -7,6 +7,24 @@ write_integrals_erf
 =================== 
  
  
-Saves the two-electron integrals with the :math:`erf(\mu r_{12})/r_{12}` oprerator into the EZFIO folder 
  
-File: :file:`tools/write_integrals_erf.irp.f`
+ .. hlist:: 
+    :columns: 3 
+ 
+    * :c:data:`io_mo_two_e_integrals` 
+    * :c:data:`io_ao_two_e_integrals` 
+ 
+ Calls: 
+ 
+ .. hlist:: 
+    :columns: 3 
+ 
+    * :c:func:`routine` 
+ 
+ Touches: 
+ 
+ .. hlist:: 
+    :columns: 3 
+ 
+    * :c:data:`io_ao_two_e_integrals` 
+    * :c:data:`io_mo_two_e_integrals` 

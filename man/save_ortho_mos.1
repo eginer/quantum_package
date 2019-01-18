@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "SAVE_ORTHO_MOS" "1" "Jan 16, 2019" "2.0" "Quantum Package"
+.TH "SAVE_ORTHO_MOS" "1" "Jan 17, 2019" "2.0" "Quantum Package"
 .SH NAME
 save_ortho_mos \-  | Quantum Package >
 .
@@ -30,19 +30,57 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.sp
-Save orthonormalized MOs in the EZFIO.
 .INDENT 0.0
 .INDENT 3.5
-This program reads the current MOs, computes the corresponding overlap matrix in the MO basis
+File : \fBmolden.irp.f\fP
+.INDENT 0.0
+.INDENT 3.5
 .sp
-and perform a Lowdin orthonormalization : MO_{new} = S^{\-1/2} MO_{guess}\&.
-.sp
-Thanks to the Lowdin orthonormalization, the new MOs are the most similar to the guess MOs.
+.nf
+.ft C
+subroutine write_Mo_basis(i_unit_output)
+.ft P
+.fi
 .UNINDENT
 .UNINDENT
 .sp
-File: \fBtools/save_ortho_mos.irp.f\fP
+Needs:
+.INDENT 0.0
+.INDENT 2.0
+.IP \(bu 2
+\fBmo_num\fP
+.IP \(bu 2
+\fBmo_coef\fP
+.IP \(bu 2
+\fBao_num\fP
+.UNINDENT
+.INDENT 2.0
+.IP \(bu 2
+\fBao_l_char_space\fP
+.IP \(bu 2
+\fBnucl_charge\fP
+.UNINDENT
+.INDENT 2.0
+.IP \(bu 2
+\fBao_nucl\fP
+.IP \(bu 2
+\fBelement_name\fP
+.UNINDENT
+.UNINDENT
+.sp
+Called by:
+.INDENT 0.0
+.INDENT 2.0
+.IP \(bu 2
+\fBmolden()\fP
+.UNINDENT
+.INDENT 2.0
+.UNINDENT
+.INDENT 2.0
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
 .SH AUTHOR
 A. Scemama, E. Giner
 .SH COPYRIGHT

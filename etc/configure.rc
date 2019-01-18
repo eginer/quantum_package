@@ -16,12 +16,12 @@ _configure_Complete()
         return 0
         ;;
     -i)
-        COMPREPLY=( $(compgen -W "bats docopt emsl ezfio f77zmq irpf90 ninja\
+        COMPREPLY=( $(compgen -W "bats docopt ezfio f77zmq irpf90 ninja\
               ocaml resultsFile zeromq" -- $cur ) )
         return 0
         ;;
     -c)
-        COMPREPLY=( $(compgen -W "$(echo config/*.cfg ./*.cfg)" -- $cur ) )
+        COMPREPLY=( $(compgen -W "$(find . -maxdepth 2 -name *.cfg)" -- $cur ) )
         return 0
         ;;
     *)

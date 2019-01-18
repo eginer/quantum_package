@@ -1,4 +1,4 @@
-.. _fci: 
+.. _module_fci: 
  
 .. program:: fci 
  
@@ -80,16 +80,25 @@ Programs
 Providers 
 --------- 
  
-
 .. c:var:: nthreads_pt2
 
-    .. code:: text
 
-        integer	:: nthreads_pt2
+    File : :file:`fci/environment.irp.f`
 
-    File: :file:`environment.irp.f`
+    .. code:: fortran
+
+        integer	:: nthreads_pt2	
+
 
     Number of threads for Davidson
+
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`mpi_master`
+       * :c:data:`nproc`
 
 
  
@@ -97,30 +106,38 @@ Providers
 Subroutines / functions 
 ----------------------- 
  
+.. c:function:: save_energy:
 
 
-.. c:function:: run
+    File : :file:`fci/save_energy.irp.f`
 
-    .. code:: text
-
-        subroutine run
-
-    File: :file:`pt2.irp.f`
-
-    
-
-
- 
-
-
-.. c:function:: save_energy
-
-    .. code:: text
+    .. code:: fortran
 
         subroutine save_energy(E,pt2)
 
-    File: :file:`save_energy.irp.f`
 
     Saves the energy in |EZFIO|.
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`n_states`
+
+    Called by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:func:`run_cipsi`
+       * :c:func:`run_stochastic_cipsi`
+
+    Calls:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:func:`ezfio_set_fci_energy`
+       * :c:func:`ezfio_set_fci_energy_pt2`
 

@@ -1,4 +1,4 @@
-.. _kohn_sham_rs: 
+.. _module_kohn_sham_rs: 
  
 .. program:: kohn_sham_rs 
  
@@ -64,187 +64,400 @@ Programs
 Providers 
 --------- 
  
-
 .. c:var:: ao_potential_alpha_xc
 
-    .. code:: text
+
+    File : :file:`pot_functionals.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: ao_potential_alpha_xc	(ao_num,ao_num)
         double precision, allocatable	:: ao_potential_beta_xc	(ao_num,ao_num)
 
-    File: :file:`pot_functionals.irp.f`
 
-    
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_num`
+       * :c:data:`potential_x_alpha_ao`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`fock_matrix_ao_alpha`
+       * :c:data:`rs_ks_energy`
 
  
-
 .. c:var:: ao_potential_beta_xc
 
-    .. code:: text
+
+    File : :file:`pot_functionals.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: ao_potential_alpha_xc	(ao_num,ao_num)
         double precision, allocatable	:: ao_potential_beta_xc	(ao_num,ao_num)
 
-    File: :file:`pot_functionals.irp.f`
 
-    
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_num`
+       * :c:data:`potential_x_alpha_ao`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`fock_matrix_ao_alpha`
+       * :c:data:`rs_ks_energy`
 
  
-
 .. c:var:: e_correlation_dft
 
-    .. code:: text
 
-        double precision	:: e_correlation_dft
+    File : :file:`pot_functionals.irp.f`
 
-    File: :file:`pot_functionals.irp.f`
+    .. code:: fortran
 
-    
+        double precision	:: e_correlation_dft	
 
+
+
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`energy_x`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`extra_e_contrib_density`
+       * :c:data:`rs_ks_energy`
 
  
-
 .. c:var:: e_exchange_dft
 
-    .. code:: text
 
-        double precision	:: e_exchange_dft
+    File : :file:`pot_functionals.irp.f`
 
-    File: :file:`pot_functionals.irp.f`
+    .. code:: fortran
 
-    
+        double precision	:: e_exchange_dft	
 
+
+
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`energy_x`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`extra_e_contrib_density`
+       * :c:data:`rs_ks_energy`
 
  
-
 .. c:var:: fock_matrix_alpha_no_xc_ao
 
-    .. code:: text
+
+    File : :file:`fock_matrix_rs_ks.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: fock_matrix_alpha_no_xc_ao	(ao_num,ao_num)
         double precision, allocatable	:: fock_matrix_beta_no_xc_ao	(ao_num,ao_num)
 
-    File: :file:`fock_matrix_rs_ks.irp.f`
 
     Mono electronic an Coulomb matrix in AO basis set
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_num`
+       * :c:data:`ao_one_e_integrals`
+       * :c:data:`ao_two_e_integral_alpha`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`fock_matrix_ao_alpha`
 
  
-
 .. c:var:: fock_matrix_beta_no_xc_ao
 
-    .. code:: text
+
+    File : :file:`fock_matrix_rs_ks.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: fock_matrix_alpha_no_xc_ao	(ao_num,ao_num)
         double precision, allocatable	:: fock_matrix_beta_no_xc_ao	(ao_num,ao_num)
 
-    File: :file:`fock_matrix_rs_ks.irp.f`
 
     Mono electronic an Coulomb matrix in AO basis set
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_num`
+       * :c:data:`ao_one_e_integrals`
+       * :c:data:`ao_two_e_integral_alpha`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`fock_matrix_ao_alpha`
 
  
-
 .. c:var:: fock_matrix_energy
 
-    .. code:: text
 
-        double precision	:: rs_ks_energy
-        double precision	:: two_e_energy
-        double precision	:: one_e_energy
-        double precision	:: fock_matrix_energy
-        double precision	:: trace_potential_xc
+    File : :file:`rs_ks_energy.irp.f`
 
-    File: :file:`rs_ks_energy.irp.f`
+    .. code:: fortran
+
+        double precision	:: rs_ks_energy	
+        double precision	:: two_e_energy	
+        double precision	:: one_e_energy	
+        double precision	:: fock_matrix_energy	
+        double precision	:: trace_potential_xc	
+
 
     Range-separated Kohn-Sham energy containing the nuclear repulsion energy, and the various components of this quantity.
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_num`
+       * :c:data:`ao_one_e_integrals`
+       * :c:data:`ao_potential_alpha_xc`
+       * :c:data:`ao_two_e_integral_alpha`
+       * :c:data:`e_correlation_dft`
+       * :c:data:`e_exchange_dft`
+       * :c:data:`fock_matrix_ao_alpha`
+       * :c:data:`nuclear_repulsion`
+       * :c:data:`scf_density_matrix_ao_alpha`
+       * :c:data:`scf_density_matrix_ao_beta`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`extra_e_contrib_density`
 
  
-
 .. c:var:: one_e_energy
 
-    .. code:: text
 
-        double precision	:: rs_ks_energy
-        double precision	:: two_e_energy
-        double precision	:: one_e_energy
-        double precision	:: fock_matrix_energy
-        double precision	:: trace_potential_xc
+    File : :file:`rs_ks_energy.irp.f`
 
-    File: :file:`rs_ks_energy.irp.f`
+    .. code:: fortran
+
+        double precision	:: rs_ks_energy	
+        double precision	:: two_e_energy	
+        double precision	:: one_e_energy	
+        double precision	:: fock_matrix_energy	
+        double precision	:: trace_potential_xc	
+
 
     Range-separated Kohn-Sham energy containing the nuclear repulsion energy, and the various components of this quantity.
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_num`
+       * :c:data:`ao_one_e_integrals`
+       * :c:data:`ao_potential_alpha_xc`
+       * :c:data:`ao_two_e_integral_alpha`
+       * :c:data:`e_correlation_dft`
+       * :c:data:`e_exchange_dft`
+       * :c:data:`fock_matrix_ao_alpha`
+       * :c:data:`nuclear_repulsion`
+       * :c:data:`scf_density_matrix_ao_alpha`
+       * :c:data:`scf_density_matrix_ao_beta`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`extra_e_contrib_density`
 
  
-
 .. c:var:: rs_ks_energy
 
-    .. code:: text
 
-        double precision	:: rs_ks_energy
-        double precision	:: two_e_energy
-        double precision	:: one_e_energy
-        double precision	:: fock_matrix_energy
-        double precision	:: trace_potential_xc
+    File : :file:`rs_ks_energy.irp.f`
 
-    File: :file:`rs_ks_energy.irp.f`
+    .. code:: fortran
+
+        double precision	:: rs_ks_energy	
+        double precision	:: two_e_energy	
+        double precision	:: one_e_energy	
+        double precision	:: fock_matrix_energy	
+        double precision	:: trace_potential_xc	
+
 
     Range-separated Kohn-Sham energy containing the nuclear repulsion energy, and the various components of this quantity.
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_num`
+       * :c:data:`ao_one_e_integrals`
+       * :c:data:`ao_potential_alpha_xc`
+       * :c:data:`ao_two_e_integral_alpha`
+       * :c:data:`e_correlation_dft`
+       * :c:data:`e_exchange_dft`
+       * :c:data:`fock_matrix_ao_alpha`
+       * :c:data:`nuclear_repulsion`
+       * :c:data:`scf_density_matrix_ao_alpha`
+       * :c:data:`scf_density_matrix_ao_beta`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`extra_e_contrib_density`
 
  
-
 .. c:var:: trace_potential_xc
 
-    .. code:: text
 
-        double precision	:: rs_ks_energy
-        double precision	:: two_e_energy
-        double precision	:: one_e_energy
-        double precision	:: fock_matrix_energy
-        double precision	:: trace_potential_xc
+    File : :file:`rs_ks_energy.irp.f`
 
-    File: :file:`rs_ks_energy.irp.f`
+    .. code:: fortran
+
+        double precision	:: rs_ks_energy	
+        double precision	:: two_e_energy	
+        double precision	:: one_e_energy	
+        double precision	:: fock_matrix_energy	
+        double precision	:: trace_potential_xc	
+
 
     Range-separated Kohn-Sham energy containing the nuclear repulsion energy, and the various components of this quantity.
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_num`
+       * :c:data:`ao_one_e_integrals`
+       * :c:data:`ao_potential_alpha_xc`
+       * :c:data:`ao_two_e_integral_alpha`
+       * :c:data:`e_correlation_dft`
+       * :c:data:`e_exchange_dft`
+       * :c:data:`fock_matrix_ao_alpha`
+       * :c:data:`nuclear_repulsion`
+       * :c:data:`scf_density_matrix_ao_alpha`
+       * :c:data:`scf_density_matrix_ao_beta`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`extra_e_contrib_density`
 
  
-
 .. c:var:: two_e_energy
 
-    .. code:: text
 
-        double precision	:: rs_ks_energy
-        double precision	:: two_e_energy
-        double precision	:: one_e_energy
-        double precision	:: fock_matrix_energy
-        double precision	:: trace_potential_xc
+    File : :file:`rs_ks_energy.irp.f`
 
-    File: :file:`rs_ks_energy.irp.f`
+    .. code:: fortran
+
+        double precision	:: rs_ks_energy	
+        double precision	:: two_e_energy	
+        double precision	:: one_e_energy	
+        double precision	:: fock_matrix_energy	
+        double precision	:: trace_potential_xc	
+
 
     Range-separated Kohn-Sham energy containing the nuclear repulsion energy, and the various components of this quantity.
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_num`
+       * :c:data:`ao_one_e_integrals`
+       * :c:data:`ao_potential_alpha_xc`
+       * :c:data:`ao_two_e_integral_alpha`
+       * :c:data:`e_correlation_dft`
+       * :c:data:`e_exchange_dft`
+       * :c:data:`fock_matrix_ao_alpha`
+       * :c:data:`nuclear_repulsion`
+       * :c:data:`scf_density_matrix_ao_alpha`
+       * :c:data:`scf_density_matrix_ao_beta`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`extra_e_contrib_density`
 
  
  
 Subroutines / functions 
 ----------------------- 
  
+.. c:function:: check_coherence_functional:
 
 
-.. c:function:: check_coherence_functional
+    File : :file:`rs_ks_scf.irp.f`
 
-    .. code:: text
 
-        subroutine check_coherence_functional
+    Needs:
 
-    File: :file:`rs_ks_scf.irp.f`
+    .. hlist::
+       :columns: 3
 
-    
+       * :c:data:`exchange_functional`
+       * :c:data:`correlation_functional`
 
+    Called by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:func:`rs_ks_scf`
 

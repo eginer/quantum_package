@@ -1,4 +1,4 @@
-.. _generators_cas: 
+.. _module_generators_cas: 
  
 .. program:: generators_cas 
  

@@ -1,4 +1,4 @@
-.. _psiref_utils: 
+.. _module_psiref_utils: 
  
 .. program:: psiref_utils 
  

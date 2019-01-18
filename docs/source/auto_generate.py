@@ -9,15 +9,16 @@ from module_handler import get_binaries
 
 
 def generate_modules(abs_module, entities):
+  """Generates the doc for modules"""
   MODULE = os.path.split(abs_module)[-1]
   module = MODULE.lower()
   if module == "dummy":
     return
 
-  with open( os.path.join(abs_module,'README.rst'), 'r' ) as f:
+  with open(os.path.join(abs_module, 'README.rst'), 'r') as f:
     readme = f.read()
   rst = [
-    ".. _%s:"%(module), "", 
+    ".. _module_%s:"%(module), "", 
     ".. program:: %s"%(module), "", 
     ".. default-role:: option", "", 
     readme, "", 
@@ -25,19 +26,19 @@ def generate_modules(abs_module, entities):
 
   EZFIO = os.path.join(abs_module,'EZFIO.cfg')
   if os.path.exists(EZFIO):
-    rst += [ "", "EZFIO parameters", "----------------", "" ]
+    rst += ["", "EZFIO parameters", "----------------", ""]
     config_file = ConfigParser.ConfigParser()
-    with open(EZFIO,'r') as f:
+    with open(EZFIO, 'r') as f:
         config_file.readfp(f)
         for section in config_file.sections():
-            doc = config_file.get(section,"doc")
-            doc = "    " + doc.replace("\n","\n\n    ")+"\n"
+            doc = config_file.get(section, "doc")
+            doc = "    " + doc.replace("\n", "\n\n    ")+"\n"
             try:
-                default = config_file.get(section,"default")
+                default = config_file.get(section, "default")
                 default = "    " + "Default: %s\n"%default
             except:
                 default = ""
-            rst += [ ".. option:: %s\n"%(section), doc, default ]
+            rst += [".. option:: %s\n"%(section), doc, default]
 
   providers = []
   subroutines = {}
@@ -50,7 +51,7 @@ def generate_modules(abs_module, entities):
             elif e["type"] == 'p':
                 providers.append(e)
 
-  binaries = [ os.path.basename(f) for f in get_binaries(abs_module) ]
+  binaries = [os.path.basename(f) for f in get_binaries(abs_module)]
 
   if binaries:
     rst += ["", "Programs", "--------", ""]
@@ -64,27 +65,9 @@ def generate_modules(abs_module, entities):
         rst += [" * :ref:`%s`"%(b["name"])]
 
   if providers:
-    rst += [ "", "Providers", "---------", "" ]
+    rst += ["", "Providers", "---------", ""]
     for p in providers:
-        rst += [ """
-.. c:var:: %s
-
-    .. code:: text
-
-        %s
-
-    File: :file:`%s`
-
-    %s
-
-
-""" % ( p["name"],
-        "\n        ".join(p["decl"]),
-        p["file"],
-        " ".join(p["doc"]).replace("\n ","\n    "),
-      ) ]
-
-
+        rst += [p["rst"]]
 
   if subroutines:
     rst += [ "", "Subroutines / functions", "-----------------------", "" ]
@@ -92,46 +75,30 @@ def generate_modules(abs_module, entities):
         p = subroutines[p]
         if p["name"] in binaries:
            continue
-        rst += [ """
+        rst += [p["rst"]]
 
-.. c:function:: %s
-
-    .. code:: text
-
-        %s
-
-    File: :file:`%s`
-
-    %s
-
-
-""" % ( p["name"],
-        "\n        ".join(p["decl"]),
-        p["file"],
-        " ".join(p["doc"]).replace("\n ","\n    "),
-      ) ]
-
-
-  rst_file = os.path.join('modules',module+".rst")
+  rst_file = os.path.join('modules', module+".rst")
   with open(rst_file,'w') as f: 
-    f.write(" \n".join(rst))
+      f.write(" \n".join(rst))
 
-  for b in binaries:
-    rst = [
-        ".. _.%s.:"%(b), "", 
-        ".. program:: %s"%(b), "", 
-        "="*len(b), b, "="*len(b), "", "",
-        " ".join(subroutines[b]["doc"]), "", 
-        "File: :file:`%s`"%(os.path.join(module, subroutines[b]["file"]))
-    ]
-    rst_file = os.path.join('programs',b+".rst")
+  for b in subroutines:
+    if b not in binaries:
+      continue
+    p = subroutines[b]
+    rst = [".. _%s:"%(b), "", 
+           ".. program:: %s"%(b), "", 
+           "="*len(b), b, "="*len(b), "", ""]
+    rst += [line[3:] for line in p["rst"].splitlines()[8:]]
+    rst_file = os.path.join('programs', b+".rst")
     with open(rst_file,'w') as f: 
         f.write(" \n".join(rst))
 
 
 
 def generate_providers(abs_module):
-
+  """ Reads the IRPF90_man pages and returns a dict of dicts describing the
+      providers.
+  """
   MODULE = os.path.split(abs_module)[-1]
   module = MODULE.lower()
   if module == "dummy":
@@ -139,20 +106,23 @@ def generate_providers(abs_module):
 
   files    = {}
   entities = {}
-  mandir = os.path.join(abs_module,'IRPF90_man') 
+  mandir = os.path.join(abs_module, 'IRPF90_man') 
   if not os.path.exists(mandir):
     return {}
 
   for f in os.listdir(mandir):
-
-        filename = os.path.join(mandir,f)
+        if f.endswith('.rst'):
+          continue
+        filename = os.path.join(mandir, f)
         if f not in files:
             files[f] = 0
             name = f.split('.')[0] 
+            with open(os.path.join(mandir, name+".rst"), 'r') as g:
+              rst = g.read()
             with open(filename, 'r') as f:
                 state = 0
-                entity = { "decl": [], "doc": [] ,
-                    "name": name , "module": module }
+                entity = {"decl": [], "doc": [] ,
+                    "name": name , "module": module, "rst":rst}
                 text=f.read()
                 text_old = None
                 while text_old != text:
@@ -183,7 +153,7 @@ def generate_providers(abs_module):
                         continue
 
                     if state == 1:
-                        entity["decl"] += [ line ]
+                        entity["decl"] += [line]
                         if line.startswith("subroutine") \
                         or line.startswith("function ") \
                         or " function " in line:
@@ -193,7 +163,7 @@ def generate_providers(abs_module):
                     elif state == 2:
                         if line.startswith(".br"):
                           line = "\n\n"
-                        entity["doc"] += [ line ]
+                        entity["doc"] += [line]
                     elif state == 3:
                         if line.startswith(".br"):
                             continue
@@ -203,7 +173,7 @@ def generate_providers(abs_module):
                         except: pass
                         break
 
-            entities [ entity["name"] ] = entity
+            entities[entity["name"]] = entity
 
   return entities
 

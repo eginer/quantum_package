@@ -1,4 +1,4 @@
-.. _single_ref_method: 
+.. _module_single_ref_method: 
  
 .. program:: single_ref_method 
  

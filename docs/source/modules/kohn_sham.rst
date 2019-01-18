@@ -1,4 +1,4 @@
-.. _kohn_sham: 
+.. _module_kohn_sham: 
  
 .. program:: kohn_sham 
  
@@ -56,35 +56,46 @@ Programs
 Providers 
 --------- 
  
-
 .. c:var:: ks_energy
 
-    .. code:: text
 
-        double precision	:: ks_energy
-        double precision	:: two_e_energy
-        double precision	:: one_e_energy
-        double precision	:: fock_matrix_energy
-        double precision	:: trace_potential_xc
+    File : :file:`ks_enery.irp.f`
 
-    File: :file:`ks_enery.irp.f`
+    .. code:: fortran
+
+        double precision	:: ks_energy	
+        double precision	:: two_e_energy	
+        double precision	:: one_e_energy	
+        double precision	:: fock_matrix_energy	
+        double precision	:: trace_potential_xc	
+
 
     Kohn-Sham energy containing the nuclear repulsion energy, and the various components of this quantity.
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_num`
+       * :c:data:`ao_one_e_integrals`
+       * :c:data:`ao_potential_alpha_xc`
+       * :c:data:`ao_two_e_integral_alpha`
+       * :c:data:`e_correlation_dft`
+       * :c:data:`e_exchange_dft`
+       * :c:data:`fock_matrix_ao_alpha`
+       * :c:data:`nuclear_repulsion`
+       * :c:data:`scf_density_matrix_ao_alpha`
+       * :c:data:`scf_density_matrix_ao_beta`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`extra_e_contrib_density`
 
  
  
 Subroutines / functions 
 ----------------------- 
-
-.. c:function:: ks_cf
-
-    .. code:: text
-
-        subroutine ks_cf
-
-    File: :file:`ks_scf.irp.f`
-
-    Produce `Kohn_Sham` MO orbital output: mo_basis.mo_num mo_basis.mo_label mo_basis.ao_md5 mo_basis.mo_coef mo_basis.mo_occ output: kohn_sham.energy optional: mo_basis.mo_coef
-
-

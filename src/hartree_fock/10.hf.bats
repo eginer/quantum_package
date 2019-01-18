@@ -5,10 +5,11 @@ source $QP_ROOT/quantum_package.rc
 
 
 function run() {
-  thresh=1.e-9
+  thresh=1.e-8
   test_exe scf || skip
   qp set_file $1
   qp edit --check
+  qp reset --mos
   qp run scf 
   qp set_frozen_core 
   energy="$(ezfio get hartree_fock energy)"
@@ -21,7 +22,7 @@ function run() {
 }
 
 @test "SO" { # 0.539000
-  run so.ezfio -25.7175126082701
+  run so.ezfio -25.7175263371941
 }
 
 @test "HCO" { # 0.636700
@@ -81,7 +82,7 @@ function run() {
 }
 
 @test "DHNO" { # 12.856700
-  run  dhno.ezfio  -130.4278777822   
+  run  dhno.ezfio  -130.427877782432 
 }
 
 @test "NH3" { # 13.632200
@@ -105,7 +106,7 @@ function run() {
   [[ -n $TRAVIS ]] && skip
   qp set_file cu_nh3_4_2plus.ezfio
   qp set scf_utils thresh_scf 1.e-10
-  run  cu_nh3_4_2plus.ezfio -1862.97590388214
+  run  cu_nh3_4_2plus.ezfio -1862.97590358903
 }
 
 @test "SO2" { # 71.894900

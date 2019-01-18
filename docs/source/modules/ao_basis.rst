@@ -1,4 +1,4 @@
-.. _ao_basis: 
+.. _module_ao_basis: 
  
 .. program:: ao_basis 
  
@@ -94,461 +94,956 @@ EZFIO parameters
 Providers 
 --------- 
  
-
 .. c:var:: ao_coef_normalization_factor
 
-    .. code:: text
+
+    File : :file:`ao_basis/aos.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: ao_coef_normalized	(ao_num,ao_prim_num_max)
         double precision, allocatable	:: ao_coef_normalization_factor	(ao_num)
 
-    File: :file:`aos.irp.f`
 
     Coefficients including the |AO| normalization
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_coef`
+       * :c:data:`ao_expo`
+       * :c:data:`ao_num`
+       * :c:data:`ao_power`
+       * :c:data:`ao_prim_num`
+       * :c:data:`ao_prim_num_max`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_coef_normalization_libint_factor`
+       * :c:data:`ao_coef_normalized_ordered`
 
  
-
 .. c:var:: ao_coef_normalization_libint_factor
 
-    .. code:: text
+
+    File : :file:`ao_basis/aos.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: ao_coef_normalization_libint_factor	(ao_num)
 
-    File: :file:`aos.irp.f`
 
     |AO| normalization for interfacing with libint
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_coef_normalized`
+       * :c:data:`ao_expo`
+       * :c:data:`ao_l`
+       * :c:data:`ao_num`
+       * :c:data:`ao_prim_num`
+
 
  
-
 .. c:var:: ao_coef_normalized
 
-    .. code:: text
+
+    File : :file:`ao_basis/aos.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: ao_coef_normalized	(ao_num,ao_prim_num_max)
         double precision, allocatable	:: ao_coef_normalization_factor	(ao_num)
 
-    File: :file:`aos.irp.f`
 
     Coefficients including the |AO| normalization
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_coef`
+       * :c:data:`ao_expo`
+       * :c:data:`ao_num`
+       * :c:data:`ao_power`
+       * :c:data:`ao_prim_num`
+       * :c:data:`ao_prim_num_max`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_coef_normalization_libint_factor`
+       * :c:data:`ao_coef_normalized_ordered`
 
  
-
 .. c:var:: ao_coef_normalized_ordered
 
-    .. code:: text
+
+    File : :file:`ao_basis/aos.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: ao_coef_normalized_ordered	(ao_num,ao_prim_num_max)
         double precision, allocatable	:: ao_expo_ordered	(ao_num,ao_prim_num_max)
 
-    File: :file:`aos.irp.f`
 
     Sorted primitives to accelerate 4 index |MO| transformation
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_coef_normalized`
+       * :c:data:`ao_expo`
+       * :c:data:`ao_num`
+       * :c:data:`ao_prim_num`
+       * :c:data:`ao_prim_num_max`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_coef_normalized_ordered_transp`
+       * :c:data:`ao_expo_ordered_transp`
 
  
-
 .. c:var:: ao_coef_normalized_ordered_transp
 
-    .. code:: text
+
+    File : :file:`ao_basis/aos.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: ao_coef_normalized_ordered_transp	(ao_prim_num_max,ao_num)
 
-    File: :file:`aos.irp.f`
 
     Transposed :c:data:`ao_coef_normalized_ordered`
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_coef_normalized_ordered`
+       * :c:data:`ao_num`
+       * :c:data:`ao_prim_num_max`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_coef_normalized_ordered_transp_per_nucl`
+       * :c:data:`ao_deriv2_x`
+       * :c:data:`ao_deriv_1_x`
+       * :c:data:`ao_dipole_x`
+       * :c:data:`ao_integrals_n_e`
+       * :c:data:`ao_integrals_n_e_per_atom`
+       * :c:data:`ao_overlap`
+       * :c:data:`ao_overlap_abs`
+       * :c:data:`ao_pseudo_integrals_local`
+       * :c:data:`ao_pseudo_integrals_non_local`
+       * :c:data:`ao_spread_x`
+       * :c:data:`ao_two_e_integral_alpha`
+       * :c:data:`ao_two_e_integral_erf_schwartz`
+       * :c:data:`ao_two_e_integral_schwartz`
+       * :c:data:`ao_two_e_integrals_erf_in_map`
+       * :c:data:`ao_two_e_integrals_in_map`
 
  
-
 .. c:var:: ao_coef_normalized_ordered_transp_per_nucl
 
-    .. code:: text
+
+    File : :file:`ao_basis/aos_transp.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: ao_coef_normalized_ordered_transp_per_nucl	(ao_prim_num_max,N_AOs_max,nucl_num)
 
-    File: :file:`aos_transp.irp.f`
 
-    
+
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_coef_normalized_ordered_transp`
+       * :c:data:`ao_prim_num`
+       * :c:data:`ao_prim_num_max`
+       * :c:data:`nucl_aos_transposed`
+       * :c:data:`nucl_n_aos`
+       * :c:data:`nucl_num`
 
 
  
-
 .. c:var:: ao_expo_ordered
 
-    .. code:: text
+
+    File : :file:`ao_basis/aos.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: ao_coef_normalized_ordered	(ao_num,ao_prim_num_max)
         double precision, allocatable	:: ao_expo_ordered	(ao_num,ao_prim_num_max)
 
-    File: :file:`aos.irp.f`
 
     Sorted primitives to accelerate 4 index |MO| transformation
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_coef_normalized`
+       * :c:data:`ao_expo`
+       * :c:data:`ao_num`
+       * :c:data:`ao_prim_num`
+       * :c:data:`ao_prim_num_max`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_coef_normalized_ordered_transp`
+       * :c:data:`ao_expo_ordered_transp`
 
  
-
 .. c:var:: ao_expo_ordered_transp
 
-    .. code:: text
+
+    File : :file:`ao_basis/aos.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: ao_expo_ordered_transp	(ao_prim_num_max,ao_num)
 
-    File: :file:`aos.irp.f`
 
     Transposed :c:data:`ao_expo_ordered`
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_coef_normalized_ordered`
+       * :c:data:`ao_num`
+       * :c:data:`ao_prim_num_max`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_deriv2_x`
+       * :c:data:`ao_deriv_1_x`
+       * :c:data:`ao_dipole_x`
+       * :c:data:`ao_expo_ordered_transp_per_nucl`
+       * :c:data:`ao_integrals_n_e`
+       * :c:data:`ao_integrals_n_e_per_atom`
+       * :c:data:`ao_overlap`
+       * :c:data:`ao_overlap_abs`
+       * :c:data:`ao_pseudo_integrals_local`
+       * :c:data:`ao_pseudo_integrals_non_local`
+       * :c:data:`ao_spread_x`
+       * :c:data:`ao_two_e_integral_alpha`
+       * :c:data:`ao_two_e_integral_erf_schwartz`
+       * :c:data:`ao_two_e_integral_schwartz`
+       * :c:data:`ao_two_e_integrals_erf_in_map`
+       * :c:data:`ao_two_e_integrals_in_map`
 
  
-
 .. c:var:: ao_expo_ordered_transp_per_nucl
 
-    .. code:: text
+
+    File : :file:`ao_basis/aos_transp.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: ao_expo_ordered_transp_per_nucl	(ao_prim_num_max,N_AOs_max,nucl_num)
 
-    File: :file:`aos_transp.irp.f`
 
-    
+
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_expo_ordered_transp`
+       * :c:data:`ao_prim_num`
+       * :c:data:`ao_prim_num_max`
+       * :c:data:`nucl_aos_transposed`
+       * :c:data:`nucl_n_aos`
+       * :c:data:`nucl_num`
 
 
  
-
 .. c:var:: ao_l
 
-    .. code:: text
+
+    File : :file:`ao_basis/aos.irp.f`
+
+    .. code:: fortran
 
         integer, allocatable	:: ao_l	(ao_num)
-        integer	:: ao_l_max
+        integer	:: ao_l_max	
         character*(128), allocatable	:: ao_l_char	(ao_num)
 
-    File: :file:`aos.irp.f`
 
     :math:`l` value of the |AO|: :math`a+b+c` in :math:`x^a y^b z^c`
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_num`
+       * :c:data:`ao_power`
+       * :c:data:`l_to_charater`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_cart_to_sphe_coef`
+       * :c:data:`ao_coef_normalization_libint_factor`
+       * :c:data:`ao_l_char_space`
+       * :c:data:`nucl_list_shell_aos`
 
  
-
 .. c:var:: ao_l_char
 
-    .. code:: text
+
+    File : :file:`ao_basis/aos.irp.f`
+
+    .. code:: fortran
 
         integer, allocatable	:: ao_l	(ao_num)
-        integer	:: ao_l_max
+        integer	:: ao_l_max	
         character*(128), allocatable	:: ao_l_char	(ao_num)
 
-    File: :file:`aos.irp.f`
 
     :math:`l` value of the |AO|: :math`a+b+c` in :math:`x^a y^b z^c`
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_num`
+       * :c:data:`ao_power`
+       * :c:data:`l_to_charater`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_cart_to_sphe_coef`
+       * :c:data:`ao_coef_normalization_libint_factor`
+       * :c:data:`ao_l_char_space`
+       * :c:data:`nucl_list_shell_aos`
 
  
-
 .. c:var:: ao_l_char_space
 
-    .. code:: text
+
+    File : :file:`ao_basis/aos.irp.f`
+
+    .. code:: fortran
 
         character*(4), allocatable	:: ao_l_char_space	(ao_num)
 
-    File: :file:`aos.irp.f`
 
     Converts an l value to a string
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_l`
+       * :c:data:`ao_num`
+       * :c:data:`ao_power`
+
 
  
-
 .. c:var:: ao_l_max
 
-    .. code:: text
+
+    File : :file:`ao_basis/aos.irp.f`
+
+    .. code:: fortran
 
         integer, allocatable	:: ao_l	(ao_num)
-        integer	:: ao_l_max
+        integer	:: ao_l_max	
         character*(128), allocatable	:: ao_l_char	(ao_num)
 
-    File: :file:`aos.irp.f`
 
     :math:`l` value of the |AO|: :math`a+b+c` in :math:`x^a y^b z^c`
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_num`
+       * :c:data:`ao_power`
+       * :c:data:`l_to_charater`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_cart_to_sphe_coef`
+       * :c:data:`ao_coef_normalization_libint_factor`
+       * :c:data:`ao_l_char_space`
+       * :c:data:`nucl_list_shell_aos`
 
  
-
 .. c:var:: ao_power_ordered_transp_per_nucl
 
-    .. code:: text
+
+    File : :file:`ao_basis/aos_transp.irp.f`
+
+    .. code:: fortran
 
         integer, allocatable	:: ao_power_ordered_transp_per_nucl	(3,N_AOs_max,nucl_num)
 
-    File: :file:`aos_transp.irp.f`
 
-    
+
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_power`
+       * :c:data:`nucl_aos_transposed`
+       * :c:data:`nucl_n_aos`
+       * :c:data:`nucl_num`
 
 
  
-
 .. c:var:: ao_prim_num_max
 
-    .. code:: text
 
-        integer	:: ao_prim_num_max
+    File : :file:`ao_basis/aos.irp.f`
 
-    File: :file:`aos.irp.f`
+    .. code:: fortran
+
+        integer	:: ao_prim_num_max	
+
 
     Max number of primitives.
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_prim_num`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_coef`
+       * :c:data:`ao_coef_normalized`
+       * :c:data:`ao_coef_normalized_ordered`
+       * :c:data:`ao_coef_normalized_ordered_transp`
+       * :c:data:`ao_coef_normalized_ordered_transp_per_nucl`
+       * :c:data:`ao_expo`
+       * :c:data:`ao_expo_ordered_transp`
+       * :c:data:`ao_expo_ordered_transp_per_nucl`
 
  
-
 .. c:var:: cart_to_sphe_0
 
-    .. code:: text
+
+    File : :file:`ao_basis/spherical_to_cartesian.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: cart_to_sphe_0	(1,1)
 
-    File: :file:`spherical_to_cartesian.irp.f`
 
     Spherical -> Cartesian Transformation matrix for l=0
 
 
  
-
 .. c:var:: cart_to_sphe_1
 
-    .. code:: text
+
+    File : :file:`ao_basis/spherical_to_cartesian.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: cart_to_sphe_1	(3,3)
 
-    File: :file:`spherical_to_cartesian.irp.f`
 
     Spherical -> Cartesian Transformation matrix for l=1
 
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_cart_to_sphe_coef`
 
  
-
 .. c:var:: cart_to_sphe_2
 
-    .. code:: text
+
+    File : :file:`ao_basis/spherical_to_cartesian.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: cart_to_sphe_2	(6,5)
 
-    File: :file:`spherical_to_cartesian.irp.f`
 
     Spherical -> Cartesian Transformation matrix for l=2
 
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_cart_to_sphe_coef`
 
  
-
 .. c:var:: cart_to_sphe_3
 
-    .. code:: text
+
+    File : :file:`ao_basis/spherical_to_cartesian.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: cart_to_sphe_3	(10,7)
 
-    File: :file:`spherical_to_cartesian.irp.f`
 
     Spherical -> Cartesian Transformation matrix for l=3
 
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_cart_to_sphe_coef`
 
  
-
 .. c:var:: cart_to_sphe_4
 
-    .. code:: text
+
+    File : :file:`ao_basis/spherical_to_cartesian.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: cart_to_sphe_4	(15,9)
 
-    File: :file:`spherical_to_cartesian.irp.f`
 
     Spherical -> Cartesian Transformation matrix for l=4
 
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_cart_to_sphe_coef`
 
  
-
 .. c:var:: cart_to_sphe_5
 
-    .. code:: text
+
+    File : :file:`ao_basis/spherical_to_cartesian.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: cart_to_sphe_5	(21,11)
 
-    File: :file:`spherical_to_cartesian.irp.f`
 
     Spherical -> Cartesian Transformation matrix for l=5
 
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_cart_to_sphe_coef`
 
  
-
 .. c:var:: cart_to_sphe_6
 
-    .. code:: text
+
+    File : :file:`ao_basis/spherical_to_cartesian.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: cart_to_sphe_6	(28,13)
 
-    File: :file:`spherical_to_cartesian.irp.f`
 
     Spherical -> Cartesian Transformation matrix for l=6
 
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_cart_to_sphe_coef`
 
  
-
 .. c:var:: cart_to_sphe_7
 
-    .. code:: text
+
+    File : :file:`ao_basis/spherical_to_cartesian.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: cart_to_sphe_7	(36,15)
 
-    File: :file:`spherical_to_cartesian.irp.f`
 
     Spherical -> Cartesian Transformation matrix for l=7
 
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_cart_to_sphe_coef`
 
  
-
 .. c:var:: cart_to_sphe_8
 
-    .. code:: text
+
+    File : :file:`ao_basis/spherical_to_cartesian.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: cart_to_sphe_8	(45,17)
 
-    File: :file:`spherical_to_cartesian.irp.f`
 
     Spherical -> Cartesian Transformation matrix for l=8
 
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_cart_to_sphe_coef`
 
  
-
 .. c:var:: cart_to_sphe_9
 
-    .. code:: text
+
+    File : :file:`ao_basis/spherical_to_cartesian.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: cart_to_sphe_9	(55,19)
 
-    File: :file:`spherical_to_cartesian.irp.f`
 
     Spherical -> Cartesian Transformation matrix for l=9
 
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_cart_to_sphe_coef`
 
  
-
 .. c:var:: l_to_charater
 
-    .. code:: text
+
+    File : :file:`ao_basis/aos.irp.f`
+
+    .. code:: fortran
 
         character*(128), allocatable	:: l_to_charater	(0:7)
 
-    File: :file:`aos.irp.f`
 
     Character corresponding to the "l" value of an |AO|
 
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_l`
 
  
-
 .. c:var:: n_aos_max
 
-    .. code:: text
+
+    File : :file:`ao_basis/aos.irp.f`
+
+    .. code:: fortran
 
         integer, allocatable	:: nucl_n_aos	(nucl_num)
-        integer	:: n_aos_max
+        integer	:: n_aos_max	
 
-    File: :file:`aos.irp.f`
 
     Number of |AOs| per atom
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_nucl`
+       * :c:data:`ao_num`
+       * :c:data:`nucl_num`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_coef_normalized_ordered_transp_per_nucl`
+       * :c:data:`ao_expo_ordered_transp_per_nucl`
+       * :c:data:`ao_power_ordered_transp_per_nucl`
+       * :c:data:`nucl_aos`
+       * :c:data:`nucl_aos_transposed`
+       * :c:data:`nucl_list_shell_aos`
 
  
-
 .. c:var:: n_pt_max_i_x
 
-    .. code:: text
 
-        integer	:: n_pt_max_integrals
-        integer	:: n_pt_max_i_x
+    File : :file:`ao_basis/dimensions_integrals.irp.f`
 
-    File: :file:`dimensions_integrals.irp.f`
+    .. code:: fortran
+
+        integer	:: n_pt_max_integrals	
+        integer	:: n_pt_max_i_x	
+
 
     Number of points used in the numerical integrations.
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_power`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_integrals_n_e`
+       * :c:data:`ao_integrals_n_e_per_atom`
+       * :c:data:`ao_two_e_integral_alpha`
+       * :c:data:`ao_two_e_integral_erf_schwartz`
+       * :c:data:`ao_two_e_integral_schwartz`
+       * :c:data:`ao_two_e_integrals_erf_in_map`
+       * :c:data:`ao_two_e_integrals_in_map`
+       * :c:data:`gauleg_t2`
 
  
-
 .. c:var:: n_pt_max_integrals
 
-    .. code:: text
 
-        integer	:: n_pt_max_integrals
-        integer	:: n_pt_max_i_x
+    File : :file:`ao_basis/dimensions_integrals.irp.f`
 
-    File: :file:`dimensions_integrals.irp.f`
+    .. code:: fortran
+
+        integer	:: n_pt_max_integrals	
+        integer	:: n_pt_max_i_x	
+
 
     Number of points used in the numerical integrations.
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_power`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_integrals_n_e`
+       * :c:data:`ao_integrals_n_e_per_atom`
+       * :c:data:`ao_two_e_integral_alpha`
+       * :c:data:`ao_two_e_integral_erf_schwartz`
+       * :c:data:`ao_two_e_integral_schwartz`
+       * :c:data:`ao_two_e_integrals_erf_in_map`
+       * :c:data:`ao_two_e_integrals_in_map`
+       * :c:data:`gauleg_t2`
 
  
-
 .. c:var:: nucl_aos
 
-    .. code:: text
+
+    File : :file:`ao_basis/aos.irp.f`
+
+    .. code:: fortran
 
         integer, allocatable	:: nucl_aos	(nucl_num,N_AOs_max)
 
-    File: :file:`aos.irp.f`
 
     List of |AOs| centered on each atom
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_nucl`
+       * :c:data:`ao_num`
+       * :c:data:`nucl_n_aos`
+       * :c:data:`nucl_num`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`nucl_aos_transposed`
+       * :c:data:`nucl_list_shell_aos`
 
  
-
 .. c:var:: nucl_aos_transposed
 
-    .. code:: text
+
+    File : :file:`ao_basis/aos_transp.irp.f`
+
+    .. code:: fortran
 
         integer, allocatable	:: nucl_aos_transposed	(N_AOs_max,nucl_num)
 
-    File: :file:`aos_transp.irp.f`
 
     List of AOs attached on each atom
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_nucl`
+       * :c:data:`ao_num`
+       * :c:data:`nucl_aos`
+       * :c:data:`nucl_n_aos`
+       * :c:data:`nucl_num`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_coef_normalized_ordered_transp_per_nucl`
+       * :c:data:`ao_expo_ordered_transp_per_nucl`
+       * :c:data:`ao_power_ordered_transp_per_nucl`
 
  
-
 .. c:var:: nucl_list_shell_aos
 
-    .. code:: text
+
+    File : :file:`ao_basis/aos.irp.f`
+
+    .. code:: fortran
 
         integer, allocatable	:: nucl_list_shell_aos	(nucl_num,N_AOs_max)
         integer, allocatable	:: nucl_num_shell_aos	(nucl_num)
 
-    File: :file:`aos.irp.f`
 
-    Index of the shell type |AOs| and of the corresponding |AOs| By convention, for p,d,f and g |AOs|, we take the index of the |AO| with the the corresponding power in the x axis
+    Index of the shell type |AOs| and of the corresponding |AOs|
+    By convention, for p,d,f and g |AOs|, we take the index
+    of the |AO| with the the corresponding power in the x axis
+
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_l`
+       * :c:data:`ao_power`
+       * :c:data:`nucl_aos`
+       * :c:data:`nucl_n_aos`
+       * :c:data:`nucl_num`
 
 
  
-
 .. c:var:: nucl_n_aos
 
-    .. code:: text
+
+    File : :file:`ao_basis/aos.irp.f`
+
+    .. code:: fortran
 
         integer, allocatable	:: nucl_n_aos	(nucl_num)
-        integer	:: n_aos_max
+        integer	:: n_aos_max	
 
-    File: :file:`aos.irp.f`
 
     Number of |AOs| per atom
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_nucl`
+       * :c:data:`ao_num`
+       * :c:data:`nucl_num`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_coef_normalized_ordered_transp_per_nucl`
+       * :c:data:`ao_expo_ordered_transp_per_nucl`
+       * :c:data:`ao_power_ordered_transp_per_nucl`
+       * :c:data:`nucl_aos`
+       * :c:data:`nucl_aos_transposed`
+       * :c:data:`nucl_list_shell_aos`
 
  
-
 .. c:var:: nucl_num_shell_aos
 
-    .. code:: text
+
+    File : :file:`ao_basis/aos.irp.f`
+
+    .. code:: fortran
 
         integer, allocatable	:: nucl_list_shell_aos	(nucl_num,N_AOs_max)
         integer, allocatable	:: nucl_num_shell_aos	(nucl_num)
 
-    File: :file:`aos.irp.f`
 
-    Index of the shell type |AOs| and of the corresponding |AOs| By convention, for p,d,f and g |AOs|, we take the index of the |AO| with the the corresponding power in the x axis
+    Index of the shell type |AOs| and of the corresponding |AOs|
+    By convention, for p,d,f and g |AOs|, we take the index
+    of the |AO| with the the corresponding power in the x axis
+
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_l`
+       * :c:data:`ao_power`
+       * :c:data:`nucl_aos`
+       * :c:data:`nucl_n_aos`
+       * :c:data:`nucl_num`
 
 
  
@@ -556,102 +1051,195 @@ Providers
 Subroutines / functions 
 ----------------------- 
  
+.. c:function:: ao_power_index:
 
 
-.. c:function:: ao_power_index
+    File : :file:`ao_basis/aos.irp.f`
 
-    .. code:: text
+    .. code:: fortran
 
         integer function ao_power_index(nx,ny,nz)
 
-    File: :file:`aos.irp.f`
 
-    Unique index given to a triplet of powers: 
-
+    Unique index given to a triplet of powers:
+    
     :math:`\frac{1}{2} (l-n_x) (l-n_x+1) + n_z + 1`
 
-
  
+.. c:function:: ao_value:
 
 
-.. c:function:: ao_value
+    File : :file:`ao_basis/aos_value.irp.f`
 
-    .. code:: text
+    .. code:: fortran
 
         double precision function ao_value(i,r)
 
-    File: :file:`aos_value.irp.f`
 
     return the value of the ith ao at point r
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_coef_normalized_ordered_transp`
+       * :c:data:`ao_power`
+       * :c:data:`ao_expo_ordered_transp`
+       * :c:data:`ao_prim_num`
+       * :c:data:`ao_nucl`
+       * :c:data:`nucl_coord`
 
  
+.. c:function:: give_all_aos_and_grad_and_lapl_at_r:
 
 
-.. c:function:: give_all_aos_and_grad_and_lapl_at_r
+    File : :file:`ao_basis/aos_value.irp.f`
 
-    .. code:: text
+    .. code:: fortran
 
         subroutine give_all_aos_and_grad_and_lapl_at_r(r,aos_array,aos_grad_array,aos_lapl_array)
 
-    File: :file:`aos_value.irp.f`
 
-    input      : r(1) ==> r(1) = x, r(2) = y, r(3) = z output     : aos_array(i) = ao(i) evaluated at r : aos_grad_array(1,i) = gradient X of the ao(i) evaluated at r
+    input      : r(1) ==> r(1) = x, r(2) = y, r(3) = z
+    output     : aos_array(i) = ao(i) evaluated at r
+               : aos_grad_array(1,i) = gradient X of the ao(i) evaluated at r
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_expo_ordered_transp_per_nucl`
+       * :c:data:`ao_power_ordered_transp_per_nucl`
+       * :c:data:`nucl_n_aos`
+       * :c:data:`ao_num`
+       * :c:data:`ao_prim_num`
+       * :c:data:`ao_coef_normalized_ordered_transp_per_nucl`
+       * :c:data:`nucl_aos_transposed`
+       * :c:data:`nucl_coord`
+       * :c:data:`nucl_num`
+
+    Called by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:func:`give_all_mos_and_grad_and_lapl_at_r`
 
  
+.. c:function:: give_all_aos_and_grad_at_r:
 
 
-.. c:function:: give_all_aos_and_grad_at_r
+    File : :file:`ao_basis/aos_value.irp.f`
 
-    .. code:: text
+    .. code:: fortran
 
         subroutine give_all_aos_and_grad_at_r(r,aos_array,aos_grad_array)
 
-    File: :file:`aos_value.irp.f`
 
-    input      : r(1) ==> r(1) = x, r(2) = y, r(3) = z output     : aos_array(i) = ao(i) evaluated at r : aos_grad_array(1,i) = gradient X of the ao(i) evaluated at r
+    input      : r(1) ==> r(1) = x, r(2) = y, r(3) = z
+    output     : aos_array(i) = ao(i) evaluated at r
+               : aos_grad_array(1,i) = gradient X of the ao(i) evaluated at r
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_expo_ordered_transp_per_nucl`
+       * :c:data:`ao_power_ordered_transp_per_nucl`
+       * :c:data:`nucl_n_aos`
+       * :c:data:`ao_num`
+       * :c:data:`ao_prim_num`
+       * :c:data:`ao_coef_normalized_ordered_transp_per_nucl`
+       * :c:data:`nucl_aos_transposed`
+       * :c:data:`nucl_coord`
+       * :c:data:`nucl_num`
+
+    Called by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:func:`give_all_mos_and_grad_at_r`
 
  
+.. c:function:: give_all_aos_at_r:
 
 
-.. c:function:: give_all_aos_at_r
+    File : :file:`ao_basis/aos_value.irp.f`
 
-    .. code:: text
+    .. code:: fortran
 
         subroutine give_all_aos_at_r(r,aos_array)
 
-    File: :file:`aos_value.irp.f`
 
-    input : r == r(1) = x and so on aos_array(i) = aos(i) evaluated in r
+    input : r == r(1) = x and so on
+    aos_array(i) = aos(i) evaluated in r
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_expo_ordered_transp_per_nucl`
+       * :c:data:`ao_power_ordered_transp_per_nucl`
+       * :c:data:`nucl_n_aos`
+       * :c:data:`ao_num`
+       * :c:data:`ao_prim_num`
+       * :c:data:`ao_coef_normalized_ordered_transp_per_nucl`
+       * :c:data:`nucl_aos_transposed`
+       * :c:data:`nucl_coord`
+       * :c:data:`nucl_num`
+
+    Called by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:func:`give_all_mos_at_r`
 
  
+.. c:function:: give_all_aos_at_r_old:
 
 
-.. c:function:: give_all_aos_at_r_old
+    File : :file:`ao_basis/aos_value.irp.f`
 
-    .. code:: text
+    .. code:: fortran
 
         subroutine give_all_aos_at_r_old(r,aos_array)
 
-    File: :file:`aos_value.irp.f`
 
     gives the values of aos at a given point r
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_num`
 
  
+.. c:function:: primitive_value:
 
 
-.. c:function:: primitive_value
+    File : :file:`ao_basis/aos_value.irp.f`
 
-    .. code:: text
+    .. code:: fortran
 
         double precision function primitive_value(i,j,r)
 
-    File: :file:`aos_value.irp.f`
 
     return the value of the jth primitive of ith ao at point r WITHOUT THE COEF
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_expo_ordered_transp`
+       * :c:data:`ao_nucl`
+       * :c:data:`nucl_coord`
+       * :c:data:`ao_power`
 

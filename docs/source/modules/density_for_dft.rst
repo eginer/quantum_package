@@ -1,4 +1,4 @@
-.. _density_for_dft: 
+.. _module_density_for_dft: 
  
 .. program:: density_for_dft 
  
@@ -38,110 +38,269 @@ EZFIO parameters
 Providers 
 --------- 
  
-
 .. c:var:: one_body_dm_mo_alpha_one_det
 
-    .. code:: text
+
+    File : :file:`density_for_dft/density_for_dft.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: one_body_dm_mo_alpha_one_det	(mo_num,mo_num,N_states)
         double precision, allocatable	:: one_body_dm_mo_beta_one_det	(mo_num,mo_num,N_states)
 
-    File: :file:`density_for_dft.irp.f`
 
     One body density matrix on the |MO| basis for a single determinant
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`elec_alpha_num`
+       * :c:data:`elec_beta_num`
+       * :c:data:`mo_num`
+       * :c:data:`n_states`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`one_e_dm_mo_alpha_for_dft`
+       * :c:data:`one_e_dm_mo_beta_for_dft`
 
  
-
 .. c:var:: one_body_dm_mo_beta_one_det
 
-    .. code:: text
+
+    File : :file:`density_for_dft/density_for_dft.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: one_body_dm_mo_alpha_one_det	(mo_num,mo_num,N_states)
         double precision, allocatable	:: one_body_dm_mo_beta_one_det	(mo_num,mo_num,N_states)
 
-    File: :file:`density_for_dft.irp.f`
 
     One body density matrix on the |MO| basis for a single determinant
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`elec_alpha_num`
+       * :c:data:`elec_beta_num`
+       * :c:data:`mo_num`
+       * :c:data:`n_states`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`one_e_dm_mo_alpha_for_dft`
+       * :c:data:`one_e_dm_mo_beta_for_dft`
 
  
-
 .. c:var:: one_e_dm_alpha_ao_for_dft
 
-    .. code:: text
+
+    File : :file:`density_for_dft/density_for_dft.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: one_e_dm_alpha_ao_for_dft	(ao_num,ao_num,N_states)
         double precision, allocatable	:: one_e_dm_beta_ao_for_dft	(ao_num,ao_num,N_states)
 
-    File: :file:`density_for_dft.irp.f`
 
     one body density matrix on the AO basis based on one_e_dm_mo_alpha_for_dft
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_num`
+       * :c:data:`mo_coef`
+       * :c:data:`mo_num`
+       * :c:data:`n_states`
+       * :c:data:`one_e_dm_mo_alpha_for_dft`
+       * :c:data:`one_e_dm_mo_beta_for_dft`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`one_e_dm_alpha_at_r`
+       * :c:data:`one_e_dm_alpha_in_r`
+       * :c:data:`one_e_dm_and_grad_alpha_in_r`
 
  
-
 .. c:var:: one_e_dm_average_mo_for_dft
 
-    .. code:: text
+
+    File : :file:`density_for_dft/density_for_dft.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: one_e_dm_average_mo_for_dft	(mo_num,mo_num)
 
-    File: :file:`density_for_dft.irp.f`
 
-    
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`mo_num`
+       * :c:data:`n_states`
+       * :c:data:`one_e_dm_mo_for_dft`
+       * :c:data:`state_average_weight`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`short_range_hartree_operator`
 
  
-
 .. c:var:: one_e_dm_beta_ao_for_dft
 
-    .. code:: text
+
+    File : :file:`density_for_dft/density_for_dft.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: one_e_dm_alpha_ao_for_dft	(ao_num,ao_num,N_states)
         double precision, allocatable	:: one_e_dm_beta_ao_for_dft	(ao_num,ao_num,N_states)
 
-    File: :file:`density_for_dft.irp.f`
 
     one body density matrix on the AO basis based on one_e_dm_mo_alpha_for_dft
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ao_num`
+       * :c:data:`mo_coef`
+       * :c:data:`mo_num`
+       * :c:data:`n_states`
+       * :c:data:`one_e_dm_mo_alpha_for_dft`
+       * :c:data:`one_e_dm_mo_beta_for_dft`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`one_e_dm_alpha_at_r`
+       * :c:data:`one_e_dm_alpha_in_r`
+       * :c:data:`one_e_dm_and_grad_alpha_in_r`
 
  
-
 .. c:var:: one_e_dm_mo_alpha_for_dft
 
-    .. code:: text
+
+    File : :file:`density_for_dft/density_for_dft.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: one_e_dm_mo_alpha_for_dft	(mo_num,mo_num,N_states)
 
-    File: :file:`density_for_dft.irp.f`
 
     density matrix for alpha electrons in the MO basis used for all DFT calculations based on the density
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`damping_for_rs_dft`
+       * :c:data:`data_one_e_dm_alpha_mo`
+       * :c:data:`density_for_dft`
+       * :c:data:`mo_coef`
+       * :c:data:`mo_num`
+       * :c:data:`n_states`
+       * :c:data:`one_body_dm_mo_alpha_one_det`
+       * :c:data:`one_e_dm_mo_alpha`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`one_e_dm_alpha_ao_for_dft`
+       * :c:data:`one_e_dm_mo_for_dft`
+       * :c:data:`psi_dft_energy_kinetic`
+       * :c:data:`trace_v_xc`
 
  
-
 .. c:var:: one_e_dm_mo_beta_for_dft
 
-    .. code:: text
+
+    File : :file:`density_for_dft/density_for_dft.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: one_e_dm_mo_beta_for_dft	(mo_num,mo_num,N_states)
 
-    File: :file:`density_for_dft.irp.f`
 
     density matrix for beta  electrons in the MO basis used for all DFT calculations based on the density
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`damping_for_rs_dft`
+       * :c:data:`data_one_e_dm_beta_mo`
+       * :c:data:`density_for_dft`
+       * :c:data:`mo_coef`
+       * :c:data:`mo_num`
+       * :c:data:`n_states`
+       * :c:data:`one_body_dm_mo_alpha_one_det`
+       * :c:data:`one_e_dm_mo_alpha`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`one_e_dm_alpha_ao_for_dft`
+       * :c:data:`one_e_dm_mo_for_dft`
+       * :c:data:`psi_dft_energy_kinetic`
+       * :c:data:`trace_v_xc`
 
  
-
 .. c:var:: one_e_dm_mo_for_dft
 
-    .. code:: text
+
+    File : :file:`density_for_dft/density_for_dft.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: one_e_dm_mo_for_dft	(mo_num,mo_num,N_states)
 
-    File: :file:`density_for_dft.irp.f`
 
-    
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`mo_num`
+       * :c:data:`n_states`
+       * :c:data:`one_e_dm_mo_alpha_for_dft`
+       * :c:data:`one_e_dm_mo_beta_for_dft`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`one_e_dm_average_mo_for_dft`
+       * :c:data:`short_range_hartree_operator`
 

@@ -1,4 +1,4 @@
-.. _pseudo: 
+.. _module_pseudo: 
  
 .. program:: pseudo 
  

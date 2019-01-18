@@ -1,4 +1,4 @@
-.. _iterations: 
+.. _module_iterations: 
  
 .. program:: iterations 
  
@@ -41,74 +41,159 @@ EZFIO parameters
 Providers 
 --------- 
  
-
 .. c:var:: extrapolated_energy
 
-    .. code:: text
+
+    File : :file:`iterations/iterations.irp.f`
+
+    .. code:: fortran
 
         double precision, allocatable	:: extrapolated_energy	(N_iter,N_states)
 
-    File: :file:`iterations.irp.f`
 
     Extrapolated energy, using E_var = f(PT2) where PT2=0
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`energy_iterations`
+       * :c:data:`n_det`
+       * :c:data:`n_iter`
+       * :c:data:`n_states`
+       * :c:data:`pt2_iterations`
+
 
  
-
 .. c:var:: n_iter
 
-    .. code:: text
 
-        integer	:: n_iter
+    File : :file:`iterations/io.irp.f`
 
-    File: :file:`io.irp.f`
+    .. code:: fortran
+
+        integer	:: n_iter	
+
 
     number of iterations
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`ezfio_filename`
+       * :c:data:`mpi_master`
+       * :c:data:`n_states`
+       * :c:data:`output_wall_time_0`
+
+    Needed by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`extrapolated_energy`
 
  
  
 Subroutines / functions 
 ----------------------- 
  
+.. c:function:: print_extrapolated_energy:
 
 
-.. c:function:: print_extrapolated_energy
-
-    .. code:: text
-
-        subroutine print_extrapolated_energy
-
-    File: :file:`print_extrapolation.irp.f`
+    File : :file:`iterations/print_extrapolation.irp.f`
 
     Print the extrapolated energy in the output
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`extrapolated_energy`
+       * :c:data:`n_states`
+       * :c:data:`n_det`
+       * :c:data:`pt2_iterations`
+       * :c:data:`n_iter`
+
+    Called by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:func:`run_cipsi`
+       * :c:func:`run_stochastic_cipsi`
 
  
+.. c:function:: print_summary:
 
 
-.. c:function:: print_summary
+    File : :file:`iterations/print_summary.irp.f`
 
-    .. code:: text
+    .. code:: fortran
 
-        subroutine print_summary(e_,pt2_,error_,variance_,norm_,n_det_,n_occ_pattern_,n_st)
+        subroutine print_summary(e_,pt2_,error_,variance_,norm_,n_det_,n_occ_pattern_,n_st,s2_)
 
-    File: :file:`print_summary.irp.f`
 
     Print the extrapolated energy in the output
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`do_pt2`
+       * :c:data:`s2_eig`
+
+    Called by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:func:`run_cipsi`
+       * :c:func:`run_stochastic_cipsi`
 
  
+.. c:function:: save_iterations:
 
 
-.. c:function:: save_iterations
+    File : :file:`iterations/iterations.irp.f`
 
-    .. code:: text
+    .. code:: fortran
 
         subroutine save_iterations(e_, pt2_,n_)
 
-    File: :file:`iterations.irp.f`
 
     Update the energy in the EZFIO file.
 
+    Needs:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:data:`n_iter`
+       * :c:data:`energy_iterations`
+       * :c:data:`n_states`
+       * :c:data:`pt2_iterations`
+       * :c:data:`n_det_iterations`
+
+    Called by:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:func:`run_cipsi`
+       * :c:func:`run_stochastic_cipsi`
+
+    Calls:
+
+    .. hlist::
+       :columns: 3
+
+       * :c:func:`ezfio_set_iterations_energy_iterations`
+       * :c:func:`ezfio_set_iterations_n_det_iterations`
+       * :c:func:`ezfio_set_iterations_n_iter`
+       * :c:func:`ezfio_set_iterations_pt2_iterations`
 
