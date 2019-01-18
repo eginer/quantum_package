@@ -47,7 +47,7 @@ subroutine u_0_H_u_0(e_0,s_0,u_0,n,keys_tmp,Nint,N_st,sze)
     allocate (v_0(n,N_states_diag),s_vec(n,N_states_diag), u_1(n,N_states_diag))
     u_1(1:n,1:N_states) = u_0(1:n,1:N_states)
     u_1(1:n,N_states+1:N_states_diag) = 0.d0
-    call H_S2_u_0_nstates_zmq(v_0,s_vec,u_1,N_states_diag,n)
+    call H_S2_u_0_nstates_zmq(v_0,s_vec,u_1,N_st,n)
     deallocate(u_1)
   else
     allocate (v_0(n,N_st),s_vec(n,N_st),u_1(n,N_st))
