@@ -106,7 +106,7 @@ function run() {
   [[ -n $TRAVIS ]] && skip
   qp set_file cu_nh3_4_2plus.ezfio
   qp set scf_utils thresh_scf 1.e-10
-  run  cu_nh3_4_2plus.ezfio -1862.97590388214
+  run  cu_nh3_4_2plus.ezfio -1862.97590358903
 }
 
 @test "SO2" { # 71.894900

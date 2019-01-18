@@ -21,7 +21,7 @@ _configure_Complete()
         return 0
         ;;
     -c)
-        COMPREPLY=( $(compgen -W "$(echo config/*.cfg ./*.cfg)" -- $cur ) )
+        COMPREPLY=( $(compgen -W "$(find . -maxdepth 2 -name *.cfg)" -- $cur ) )
         return 0
         ;;
     *)
