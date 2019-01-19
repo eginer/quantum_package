@@ -8,9 +8,9 @@ qp_stop
 
 Requests for a clean termination of the program.
 
-This will have the effect to exit the Davidson diagonalization, the |SCF|
-procedure or the determinant selection to save the current wave function and
-exit the program.
+This will have the effect to exit the Davidson diagonalization, the
+|SCF| procedure or the determinant selection to save the current wave
+function and exit the program.
 
 Usage
 -----

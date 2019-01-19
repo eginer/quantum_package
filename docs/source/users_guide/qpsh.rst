@@ -7,8 +7,8 @@ qpsh
 .. program:: qpsh
 
 
-:command:`qpsh` is the |qp| shell. It is a Bash shell with all
-the required evironment variables loaded, a modified prompt, and the
+:command:`qpsh` is the |qp| shell. It is a Bash shell with all the
+required evironment variables loaded, a modified prompt, and the
 :ref:`qp` command.
 
 
@@ -19,9 +19,9 @@ the required evironment variables loaded, a modified prompt, and the
 qp
 ==
 
-This command is a hub to the most used command within |qp|.
-The power of the :ref:`qpsh` shell is the auto-completion that comes
-when the :kbd:`<Tab>` key is pressed with the :ref:`qp` command.
+This command is a hub to the most used command within |qp|. The power
+of the :ref:`qpsh` shell is the auto-completion that comes when the
+:kbd:`<Tab>` key is pressed with the :ref:`qp` command.
 
 
 EZFIO access
@@ -98,6 +98,9 @@ Running programs
   Runs :ref:`qp_run`, :ref:`qp_srun`, or :ref:`qp_mpirun` using the current 
   |EZFIO| directory.
 
+.. option:: stop
+
+  :command:`qp stop` : runs :ref:`qp_stop`
 
 Getting help
 ------------
@@ -143,6 +146,7 @@ The ``qp_`` commands can be run without specifying the |EZFIO| directory:
 .. option:: update
 
   :command:`qp update` : runs :ref:`qp_update`
+
 
 
 

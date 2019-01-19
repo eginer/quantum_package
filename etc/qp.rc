@@ -33,6 +33,7 @@ Usage:
   Running programs:
 
     qp (run|srun|mpirun) <program>
+    qp stop
 
   Getting help:
 
@@ -47,7 +48,6 @@ Usage:
     qp set_frozen_core                <qp_command> --help
     qp set_mo_class
     qp update
-    qp stop
 
 EOF
 }
