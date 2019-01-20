@@ -3,8 +3,8 @@ Quick-start guide
 =================
 
 This tutorial should teach you everything you need to get started with
-the the basics of the |qp|. 
-As an example, we will run a frozen core |CIPSI| calculation on the HCN molecule in the 631-G basis set.
+the the basics of the |qp|. As an example, we will run a frozen core
+|CIPSI| calculation on the HCN molecule in the 631-G basis set.
 
 
 Demo video
@@ -19,20 +19,20 @@ Hands on
 .. important::
 
    Before using the |qp|, it is required to source the file
-   :file:`quantum_package.rc` if it has not been done already in the current
-   shell.
+   :file:`quantum_package.rc` if it has not been done already in the
+   current shell.
 
 Create the EZFIO database
 -------------------------
 
 The data relative to calculations are stored in an |EZFIO| database.
-|EZFIO| is a hierarchical data format which uses the hierarchy of the file
-system to organize the data, as files stored in a directory.
-The data in the |EZFIO| directory are stored as plain text files, so it can be
-opened with any text editor.
+|EZFIO| is a hierarchical data format which uses the hierarchy of the
+file system to organize the data, as files stored in a directory. The
+data in the |EZFIO| directory are stored as plain text files, so it can
+be opened with any text editor.
 To access the data of the |EZFIO| database, the APIs (Fortran, |Python|,
-|OCaml| or Bash) provided by |EZFIO| should be used, or tools using these APIs
-such as :ref:`qp_edit` provided with the |qp|.
+|OCaml| or Bash) provided by |EZFIO| should be used, or tools using
+these APIs such as :ref:`qp_edit` provided with the |qp|.
 
 First, create an `xyz` file containing the coordinates of the molecule.
 The file :file:`hcn.xyz` contains::
@@ -51,8 +51,8 @@ create an |EZFIO| database with the 6-31G basis set:
 
   qp_create_ezfio -b "6-31G" hcn.xyz -o hcn
 
-The EZFIO database now contains data relative to the nuclear coordinates and the atomic
-basis set:
+The EZFIO database now contains data relative to the nuclear coordinates
+and the atomic basis set:
 
 .. code:: bash
 
@@ -63,8 +63,8 @@ basis set:
 Run a Hartree-Fock calculation
 ------------------------------
 
-The program :ref:`qp_run` is the driver program of the |qp|. To run an SCF calculation,
-just run 
+The program :ref:`qp_run` is the driver program of the |qp|. To run a
+|SCF| calculation, just run
 
 .. code:: bash
 
@@ -76,8 +76,9 @@ The expected energy is ``-92.827856698`` au.
 
     The documentation of the :ref:`hartree_fock` module and that of the :c:func:`scf` program.
 
-This creates the |MOs| in the |EZFIO| database that will be used to perform any other post-SCF method. 
-The |qp| does not handle symmetry and the |MOs| are stored by increasing order of Fock energies. 
+This creates the |MOs| in the |EZFIO| database that will be used to
+perform any other post-SCF method. The |qp| does not handle symmetry and
+the |MOs| are stored by increasing order of Fock energies.
 
 Choose the target |MO| space
 ----------------------------

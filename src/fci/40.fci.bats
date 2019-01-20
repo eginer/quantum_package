@@ -40,12 +40,12 @@ function run() {
 @test "H2O2" { # 12.9214s
   qp set_file h2o2.ezfio
   qp set_mo_class --core="[1-2]" --act="[3-24]" --del="[25-38]"
-  run -151.004935161539 1.e-5
+  run -151.004903613692 1.e-5
 }
 
 @test "HBO" { # 13.3144s
   qp set_file hbo.ezfio
-  run -100.212752584824 1.e-5
+  run -100.212729100021 1.e-5
 }
 
 @test "H2O" { # 11.3727s
@@ -59,6 +59,7 @@ function run() {
 }
 
 @test "SO" { # 13.4952s
+  [[ -n $TRAVIS ]] && skip
   qp set_file so.ezfio
   run -26.0083256834896 1.e-5
 }

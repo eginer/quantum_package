@@ -58,10 +58,8 @@ Refaire les benchmarks
 Parler dans le papier de rPT2
 
 # Toto
-qp_stop : pour forcer a terminer proprement le programme (kill clean)
-
-Changer irpf90 pour qu'il produise des fichiers rst.
-
 Re-design de qp command
 
-S^2 en simple precision dans davidson
+S^2 en simple precision dans davidson?
+
+Doc: plugins et qp_plugins

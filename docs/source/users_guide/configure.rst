@@ -5,7 +5,8 @@ configure
 
 .. program:: configure
 
-Program that can either configure the compilations options and download/install external dependencies (see the installation description). 
+Program that can either configure the compilations options or download/install
+external dependencies (see the installation description). 
 
 Usage
 -----

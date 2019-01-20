@@ -37,6 +37,7 @@ subroutine davidson_run_slave(thread,iproc)
   zmq_to_qp_run_socket = new_zmq_to_qp_run_socket()
 
   integer, external :: connect_to_taskserver
+  integer, external :: zmq_get_N_states_diag
 
 
 
@@ -46,6 +47,9 @@ subroutine davidson_run_slave(thread,iproc)
 
   zmq_socket_push      = new_zmq_push_socket(thread)
 
+  if (zmq_get_N_states_diag(zmq_to_qp_run_socket, 1) == -1) then
+    stop 'Unable to get N_states_diag from ZMQ server'
+  endif
   call davidson_slave_work(zmq_to_qp_run_socket, zmq_socket_push, N_states_diag, N_det, worker_id)
 
   integer, external :: disconnect_from_taskserver
@@ -324,7 +328,6 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
   if (zmq_put_N_states_diag(zmq_to_qp_run_socket, 1) == -1) then
     stop 'Unable to put N_states_diag on ZMQ server'
   endif
-  N_states_diag = N_states_diag_save
 
   if (zmq_put_psi(zmq_to_qp_run_socket,1) == -1) then
     stop 'Unable to put psi on ZMQ server'
@@ -442,6 +445,9 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
   !$OMP END SINGLE
   !$OMP TASKWAIT
   !$OMP END PARALLEL
+
+  N_states_diag = N_states_diag_save
+  SOFT_TOUCH N_states_diag
 end
 
 

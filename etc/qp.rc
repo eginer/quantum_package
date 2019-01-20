@@ -33,6 +33,7 @@ Usage:
   Running programs:
 
     qp (run|srun|mpirun) <program>
+    qp stop
 
   Getting help:
 

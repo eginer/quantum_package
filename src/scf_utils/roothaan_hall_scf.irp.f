@@ -13,6 +13,7 @@ END_DOC
   integer                        :: iteration_SCF,dim_DIIS,index_dim_DIIS
 
   integer                        :: i,j
+  logical, external              :: qp_stop
   double precision, allocatable :: mo_coef_save(:,:)
 
   PROVIDE ao_md5 mo_occ level_shift
@@ -145,6 +146,7 @@ END_DOC
     if (Delta_energy_SCF < 0.d0) then
       call save_mos
     endif
+    if (qp_stop()) exit
 
   enddo
 

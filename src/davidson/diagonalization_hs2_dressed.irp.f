@@ -71,7 +71,7 @@ subroutine davidson_diag_hs2(dets_in,u_in,s2_out,dim_in,energies,sze,N_st,N_st_d
 end
 
 
-subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_st,N_st_diag,Nint,dressing_state,converged)
+subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_st,N_st_diag_in,Nint,dressing_state,converged)
   use bitmasks
   implicit none
   BEGIN_DOC
@@ -92,19 +92,19 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
   !
   ! N_st : Number of eigenstates
   !
-  ! N_st_diag : Number of states in which H is diagonalized. Assumed > sze
+  ! N_st_diag_in : Number of states in which H is diagonalized. Assumed > sze
   !
   ! Initial guess vectors are not necessarily orthonormal
   END_DOC
-  integer, intent(in)            :: dim_in, sze, N_st, N_st_diag, Nint
+  integer, intent(in)            :: dim_in, sze, N_st, N_st_diag_in, Nint
   integer(bit_kind), intent(in)  :: dets_in(Nint,2,sze)
   double precision,  intent(in)  :: H_jj(sze)
   integer, intent(in)            :: dressing_state
-  double precision,  intent(inout) :: s2_out(N_st_diag)
-  double precision, intent(inout) :: u_in(dim_in,N_st_diag)
-  double precision, intent(out)  :: energies(N_st_diag)
+  double precision,  intent(inout) :: s2_out(N_st_diag_in)
+  double precision, intent(inout) :: u_in(dim_in,N_st_diag_in)
+  double precision, intent(out)  :: energies(N_st_diag_in)
 
-  integer                        :: iter
+  integer                        :: iter, N_st_diag
   integer                        :: i,j,k,l,m
   logical, intent(inout)         :: converged
 
@@ -123,10 +123,14 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
   double precision               :: cpu, wall
   integer                        :: shift, shift2, itermax, istate
   double precision               :: r1, r2, alpha
-  logical                        :: state_ok(N_st_diag*davidson_sze_max)
+  logical                        :: state_ok(N_st_diag_in*davidson_sze_max)
   integer                        :: nproc_target
+  integer                        :: order(N_st_diag_in)
+  double precision               :: cmax
+
   include 'constants.include.F'
 
+  N_st_diag = N_st_diag_in
   !DIR$ ATTRIBUTES ALIGN : $IRP_ALIGN :: U, W, S, y, h, lambda
   if (N_st_diag*3 > sze) then
     print *,  'error in Davidson :'
@@ -153,9 +157,6 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
   write(6,'(A)') 'Davidson Diagonalization'
   write(6,'(A)') '------------------------'
   write(6,'(A)') ''
-  call write_int(6,N_st,'Number of states')
-  call write_int(6,N_st_diag,'Number of states in diagonalization')
-  call write_int(6,sze,'Number of determinants')
 
   ! Find max number of cores to fit in memory
   ! -----------------------------------------
@@ -191,11 +192,20 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
       exit
     endif
 
-    nproc_target = nproc_target - 1
+    if (N_st_diag > 2*N_states) then
+      N_st_diag = N_st_diag-1
+    else if (itermax > 4) then
+      itermax = itermax - 1
+    else
+      nproc_target = nproc_target - 1
+    endif
 
   enddo
   nthreads_davidson = nproc_target
   TOUCH nthreads_davidson
+  call write_int(6,N_st,'Number of states')
+  call write_int(6,N_st_diag,'Number of states in diagonalization')
+  call write_int(6,sze,'Number of determinants')
   call write_int(6,nproc_target,'Number of threads for diagonalization')
   call write_double(6, r1, 'Memory(Gb)')
 
@@ -425,9 +435,6 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
 
       if (state_following) then
 
-        integer                        :: order(N_st_diag)
-        double precision               :: cmax
-
         overlap = -1.d0
         do k=1,shift2
           do i=1,shift2
@@ -497,7 +504,7 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
       enddo
 
 
-      write(6,'(1X,I3,1X,100(1X,F16.10,1X,F11.6,1X,E11.3))')  iter, to_print(1:3,1:N_st)
+      write(*,'(1X,I3,1X,100(1X,F16.10,1X,F11.6,1X,E11.3))') iter, to_print(1:3,1:N_st)
       call davidson_converged(lambda,residual_norm,wall,iter,cpu,N_st,converged)
       do k=1,N_st
         if (residual_norm(k) > 1.e8) then
@@ -508,6 +515,13 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
       if (converged) then
         exit
       endif
+
+      logical, external :: qp_stop
+      if (qp_stop()) then
+        converged = .True.
+        exit
+      endif
+
 
     enddo
 

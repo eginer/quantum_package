@@ -160,6 +160,17 @@ let run check_only ?ndet ?state ezfio_filename =
 
   Ezfio.set_file ezfio_filename;
 
+  (* Clean qp_stop status *)
+  [ "qpstop" ; "qpkill" ]
+  |> List.iter ~f:(fun f ->
+    let stopfile = 
+      Filename.concat (Qpackage.ezfio_work ezfio_filename) f
+    in
+    match Sys.file_exists stopfile with
+    | `Yes -> Sys.remove stopfile
+    | _ -> ()
+  );
+
   (* Reorder basis set *)
   begin
     let aos =
