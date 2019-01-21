@@ -38,7 +38,7 @@ def comp_path(path):
 
 from qp_path import QP_ROOT, QP_SRC, QP_EZFIO
 
-LIB = "" # join(QP_ROOT, "lib", "rdtsc.o") 
+LIB = "-lz" 
 EZFIO_LIB = join("$QP_ROOT", "lib", "libezfio_irp.a") 
 ZMQ_LIB = join("$QP_ROOT", "lib", "libf77zmq.a") + " "  + join("$QP_ROOT", "lib", "libzmq.a") + " -lstdc++ -lrt -ldl"
 ROOT_BUILD_NINJA = join("$QP_ROOT", "config", "build.ninja")
@@ -93,7 +93,7 @@ def ninja_create_env_variable(pwd_config_file):
     """
     Return some ninja variable with the env variable expanded
     FC, FCFLAGS, IRPF90, IRPF90_FLAGS
-    The env variable is usefull for the generation of EZFIO, and IRPF90
+    The env variable is useful for the generation of EZFIO, and IRPF90
     """
     l_string = ["builddir = {0}".format(os.path.dirname(ROOT_BUILD_NINJA)),
                 ""]
@@ -275,7 +275,7 @@ def ninja_ezfio_rule():
 
     install_lib_ezfio = comp_path(join(QP_EZFIO, "lib", "libezfio_irp.a"))
     l_cmd = ["cd {0}".format(comp_path(QP_EZFIO))] + l_flag
-    l_cmd += ["rm -f make.config ; ninja && rm -f {1} ; ln -sf {0} {1}".format(install_lib_ezfio, EZFIO_LIB)]
+    l_cmd += ["make && rm -f {1} ; ln -sf {0} {1}".format(install_lib_ezfio, EZFIO_LIB)]
 
     l_string = ["rule build_ezfio",
                 "   command = {0}".format(" ; ".join(l_cmd)),
@@ -286,8 +286,8 @@ def ninja_ezfio_rule():
 
 def ninja_ezfio_build(l_ezfio_config, l_util):
     """
-    Rule for create the ezfio
-    we depend of the ezfio_config set by the user or created bu EZFIO.cfg
+    Rule for creating the ezfio
+    we depend of the ezfio_config set by the user or created by EZFIO.cfg
     """
 
     l_ezfio_config = [i.path_in_ezfio for i in l_ezfio_config]
