@@ -196,12 +196,6 @@ fi
 echo "Copying external libraries"
 #     --------------------------
 
-cp --recursive -- ${QP_ROOT}/external/emsl ${QPACKAGE_STATIC}/external
-if [[ $? -ne 0 ]] ; then
-  error 'cp --recursive -- ${QP_ROOT}/external/emsl ${QPACKAGE_STATIC}/'
-  exit 1
-fi
-
 cp --recursive -- ${QP_ROOT}/external/Python ${QPACKAGE_STATIC}/external/
 mkdir ${QPACKAGE_STATIC}/external/ezfio
 cp --recursive -- ${QP_ROOT}/external/ezfio/Python ${QPACKAGE_STATIC}/external/ezfio/
