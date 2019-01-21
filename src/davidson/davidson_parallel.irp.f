@@ -36,8 +36,8 @@ subroutine davidson_run_slave(thread,iproc)
 
   zmq_to_qp_run_socket = new_zmq_to_qp_run_socket()
 
-  integer, external :: connect_to_taskserver
-  integer, external :: zmq_get_N_states_diag
+  integer, external              :: connect_to_taskserver
+  integer, external              :: zmq_get_N_states_diag
 
 
 
@@ -47,9 +47,13 @@ subroutine davidson_run_slave(thread,iproc)
 
   zmq_socket_push      = new_zmq_push_socket(thread)
 
-  if (zmq_get_N_states_diag(zmq_to_qp_run_socket, 1) == -1) then
-    stop 'Unable to get N_states_diag from ZMQ server'
-  endif
+  do
+    if (zmq_get_N_states_diag(zmq_to_qp_run_socket, 1) /= -1) then
+      exit
+    endif
+    print *,  'Waiting for N_states_diag in ', irp_here
+    call sleep(1)
+  enddo
   call davidson_slave_work(zmq_to_qp_run_socket, zmq_socket_push, N_states_diag, N_det, worker_id)
 
   integer, external :: disconnect_from_taskserver
