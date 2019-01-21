@@ -38,31 +38,35 @@ function run() {
   run -76.22975602077072 -75.80609108747208 
 }
 
+
+
+
+
 @test "H2S" { # 7.42152s
+  [[ -n $TRAVIS ]] && skip
   qp set_file h2s.ezfio
   run -398.853701416768 -398.519020035337
 }
 
 @test "N2H4" { # 15.8394s
+  [[ -n $TRAVIS ]] && skip
   qp set_file n2h4.ezfio
   qp set_mo_class --core="[1-2]" --act="[3-24]" --del="[25-48]"
   run -111.366247464687 -110.990795989548
 }
 
 @test "H2O2" { # 16.3164s
+  [[ -n $TRAVIS ]] && skip
   qp set_file h2o2.ezfio
   qp set_mo_class --core="[1-2]" --act="[3-24]" --del="[25-38]"
   run -151.003775695363 -150.650247854914
 }
 
 @test "OH" { # 18.2159s
+  [[ -n $TRAVIS ]] && skip
   qp set_file oh.ezfio
   run -75.6087472926588 -75.5370393736601
 }
-
-
-
-
 
 @test "CH4" { # 19.821s
   [[ -n $TRAVIS ]] && skip
