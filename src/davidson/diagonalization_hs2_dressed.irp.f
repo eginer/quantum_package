@@ -73,6 +73,7 @@ end
 
 subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_st,N_st_diag_in,Nint,dressing_state,converged)
   use bitmasks
+  use mmap_module
   implicit none
   BEGIN_DOC
   ! Davidson diagonalization with specific diagonal elements of the H matrix
@@ -113,7 +114,6 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
   integer                        :: k_pairs, kl
 
   integer                        :: iter2, itertot
-  double precision, allocatable  :: W(:,:),  U(:,:), S(:,:), overlap(:,:)
   double precision, allocatable  :: y(:,:), h(:,:), lambda(:), s2(:)
   double precision, allocatable  :: s_(:,:), s_tmp(:,:)
   double precision               :: diag_h_mat_elem
@@ -127,6 +127,8 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
   integer                        :: nproc_target
   integer                        :: order(N_st_diag_in)
   double precision               :: cmax
+  double precision, allocatable  :: U(:,:), overlap(:,:)
+  double precision, pointer      :: W(:,:),  S(:,:)
 
   include 'constants.include.F'
 
@@ -165,11 +167,17 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
   double precision :: rss
   integer :: maxab
   maxab = max(N_det_alpha_unique, N_det_beta_unique)+1
+  if (disk_based_davidson) then
+    m=0
+  else
+    m=1
+  endif
 
   call resident_memory(rss)
   do
     r1 = 8.d0 *                                   &! bytes
-         ( 3.d0*(dble(sze)*(N_st_diag*itermax))   &! W,U,S
+         ( dble(sze)*(N_st_diag*itermax)          &! U
+         + 2.d0*dble(sze*m)*(N_st_diag*itermax)     &! W,S
          + 4.d0*(N_st_diag*itermax)**2            &! h,y,s_,s_tmp
          + 2.d0*(N_st_diag*itermax)               &! s2,lambda
          + 1.d0*(N_st_diag)                       &! residual_norm
@@ -229,11 +237,23 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
   write(6,'(A)') write_buffer(1:6+41*N_st)
 
 
+  if (disk_based_davidson) then
+    ! Create memory-mapped files for W and S
+    type(c_ptr) :: ptr_w, ptr_s
+    integer :: fd_s, fd_w
+    call mmap(trim(ezfio_work_dir)//'davidson_w', (/int(sze,8),int(N_st_diag*itermax,8)/),&
+        8, fd_w, .False., ptr_w)
+    call c_f_pointer(ptr_w, w, (/sze,N_st_diag*itermax/))
+    call mmap(trim(ezfio_work_dir)//'davidson_s', (/int(sze,8),int(N_st_diag*itermax,8)/),&
+        8, fd_s, .False., ptr_s)
+    call c_f_pointer(ptr_s, s, (/sze,N_st_diag*itermax/))
+  else
+    allocate(W(sze,N_st_diag*itermax), S(sze,N_st_diag*itermax))
+  endif
+
   allocate(                                                          &
       ! Large
-      W(sze,N_st_diag*itermax),                                    &
       U(sze,N_st_diag*itermax),                                    &
-      S(sze,N_st_diag*itermax),                                    &
 
       ! Small
       h(N_st_diag*itermax,N_st_diag*itermax),                        &
@@ -246,8 +266,8 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
 
   h = 0.d0
   U = 0.d0
-  W = 0.d0
-  S = 0.d0
+!  W = 0.d0
+!  S = 0.d0
   y = 0.d0
   s_ = 0.d0
   s_tmp = 0.d0
@@ -545,10 +565,22 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
   write(6,'(A)') ''
   call write_time(6)
 
+  if (disk_based_davidson)then
+    ! Remove temp files
+    integer, external :: getUnitAndOpen
+    call munmap( (/int(sze,8),int(N_st_diag*itermax,8)/), 8, fd_w, ptr_w )
+    fd_w = getUnitAndOpen(trim(ezfio_work_dir)//'davidson_w','r')
+    close(fd_w,status='delete')
+    call munmap( (/int(sze,8),int(N_st_diag*itermax,8)/), 8, fd_s, ptr_s )
+    fd_s = getUnitAndOpen(trim(ezfio_work_dir)//'davidson_s','r')
+    close(fd_s,status='delete')
+  else
+    deallocate(W,S)
+  endif
+
   deallocate (                                                       &
-      W, residual_norm,                                              &
+      residual_norm,                                                 &
       U, overlap,                                                    &
-      S,                                                             &
       h,                                                             &
       y, s_, s_tmp,                                                  &
       lambda                                                         &

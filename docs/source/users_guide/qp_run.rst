@@ -17,6 +17,10 @@ the time limit with ::
 
     #SBATCH --signal=B:USR1@120
 
+There is a directory named :file:`work` in the |EZFIO|. This directory
+will contain work files which can be large, so it is recommended to
+work in the scratch directory. To archive the |EZFIO| directory, it is
+recommended to remove the :file:`work` directory.
 
 Usage
 -----

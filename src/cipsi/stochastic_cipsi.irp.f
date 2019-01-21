@@ -10,6 +10,8 @@ subroutine run_stochastic_cipsi
 
   double precision :: rss
   double precision, external :: memory_of_double
+  PROVIDE H_apply_buffer_allocated
+
   threshold_generators = 1.d0
   SOFT_TOUCH threshold_generators
 
@@ -21,8 +23,6 @@ subroutine run_stochastic_cipsi
   double precision               :: hf_energy_ref
   logical                        :: has
   double precision               :: relative_error
-
-  PROVIDE H_apply_buffer_allocated
 
   relative_error=PT2_relative_error
 
@@ -76,7 +76,7 @@ subroutine run_stochastic_cipsi
     variance = 0.d0
     norm = 0.d0
     call ZMQ_pt2(psi_energy_with_nucl_rep,pt2,relative_error,error, variance, &
-       norm, to_select) ! Stochastic PT2 and selection
+      norm, to_select) ! Stochastic PT2 and selection
 
     correlation_energy_ratio = (psi_energy_with_nucl_rep(1) - hf_energy_ref)  /     &
                     (psi_energy_with_nucl_rep(1) + pt2(1) - hf_energy_ref)
