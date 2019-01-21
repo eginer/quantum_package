@@ -22,10 +22,6 @@ BEGIN_PROVIDER [ double precision, dress_E0_denominator, (N_states) ]
      print *,  h0_type, ' not implemented'
      stop
    endif
-!  call u_0_H_u_0(dress_E0_denominator,psi_coef,N_det,psi_det,N_int,N_states,size(psi_coef,1))
-!  do i=N_det+1,N_states
-!    dress_E0_denominator(i) = 0.d0
-!  enddo
   call write_double(6,dress_E0_denominator(1)+nuclear_repulsion, 'dress Energy denominator')
  else
    dress_E0_denominator = -huge(1.d0)

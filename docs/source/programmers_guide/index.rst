@@ -11,6 +11,7 @@ Index of Modules
 
    /modules/*
    /programmers_guide/qp_*
+   /programmers_guide/conventions
 
 
 .. Auto-generated file

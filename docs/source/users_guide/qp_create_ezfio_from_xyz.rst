@@ -1,19 +1,19 @@
-.. _qp_create_ezfio_from_xyz:
+.. _qp_create_ezfio:
 
-qp_create_ezfio_from_xyz
-========================
+qp_create_ezfio
+===============
 
-.. program:: qp_create_ezfio_from_xyz
+.. program:: qp_create_ezfio
 
-This command creates an |EZFIO| directory from a standard `xyz` file or from a
-`z-matrix` file in Gaussian format.
+This command creates an |EZFIO| directory from a standard `xyz` file or
+from a `z-matrix` file in Gaussian format.
 
 Usage 
 -----
 
 .. code:: bash
 
-   qp_create_ezfio_from_xyz [-a] -b <string> [-c <int>] [-d <float>] 
+   qp_create_ezfio [-a] -b <string> [-c <int>] [-d <float>] 
       [-h] [-m <int>] [-o EZFIO_DIR] [-p <string>] [-x] [--] FILE
 
 
@@ -24,18 +24,18 @@ Usage
 
 .. option:: -b, --basis=<string>
 
-   Name of basis set.  The basis set is defined as a single string if all the
-   atoms are taken from the same basis set, otherwise specific elements can be
-   defined as follows::
+   Name of basis set. The basis set is defined as a single string if
+   all the atoms are taken from the same basis set, otherwise specific
+   elements can be defined as follows::
 
       -b "cc-pcvdz | H:cc-pvdz | C:6-31g"
       -b "cc-pvtz | 1,H:sto-3g | 3,H:6-31g"
 
-   By default, the basis set is obtained from the local database of the |qp|.
-   This option is mandatory.
+   By default, the basis set is obtained from the local database of the.
+   |qp| This option is mandatory                                       .
 
-   If  ``<string>`` is set to ``show``, the list of all available basis sets is
-   displayed.
+   If ``<string>`` is set to ``show``, the list of all available basis
+   sets is displayed.
 
 
 .. option:: -c, --charge=<int>
@@ -76,15 +76,16 @@ Usage
 Using custom atomic basis sets
 ------------------------------
 
-If a file with the same name as the basis set exists, this file will be read.
-For example, if the file containing the basis set is named ``custom.basis``,
-and the *xyz* geometry is in ``molecule.xyz``, the following should be used::
+If a file with the same name as the basis set exists, this file will
+be read. For example, if the file containing the basis set is named
+``custom.basis``, and the *xyz* geometry is in ``molecule.xyz``, the
+following should be used::
 
-    qp_create_ezfio_from_xyz -b custom.basis molecule.xyz
+    qp_create_ezfio -b custom.basis molecule.xyz
 
-Basis set files should be given in |GAMESS| format, where the full names of the
-atoms are given, and the basis sets for each element are separated by a blank
-line.  Here is an example ::
+Basis set files should be given in |GAMESS| format, where the full
+names of the atoms are given, and the basis sets for each element are
+separated by a blank line. Here is an example ::
 
       HYDROGEN
       S   3
@@ -130,22 +131,22 @@ line.  Here is an example ::
 Using custom pseudo-potentials
 ------------------------------
 
-As for the basis set, if a file with the same name as the pseudo-potential
-exists, this file will be read.  For example, if the file containing the custom
-pseudo-potential is named ``custom.pseudo``, the basis set is named
-``custom.basis``, and the *xyz* geometry is in ``molecule.xyz``, the following
-command should be used
+As for the basis set, if a file with the same name as the
+pseudo-potential exists, this file will be read. For example, if the
+file containing the custom pseudo-potential is named ``custom.pseudo``,
+the basis set is named ``custom.basis``, and the *xyz* geometry is in
+``molecule.xyz``, the following command should be used
 
 .. code:: bash
 
-    qp_create_ezfio_from_xyz -b custom.basis -p custom.pseudo molecule.xyz
+    qp_create_ezfio -b custom.basis -p custom.pseudo molecule.xyz
 
-Pseudo-potential files should be given in a format very close to |GAMESS|
-format.  The first line should be formatted as ``%s GEN %d %d`` where the first
-string is the chemical symbol, the first integer is the number of core
-electrons to be removed and the second integer is LMAX+1 as in |GAMESS| format.
-The pseudo-potential for each element are separated by a blank line.  Here is
-an example ::
+Pseudo-potential files should be given in a format very close to
+|GAMESS| format. The first line should be formatted as ``%s GEN %d %d``
+where the first string is the chemical symbol, the first integer is
+the number of core electrons to be removed and the second integer is
+LMAX+1 as in |GAMESS| format. The pseudo-potential for each element are
+separated by a blank line. Here is an example ::
 
       Ne GEN 2 1
       3

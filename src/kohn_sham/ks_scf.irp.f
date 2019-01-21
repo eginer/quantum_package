@@ -1,4 +1,4 @@
-program srs_ks_cf
+program ks_scf
   BEGIN_DOC
 ! Produce `Kohn_Sham` MO orbital
 ! output: mo_basis.mo_num mo_basis.mo_label mo_basis.ao_md5 mo_basis.mo_coef mo_basis.mo_occ

@@ -1,3 +1,5 @@
+* To reference the QP program prog, use :ref:`.prog.`
+
 * See docs/source/_static/links.rst file for many useful macros
 * option provider :option:`name_of_module provider`
 * subroutine      :c:func:`my_subroutine` 

@@ -59,6 +59,7 @@ subroutine run_cipsi
   double precision :: threshold_generators_save
   threshold_generators_save = threshold_generators
   double precision :: error(N_states)
+  logical, external :: qp_stop
 
   correlation_energy_ratio = 0.d0
 
@@ -89,7 +90,7 @@ subroutine run_cipsi
 
     call save_energy(psi_energy_with_nucl_rep, pt2)
     call write_double(6,correlation_energy_ratio, 'Correlation ratio')
-    call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm,N_det,N_occ_pattern)
+    call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm,N_det,N_occ_pattern,N_states,psi_s2)
 
     do k=1,N_states
       rpt2(:) = pt2(:)/(1.d0 + norm(k))
@@ -98,6 +99,8 @@ subroutine run_cipsi
     call save_iterations(psi_energy_with_nucl_rep(1:N_states),rpt2,N_det)
     call print_extrapolated_energy()
     N_iter += 1
+
+    if (qp_stop()) exit 
 
     n_det_before = N_det
     to_select = N_det
@@ -113,38 +116,41 @@ subroutine run_cipsi
     call save_wavefunction
     rpt2(:) = 0.d0
     call save_energy(psi_energy_with_nucl_rep, rpt2)
+    if (qp_stop()) exit 
   enddo
 
-  if (N_det < N_det_max) then
-      call diagonalize_CI
-      call save_wavefunction
-      rpt2(:) = 0.d0
-      call save_energy(psi_energy_with_nucl_rep, rpt2)
+  if (.not.qp_stop()) then
+    if (N_det < N_det_max) then
+        call diagonalize_CI
+        call save_wavefunction
+        rpt2(:) = 0.d0
+        call save_energy(psi_energy_with_nucl_rep, rpt2)
+    endif
+
+    if (do_pt2) then
+      pt2 = 0.d0
+      variance = 0.d0
+      norm = 0.d0
+      threshold_generators = 1d0
+      SOFT_TOUCH threshold_generators
+      call ZMQ_pt2(psi_energy_with_nucl_rep, pt2,relative_error,error,variance, &
+        norm,0) ! Stochastic PT2
+      SOFT_TOUCH threshold_generators
+      call save_energy(psi_energy_with_nucl_rep, pt2)
+    endif
+    print *,  'N_det             = ', N_det
+    print *,  'N_sop             = ', N_occ_pattern
+    print *,  'N_states          = ', N_states
+    print*,   'correlation_ratio = ', correlation_energy_ratio
+
+
+    do k=1,N_states
+      rpt2(:) = pt2(:)/(1.d0 + norm(k))
+    enddo
+
+    call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm,N_det,N_occ_pattern,N_states,psi_s2)
+    call save_iterations(psi_energy_with_nucl_rep(1:N_states),rpt2,N_det)
+    call print_extrapolated_energy()
   endif
-
-  if (do_pt2) then
-    pt2 = 0.d0
-    variance = 0.d0
-    norm = 0.d0
-    threshold_generators = 1d0
-    SOFT_TOUCH threshold_generators
-    call ZMQ_pt2(psi_energy_with_nucl_rep, pt2,relative_error,error,variance, &
-      norm,0) ! Stochastic PT2
-    SOFT_TOUCH threshold_generators
-    call save_energy(psi_energy_with_nucl_rep, pt2)
-  endif
-  print *,  'N_det             = ', N_det
-  print *,  'N_sop             = ', N_occ_pattern
-  print *,  'N_states          = ', N_states
-  print*,   'correlation_ratio = ', correlation_energy_ratio
-
-
-  do k=1,N_states
-    rpt2(:) = pt2(:)/(1.d0 + norm(k))
-  enddo
-
-  call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm,N_det,N_occ_pattern)
-  call save_iterations(psi_energy_with_nucl_rep(1:N_states),rpt2,N_det)
-  call print_extrapolated_energy()
 
 end

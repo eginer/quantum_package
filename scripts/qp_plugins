@@ -95,7 +95,11 @@ def main(arguments):
 
     if arguments["list"]:
         if arguments["--repositories"]:
-            l_result = [f for f in os.listdir(QP_PLUGINS) if f not in [".gitignore", "local"]]
+            l_result = [f for f in os.listdir(QP_PLUGINS) \
+                        if f not in [".gitignore", "local"] ]
+
+            for repo in sorted(l_result):
+                print repo
 
         else:
             # Search in QP_PLUGINS all directories with a NEED file
@@ -107,8 +111,10 @@ def main(arguments):
             # Find directories which contain modules
             l_tmp = [os.path.split(f) for f in l_tmp]
             d_tmp = {}
-            for (x, _) in l_tmp:
-                d_tmp[x] = 1
+            repo_of_plugin = {}
+            for (x, y) in l_tmp:
+                d_tmp[x] = y
+                repo_of_plugin[y] = x.replace(QP_PLUGINS+'/','')
             l_repository = d_tmp.keys()
             m_instance = ModuleHandler(l_repository)
             l_plugins = [module for module in m_instance.l_module]
@@ -126,15 +132,15 @@ def main(arguments):
             elif arguments["--uninstalled"]:
                 l_result = [f for f in l_plugins if f not in l_installed]
 
-        for module in sorted(l_result):
-            print module
+            for module in sorted(l_result):
+                print "%-30s %-30s"%(module, repo_of_plugin[module])
 
     if arguments["create"]:
         m_instance = ModuleHandler([QP_SRC])
 
         l_children = arguments["<needed_modules>"]
 
-        name = arguments["<name>"][0]
+        name = arguments["--name"]
 
         if arguments["--repository"]:
             repository = arguments["--repository"]

@@ -1,9 +1,9 @@
-.. _generators_cas:
-
-.. program:: generators_cas
-
-.. default-role:: option
-
+.. _module_generators_cas: 
+ 
+.. program:: generators_cas 
+ 
+.. default-role:: option 
+ 
 ==============
 generators_cas
 ==============
@@ -13,7 +13,7 @@ The |MOs| belonging to the |CAS| are those which were set as active with
 the :ref:`qp_set_mo_class` command.
 
 This module is intended to be included in the :file:`NEED` file to define
-the generators as the |CAS| determinants, which can be useful to define post-CAS approaches (see cassd module for instance). 
+the generators as the |CAS| determinants, which can be useful to define post-CAS approaches (see cassd module for instance).
 
 
-
+ 

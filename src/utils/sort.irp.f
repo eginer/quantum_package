@@ -550,23 +550,23 @@ BEGIN_TEMPLATE
     endif
 
 
-    !$OMP PARALLEL DEFAULT(SHARED) if (isize > 1000000)
-    !$OMP SINGLE
+!   !$OMP PARALLEL DEFAULT(SHARED) if (isize > 1000000)
+!   !$OMP SINGLE
     if (i3>1_$int_type) then
-      !$OMP TASK FIRSTPRIVATE(iradix_new,i3) SHARED(x,iorder) if(i3 > 1000000)
+!     !$OMP TASK FIRSTPRIVATE(iradix_new,i3) SHARED(x,iorder) if(i3 > 1000000)
       call $Xradix_sort$big(x,iorder,i3,iradix_new-1)
-      !$OMP END TASK
+!     !$OMP END TASK
     endif
 
     if (isize-i3>1_$int_type) then
-      !$OMP TASK FIRSTPRIVATE(iradix_new,i3) SHARED(x,iorder) if(isize-i3 > 1000000)
+!     !$OMP TASK FIRSTPRIVATE(iradix_new,i3) SHARED(x,iorder) if(isize-i3 > 1000000)
       call $Xradix_sort$big(x(i3+1_$int_type),iorder(i3+1_$int_type),isize-i3,iradix_new-1)
-      !$OMP END TASK
+!     !$OMP END TASK
     endif
 
-    !$OMP TASKWAIT
-    !$OMP END SINGLE
-    !$OMP END PARALLEL
+!   !$OMP TASKWAIT
+!   !$OMP END SINGLE
+!   !$OMP END PARALLEL
 
     return
   endif

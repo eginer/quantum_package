@@ -1,12 +1,16 @@
-BEGIN_PROVIDER [ double precision, psi_energy, (N_states) ]
+ BEGIN_PROVIDER [ double precision, psi_energy, (N_states) ]
+&BEGIN_PROVIDER [ double precision, psi_s2, (N_states) ]
   implicit none
   BEGIN_DOC
-! Electronic energy of the current wave function
+! psi_energy(i) = $\langle \Psi_i | H | \Psi_i \rangle$
+! 
+! psi_s2(i) = $\langle \Psi_i | S^2 | \Psi_i \rangle$
   END_DOC
-  call u_0_H_u_0(psi_energy,psi_coef,N_det,psi_det,N_int,N_states,psi_det_size)
+  call u_0_H_u_0(psi_energy,psi_s2,psi_coef,N_det,psi_det,N_int,N_states,psi_det_size)
   integer :: i
   do i=N_det+1,N_states
     psi_energy(i) = 0.d0
+    psi_s2(i) = 0.d0
   enddo
 END_PROVIDER
 
@@ -17,6 +21,57 @@ BEGIN_PROVIDER [ double precision, psi_energy_with_nucl_rep, (N_states) ]
  END_DOC
  psi_energy_with_nucl_rep(1:N_states) = psi_energy(1:N_states) + nuclear_repulsion
 END_PROVIDER
+
+
+subroutine u_0_H_u_0(e_0,s_0,u_0,n,keys_tmp,Nint,N_st,sze)
+  use bitmasks
+  implicit none
+  BEGIN_DOC
+  ! Computes $E_0 = \frac{\langle u_0|H|u_0 \rangle}{\langle u_0|u_0 \rangle}$
+  !
+  ! and      $S_0 = \frac{\langle u_0|S^2|u_0 \rangle}{\langle u_0|u_0 \rangle}$
+  !
+  ! n : number of determinants
+  !
+  END_DOC
+  integer, intent(in)             :: n,Nint, N_st, sze
+  double precision, intent(out)   :: e_0(N_st),s_0(N_st)
+  double precision, intent(inout) :: u_0(sze,N_st)
+  integer(bit_kind),intent(in)    :: keys_tmp(Nint,2,n)
+
+  double precision, allocatable   :: v_0(:,:), s_vec(:,:), u_1(:,:)
+  double precision                :: u_dot_u,u_dot_v,diag_H_mat_elem
+  integer                         :: i,j
+
+  if ((n > 100000).and.distributed_davidson) then
+    allocate (v_0(n,N_states_diag),s_vec(n,N_states_diag), u_1(n,N_states_diag))
+    u_1(1:n,1:N_states) = u_0(1:n,1:N_states)
+    u_1(1:n,N_states+1:N_states_diag) = 0.d0
+    call H_S2_u_0_nstates_zmq(v_0,s_vec,u_1,N_st,n)
+    deallocate(u_1)
+  else
+    allocate (v_0(n,N_st),s_vec(n,N_st),u_1(n,N_st))
+    u_1(1:n,:) = u_0(1:n,:)
+    call H_S2_u_0_nstates_openmp(v_0,s_vec,u_1,N_st,n)
+    u_0(1:n,:) = u_1(1:n,:)
+    deallocate(u_1)
+  endif
+  double precision :: norm
+  !$OMP PARALLEL DO PRIVATE(i,norm) DEFAULT(SHARED)
+  do i=1,N_st
+    norm = u_dot_u(u_0(1,i),n)
+    if (norm /= 0.d0) then
+      e_0(i) = u_dot_v(v_0(1,i),u_0(1,i),n)
+      s_0(i) = u_dot_v(s_vec(1,i),u_0(1,i),n)
+    else
+      e_0(i) = 0.d0
+      s_0(i) = 0.d0
+    endif
+  enddo
+  !$OMP END PARALLEL DO
+  deallocate (s_vec, v_0)
+end
+
 
 
 
@@ -575,49 +630,4 @@ N_int;;
 
 END_TEMPLATE
 
-
-subroutine u_0_H_u_0(e_0,u_0,n,keys_tmp,Nint,N_st,sze)
-  use bitmasks
-  implicit none
-  BEGIN_DOC
-  ! Computes $E_0 = \frac{\langle u_0|H|u_0 \rangle}{\langle u_0|u_0 \rangle}$
-  !
-  ! n : number of determinants
-  !
-  END_DOC
-  integer, intent(in)            :: n,Nint, N_st, sze
-  double precision, intent(out)  :: e_0(N_st)
-  double precision, intent(inout) :: u_0(sze,N_st)
-  integer(bit_kind),intent(in)   :: keys_tmp(Nint,2,n)
-
-  double precision, allocatable  :: v_0(:,:), s_0(:,:), u_1(:,:)
-  double precision               :: u_dot_u,u_dot_v,diag_H_mat_elem
-  integer                        :: i,j
-
-  if ((n > 100000).and.distributed_davidson) then
-    allocate (v_0(n,N_states_diag),s_0(n,N_states_diag), u_1(n,N_states_diag))
-    u_1(1:n,1:N_states) = u_0(1:n,1:N_states)
-    u_1(1:n,N_states+1:N_states_diag) = 0.d0
-    call H_S2_u_0_nstates_zmq(v_0,s_0,u_1,N_states_diag,n)
-    deallocate(u_1)
-  else
-    allocate (v_0(n,N_st),s_0(n,N_st),u_1(n,N_st))
-    u_1(1:n,:) = u_0(1:n,:)
-    call H_S2_u_0_nstates_openmp(v_0,s_0,u_1,N_st,n)
-    u_0(1:n,:) = u_1(1:n,:)
-    deallocate(u_1)
-  endif
-  double precision :: norm
-  !$OMP PARALLEL DO PRIVATE(i,norm) DEFAULT(SHARED)
-  do i=1,N_st
-    norm = u_dot_u(u_0(1,i),n)
-    if (norm /= 0.d0) then
-      e_0(i) = u_dot_v(v_0(1,i),u_0(1,i),n)
-    else
-      e_0(i) = 0.d0
-    endif
-  enddo
-  !$OMP END PARALLEL DO
-  deallocate (s_0, v_0)
-end
 

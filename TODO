@@ -5,7 +5,6 @@
 Problem with EMSL
 
 
-* Mettre le fichier LIB
 * Faire que le slave de Hartree-fock est le calcul des integrales AO en parallele
 
 # Web/doc
@@ -20,7 +19,7 @@ Problem with EMSL
 * Molden format : http://cheminf.cmbi.ru.nl/molden/molden_format.html : read+write. Thomas est dessus
 * Un module pour lire les integrales Moleculaires depuis un FCIDUMP
 * Un module pour lire des integrales Atomiques (voir module de Mimi pour lire les AO Slater)
-
+* Format Fchk (gaussian)
 
 # Tests:
 
@@ -55,17 +54,12 @@ Refaire les benchmarks
 # Documentation de qpsh
 
 # Documentation de /etc
-# Extrapolation qui prend aussi en compe la variance
-# Parler dans le papier de rPT2
+# Extrapolation qui prend aussi en compe la variance? a tester
+Parler dans le papier de rPT2
 
 # Toto
-Si un provider est un programme, generer une page a lui tout seul avec le man
+Re-design de qp command
 
-Options obligatoires dans Command_line.ml
-Documentation des commandes a updater
+S^2 en simple precision dans davidson?
 
-# Completion foireuse:
-  qp create_ezfio_from_xyz -b 6-31g ./<Tab>
-  qp create_ezfio_from_xyz -b <Tab>
-
-# Verifier la doc des commandes avec les options - et --
+Doc: plugins et qp_plugins

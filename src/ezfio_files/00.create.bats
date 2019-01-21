@@ -15,7 +15,7 @@ function run {
   fi
   cp ${QP_ROOT}/tests/input/$INPUT .
   rm -rf $EZ
-  qp create_ezfio_from_xyz \
+  qp create_ezfio \
      $INPUT --basis="$BASIS" -m $MULT -c $CHARGE $PSEUDO -o $EZ
   qp edit --check
   qp set scf_utils thresh_scf 1.e-12
@@ -25,7 +25,7 @@ function run {
 
 
 @test "C2H2" {
-  run c2h2.xyz 1 0 vdz-bfd bfd
+  run c2h2.xyz 1 0 cc-pvdz_ecp_bfd bfd
 }
 
 @test "ClO" {
@@ -53,7 +53,7 @@ function run {
 }
 
 @test "SO" {
-  run so.xyz 3 0 vdz-bfd bfd
+  run so.xyz 3 0 cc-pvdz_ecp_bfd bfd
 }
 
 @test "CH4" {
@@ -65,11 +65,11 @@ function run {
 }
 
 @test "F2" {
-  run f2.zmt 1 0 "Def2-TZVP"
+  run f2.zmt 1 0 def2-tzvp
 }
 
 @test "HCO" {
-  run hco.xyz 2 0 "Ahlrichs VDZ"
+  run hco.xyz 2 0 vdz_ahlrichs
 }
 
 @test "NH3" {
@@ -77,7 +77,7 @@ function run {
 }
 
 @test "SiH3" {
-  run sih3.xyz 2 0 vdz-bfd bfd
+  run sih3.xyz 2 0 cc-pvdz_ecp_bfd bfd
 }
 
 @test "ClF" {
@@ -97,10 +97,10 @@ function run {
 }
 
 @test "OH" {
-  run oh.xyz 2 0 "Roos Augmented Double Zeta ANO"
+  run oh.xyz 2 0 aug-ano-pvdz_roos
 }
 
 @test "SO2" {
-  run so2.xyz 1 0 vtz-bfd bfd
+  run so2.xyz 1 0 cc-pvtz_ecp_bfd bfd
 }
 

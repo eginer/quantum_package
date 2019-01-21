@@ -6,10 +6,13 @@ subroutine run_stochastic_cipsi
   integer                        :: i,j,k
   double precision, allocatable  :: pt2(:), variance(:), norm(:), rpt2(:)
   integer                        :: to_select
+  logical, external :: qp_stop
 
   double precision :: rss
   double precision, external :: memory_of_double
-  threshold_generators = 2.d0
+  PROVIDE H_apply_buffer_allocated
+
+  threshold_generators = 1.d0
   SOFT_TOUCH threshold_generators
 
   rss = memory_of_double(N_states)*4.d0
@@ -20,8 +23,6 @@ subroutine run_stochastic_cipsi
   double precision               :: hf_energy_ref
   logical                        :: has
   double precision               :: relative_error
-
-  PROVIDE H_apply_buffer_allocated
 
   relative_error=PT2_relative_error
 
@@ -63,7 +64,7 @@ subroutine run_stochastic_cipsi
   do while (                                                         &
         (N_det < N_det_max) .and.                                    &
         (maxval(abs(pt2(1:N_states))) > pt2_max) .and.               &
-        (correlation_energy_ratio <= correlation_energy_ratio_max)    &
+        (correlation_energy_ratio <= correlation_energy_ratio_max)   &
         )
       write(*,'(A)')  '--------------------------------------------------------------------------------'
 
@@ -75,7 +76,7 @@ subroutine run_stochastic_cipsi
     variance = 0.d0
     norm = 0.d0
     call ZMQ_pt2(psi_energy_with_nucl_rep,pt2,relative_error,error, variance, &
-       norm, to_select) ! Stochastic PT2 and selection
+      norm, to_select) ! Stochastic PT2 and selection
 
     correlation_energy_ratio = (psi_energy_with_nucl_rep(1) - hf_energy_ref)  /     &
                     (psi_energy_with_nucl_rep(1) + pt2(1) - hf_energy_ref)
@@ -83,7 +84,7 @@ subroutine run_stochastic_cipsi
 
     call save_energy(psi_energy_with_nucl_rep, pt2)
     call write_double(6,correlation_energy_ratio, 'Correlation ratio')
-    call print_summary(psi_energy_with_nucl_rep,pt2,error,variance,norm,N_det,N_occ_pattern,N_states)
+    call print_summary(psi_energy_with_nucl_rep,pt2,error,variance,norm,N_det,N_occ_pattern,N_states,psi_s2)
 
     do k=1,N_states
       rpt2(:) = pt2(:)/(1.d0 + norm(k))
@@ -92,6 +93,8 @@ subroutine run_stochastic_cipsi
     call save_iterations(psi_energy_with_nucl_rep(1:N_states),rpt2,N_det)
     call print_extrapolated_energy()
     N_iter += 1
+
+    if (qp_stop()) exit 
 
     ! Add selected determinants
     call copy_H_apply_buffer_to_wf()
@@ -105,28 +108,31 @@ subroutine run_stochastic_cipsi
     call save_wavefunction
     rpt2(:) = 0.d0
     call save_energy(psi_energy_with_nucl_rep, rpt2)
+    if (qp_stop()) exit 
   enddo
 
-  if (N_det < N_det_max) then
-      call diagonalize_CI
-      call save_wavefunction
-      rpt2(:) = 0.d0
-      call save_energy(psi_energy_with_nucl_rep, rpt2)
+  if (.not.qp_stop()) then
+    if (N_det < N_det_max) then
+        call diagonalize_CI
+        call save_wavefunction
+        rpt2(:) = 0.d0
+        call save_energy(psi_energy_with_nucl_rep, rpt2)
+    endif
+
+    pt2 = 0.d0
+    variance = 0.d0
+    norm = 0.d0
+    call ZMQ_pt2(psi_energy_with_nucl_rep, pt2,relative_error,error,variance, &
+      norm,0) ! Stochastic PT2
+    call save_energy(psi_energy_with_nucl_rep, pt2)
+
+    do k=1,N_states
+      rpt2(:) = pt2(:)/(1.d0 + norm(k))
+    enddo
+
+    call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm,N_det,N_occ_pattern,N_states,psi_s2)
+    call save_iterations(psi_energy_with_nucl_rep(1:N_states),rpt2,N_det)
+    call print_extrapolated_energy()
   endif
-
-  pt2 = 0.d0
-  variance = 0.d0
-  norm = 0.d0
-  call ZMQ_pt2(psi_energy_with_nucl_rep, pt2,relative_error,error,variance, &
-    norm,0) ! Stochastic PT2
-  call save_energy(psi_energy_with_nucl_rep, pt2)
-
-  do k=1,N_states
-    rpt2(:) = pt2(:)/(1.d0 + norm(k))
-  enddo
-
-  call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm,N_det,N_occ_pattern,N_states)
-  call save_iterations(psi_energy_with_nucl_rep(1:N_states),rpt2,N_det)
-  call print_extrapolated_energy()
 
 end

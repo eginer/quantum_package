@@ -13,6 +13,8 @@ module Mo_basis : sig
         ao_md5          : MD5.t;
       } [@@deriving sexp]
   val read : unit -> t option
+  val write : t -> unit
+  val reorder : t -> int array -> t
   val to_string : t -> string
   val to_rst : t -> Rst_string.t
 end = struct
@@ -33,6 +35,13 @@ end = struct
     Ezfio.get_mo_basis_mo_label ()
     |> MO_label.of_string
 
+
+  let reorder b ordering =
+    { b with mo_coef =
+      Array.map ~f:(fun mo ->
+        Array.init ~f:(fun i -> mo.(ordering.(i))) (Array.length mo) )
+        b.mo_coef
+    }
 
   let read_ao_md5 () =
     let ao_md5 =
@@ -223,6 +232,65 @@ mo_coef         = %s
                        ~sep:"," ) |>
        String.concat_array ~sep:"\n" )
 
+
+  let write_mo_num n =
+    MO_number.to_int n
+    |> Ezfio.set_mo_basis_mo_num
+  ;;
+
+  let write_mo_label a =
+    MO_label.to_string a
+    |> Ezfio.set_mo_basis_mo_label
+  ;;
+
+  let write_mo_class a =
+    let mo_num = Array.length a in
+    let data = Array.map ~f:MO_class.to_string a
+    |> Array.to_list
+    in Ezfio.ezfio_array_of_list ~rank:1 ~dim:[| mo_num |] ~data
+    |> Ezfio.set_mo_basis_mo_class
+  ;;
+
+  let write_mo_occ a =
+    let mo_num = Array.length a in
+    let data = Array.map ~f:MO_occ.to_float a
+    |> Array.to_list
+    in Ezfio.ezfio_array_of_list ~rank:1 ~dim:[| mo_num |] ~data
+    |> Ezfio.set_mo_basis_mo_occ
+  ;;
+
+  let write_md5 a =
+    MD5.to_string a
+    |> Ezfio.set_mo_basis_ao_md5
+  ;;
+
+  let write_mo_coef a =
+    let mo_num = Array.length a in
+    let ao_num = Array.length a.(0) in
+    let data =
+      Array.map ~f:(fun mo -> Array.map ~f:MO_coef.to_float mo
+      |> Array.to_list) a
+    |> Array.to_list
+    |> List.concat
+    in Ezfio.ezfio_array_of_list ~rank:2 ~dim:[| ao_num ; mo_num |] ~data
+    |> Ezfio.set_mo_basis_mo_coef
+  ;;
+
+  let write 
+      { mo_num          : MO_number.t ;
+        mo_label        : MO_label.t;
+        mo_class        : MO_class.t array;
+        mo_occ          : MO_occ.t array;
+        mo_coef         : (MO_coef.t array) array;
+        ao_md5          : MD5.t;
+      } =
+      write_mo_num mo_num;
+      write_mo_label mo_label;
+      write_mo_class mo_class;
+      write_mo_occ mo_occ;
+      write_mo_coef mo_coef;
+      write_md5 ao_md5
+  ;;
 
 end
 

@@ -14,14 +14,14 @@ BEGIN_PROVIDER [ double precision, CI_energy, (N_states_diag) ]
   do j=1,min(N_det,N_states)
     write(st,'(I4)') j
     call write_double(6,CI_energy(j),'Energy of state '//trim(st))
-    call write_double(6,CI_eigenvectors_s2(j),'S^2 of state '//trim(st))
+    call write_double(6,CI_s2(j),'S^2 of state '//trim(st))
   enddo
 
 END_PROVIDER
 
  BEGIN_PROVIDER [ double precision, CI_electronic_energy, (N_states_diag) ]
 &BEGIN_PROVIDER [ double precision, CI_eigenvectors, (N_det,N_states_diag) ]
-&BEGIN_PROVIDER [ double precision, CI_eigenvectors_s2, (N_states_diag) ]
+&BEGIN_PROVIDER [ double precision, CI_s2, (N_states_diag) ]
    BEGIN_DOC
    ! Eigenvectors/values of the |CI| matrix
    END_DOC
@@ -57,7 +57,7 @@ END_PROVIDER
 
    if (diag_algorithm == "Davidson") then
 
-     call davidson_diag_HS2(psi_det,CI_eigenvectors, CI_eigenvectors_s2, &
+     call davidson_diag_HS2(psi_det,CI_eigenvectors, CI_s2, &
          size(CI_eigenvectors,1),CI_electronic_energy,               &
          N_det,min(N_det,N_states),min(N_det,N_states_diag),N_int,0,converged)
 
@@ -66,30 +66,30 @@ END_PROVIDER
      do while (.not.converged)
         double precision, allocatable :: CI_electronic_energy_tmp (:)
         double precision, allocatable :: CI_eigenvectors_tmp (:,:)
-        double precision, allocatable :: CI_eigenvectors_s2_tmp (:)
+        double precision, allocatable :: CI_s2_tmp (:)
 
         N_states_diag  *= 2
         TOUCH N_states_diag
 
         allocate (CI_electronic_energy_tmp (N_states_diag) )
         allocate (CI_eigenvectors_tmp (N_det,N_states_diag) )
-        allocate (CI_eigenvectors_s2_tmp (N_states_diag) )
+        allocate (CI_s2_tmp (N_states_diag) )
 
         CI_electronic_energy_tmp(1:N_states_diag_save) = CI_electronic_energy(1:N_states_diag_save)
         CI_eigenvectors_tmp(1:N_det,1:N_states_diag_save) = CI_eigenvectors(1:N_det,1:N_states_diag_save)
-        CI_eigenvectors_s2_tmp(1:N_states_diag_save) = CI_eigenvectors_s2(1:N_states_diag_save)
+        CI_s2_tmp(1:N_states_diag_save) = CI_s2(1:N_states_diag_save)
 
-        call davidson_diag_HS2(psi_det,CI_eigenvectors_tmp, CI_eigenvectors_s2_tmp, &
+        call davidson_diag_HS2(psi_det,CI_eigenvectors_tmp, CI_s2_tmp, &
             size(CI_eigenvectors_tmp,1),CI_electronic_energy_tmp,               &
             N_det,min(N_det,N_states),min(N_det,N_states_diag),N_int,0,converged)
 
         CI_electronic_energy(1:N_states_diag_save) = CI_electronic_energy_tmp(1:N_states_diag_save)
         CI_eigenvectors(1:N_det,1:N_states_diag_save) = CI_eigenvectors_tmp(1:N_det,1:N_states_diag_save)
-        CI_eigenvectors_s2(1:N_states_diag_save) = CI_eigenvectors_s2_tmp(1:N_states_diag_save)
+        CI_s2(1:N_states_diag_save) = CI_s2_tmp(1:N_states_diag_save)
 
         deallocate (CI_electronic_energy_tmp)
         deallocate (CI_eigenvectors_tmp)
-        deallocate (CI_eigenvectors_s2_tmp)
+        deallocate (CI_s2_tmp)
      enddo
      if (N_states_diag > N_states_diag_save) then
        N_states_diag = N_states_diag_save
@@ -135,7 +135,7 @@ END_PROVIDER
              CI_eigenvectors(i,j) = eigenvectors(i,index_good_state_array(j))
            enddo
            CI_electronic_energy(j) = eigenvalues(index_good_state_array(j))
-           CI_eigenvectors_s2(j) = s2_eigvalues(index_good_state_array(j))
+           CI_s2(j) = s2_eigvalues(index_good_state_array(j))
          enddo
          i_other_state = 0
          do j = 1, N_det
@@ -148,7 +148,7 @@ END_PROVIDER
              CI_eigenvectors(i,i_state+i_other_state) = eigenvectors(i,j)
            enddo
            CI_electronic_energy(i_state+i_other_state) = eigenvalues(j)
-           CI_eigenvectors_s2(i_state+i_other_state) = s2_eigvalues(i_state+i_other_state)
+           CI_s2(i_state+i_other_state) = s2_eigvalues(i_state+i_other_state)
          enddo
 
        else
@@ -166,7 +166,7 @@ END_PROVIDER
              CI_eigenvectors(i,j) = eigenvectors(i,j)
            enddo
            CI_electronic_energy(j) = eigenvalues(j)
-           CI_eigenvectors_s2(j) = s2_eigvalues(j)
+           CI_s2(j) = s2_eigvalues(j)
          enddo
        endif
        deallocate(index_good_state_array,good_state_array)
@@ -175,7 +175,7 @@ END_PROVIDER
        call lapack_diag(eigenvalues,eigenvectors,                      &
            H_matrix_all_dets,size(H_matrix_all_dets,1),N_det)
        CI_electronic_energy(:) = 0.d0
-       call u_0_S2_u_0(CI_eigenvectors_s2,eigenvectors,N_det,psi_det,N_int,&
+       call u_0_S2_u_0(CI_s2,eigenvectors,N_det,psi_det,N_int,&
           min(N_det,N_states_diag),size(eigenvectors,1))
        ! Select the "N_states_diag" states of lowest energy
        do j=1,min(N_det,N_states_diag)
@@ -203,5 +203,7 @@ subroutine diagonalize_CI
     enddo
   enddo
   psi_energy(1:N_states) = CI_electronic_energy(1:N_states)
-  SOFT_TOUCH psi_coef CI_electronic_energy CI_energy CI_eigenvectors CI_eigenvectors_s2 psi_energy
+  psi_s2(1:N_states) = CI_s2(1:N_states)
+
+  SOFT_TOUCH psi_coef CI_electronic_energy CI_energy CI_eigenvectors CI_s2 psi_energy psi_s2
 end

@@ -40,8 +40,6 @@ Requirements
 - |IRPF90| : Fortran code generator
 - |EZFIO| : Easy Fortran Input/Output library generator
 - |BLAS| and |LAPACK|
-- `EMSL_Basis_Set_Exchange_Local`_ : Local copy of the data contained in the
-  `EMSL Basis Set Exchange website <https://bse.pnl.gov/bse/portal>`_
 - `Zlib`_
 - `GNU Patch`_
 - |ZeroMQ| : networking library
@@ -85,10 +83,9 @@ The following packages are supported by the :command:`configure` installer:
 * ninja 
 * irpf90 
 * zeromq 
-* f77zmq ( :math:`\approx` 3 minutes)
-* ocaml  ( :math:`\approx` 9 minutes)
+* f77zmq
+* ocaml  ( :math:`\approx` 10 minutes)
 * ezfio 
-* emsl 
 * docopt 
 * resultsFile 
 * bats
@@ -146,20 +143,10 @@ to Parameters (IRP) method.
 * Extract the archive and go into the :file:`irpf90-*` directory to run
   :command:`make`
 
-* Create scripts to facilitate the access to :command:`irpf90` and
-  :command:`irpman` as follows
+.. note::
 
-.. code:: bash
-
-   for i in irpf90 irpman irpf90_indent
-   do
-   cat << EOF > ${QP_ROOT}/bin/$i
-   #!/bin/sh
-   exec $PWD/bin/$i \$@
-   EOF
-
-   chmod +x ${QP_ROOT}/bin/$i 
-   done
+    The :envvar:`IRPF90_PATH` variable may need to be updated in the configuration
+    file :file:`${QP_ROOT}/etc/irpf90.rc`.
 
 
 
@@ -260,29 +247,16 @@ EZFIO
 * Extract the archive, and rename it as :file:`${QP_ROOT}/external/ezfio`
 
 
-EMSL Basis Sets
----------------
-
-*EMSL_Basis_Set_Exchange_Local* is a tool which provides all basis sets of the
-`EMSL web site <https://bse.pnl.gov/bse/portal>`_ off-line.
-
-* Download the archive
-  here : `<https://github.com/LCPQ/EMSL_Basis_Set_Exchange_Local/releases/latest>`_
-  and move the downloaded archive in the :file:`${QP_ROOT}/external` directory
-
-* Extract the archive, and rename it as :file:`${QP_ROOT}/external/emsl`.
-
-
 Docopt
 ------
 
 *Docopt* is a Python package defining a command-line interface description language.
 
-If you have *pip*, you can do 
+If you have *pip* for Python2, you can do 
 
 .. code:: bash
 
-   pip2 install docopt
+   pip2 install --user docopt
 
 Otherwise,
 
