@@ -249,61 +249,6 @@ subroutine pt2_moller_plesset ($arguments)
 
 end
 
-subroutine pt2_moller_plesset_general ($arguments)
-  use bitmasks
-  implicit none
-  $declarations
-
-  BEGIN_DOC
-  ! Computes the standard Moller-Plesset perturbative first order coefficient and second
-  ! order energetic contribution for the various N_st states.
-  !
-  ! `c_pert(i)` = $\\frac{\\langle i|H|\\alpha \\rangle}{\\text{difference of orbital energies}}$.
-  !
-  ! `e_2_pert(i)` = $\\frac{\\langle i|H|\\alpha \\rangle^2}{\\text{difference of orbital energies}}$.
-  !
-  END_DOC
-
-  integer                        :: i,j
-  double precision               :: diag_H_mat_elem_fock
-  integer                        :: exc(0:2,2,2)
-  integer                        :: degree
-  double precision               :: phase,delta_e,h
-  double precision               :: i_H_psi_array(N_st)
-  integer                        :: h1,h2,p1,p2,s1,s2
-  ASSERT (Nint == N_int)
-  ASSERT (Nint > 0)
-  call get_excitation(det_ref,det_pert,exc,degree,phase,Nint)
-  if (degree == 2) then
-    call decode_exc(exc,degree,h1,p1,h2,p2,s1,s2)
-    delta_e = (mo_energy_expval(1,h1,s1,1) - mo_energy_expval(1,p1,s1,2)) + &
-              (mo_energy_expval(1,h2,s2,1) - mo_energy_expval(1,p2,s2,2))
-  else if (degree == 1) then
-    call decode_exc(exc,degree,h1,p1,h2,p2,s1,s2)
-    delta_e = mo_energy_expval(1,h1,s1,1) - mo_energy_expval(1,p1,s1,2)
-  else
-    delta_e = 0.d0
-  endif
-
-  if (dabs(delta_e) > 1.d-10) then
-    delta_e = 1.d0/delta_e
-    call i_H_psi_minilist(det_pert,minilist,idx_minilist,N_minilist,psi_selectors_coef,Nint,N_minilist,psi_selectors_size,N_st,i_H_psi_array)
-    h = diag_H_mat_elem_fock(det_ref,det_pert,fock_diag_tmp,Nint)
-  else
-    i_H_psi_array(:) = 0.d0
-    h = 0.d0
-  endif
-  do i =1,N_st
-    H_pert_diag(i) = h
-    c_pert(i) = i_H_psi_array(i) *delta_e
-    e_2_pert(i) = c_pert(i) * i_H_psi_array(i)
-  enddo
-
-end
-
-
-
-
 subroutine pt2_dummy ($arguments)
   use bitmasks
   implicit none
