@@ -23,6 +23,13 @@ updated data is saved into the |EZFIO| directory.
    When the wave function is too large (more than 10 000 determinants), the
    determinants are not displayed.
 
+.. note::
+   On some machines the terminal will be stuck in inverted colors after using
+   qp_edit. To Avoid this problem, put in your :file:`$HOME/.vimrc`::
+
+        set t_ti=
+
+
 Usage
 -----
 
