@@ -36,6 +36,7 @@ program fci
   !
   END_DOC
 
+  PROVIDE psi_det psi_coef mo_two_e_integrals_in_map
   if (.not.is_zmq_slave) then
 
     if (do_pt2) then
