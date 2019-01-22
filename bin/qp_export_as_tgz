@@ -144,6 +144,7 @@ cd ${QPACKAGE_STATIC}/bin
   done
 )
 
+cp ${QP_ROOT}/bin/qp_* ${QPACKAGE_STATIC}/bin
 cp ${QP_ROOT}/bin/qpsh ${QPACKAGE_STATIC}/bin
 
 cp --recursive -- ${QP_ROOT}/data ${QPACKAGE_STATIC}/data
@@ -152,8 +153,8 @@ for i in ${FORTRAN_EXEC} ; do
   echo $i \$QP_ROOT/bin/$i
 done > ${QPACKAGE_STATIC}/data/executables
 
-mkdir --parents -- ${QPACKAGE_STATIC}/src/Bitmask
-cp ${QP_ROOT}/src/Bitmask/bitmasks_module.f90 ${QPACKAGE_STATIC}/src/Bitmask
+mkdir --parents -- ${QPACKAGE_STATIC}/src/bitmask
+cp ${QP_ROOT}/src/Bitmask/bitmasks_module.f90 ${QPACKAGE_STATIC}/src/bitmask
 
 
 echo "Copying dynamic libraries"
