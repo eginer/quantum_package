@@ -5,8 +5,8 @@ subroutine run_slave_cipsi
   END_DOC
 
   call omp_set_nested(.false.)
-  read_wf = .False.
   distributed_davidson = .False.
+  read_wf = .False.
   SOFT_TOUCH read_wf distributed_davidson
   call provide_everything
   call switch_qp_run_to_master
