@@ -443,116 +443,6 @@ BEGIN_PROVIDER [ integer(bit_kind), cas_bitmask, (N_int,2,N_cas_bitmask) ]
 
 END_PROVIDER
 
- BEGIN_PROVIDER [ integer(bit_kind), inact_bitmask, (N_int,2) ]
-&BEGIN_PROVIDER [ integer(bit_kind), virt_bitmask, (N_int,2) ]
-&BEGIN_PROVIDER [ integer, n_inact_orb ]
-&BEGIN_PROVIDER [ integer, n_virt_orb ]
- implicit none
- BEGIN_DOC
- ! inact_bitmask : Bitmask of the inactive orbitals which are supposed to be doubly excited
- ! in post CAS methods
- ! n_inact_orb   : Number of inactive orbitals
- ! virt_bitmask  : Bitmaks of vritual orbitals which are supposed to be recieve electrons
- ! in post CAS methods
- ! n_virt_orb    : Number of virtual orbitals
- END_DOC
- logical                        :: exists
- integer                        :: j,i
- integer :: i_hole,i_part,i_gen
-
- n_inact_orb = 0
- n_virt_orb = 0
- if(N_generators_bitmask_restart == 1)then
-  do j = 1, N_int
-   inact_bitmask(j,1) = xor(generators_bitmask_restart(j,1,1,1),cas_bitmask(j,1,1))
-   inact_bitmask(j,2) = xor(generators_bitmask_restart(j,2,1,1),cas_bitmask(j,2,1))
-   virt_bitmask(j,1) = xor(generators_bitmask_restart(j,1,2,1),cas_bitmask(j,1,1))
-   virt_bitmask(j,2) = xor(generators_bitmask_restart(j,2,2,1),cas_bitmask(j,2,1))
-   n_inact_orb += popcnt(inact_bitmask(j,1))
-   n_virt_orb  += popcnt(virt_bitmask(j,1))
-  enddo
- else
-   i_hole = 1
-   i_gen = 1
-   do i = 1, N_int
-     inact_bitmask(i,1) = generators_bitmask_restart(i,1,i_hole,i_gen)
-     inact_bitmask(i,2) = generators_bitmask_restart(i,2,i_hole,i_gen)
-     n_inact_orb += popcnt(inact_bitmask(i,1))
-   enddo
-   i_part = 2
-   i_gen = 3
-   do i = 1, N_int
-     virt_bitmask(i,1) = generators_bitmask_restart(i,1,i_part,i_gen)
-     virt_bitmask(i,2) = generators_bitmask_restart(i,2,i_part,i_gen)
-     n_virt_orb  += popcnt(virt_bitmask(i,1))
-   enddo
- endif
- call write_int(6,n_inact_orb, 'Number of inactive MOs')
- call write_int(6,n_virt_orb, 'Number of virtual MOs')
-
-END_PROVIDER
-
-
-
-  BEGIN_PROVIDER [ integer, list_inact, (n_inact_orb)]
- &BEGIN_PROVIDER [ integer, list_virt, (n_virt_orb)]
- &BEGIN_PROVIDER [ integer, list_inact_reverse, (mo_num)]
- &BEGIN_PROVIDER [ integer, list_virt_reverse, (mo_num)]
- BEGIN_DOC
- ! list_inact : List of the inactive orbitals which are supposed to be doubly excited
- ! in post CAS methods
- ! list_virt  : List of vritual orbitals which are supposed to be recieve electrons
- ! in post CAS methods
- ! list_inact_reverse : reverse list of inactive orbitals
- ! list_inact_reverse(i) = 0 ::> not an inactive
- ! list_inact_reverse(i) = k ::> IS the kth inactive
- ! list_virt_reverse : reverse list of virtual orbitals
- ! list_virt_reverse(i) = 0 ::> not an virtual
- ! list_virt_reverse(i) = k ::> IS the kth virtual
- END_DOC
- implicit none
- integer :: occ_inact(N_int*bit_kind_size)
- integer :: itest,i
- occ_inact = 0
- call bitstring_to_list(inact_bitmask(1,1), occ_inact(1), itest, N_int)
- ASSERT(itest==n_inact_orb)
- list_inact_reverse = 0
- do i = 1, n_inact_orb
-  list_inact(i) = occ_inact(i)
-  list_inact_reverse(occ_inact(i)) = i
- enddo
-
-
- occ_inact = 0
- call bitstring_to_list(virt_bitmask(1,1), occ_inact(1), itest, N_int)
- ASSERT(itest==n_virt_orb)
- list_virt_reverse = 0
- do i = 1, n_virt_orb
-  list_virt(i) = occ_inact(i)
-  list_virt_reverse(occ_inact(i)) = i
- enddo
-
- END_PROVIDER
-
-
- BEGIN_PROVIDER [ integer, list_core_inact, (n_core_inact_orb)]
-&BEGIN_PROVIDER [ integer, list_core_inact_reverse, (mo_num)]
-
- implicit none
- integer :: occ_inact(N_int*bit_kind_size)
- integer :: itest,i
- occ_inact = 0
-
- call bitstring_to_list(reunion_of_core_inact_bitmask(1,1), occ_inact(1), itest, N_int)
-
- list_core_inact_reverse = 0
- do i = 1, n_core_inact_orb
-  list_core_inact(i) = occ_inact(i)
-  list_core_inact_reverse(occ_inact(i)) = i
- enddo
-
- END_PROVIDER
-
  BEGIN_PROVIDER [ integer, n_core_inact_orb ]
  implicit none
  integer :: i
@@ -635,41 +525,6 @@ END_PROVIDER
  enddo
  END_PROVIDER
 
- BEGIN_PROVIDER [integer, list_core, (n_core_orb)]
-&BEGIN_PROVIDER [integer, list_core_reverse, (mo_num)]
- BEGIN_DOC
- ! List of the core orbitals that are never excited in post CAS method
- END_DOC
- implicit none
- integer :: occ_core(N_int*bit_kind_size)
- integer :: itest,i
- occ_core = 0
- call bitstring_to_list(core_bitmask(1,1), occ_core(1), itest, N_int)
- ASSERT(itest==n_core_orb)
- list_core_reverse = 0
- do i = 1, n_core_orb
-  list_core(i) = occ_core(i)
-  list_core_reverse(occ_core(i)) = i
- enddo
- END_PROVIDER
-
- BEGIN_PROVIDER [ integer(bit_kind), core_bitmask, (N_int,2)]
-&BEGIN_PROVIDER [ integer, n_core_orb]
- implicit none
- BEGIN_DOC
- ! Core + deleted orbitals bitmask
- END_DOC
- integer :: i,j
- n_core_orb = 0
- do i = 1, N_int
-  core_bitmask(i,1) = xor(full_ijkl_bitmask(i),ior(reunion_of_cas_inact_bitmask(i,1),virt_bitmask(i,1)))
-  core_bitmask(i,2) = xor(full_ijkl_bitmask(i),ior(reunion_of_cas_inact_bitmask(i,2),virt_bitmask(i,1)))
-  n_core_orb += popcnt(core_bitmask(i,1))
- enddo
- call write_int(6,n_core_orb,'Number of core MOs')
- END_PROVIDER
-
-
 BEGIN_PROVIDER [ integer, i_bitmask_gen ]
  implicit none
  BEGIN_DOC
@@ -690,41 +545,6 @@ END_PROVIDER
   unpaired_alpha_electrons(i) = xor(HF_bitmask(i,1),HF_bitmask(i,2))
  enddo
  END_PROVIDER
-
-BEGIN_PROVIDER [ integer, n_act_orb]
- BEGIN_DOC
- ! number of active orbitals
- END_DOC
- implicit none
- integer :: i,j
- n_act_orb = 0
- do i = 1, N_int
-  n_act_orb += popcnt(cas_bitmask(i,1,1))
- enddo
- call write_int(6,n_act_orb, 'Number of active MOs')
-END_PROVIDER
-
- BEGIN_PROVIDER [integer, list_act, (n_act_orb)]
-&BEGIN_PROVIDER [integer, list_act_reverse, (mo_num)]
- BEGIN_DOC
- ! list_act(i) = index of the ith active orbital
- !
- ! list_act_reverse : reverse list of active orbitals
- ! list_act_reverse(i) = 0 ::> not an active
- ! list_act_reverse(i) = k ::> IS the kth active orbital
- END_DOC
- implicit none
- integer :: occ_act(N_int*bit_kind_size)
- integer :: itest,i
- occ_act = 0
- call bitstring_to_list(cas_bitmask(1,1,1), occ_act(1), itest, N_int)
- ASSERT(itest==n_act_orb)
- list_act_reverse = 0
- do i = 1, n_act_orb
-  list_act(i) = occ_act(i)
-  list_act_reverse(occ_act(i)) = i
- enddo
-END_PROVIDER
 
  BEGIN_PROVIDER [integer(bit_kind), closed_shell_ref_bitmask, (N_int,2)]
  implicit none
