@@ -26,12 +26,12 @@ END_DOC
   call write_time(6)
 
   print*,'Energy of the guess = ',SCF_energy
-  write(6,'(A4, 1X, A16, 1X, A16, 1X, A16)')  &
-    '====','================','================','================'
-  write(6,'(A4, 1X, A16, 1X, A16, 1X, A16)')  &
-    '  N ', 'Energy  ', 'Energy diff  ', 'DIIS error  '
-  write(6,'(A4, 1X, A16, 1X, A16, 1X, A16)')  &
-    '====','================','================','================'
+  write(6,'(A4, 1X, A16, 1X, A16, 1X, A16, 1X, A16)')  &
+    '====','================','================','================','================'
+  write(6,'(A4, 1X, A16, 1X, A16, 1X, A16, 1X, A16)')  &
+    '  N ', 'Energy  ', 'Energy diff  ',  'DIIS error  ', 'Level shift   '
+  write(6,'(A4, 1X, A16, 1X, A16, 1X, A16, 1X, A16)')  &
+    '====','================','================','================','================'
 
 ! Initialize energies and density matrices
   energy_SCF_previous = SCF_energy
@@ -44,6 +44,8 @@ END_DOC
 !
 ! Start of main SCF loop
 !
+  PROVIDE FPS_SPF_matrix_AO Fock_matrix_AO 
+
   do while ( &
     ( (max_error_DIIS > threshold_DIIS_nonzero) .or. &
       (dabs(Delta_energy_SCF) > thresh_SCF) &
@@ -111,37 +113,37 @@ END_DOC
     double precision :: level_shift_save
     level_shift_save = level_shift
     mo_coef_save(1:ao_num,1:mo_num) = mo_coef(1:ao_num,1:mo_num)
-    do while (Delta_energy_SCF .ge. 0.d0)
+    do while (Delta_energy_SCF > 0.d0)
       mo_coef(1:ao_num,1:mo_num) = mo_coef_save
-      TOUCH mo_coef
-      if (level_shift <= 0.d0) then
+      if (level_shift <= .1d0) then
         level_shift = 1.d0
       else
-        level_shift = level_shift * 2.0d0
+        level_shift = level_shift * 3.0d0
       endif
+      TOUCH mo_coef level_shift
       mo_coef(1:ao_num,1:mo_num) = eigenvectors_Fock_matrix_MO(1:ao_num,1:mo_num)
       if(frozen_orb_scf)then
         call reorder_core_orb
         call initialize_mo_coef_begin_iteration
       endif
-      TOUCH mo_coef level_shift
+      TOUCH mo_coef
       Delta_Energy_SCF = SCF_energy - energy_SCF_previous
       energy_SCF = SCF_energy
       if (level_shift-level_shift_save > 40.d0) then
-        level_shift = level_shift_save
+        level_shift = level_shift_save * 4.d0
         SOFT_TOUCH level_shift
         exit
       endif
       dim_DIIS=0
     enddo
-    level_shift = level_shift * 0.75d0
+    level_shift = level_shift * 0.5d0
     SOFT_TOUCH level_shift
     energy_SCF_previous = energy_SCF
 
 !   Print results at the end of each iteration
 
-    write(6,'(I4, 1X, F16.10, 1X, F16.10, 1X, F16.10, 1X, I3)')  &
-      iteration_SCF, energy_SCF, Delta_energy_SCF, max_error_DIIS, dim_DIIS
+    write(6,'(I4, 1X, F16.10, 1X, F16.10, 1X, F16.10, 1X, F16.10, 1X, I3)')  &
+      iteration_SCF, energy_SCF, Delta_energy_SCF, max_error_DIIS, level_shift, dim_DIIS
 
     if (Delta_energy_SCF < 0.d0) then
       call save_mos
@@ -157,8 +159,8 @@ END_DOC
 ! End of Main SCF loop
 !
 
-  write(6,'(A4, 1X, A16, 1X, A16, 1X, A16)') &
-    '====','================','================','================'
+  write(6,'(A4, 1X, A16, 1X, A16, 1X, A16, 1X, A16)')  &
+    '====','================','================','================','================'
   write(6,*)
 
   if(.not.frozen_orb_scf)then
