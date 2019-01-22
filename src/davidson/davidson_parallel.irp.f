@@ -41,9 +41,13 @@ subroutine davidson_run_slave(thread,iproc)
 
 
 
-  if (connect_to_taskserver(zmq_to_qp_run_socket,worker_id,thread) == -1) then
-    call end_zmq_to_qp_run_socket(zmq_to_qp_run_socket)
-  endif
+  do
+    call sleep(1)
+    if (connect_to_taskserver(zmq_to_qp_run_socket,worker_id,thread) /= -1) then
+      exit
+    endif
+    print *,  'Waiting for connection to task server...', irp_here
+  enddo
 
   zmq_socket_push      = new_zmq_push_socket(thread)
 
