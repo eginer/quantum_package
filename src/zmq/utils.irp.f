@@ -664,19 +664,16 @@ integer function connect_to_taskserver(zmq_to_qp_run_socket,worker_id,thread)
   rc = f77_zmq_recv(zmq_to_qp_run_socket, message, 510, 0)
   message = trim(message(1:rc))
   if(message(1:5) == "error") then
-    print *,  irp_here//' 1: '//trim(message)
     connect_to_taskserver = -1
     return
   end if
   read(message,*, end=10, err=10) reply, state, worker_id, address
   if (trim(reply) /= 'connect_reply') then
-    print *,  irp_here//' 2: '//trim(reply)
     connect_to_taskserver = -1
     return
   endif
   if (trim(state) /= zmq_state) then
     integer, external :: disconnect_from_taskserver_state
-    print *,  irp_here//' 2: '//trim(state)//' /= '//trim(zmq_state)
     if (disconnect_from_taskserver_state(zmq_to_qp_run_socket, worker_id, state) == -1) then
       continue
     endif
