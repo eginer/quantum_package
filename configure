@@ -443,6 +443,7 @@ else
       echo ""
 fi
    
+exit 0
     
 
 
