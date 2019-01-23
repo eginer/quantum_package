@@ -128,7 +128,8 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
   integer                        :: nproc_target
   integer                        :: order(N_st_diag_in)
   double precision               :: cmax
-  double precision, allocatable  :: U(:,:), overlap(:,:), W(:,:), S_d(:,:)
+  double precision, allocatable  :: U(:,:), overlap(:,:), S_d(:,:)
+  double precision, pointer      :: W(:,:)
   real, pointer                  :: S(:,:)
   logical                        :: disk_based
   double precision               :: energy_shift(N_st_diag_in*davidson_sze_max)
@@ -519,7 +520,7 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
       call dgemm('N','N', sze, N_st_diag, shift2,                    &
           1.d0, W, size(W,1), y, size(y,1), 0.d0, W(1,shift2+1), size(W,1))
 
-      y_s(:,:) = y(:,:)
+      y_s(:,:) = real(y(:,:))
       call sgemm('N','N', sze, N_st_diag, shift2,                    &
           1., S, size(S,1), y_s, size(y_s,1), 0., S(1,shift2+1), size(S,1))
 
