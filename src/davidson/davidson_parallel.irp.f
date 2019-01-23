@@ -34,12 +34,11 @@ subroutine davidson_run_slave(thread,iproc)
   integer(ZMQ_PTR), external     :: new_zmq_push_socket
   integer(ZMQ_PTR)               :: zmq_socket_push
 
-  zmq_to_qp_run_socket = new_zmq_to_qp_run_socket()
-
   integer, external              :: connect_to_taskserver
   integer, external              :: zmq_get_N_states_diag
 
 
+  zmq_to_qp_run_socket = new_zmq_to_qp_run_socket()
 
   if (connect_to_taskserver(zmq_to_qp_run_socket,worker_id,thread) /= -1) then
       call end_zmq_to_qp_run_socket(zmq_to_qp_run_socket)
