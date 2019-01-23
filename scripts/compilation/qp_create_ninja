@@ -706,7 +706,7 @@ def save_subninja_file(path_module):
                  "build all: make_all_binaries dummy_target", "",
                  "build local: make_local_binaries dummy_target", "",
                  "build executables: executables local dummy_target", "",
-                 "default local", "", "build clean: make_clean dummy_target",
+                 "default executables", "", "build clean: make_clean dummy_target",
                  ""]
 
     path_ninja_cur = join(path_module.abs, "build.ninja")

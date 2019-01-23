@@ -96,8 +96,18 @@ integer function number_of_holes(key_in)
    + popcnt( xor( iand(reunion_of_core_inact_bitmask(8,2), xor(key_in(8,2),iand(key_in(8,2),cas_bitmask(8,2,1)))), reunion_of_core_inact_bitmask(8,2)) )
  else
    do i = 1, N_int
-    number_of_holes = number_of_holes  &
-   + popcnt( xor( iand(reunion_of_core_inact_bitmask(i,1), xor(key_in(i,1),iand(key_in(i,1),cas_bitmask(i,1,1)))), reunion_of_core_inact_bitmask(i,1)) )&
+    number_of_holes = number_of_holes             &
+   + popcnt(                                      &
+      xor(                                        &
+        iand(                                     &
+          reunion_of_core_inact_bitmask(i,1),     &
+          xor(                                    &
+            key_in(i,1),                          &  ! MOs of key_in not in the CAS
+            iand(                                 &  ! MOs of key_in in the CAS
+              key_in(i,1), cas_bitmask(i,1,1)     &
+            )                                     &
+          )                                       &
+        ), reunion_of_core_inact_bitmask(i,1)) )  &
    + popcnt( xor( iand(reunion_of_core_inact_bitmask(i,1), xor(key_in(i,2),iand(key_in(i,2),cas_bitmask(i,1,1)))), reunion_of_core_inact_bitmask(i,1)) )
    enddo
  endif

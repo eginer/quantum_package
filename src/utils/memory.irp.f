@@ -24,6 +24,7 @@ subroutine resident_memory(value)
   character*(32) :: key
   double precision, intent(out) :: value
 
+  call omp_set_lock(file_lock)
   value = 0.d0
   iunit = getUnitAndOpen('/proc/self/status','r')
   do
@@ -36,6 +37,7 @@ subroutine resident_memory(value)
   20 continue
   close(iunit)
   value = value / (1024.d0*1024.d0)
+  call omp_unset_lock(file_lock)
 end function
 
 subroutine total_memory(value)

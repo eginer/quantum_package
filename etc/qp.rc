@@ -101,13 +101,17 @@ function qp()
       ;;
 
     "plugins"|"update"|"convert_output_to_ezfio")
-      eval "qp_$@"
+      COMMAND='qp_$@'
+      eval "$COMMAND"
+      unset COMMAND
       ;;
 
     *)
       which "qp_$1" &> /dev/null
       if [[ $? -eq 0 ]] ; then
-         eval "qp_$@ ${EZFIO_FILE}"
+        COMMAND='qp_$@'
+        eval "$COMMAND" "${EZFIO_FILE}"
+        unset COMMAND
       else
          _qp_usage
       fi

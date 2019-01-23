@@ -2,7 +2,7 @@ program fci
   implicit none
   BEGIN_DOC
   ! Selected Full Configuration Interaction with stochastic selection
-  ! and PT2 .
+  ! and PT2.
   !
   ! This program performs a |CIPSI|-like selected |CI| using a
   ! stochastic scheme for both the selection of the important Slater
