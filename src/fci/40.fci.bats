@@ -44,16 +44,19 @@ function run() {
 }
 
 @test "HBO" { # 13.3144s
+  [[ -n $TRAVIS ]] && skip
   qp set_file hbo.ezfio
   run -100.212729100021 1.e-5
 }
 
 @test "H2O" { # 11.3727s
+  [[ -n $TRAVIS ]] && skip
   qp set_file h2o.ezfio
   run -76.2359268957699 1.e-5
 }
 
 @test "ClO" { # 13.3755s
+  [[ -n $TRAVIS ]] && skip
   qp set_file clo.ezfio
   run -534.546053053143 1.e-5
 }

@@ -119,8 +119,6 @@ double precision function get_phase_bi(phasemask, s1, s2, h1, p1, h2, p2, Nint)
 end
 
 
-
-
 subroutine select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_diag_tmp,E0,pt2,variance,norm,buf,subset,csubset)
   use bitmasks
   use selection_types
@@ -138,12 +136,14 @@ subroutine select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_d
   double precision, intent(inout)  :: norm(N_states)
   type(selection_buffer), intent(inout) :: buf
 
-  integer                         :: h1,h2,s1,s2,s3,i1,i2,ib,sp,k,i,j,nt,ii
+  integer                         :: h1,h2,s1,s2,s3,i1,i2,ib,sp,k,i,j,nt,ii,sze
   integer(bit_kind)               :: hole(N_int,2), particle(N_int,2), mask(N_int, 2), pmask(N_int, 2)
   logical                         :: fullMatch, ok
 
   integer(bit_kind) :: mobMask(N_int, 2), negMask(N_int, 2)
-  integer,allocatable               :: preinteresting(:), prefullinteresting(:), interesting(:), fullinteresting(:)
+  integer,allocatable               :: preinteresting(:), prefullinteresting(:)
+  integer,allocatable               :: interesting(:), fullinteresting(:)
+  integer,allocatable               :: tmp_array(:)
   integer(bit_kind), allocatable :: minilist(:, :, :), fullminilist(:, :, :)
   logical, allocatable           :: banned(:,:,:), bannedOrb(:,:)
 
@@ -153,7 +153,6 @@ subroutine select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_d
   logical :: monoAdo, monoBdo
   integer :: maskInd
 
-  integer(bit_kind), allocatable:: preinteresting_det(:,:,:)
   double precision :: rss
   double precision, external :: memory_of_double, memory_of_int
 
@@ -162,55 +161,52 @@ subroutine select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_d
   PROVIDE psi_bilinear_matrix_transp_rows_loc psi_bilinear_matrix_transp_columns
   PROVIDE psi_bilinear_matrix_transp_order psi_selectors_coef_transp
 
+  ii = (elec_alpha_num*(mo_num-elec_alpha_num))**2
   rss = memory_of_double(             &
-            N_int*2*N_det             &   ! preinteresting_det
-          + N_int*2*N_det             &   ! fullminilist
-          + N_int*2*N_det_selectors   &   ! minilist
+            2*N_int*2*ii   &   ! minilist, fullminilist
           + N_states*mo_num*mo_num    &   ! mat
         ) + memory_of_int(            &
-          + (N_det+1)*2               &   ! preinteresting, prefullinteresting,
-          + (N_det+1)*2               &   ! interesting, fullinteresting
+          + 2*ii                      &   ! preinteresting, prefullinteresting,
+          + 2*ii                      &   ! interesting, fullinteresting
           + mo_num*mo_num/2           &   ! banned
           + mo_num/2                  &   ! bannedOrb
         )
 
   call check_mem(rss,irp_here)
-
-  allocate (preinteresting_det(N_int,2,N_det))
-
+  
   monoAdo = .true.
   monoBdo = .true.
-
-
+  
+  
   do k=1,N_int
     hole    (k,1) = iand(psi_det_generators(k,1,i_generator), hole_mask(k,1))
     hole    (k,2) = iand(psi_det_generators(k,2,i_generator), hole_mask(k,2))
     particle(k,1) = iand(not(psi_det_generators(k,1,i_generator)), particle_mask(k,1))
     particle(k,2) = iand(not(psi_det_generators(k,2,i_generator)), particle_mask(k,2))
   enddo
-
-
+  
+  
   integer                        :: N_holes(2), N_particles(2)
   integer                        :: hole_list(N_int*bit_kind_size,2)
   integer                        :: particle_list(N_int*bit_kind_size,2)
-
+  
   call bitstring_to_list_ab(hole    , hole_list    , N_holes    , N_int)
   call bitstring_to_list_ab(particle, particle_list, N_particles, N_int)
-
-  integer :: l_a, nmax, idx
-  integer, allocatable :: indices(:), exc_degree(:), iorder(:)
-  allocate (indices(N_det),  &
-            exc_degree(max(N_det_alpha_unique,N_det_beta_unique)))
-
+  
+  integer                        :: l_a, nmax, idx
+  integer, allocatable           :: indices(:), exc_degree(:), iorder(:)
+  allocate (indices(N_det),                                          &
+      exc_degree(max(N_det_alpha_unique,N_det_beta_unique)))
+  
   k=1
   do i=1,N_det_alpha_unique
-    call get_excitation_degree_spin(psi_det_alpha_unique(1,i), &
-      psi_det_generators(1,1,i_generator), exc_degree(i), N_int)
+    call get_excitation_degree_spin(psi_det_alpha_unique(1,i),       &
+        psi_det_generators(1,1,i_generator), exc_degree(i), N_int)
   enddo
-
+  
   do j=1,N_det_beta_unique
-    call get_excitation_degree_spin(psi_det_beta_unique(1,j), &
-      psi_det_generators(1,2,i_generator), nt, N_int)
+    call get_excitation_degree_spin(psi_det_beta_unique(1,j),        &
+        psi_det_generators(1,2,i_generator), nt, N_int)
     if (nt > 2) cycle
     do l_a=psi_bilinear_matrix_columns_loc(j), psi_bilinear_matrix_columns_loc(j+1)-1
       i = psi_bilinear_matrix_rows(l_a)
@@ -222,50 +218,50 @@ subroutine select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_d
       endif
     enddo
   enddo
-
+  
   do i=1,N_det_beta_unique
-    call get_excitation_degree_spin(psi_det_beta_unique(1,i), &
-      psi_det_generators(1,2,i_generator), exc_degree(i), N_int)
+    call get_excitation_degree_spin(psi_det_beta_unique(1,i),        &
+        psi_det_generators(1,2,i_generator), exc_degree(i), N_int)
   enddo
-
+  
   do j=1,N_det_alpha_unique
-    call get_excitation_degree_spin(psi_det_alpha_unique(1,j), &
-      psi_det_generators(1,1,i_generator), nt, N_int)
+    call get_excitation_degree_spin(psi_det_alpha_unique(1,j),       &
+        psi_det_generators(1,1,i_generator), nt, N_int)
     if (nt > 1) cycle
     do l_a=psi_bilinear_matrix_transp_rows_loc(j), psi_bilinear_matrix_transp_rows_loc(j+1)-1
       i = psi_bilinear_matrix_transp_columns(l_a)
       if (exc_degree(i) < 3) cycle
       if (nt + exc_degree(i) <= 4) then
-        idx = psi_det_sorted_order(                   &
-                 psi_bilinear_matrix_order(           &
-                 psi_bilinear_matrix_transp_order(l_a)))
+        idx = psi_det_sorted_order(                                  &
+            psi_bilinear_matrix_order(                               &
+            psi_bilinear_matrix_transp_order(l_a)))
         if (psi_average_norm_contrib_sorted(idx) < 1.d-12) cycle
         indices(k) = idx
         k=k+1
       endif
     enddo
   enddo
-
+  
   deallocate(exc_degree)
   nmax=k-1
-
+  
   allocate(iorder(nmax))
   do i=1,nmax
     iorder(i) = i
   enddo
   call isort(indices,iorder,nmax)
   deallocate(iorder)
-
-  allocate(preinteresting(0:N_det), prefullinteresting(0:N_det), &
-            interesting(0:N_det), fullinteresting(0:N_det))
+  
+  allocate(preinteresting(0:32), prefullinteresting(0:32),     &
+      interesting(0:32), fullinteresting(0:32))
   preinteresting(0) = 0
   prefullinteresting(0) = 0
-
+  
   do i=1,N_int
     negMask(i,1) = not(psi_det_generators(i,1,i_generator))
     negMask(i,2) = not(psi_det_generators(i,2,i_generator))
   end do
-
+  
   do k=1,nmax
     i = indices(k)
     mobMask(1,1) = iand(negMask(1,1), psi_det_sorted(1,1,i))
@@ -276,34 +272,47 @@ subroutine select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_d
       mobMask(j,2) = iand(negMask(j,2), psi_det_sorted(j,2,i))
       nt = nt + popcnt(mobMask(j, 1)) + popcnt(mobMask(j, 2))
     end do
-
+    
     if(nt <= 4) then
       if(i <= N_det_selectors) then
-        preinteresting(0) = preinteresting(0) + 1
-        preinteresting(preinteresting(0)) = i
-        do j=1,N_int
-          preinteresting_det(j,1,preinteresting(0)) = psi_det_sorted(j,1,i)
-          preinteresting_det(j,2,preinteresting(0)) = psi_det_sorted(j,2,i)
-        enddo
+        sze = preinteresting(0) 
+        if (sze+1 == size(preinteresting)) then
+          allocate (tmp_array(0:sze))
+          tmp_array(0:sze) = preinteresting(0:sze)
+          deallocate(preinteresting)
+          allocate(preinteresting(0:2*sze))
+          preinteresting(0:sze) = tmp_array(0:sze)
+          deallocate(tmp_array)
+        endif
+        preinteresting(0) = sze+1
+        preinteresting(sze+1) = i
       else if(nt <= 2) then
-        prefullinteresting(0) = prefullinteresting(0) + 1
-        prefullinteresting(prefullinteresting(0)) = i
+        sze = prefullinteresting(0) 
+        if (sze+1 == size(prefullinteresting)) then
+          allocate (tmp_array(0:sze))
+          tmp_array(0:sze) = prefullinteresting(0:sze)
+          deallocate(prefullinteresting)
+          allocate(prefullinteresting(0:2*sze))
+          prefullinteresting(0:sze) = tmp_array(0:sze)
+          deallocate(tmp_array)
+        endif
+        prefullinteresting(0) = sze+1
+        prefullinteresting(sze+1) = i
       end if
     end if
   end do
   deallocate(indices)
-
-  allocate(minilist(N_int, 2, N_det_selectors), fullminilist(N_int, 2, N_det))
+  
   allocate(banned(mo_num, mo_num,2), bannedOrb(mo_num, 2))
   allocate (mat(N_states, mo_num, mo_num))
   maskInd = -1
-
-  integer :: nb_count, maskInd_save
-  logical :: monoBdo_save
-  logical :: found
+  
+  integer                        :: nb_count, maskInd_save
+  logical                        :: monoBdo_save
+  logical                        :: found
   do s1=1,2
     do i1=N_holes(s1),1,-1   ! Generate low excitations first
-
+      
       found = .False.
       monoBdo_save = monoBdo
       maskInd_save = maskInd
@@ -318,33 +327,33 @@ subroutine select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_d
         enddo
         if(s1 /= s2) monoBdo = .false.
       enddo
-
+      
       if (.not.found) cycle
       monoBdo = monoBdo_save
       maskInd = maskInd_save
-
+      
       h1 = hole_list(i1,s1)
       call apply_hole(psi_det_generators(1,1,i_generator), s1,h1, pmask, ok, N_int)
-
+      
       negMask = not(pmask)
-
+      
       interesting(0) = 0
       fullinteresting(0) = 0
-
+      
       do ii=1,preinteresting(0)
         select case (N_int)
           case (1)
-            mobMask(1,1) = iand(negMask(1,1), preinteresting_det(1,1,ii))
-            mobMask(1,2) = iand(negMask(1,2), preinteresting_det(1,2,ii))
+            mobMask(1,1) = iand(negMask(1,1), psi_det_sorted(1,1,preinteresting(ii)))
+            mobMask(1,2) = iand(negMask(1,2), psi_det_sorted(1,2,preinteresting(ii)))
             nt = popcnt(mobMask(1, 1)) + popcnt(mobMask(1, 2))
           case (2)
-            mobMask(1:2,1) = iand(negMask(1:2,1), preinteresting_det(1:2,1,ii))
-            mobMask(1:2,2) = iand(negMask(1:2,2), preinteresting_det(1:2,2,ii))
-            nt = popcnt(mobMask(1, 1)) + popcnt(mobMask(1, 2)) + &
-                 popcnt(mobMask(2, 1)) + popcnt(mobMask(2, 2))
+            mobMask(1:2,1) = iand(negMask(1:2,1), psi_det_sorted(1:2,1,preinteresting(ii)))
+            mobMask(1:2,2) = iand(negMask(1:2,2), psi_det_sorted(1:2,2,preinteresting(ii)))
+            nt = popcnt(mobMask(1, 1)) + popcnt(mobMask(1, 2)) +     &
+                popcnt(mobMask(2, 1)) + popcnt(mobMask(2, 2))
           case (3)
-            mobMask(1:3,1) = iand(negMask(1:3,1), preinteresting_det(1:3,1,ii))
-            mobMask(1:3,2) = iand(negMask(1:3,2), preinteresting_det(1:3,2,ii))
+            mobMask(1:3,1) = iand(negMask(1:3,1), psi_det_sorted(1:3,1,preinteresting(ii)))
+            mobMask(1:3,2) = iand(negMask(1:3,2), psi_det_sorted(1:3,2,preinteresting(ii)))
             nt = 0
             do j=3,1,-1
               if (mobMask(j,1) /= 0_bit_kind) then
@@ -357,8 +366,8 @@ subroutine select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_d
               endif
             end do
           case (4)
-            mobMask(1:4,1) = iand(negMask(1:4,1), preinteresting_det(1:4,1,ii))
-            mobMask(1:4,2) = iand(negMask(1:4,2), preinteresting_det(1:4,2,ii))
+            mobMask(1:4,1) = iand(negMask(1:4,1), psi_det_sorted(1:4,1,preinteresting(ii)))
+            mobMask(1:4,2) = iand(negMask(1:4,2), psi_det_sorted(1:4,2,preinteresting(ii)))
             nt = 0
             do j=4,1,-1
               if (mobMask(j,1) /= 0_bit_kind) then
@@ -370,9 +379,9 @@ subroutine select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_d
                 if (nt > 4) exit
               endif
             end do
-          case default
-            mobMask(1:N_int,1) = iand(negMask(1:N_int,1), preinteresting_det(1:N_int,1,ii))
-            mobMask(1:N_int,2) = iand(negMask(1:N_int,2), preinteresting_det(1:N_int,2,ii))
+            case default
+            mobMask(1:N_int,1) = iand(negMask(1:N_int,1), psi_det_sorted(1:N_int,1,preinteresting(ii)))
+            mobMask(1:N_int,2) = iand(negMask(1:N_int,2), psi_det_sorted(1:N_int,2,preinteresting(ii)))
             nt = 0
             do j=N_int,1,-1
               if (mobMask(j,1) /= 0_bit_kind) then
@@ -385,31 +394,37 @@ subroutine select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_d
               endif
             end do
         end select
-
+        
         if(nt <= 4) then
           i = preinteresting(ii)
-          interesting(0) = interesting(0) + 1
-          interesting(interesting(0)) = i
-          minilist(1,1,interesting(0)) = preinteresting_det(1,1,ii)
-          minilist(1,2,interesting(0)) = preinteresting_det(1,2,ii)
-          do j=2,N_int
-            minilist(j,1,interesting(0)) = preinteresting_det(j,1,ii)
-            minilist(j,2,interesting(0)) = preinteresting_det(j,2,ii)
-          enddo
+          sze = interesting(0) 
+          if (sze+1 == size(interesting)) then
+            allocate (tmp_array(0:sze))
+            tmp_array(0:sze) = interesting(0:sze)
+            deallocate(interesting)
+            allocate(interesting(0:2*sze))
+            interesting(0:sze) = tmp_array(0:sze)
+            deallocate(tmp_array)
+          endif
+          interesting(0) = sze+1
+          interesting(sze+1) = i
           if(nt <= 2) then
-            fullinteresting(0) = fullinteresting(0) + 1
-            fullinteresting(fullinteresting(0)) = i
-            fullminilist(1,1,fullinteresting(0)) = preinteresting_det(1,1,ii)
-            fullminilist(1,2,fullinteresting(0)) = preinteresting_det(1,2,ii)
-            do j=2,N_int
-              fullminilist(j,1,fullinteresting(0)) = preinteresting_det(j,1,ii)
-              fullminilist(j,2,fullinteresting(0)) = preinteresting_det(j,2,ii)
-            enddo
+            sze = fullinteresting(0) 
+            if (sze+1 == size(fullinteresting)) then
+              allocate (tmp_array(0:sze))
+              tmp_array(0:sze) = fullinteresting(0:sze)
+              deallocate(fullinteresting)
+              allocate(fullinteresting(0:2*sze))
+              fullinteresting(0:sze) = tmp_array(0:sze)
+              deallocate(tmp_array)
+            endif
+            fullinteresting(0) = sze+1
+            fullinteresting(sze+1) = i
           end if
         end if
-
+        
       end do
-
+      
       do ii=1,prefullinteresting(0)
         i = prefullinteresting(ii)
         nt = 0
@@ -425,16 +440,29 @@ subroutine select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_d
         end do
 
         if(nt <= 2) then
-          fullinteresting(0) = fullinteresting(0) + 1
-          fullinteresting(fullinteresting(0)) = i
-          fullminilist(1,1,fullinteresting(0)) = psi_det_sorted(1,1,i)
-          fullminilist(1,2,fullinteresting(0)) = psi_det_sorted(1,2,i)
-          do j=2,N_int
-            fullminilist(j,1,fullinteresting(0)) = psi_det_sorted(j,1,i)
-            fullminilist(j,2,fullinteresting(0)) = psi_det_sorted(j,2,i)
-          enddo
+          sze = fullinteresting(0) 
+          if (sze+1 == size(fullinteresting)) then
+            allocate (tmp_array(0:sze))
+            tmp_array(0:sze) = fullinteresting(0:sze)
+            deallocate(fullinteresting)
+            allocate(fullinteresting(0:2*sze))
+            fullinteresting(0:sze) = tmp_array(0:sze)
+            deallocate(tmp_array)
+          endif
+          fullinteresting(0) = sze+1
+          fullinteresting(sze+1) = i
         end if
       end do
+
+      allocate (fullminilist (N_int, 2, fullinteresting(0)), &
+                    minilist (N_int, 2,     interesting(0)) )
+      do i=1,fullinteresting(0)
+        fullminilist(1:N_int,1:2,i) = psi_det_sorted(1:N_int,1:2,fullinteresting(i))
+      enddo
+      
+      do i=1,interesting(0)
+        minilist(1:N_int,1:2,i) = psi_det_sorted(1:N_int,1:2,interesting(i))
+      enddo
 
       do s2=s1,2
         sp = s1
@@ -467,24 +495,25 @@ subroutine select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_d
               monoAdo = .false.
             end if
           end if
-
+          
           maskInd = maskInd + 1
           if(mod(maskInd, csubset) == (subset-1)) then
-
+            
             call spot_isinwf(mask, fullminilist, i_generator, fullinteresting(0), banned, fullMatch, fullinteresting)
             if(fullMatch) cycle
-
+            
             call splash_pq(mask, sp, minilist, i_generator, interesting(0), bannedOrb, banned, mat, interesting)
-
+            
             call fill_buffer_double(i_generator, sp, h1, h2, bannedOrb, banned, fock_diag_tmp, E0, pt2, variance, norm, mat, buf)
           end if
         enddo
         if(s1 /= s2) monoBdo = .false.
       enddo
+      deallocate(fullminilist,minilist)
     enddo
   enddo
   deallocate(preinteresting, prefullinteresting, interesting, fullinteresting)
-  deallocate(minilist, fullminilist, banned, bannedOrb,mat)
+  deallocate(banned, bannedOrb,mat)
 end subroutine
 
 

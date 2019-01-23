@@ -28,6 +28,7 @@ updated data is saved into the |EZFIO| directory.
    qp_edit. To Avoid this problem, put in your :file:`$HOME/.vimrc`::
 
         set t_ti=
+        set t_te=
 
 
 Usage

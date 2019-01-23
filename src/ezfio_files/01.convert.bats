@@ -13,15 +13,15 @@ function run {
   qp set scf_utils thresh_scf 1.e-12
 }
 
-@test "HBO GAMESS" {
+@test "HBO GAMESS" { # 1.14107s
   run hbo.gms.out hbo.ezfio
 }
 
-@test "H2O G09" {
+@test "H2O G09" { # 1.19319s
   run h2o.log h2o.ezfio
 }
 
-@test "[Cu(NH3)4]2+ GAMESS" {
+@test "[Cu(NH3)4]2+ GAMESS" { # 1.38541s
   run cu_nh3_4_2plus.gms.out  cu_nh3_4_2plus.ezfio
   qp set scf_utils thresh_scf 1.e-10
 }
