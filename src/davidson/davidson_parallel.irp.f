@@ -58,7 +58,10 @@ subroutine davidson_run_slave(thread,iproc)
 
   integer, external :: disconnect_from_taskserver
   if (disconnect_from_taskserver(zmq_to_qp_run_socket,worker_id) == -1) then
-    continue
+    call sleep(1)
+    if (disconnect_from_taskserver(zmq_to_qp_run_socket,worker_id) == -1) then
+      continue
+    endif
   endif
 
   call end_zmq_to_qp_run_socket(zmq_to_qp_run_socket)
