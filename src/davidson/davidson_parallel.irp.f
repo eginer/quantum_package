@@ -40,7 +40,7 @@ subroutine davidson_run_slave(thread,iproc)
 
   zmq_to_qp_run_socket = new_zmq_to_qp_run_socket()
 
-  if (connect_to_taskserver(zmq_to_qp_run_socket,worker_id,thread) /= -1) then
+  if (connect_to_taskserver(zmq_to_qp_run_socket,worker_id,thread) == -1) then
       call end_zmq_to_qp_run_socket(zmq_to_qp_run_socket)
       return
   endif
@@ -419,11 +419,8 @@ subroutine H_S2_u_0_nstates_zmq(v_0,s_0,u_0,N_st,sze)
     print *,  irp_here, ': Failed in zmq_set_running'
   endif
 
-  v_0 = 0.d0
-  s_0 = 0.d0
-
   call omp_set_nested(.True.)
-  !$OMP PARALLEL NUM_THREADS(2) PRIVATE(ithread)
+  !$OMP PARALLEL DEFAULT(shared) NUM_THREADS(2) PRIVATE(ithread)
   ithread = omp_get_thread_num()
   if (ithread == 0 ) then
     call davidson_collector(zmq_to_qp_run_socket, zmq_socket_pull, v_0, s_0, N_det, N_st)
