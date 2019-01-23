@@ -245,15 +245,15 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
   write(6,'(A)') write_buffer(1:6+41*N_st)
 
 
-  if (disk_based_davidson) then
+  if (disk_based) then
     ! Create memory-mapped files for W and S
     type(c_ptr) :: ptr_w, ptr_s
     integer :: fd_s, fd_w
     call mmap(trim(ezfio_work_dir)//'davidson_w', (/int(sze,8),int(N_st_diag*itermax,8)/),&
         8, fd_w, .False., ptr_w)
-    call c_f_pointer(ptr_w, w, (/sze,N_st_diag*itermax/))
     call mmap(trim(ezfio_work_dir)//'davidson_s', (/int(sze,8),int(N_st_diag*itermax,8)/),&
         4, fd_s, .False., ptr_s)
+    call c_f_pointer(ptr_w, w, (/sze,N_st_diag*itermax/))
     call c_f_pointer(ptr_s, s, (/sze,N_st_diag*itermax/))
   else
     allocate(W(sze,N_st_diag*itermax), S(sze,N_st_diag*itermax))
@@ -584,7 +584,7 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
   write(6,'(A)') ''
   call write_time(6)
 
-  if (disk_based_davidson)then
+  if (disk_based)then
     ! Remove temp files
     integer, external :: getUnitAndOpen
     call munmap( (/int(sze,8),int(N_st_diag*itermax,8)/), 8, fd_w, ptr_w )
