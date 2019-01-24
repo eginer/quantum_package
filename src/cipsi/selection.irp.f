@@ -161,7 +161,7 @@ subroutine select_singles_and_doubles(i_generator,hole_mask,particle_mask,fock_d
   PROVIDE psi_bilinear_matrix_transp_rows_loc psi_bilinear_matrix_transp_columns
   PROVIDE psi_bilinear_matrix_transp_order psi_selectors_coef_transp
 
-  ii = (elec_alpha_num*(mo_num-elec_alpha_num))**2
+  ii = min(N_det,(elec_alpha_num*(mo_num-elec_alpha_num))**2)
   rss = memory_of_double(             &
             2*N_int*2*ii   &   ! minilist, fullminilist
           + N_states*mo_num*mo_num    &   ! mat
