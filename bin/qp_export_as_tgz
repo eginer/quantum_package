@@ -201,7 +201,7 @@ cp --recursive -- ${QP_ROOT}/external/Python ${QPACKAGE_STATIC}/external/
 mkdir ${QPACKAGE_STATIC}/external/ezfio
 cp --recursive -- ${QP_ROOT}/external/ezfio/Python ${QPACKAGE_STATIC}/external/ezfio/
 cp --recursive -- ${QP_ROOT}/external/ezfio/Bash   ${QPACKAGE_STATIC}/external/ezfio/
-cp --recursive -- ${QP_ROOT}/man   ${QPACKAGE_STATIC}/man
+cp --recursive -- ${QP_ROOT}/man/*   ${QPACKAGE_STATIC}/man/
 
 
 echo "Creating quantum_package.rc"

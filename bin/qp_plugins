@@ -38,7 +38,7 @@ try:
     from docopt import docopt
     from module_handler import ModuleHandler, get_dict_child
     from module_handler import get_l_module_descendant
-    from qp_path import QP_SRC, QP_PLUGINS, QP_DATA
+    from qp_path import QP_SRC, QP_PLUGINS, QP_DATA, QP_ROOT
 except ImportError:
     print "Please check if you have sourced the ${QP_ROOT}/quantum_package.rc"
     print "(`source ${QP_ROOT}/quantum_package.rc`)"
@@ -258,6 +258,7 @@ def main(arguments):
                 except OSError:
                     print "The src directory is broken. Please remove %s" % des
                     raise
+            subprocess.check_call(["qp_create_ninja", "update"])
             print "[ OK ]"
 
     elif arguments["uninstall"]:

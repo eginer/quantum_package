@@ -101,13 +101,17 @@ function qp()
       ;;
 
     "plugins"|"update"|"convert_output_to_ezfio")
-      eval "qp_$@"
+      COMMAND='qp_$@'
+      eval "$COMMAND"
+      unset COMMAND
       ;;
 
     *)
       which "qp_$1" &> /dev/null
       if [[ $? -eq 0 ]] ; then
-         eval "qp_$@ ${EZFIO_FILE}"
+        COMMAND='qp_$@'
+        eval "$COMMAND" "${EZFIO_FILE}"
+        unset COMMAND
       else
          _qp_usage
       fi
@@ -174,6 +178,10 @@ _qp_Complete()
             return 0
             ;;
         esac;;
+      set_file)
+        COMPREPLY=( $(compgen -W "$(for i in * ; do [[ -f ${i}/ezfio/.version ]] && echo $i ; done)" -- ${cur} ) )
+        return 0
+        ;;
       plugins)
         case "${prev}" in
           plugins)
@@ -201,7 +209,7 @@ _qp_Complete()
             ;;
         esac;;
       *)
-        COMPREPLY=( $(compgen -W 'plugins \
+        COMPREPLY=( $(compgen -W 'plugins set_file\
                                    man \
                                    create_ezfio \
                                    convert_output_to_ezfio \
@@ -255,19 +263,6 @@ _qp_Complete()
                                   run srun mpirun set_frozen_core \
                                   reset set_mo_class ' \
                                   -- $cur ) )
-        return 0
-        ;;
-    esac
-
-  else
-
-    case "${prev}" in
-      set_file)
-        COMPREPLY=( $(compgen -W "$(for i in * ; do [[ -f ${i}/ezfio/.version ]] && echo $i ; done)" -- ${cur} ) )
-        return 0
-        ;;
-      *)
-        COMPREPLY+=( $(compgen -W "set_file" -- $cur ) )
         return 0
         ;;
     esac

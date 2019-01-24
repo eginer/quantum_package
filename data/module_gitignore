@@ -1,5 +1,6 @@
 IRPF90_temp/
 IRPF90_man/
+build.ninja
 irpf90.make
 ezfio_interface.irp.f
 irpf90_entities
@@ -14,6 +15,7 @@ becke_numerical_grid
 bitmask
 cis
 cisd
+cipsi
 davidson
 davidson_dressed
 davidson_undressed

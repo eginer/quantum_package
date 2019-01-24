@@ -278,8 +278,8 @@ subroutine wall_time(t)
   ! The equivalent of cpu_time, but for the wall time.
   END_DOC
   double precision, intent(out)  :: t
-  integer                        :: c
-  integer, save                  :: rate = 0
+  integer*8                        :: c
+  integer*8, save                  :: rate = 0
   if (rate == 0) then
     CALL SYSTEM_CLOCK(count_rate=rate)
   endif

@@ -44,7 +44,8 @@ subroutine run
     rpt2(:) = pt2(:)/(1.d0 + norm(k))
   enddo
 
-  call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm,N_det,N_occ_pattern,psi_s2)
+  call print_summary(psi_energy_with_nucl_rep(1:N_states),pt2,error,variance,norm,N_det,N_occ_pattern,N_states,psi_s2)
+
   call save_energy(E_CI_before,pt2)
 end
 

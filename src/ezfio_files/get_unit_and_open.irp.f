@@ -1,3 +1,4 @@
+
 integer function getUnitAndOpen(f,mode)
   implicit none
 
@@ -22,7 +23,7 @@ integer function getUnitAndOpen(f,mode)
   character          :: mode
 
   is_open = .True.
-  iunit = 10
+  iunit = 20
   new_f = f
   do while (is_open)
     inquire(unit=iunit,opened=is_open)

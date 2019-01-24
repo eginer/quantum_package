@@ -13,7 +13,7 @@ END_PROVIDER
   integer :: i
   integer :: e
   e = elec_num - n_core_orb * 2
-  pt2_n_tasks_max = 1+min((e*(e-1))/2, int(dsqrt(dble(N_det_selectors)))/10)
+  pt2_n_tasks_max = 1+min((e*(e-1))/2, int(dsqrt(dble(N_det_selectors)))/4)
   do i=1,N_det_generators
     pt2_F(i) = 1 + int(dble(pt2_n_tasks_max)*maxval(dsqrt(dabs(psi_coef_sorted_gen(i,1:N_states)))))
   enddo
@@ -233,8 +233,9 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error, variance, norm, N_in)
             + 1.d0*(N_int*2.d0*N + N)         & ! sort selection buffer
             ) / 1024.d0**3
 
-      integer :: nproc_target
+      integer :: nproc_target, ii
       nproc_target = nthreads_pt2
+      ii = min(N_det, (elec_alpha_num*(mo_num-elec_alpha_num))**2)
 
       do
         mem = mem_collector +                   & !
@@ -245,11 +246,9 @@ subroutine ZMQ_pt2(E, pt2,relative_error, error, variance, norm, N_in)
               + 1.d0*pt2_n_tasks_max            & ! i_generator, subset
               + 2.d0*(N_int*2.d0*N_in + N_in)   & ! selection buffers
               + 1.d0*(N_int*2.d0*N_in + N_in)   & ! sort/merge selection buffers
-              + 1.d0*(N_int*2.d0*N_det)         & ! preinteresting_det
-              + 2.0d0*(N_det+1)                 & ! preinteresting, interesting,
+              + 2.0d0*(ii)                      & ! preinteresting, interesting,
                                                   ! prefullinteresting, fullinteresting
-              + 1.0d0*(N_int*2*N_det_selectors) & ! minilist
-              + 1.0d0*(N_int*2*N_det)           & ! fullminilist
+              + 2.0d0*(N_int*2*ii)              & ! minilist, fullminilist
               + 1.0d0*(N_states*mo_num*mo_num)  & ! mat
               ) / 1024.d0**3
 

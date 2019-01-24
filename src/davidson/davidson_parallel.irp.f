@@ -40,7 +40,29 @@ subroutine davidson_run_slave(thread,iproc)
 
   zmq_to_qp_run_socket = new_zmq_to_qp_run_socket()
 
+  integer :: ierr, doexit
+  doexit = 0
   if (connect_to_taskserver(zmq_to_qp_run_socket,worker_id,thread) == -1) then
+    call sleep(1)
+    if (connect_to_taskserver(zmq_to_qp_run_socket,worker_id,thread) == -1) then
+      doexit=1
+    endif
+  endif
+
+  IRP_IF MPI
+    include 'mpif.h'
+    integer :: sendbuf, recvbuf
+    sendbuf = doexit
+    recvbuf = doexit
+    call MPI_ALLREDUCE(sendbuf, recvbuf, 1, MPI_INTEGER, MPI_SUM, MPI_COMM_WORLD, ierr)
+    if (ierr /= MPI_SUCCESS) then
+      print *,  irp_here//': Unable to reduce '
+      stop -1
+    endif
+    doexit = recvbuf
+  IRP_ENDIF
+
+  if (doexit > 0) then
       call end_zmq_to_qp_run_socket(zmq_to_qp_run_socket)
       return
   endif
@@ -58,7 +80,10 @@ subroutine davidson_run_slave(thread,iproc)
 
   integer, external :: disconnect_from_taskserver
   if (disconnect_from_taskserver(zmq_to_qp_run_socket,worker_id) == -1) then
-    continue
+    call sleep(1)
+    if (disconnect_from_taskserver(zmq_to_qp_run_socket,worker_id) == -1) then
+      continue
+    endif
   endif
 
   call end_zmq_to_qp_run_socket(zmq_to_qp_run_socket)
@@ -90,7 +115,6 @@ subroutine davidson_slave_work(zmq_to_qp_run_socket, zmq_socket_push, N_st, sze,
   integer*8                      :: rc8
   integer                        :: N_states_read, N_det_read, psi_det_size_read
   integer                        :: N_det_selectors_read, N_det_generators_read
-  double precision, allocatable  :: energy(:)
 
   integer, external :: zmq_get_dvector
   integer, external :: zmq_get_dmatrix
@@ -101,7 +125,6 @@ subroutine davidson_slave_work(zmq_to_qp_run_socket, zmq_socket_push, N_st, sze,
   PROVIDE mpi_initialized
 
   allocate(u_t(N_st,N_det))
-  allocate (energy(N_st))
 
   ! Warning : dimensions are modified for efficiency, It is OK since we get the
   ! full matrix
@@ -117,12 +140,6 @@ subroutine davidson_slave_work(zmq_to_qp_run_socket, zmq_socket_push, N_st, sze,
     call sleep(1)
     print *,  irp_here, ': waiting for u_t...'
   enddo
-
-  if (zmq_get_dvector(zmq_to_qp_run_socket, worker_id, 'energy', energy, size(energy)) == -1) then
-    print *,  irp_here, ': Unable to get energy'
-    deallocate(u_t,energy)
-    return
-  endif
 
   IRP_IF MPI
     include 'mpif.h'
