@@ -531,6 +531,7 @@ subroutine new_parallel_job(zmq_to_qp_run_socket,zmq_socket_pull,name_in)
   zmq_socket_pull      = new_zmq_pull_socket ()
   write(name,'(A,I8.8)') trim(name_in)//'.', icount
   sze = len(trim(name))
+  zmq_state = trim(name)
   call lowercase(name,sze)
   message = 'new_job '//trim(name)//' '//zmq_socket_push_tcp_address//' '//zmq_socket_pull_inproc_address
   sze = len(trim(message))
@@ -546,8 +547,6 @@ subroutine new_parallel_job(zmq_to_qp_run_socket,zmq_socket_pull,name_in)
     print *,  'Unable to start parallel job : '//name
     stop 1
   endif
-
-  zmq_state = trim(name)
 
 end
 

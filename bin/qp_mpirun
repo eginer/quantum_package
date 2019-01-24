@@ -10,13 +10,13 @@ set -e
 PROG=$1
 INPUT=$2
 
-case ${PROG} in  
+case ${PROG} in 
   -h|--help)
         exec qp_run --help
   ;;
 esac
 
-NODES=($(srun hostname))
+NODES=($(mpirun hostname))
 
 # Test that there is one MPI process per node
 NPROC=$(echo ${NODES[@]} | tr ' ' '\n' | sort | wc -l)
@@ -37,6 +37,7 @@ In your SLURM script file, use:
   exit -1
 fi
 
+        
 
 # Check if quantum_package.rc is sourced
 
@@ -44,6 +45,7 @@ if [[ -z ${QP_ROOT} ]] ; then
         echo "Error: quantum_package.rc is not sourced"
         exit -1
 fi
+source ${QP_ROOT}/quantum_package.rc
 
 
 # Get host names
@@ -76,15 +78,16 @@ as a single-node job before re-submitting the current job.
 fi
 rm --force -- "${INPUT}"/work/qp_run_address
 set -x
-srun -N 1 -n 1 qp_run $PROG $INPUT &
+mpiexec.hydra -n 1 -hosts "$MASTER_NODE" qp_run $PROG $INPUT &
 
 if [[ $NPROC -gt 1 ]] ; then
   while [[ ! -f $INPUT/work/qp_run_address ]] ; do
     sleep 1
   done
+  sleep 10
   echo "Starting slaves"
-  srun -n $((${SLURM_NTASKS}-1))  \
-    qp_run --slave $PROG $INPUT > $INPUT.slaves.out
+  mpiexec.hydra -n $((${SLURM_NTASKS}-1)) -hosts "$SLAVE_NODES" \
+     qp_run --slave="$PROG" $INPUT > $INPUT.slaves.out
 fi
 wait
 

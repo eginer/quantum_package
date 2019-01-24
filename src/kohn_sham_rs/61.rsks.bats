@@ -9,6 +9,7 @@ function run() {
   functional=$2
   qp set_file $1
   qp edit --check
+  qp set determinants n_states 1
   qp set scf_utils thresh_scf 1.e-10
   qp set dft_keywords exchange_functional $functional
   qp set dft_keywords correlation_functional $functional

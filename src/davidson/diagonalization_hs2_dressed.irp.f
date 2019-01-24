@@ -266,8 +266,6 @@ subroutine davidson_diag_hjj_sjj(dets_in,u_in,H_jj,s2_out,energies,dim_in,sze,N_
 
   h = 0.d0
   U = 0.d0
-!  W = 0.d0
-!  S = 0.d0
   y = 0.d0
   s_ = 0.d0
   s_tmp = 0.d0

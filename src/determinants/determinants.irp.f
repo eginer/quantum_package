@@ -304,6 +304,10 @@ END_PROVIDER
      psi_det_sorted_order(iorder(i)) = i
    enddo
 
+   psi_det_sorted(:,:,N_det+1:psi_det_size) = 0_bit_kind
+   psi_coef_sorted(N_det+1:psi_det_size,:) = 0.d0
+   psi_average_norm_contrib_sorted(N_det+1:psi_det_size) = 0.d0
+   psi_det_sorted_order(N_det+1:psi_det_size) = 0
 
    deallocate(iorder)
 

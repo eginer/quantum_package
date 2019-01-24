@@ -175,7 +175,7 @@ if [[ "${PACKAGES}.x" != ".x" ]] ; then
 fi
 
 if [[ ${PACKAGES} = all ]] ; then
-        PACKAGES="ninja irpf90 zeromq f77zmq ocaml ezfio docopt resultsFile bats"
+        PACKAGES="zlib ninja irpf90 zeromq f77zmq ocaml ezfio docopt resultsFile bats"
 fi
 
 
@@ -287,13 +287,28 @@ EOF
     elif [[ ${PACKAGE} = ezfio ]] ; then
 
             download \
-              "https://gitlab.com/scemama/EZFIO/-/archive/v1.3.5/EZFIO-v1.3.5.tar.gz" \
+              "https://gitlab.com/scemama/EZFIO/-/archive/v1.4.0/EZFIO-v1.4.0.tar.gz" \
               "${QP_ROOT}"/external/ezfio.tar.gz
             execute << EOF
               cd "\${QP_ROOT}"/external
               tar --gunzip --extract --file ezfio.tar.gz
               rm -rf ezfio
               mv EZFIO-* ezfio
+EOF
+
+
+    elif [[ ${PACKAGE} = zlib ]] ; then
+
+            download \
+              "https://www.zlib.net/zlib-1.2.11.tar.gz" \
+              "${QP_ROOT}"/external/zlib.tar.gz
+            execute << EOF
+              cd "\${QP_ROOT}"/external
+              tar --gunzip --extract --file zlib.tar.gz
+              rm zlib.tar.gz && \
+              cd zlib-*/
+              ./configure --prefix=${QP_ROOT} && \
+              make && make install
 EOF
 
             
@@ -382,6 +397,12 @@ if [[ ${EZFIO} = $(not_found) ]] ; then
         fail
 fi
 
+ZLIB=$(find_lib -lz)
+if [[ ${ZLIB} = $(not_found) ]] ; then
+        error "Zlib is not installed."
+        fail
+fi
+
 DOCOPT=$(find_python_lib docopt)
 if [[ ${DOCOPT} = $(not_found) ]] ; then
         error "docopt is not installed."
@@ -422,6 +443,7 @@ else
       echo ""
 fi
    
+exit 0
     
 
 

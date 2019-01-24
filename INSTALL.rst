@@ -191,6 +191,26 @@ ZeroMQ and its Fortran binding
    cp f77_zmq_free.h ${QP_ROOT}/src/ZMQ/f77_zmq.h
 
 
+Zlib
+----
+
+*Zlib* is the compression library used by *gzip*.
+
+* Download the latest version of Zlib here:
+  `<https://www.zlib.net/zlib-1.2.11.tar.gz>`_
+  and move it in the :file:`${QP_ROOT}/external` directory
+
+* Extract the archive, go into the :file:`zlib-*` directory and run
+  the following commands
+
+
+.. code:: bash
+
+   ./configure --prefix=${QP_ROOT}
+   make
+   make install
+
+
 
 OCaml
 -----
@@ -198,7 +218,7 @@ OCaml
 *OCaml* is a general purpose programming language with an emphasis on expressiveness and safety.
 
 * Download the installer of the OPAM package manager here :
-  `<//raw.githubusercontent.com/ocaml/opam/master/shell/install.sh>`_
+  `<https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh>`_
   and move it in the :file:`${QP_ROOT}/external` directory
 
 * If you use OCaml only with the |qp|, you can install the OPAM directory 
