@@ -53,7 +53,7 @@ subroutine run_slave_main
 
   PROVIDE psi_det psi_coef threshold_generators state_average_weight mpi_master
   PROVIDE zmq_state N_det_selectors pt2_stoch_istate N_det pt2_e0_denominator
-  PROVIDE N_det_generators N_states N_states_diag psi_energy
+  PROVIDE N_det_generators N_states N_states_diag pt2_e0_denominator
 
   IRP_IF MPI
     call MPI_BARRIER(MPI_COMM_WORLD, ierr)
@@ -117,14 +117,14 @@ subroutine run_slave_main
         call mpi_print('zmq_get_dvector state_average_weight')
       IRP_ENDIF
       if (zmq_get_dvector(zmq_to_qp_run_socket,1,'state_average_weight',state_average_weight,N_states) == -1) cycle
-      psi_energy(1:N_states) = energy(1:N_states)
-      TOUCH psi_energy psi_s2 state_average_weight threshold_generators
+      pt2_e0_denominator(1:N_states) = energy(1:N_states)
+      TOUCH pt2_e0_denominator state_average_weight threshold_generators
 
       if (mpi_master) then
         print *,  'N_det', N_det
         print *,  'N_det_generators', N_det_generators
         print *,  'N_det_selectors', N_det_selectors
-        print *,  'psi_energy', psi_energy
+        print *,  'pt2_e0_denominator', pt2_e0_denominator
         print *,  'pt2_stoch_istate', pt2_stoch_istate
         print *,  'state_average_weight', state_average_weight
       endif
@@ -221,13 +221,13 @@ subroutine run_slave_main
         call mpi_print('zmq_get_dvector state_average_weight')
       IRP_ENDIF
       if (zmq_get_dvector(zmq_to_qp_run_socket,1,'state_average_weight',state_average_weight,N_states) == -1) cycle
-      psi_energy(1:N_states) = energy(1:N_states)
-      TOUCH psi_energy psi_s2 state_average_weight pt2_stoch_istate threshold_generators
+      pt2_e0_denominator(1:N_states) = energy(1:N_states)
+      SOFT_TOUCH pt2_e0_denominator state_average_weight pt2_stoch_istate threshold_generators
       if (mpi_master) then
         print *,  'N_det', N_det
         print *,  'N_det_generators', N_det_generators
         print *,  'N_det_selectors', N_det_selectors
-        print *,  'psi_energy', psi_energy
+        print *,  'pt2_e0_denominator', pt2_e0_denominator
         print *,  'pt2_stoch_istate', pt2_stoch_istate
         print *,  'state_average_weight', state_average_weight
       endif
